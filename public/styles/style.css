@@ -1,0 +1,185 @@
+@import url('https://fonts.googleapis.com/css2?family=Inconsolata:wght@200;300;400;500;600&display=swap');
+*{
+    margin: 0;
+    padding:0;
+    box-sizing: border-box;
+    font-family: 'Inconsolata', monospace;
+    color: #353b48;
+    background-color: #f5f6fa;
+}
+/*
+
+button-submit
+#3498db
+
+error
+#e74c3c
+
+container bg
+#f5f6fa
+
+bg
+#f5f6fa
+
+
+*/ 
+a{
+    text-decoration: none;
+    color:#3498db;
+    pointer-events: auto;
+}
+p{
+    margin: 0;
+}
+
+button{
+    border: none;
+}
+
+
+.button-submit{
+     background-color: #3498db;
+     color:#ffff;
+}
+
+.button-submit:hover{
+    background-color: #2980b9;
+}
+
+
+.error{
+    color: #e74c3c;
+}
+
+
+
+/* HOME */
+
+.container{
+}
+
+.container-aside{
+    display: flex;
+    flex-direction: column;
+    width: 250px;
+    height: 100vh;
+    border-radius: 5px;
+}
+
+.container-aside-title{
+    padding: 1.5em;
+    text-align: center;
+}
+
+.container-aside-title > h1{
+    font-size: 1rem;
+    letter-spacing: .1em;
+}
+
+.container-aside, .container-aside *{
+    background-color: #ffff;
+}
+
+.container-aside-list{
+    display: flex;
+    flex-direction: column;
+    padding: 0 1em;
+}
+
+.container-aside-list > label {
+    font-size: .9rem;
+    opacity: .5;
+}
+
+/* LISTS - DROPDOWN */
+    
+.container-aside-list > .container-aside-list-dropdown a{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #353b48;
+}
+.container-aside-list > .container-aside-list-dropdown a label{
+    display: inline;
+    width: 150px;
+    text-align: left;
+}
+
+
+.container-aside-list > .container-aside-list-dropdown i:nth-child(3){
+    font-size: .75rem;
+}
+
+.container-aside-list > .container-aside-list-dropdown {
+    padding: 1em 0;
+    cursor: pointer;
+}
+.container-aside-list > .container-aside-list-dropdown label {
+    cursor: pointer;
+    font-size: .75rem;
+}
+
+
+
+/* LOGIN */
+
+.container-auth{
+    margin: auto;
+    display: flex;
+    align-items: center;
+    gap: 100px;
+    width: 1200px;
+    height: 100vh;
+    background-color: #f5f6fa;
+}
+
+.auth-title{
+    margin-bottom: 4em;
+}
+
+.auth-title > label{
+    opacity: .5;
+}
+
+
+.auth-form  form, .email, .password{
+    display: flex;
+    flex-direction: column;
+    gap:.5em;
+}
+
+
+.auth-form > .email, .password{
+    padding-bottom: 1em;
+}
+
+.auth-form  input, button{
+    padding: .5em .5em;
+}
+
+.auth-form button{
+    padding: 1em;
+}
+
+
+/*  */
+
+.head-banner > img:nth-child(1){
+    width: 680px;
+}
+.head-banner{
+    position: relative;
+    margin: 2em 2em 2em 0;
+}
+
+
+.head-banner > .head-banner-bfar-text{
+    position: absolute;
+    left: 0;
+}
+.head-banner > .head-banner-bfar-logo{
+    position: absolute;
+    left: 0;
+    bottom: 20%;
+}
+
