@@ -1,3 +1,8 @@
+const containerAside = document.querySelector('.container-aside')
+
+if(containerAside.children.length < 12){
+    containerAside.style.overflow = "hidden";
+}
 
 function submitFunc(url)
 {

@@ -1,40 +1,35 @@
 <%-include('partials/Header')%>
-    <div class="container">
-        <aside class="container-aside">
-            <div class="container-aside-title">
-                <h1>BFAR-EMS</h1>
+<%-include('partials/Aside')%>
+
+<main>
+    <div class="container dashboard">
+        <div class="dashboard-total-res">
+            <div class="box box-shadow">
+                <h1 for="">Total Employee</h1>
+                <i class="fa-solid fa-people-group "></i>
             </div>
-            <div class="container-aside-list">
-                <label for="employee">Employee</label>
-                <div class="container-aside-list-dropdown">
-                    <a href="#">
-                        <i class="fa-solid fa-user"></i>
-                        <label for="">Employee Record</label>
-                        <i class="fa-solid fa-angle-right"></i>
-                    </a>
-                </div>
-                
+            <div class="box box-shadow">
+                <h1 for="">LOREM IPSUM</h1>
             </div>
-            <div class="container-aside-list">
-                <label for="employee">Payroll</label>
-                <div class="container-aside-list-dropdown">
-                    <a href="#">
-                        <i class="fa-solid fa-money-bill-1-wave"></i>
-                        <label for="">Pay</label>
-                        <i class="fa-solid fa-angle-right"></i>
-                    </a>
-                </div>
+            <div class="box box-shadow">
+                <h1 for="">LOREM IPSUM</h1>
             </div>
-            <div class="container-aside-list">
-                <label for="payroll">Attendance</label>
-                <div class="container-aside-list-dropdown">
-                    <a href="#">
-                        <i class="fa-solid fa-calendar-check"></i>
-                        <label for="">Records</label>
-                        <i class="fa-solid fa-angle-right"></i>
-                    </a>
+        </div>
+
+        <div class="dashboard-employees ">
+            <div class="dashboard-employee-query box-shadow">
+                <h1>Employee</h1>
+                <div class="dashboard-employee-query-search">
+                    <form novalidate role="search">
+                        <button>
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </button>
+                        <input type="text" placeholder="Type your query here and press enter">
+                    </form>
                 </div>
             </div>
-        </aside>
+        </div>
     </div>
-    <%-include('partials/Footer')%>
+</main>
+
+<%-include('partials/Footer')%>
