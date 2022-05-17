@@ -1,7 +1,7 @@
 const route = require('express').Router()
 const { Router } = require('express')
 const UserController = require('./../Controller/UserController')
-const {checkToken, checkUser}  = require('./../Middleware/AuthMiddleware')
+const {checkToken, checkUser, checkRoles}  = require('./../Middleware/AuthMiddleware')
 
 
 // AUTHENTICATION
@@ -17,6 +17,6 @@ route.post('/register', UserController.register_post)
 route.get('/logout', UserController.logout)
 
 route.get('*', checkUser)
-route.get('/', checkToken, UserController.home)
+route.get('/', checkToken, checkRoles , UserController.home)
 
 module.exports = route

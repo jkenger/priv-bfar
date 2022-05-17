@@ -68,6 +68,8 @@ exports.login_post = async (req, res) => {
         try {
             const user = await users.login(email, password)
             const token = await createToken(user._id)
+            console.log(user)
+            res.cookie('isAdmin', user.role, {httpOnly: true, expiresIn: maxAge * 1000})
             res.cookie('token', token, { httpOnly: true, expiresIn: maxAge * 1000 })
             res.status(200).send({ user: user })
         } catch (err) {
@@ -82,8 +84,9 @@ exports.register_post = async (req, res) => {
         res.status(500).send('CANNOT REGISTER')
     } else {
         try {
-            const { email, password } = req.body
-            const user = await users.create({ email, password })
+            const { email, password, role } = req.body
+            const user = await users.create({ email, password, role })
+            res.cookie('isAdmin', role, {httpOnly: true, expiresIn: maxAge * 1000})
             const token = await createToken(user._id)
             res.cookie('token', token, { httpOnly: true, expiresIn: maxAge * 1000 })
             res.status(200).send({ user: user })
@@ -96,5 +99,6 @@ exports.register_post = async (req, res) => {
 
 exports.logout = (req, res) => {
     res.cookie('token', '')
+    res.cookie('isAdmin', '')
     res.redirect('/login')
 }

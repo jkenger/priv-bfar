@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken')
 const UserSchema = require('./../Model/UserSchema')
 
+// VERIFY TOKEN to access the home page
 const checkToken = (req, res, next) => {
     const token = req.cookies['token']
     if (token) {
@@ -20,6 +21,34 @@ const checkToken = (req, res, next) => {
     }
 }
 
+// CHECK ROLE to access role specified pages
+const checkRoles = (req, res, next)=>{
+    const token = req.cookies['token']
+    const role = req.cookies['isAdmin']
+    if (token) {
+        jwt.verify(token, '02fh1000movah', (err, decordedToken) => {
+            if (err) {
+                res.cookie('token', '')
+                res.redirect('/login')
+            } else {
+                if(role === 'admin'){
+                    console.log(decordedToken)
+                    next()
+                }else{
+                    // DEFAULT ATM, REDIRECT TO USER ACCOUNT IF AVAIALABLE
+                    res.redirect('/logout') 
+                }
+                
+            }
+
+        })
+    } else {
+        console.log('Token not found')
+        res.redirect('/login')
+    }
+}
+
+// CHECK USER if authenticated, give access.
 const checkUser = (req, res, next) => {
     const token = req.cookies['token']
     if (token) {
@@ -34,8 +63,6 @@ const checkUser = (req, res, next) => {
                 console.log(res.locals.user)
                 next()
             }
-
-           
         })
     } else {
         res.locals.user = null
@@ -43,4 +70,4 @@ const checkUser = (req, res, next) => {
     }
 }
 
-module.exports = { checkToken, checkUser }
+module.exports = { checkToken, checkUser, checkRoles }

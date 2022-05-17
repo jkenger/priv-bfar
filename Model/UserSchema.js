@@ -15,6 +15,12 @@ const UserSchema = mongoose.Schema({
         type: String,
         required: [true, "Invalid password"],
         minLength: [6, "Minimum length of 6"]
+    },
+
+    role: {
+        type: String,
+        lowercase: true,
+        default: "Admin"
     }
 })
 
