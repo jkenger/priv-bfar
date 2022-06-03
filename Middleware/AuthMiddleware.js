@@ -35,7 +35,7 @@ const checkRoles = (req, res, next)=>{
                     console.log(decordedToken)
                     next()
                 }else{
-                    // DEFAULT ATM, REDIRECT TO USER ACCOUNT IF AVAIALABLE
+                    // DEFAULT ATM, REDIRECT TO USER ACCESS IF AVAIALABLE
                     res.redirect('/logout') 
                 }
                 

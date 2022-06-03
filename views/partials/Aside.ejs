@@ -2,25 +2,25 @@
     <aside class="container-aside">
         <div class="container-aside-list">
             <label for="employee">Dashboard</label>
-            <div class="container-aside-list-dropdown active">
-                <a href="#">
+            <div class="container-aside-list-dropdown <%if(url === '/'){%> active <% }%>  ">
+                <a href="/">
                     <i class="fa-solid fa-chart-bar"></i>
                     <label for="">Dashboard</label>
                 </a>
             </div>
         </div>
         <div class="container-aside-list">
-            <label for="employee">Employee</label>
-            <div class="container-aside-list-dropdown">
-                <a href="#">
+            <label for="employee">Employee Management</label>
+            <div class="container-aside-list-dropdown <%if(url === '/employees'){%> active <% }%>   ">
+                <a href="/employees">
                     <i class="fa-solid fa-user"></i>
-                    <label for="">Employee List</label>
+                    <label for="">Employees</label>
                 </a>
             </div>
         </div>
         <div class="container-aside-list">
-            <label for="employee">Payroll</label>
-            <div class="container-aside-list-dropdown">
+            <label for="employee">Payroll Management</label>
+            <div class="container-aside-list-dropdown <%if(url === '/payroll'){%> active <% }%>  ">
                 <a href="#">
                     <i class="fa-solid fa-receipt"></i>
                     <label for="">Payment</label>
@@ -28,12 +28,23 @@
             </div>
         </div>
         <div class="container-aside-list">
-            <label for="payroll">Attendance</label>
+            <label for="payroll">Attendance Management</label>
             <div class="container-aside-list-dropdown">
                 <a href="#">
                     <i class="fa-solid fa-calendar-check"></i>
                     <label for="">Records</label>
                 </a>
             </div>
+        </div><div class="container-aside-list">
+            <label for="payroll">Settings</label>
+            <div class="container-aside-list-dropdown">
+                <a href="#">
+                    <i class="fa-solid fa-sliders"></i>
+                    <label for="">Accounts</label>
+                </a>
+            </div>
         </div>
     </aside>
+
+
+

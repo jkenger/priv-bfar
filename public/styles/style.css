@@ -193,7 +193,7 @@ tr:hover{
     cursor: pointer;
 }
 .container-aside-list > .container-aside-list-dropdown:hover{
-    border-right: 4px solid #44bd32;
+    border-right: 4px solid #1dd1a1;
     opacity: .75;
 }
 

@@ -1,0 +1,46 @@
+<%-include('partials/Header')%>
+    <%-include('partials/Nav') %>
+        <%-include('partials/Aside')%>
+
+            <main>
+                <div class="container dashboard">
+                    <div class="employees">
+                        <div class="employee-query box-shadow">
+                            <h1>Employee</h1>
+                            <div class="employee-query-search">
+                                <form novalidate role="search">
+                                    <button>
+                                        <i class="fa-solid fa-magnifying-glass"></i>
+                                    </button>
+                                    <input type="text" placeholder="Type your query here and press enter">
+                                </form>
+                            </div>
+                        </div>
+                        <div class="employee-container box-shadow">
+                            <table class="employee-table">
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th>Age</th>
+                                    <th>Email</th>
+                                    <th>Contact</th>
+                                    <th>Position</th>
+                                    <th>Actions</th>
+                                </tr>
+                                <% Object.values(data.emp).forEach(user => { %> 
+                                    <tr>
+                                        <td><%=user._id%></td>
+                                        <td><%=user.name%></td>
+                                        <td><%=user.age%></td>
+                                        <td><%=user.email%></td>
+                                        <td><%=user.contact%></td>
+                                        <td><%=user.position%></td>
+                                        <td><button>view</button></td>
+                                    </tr>
+                                <%}); %>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </main>
+            <%-include('partials/Footer')%>

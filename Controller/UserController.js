@@ -1,6 +1,8 @@
 const users = require('./../Model/UserSchema')
+const employees = require('./../Model/EmployeesSchema')
 const cookie = require('cookie-parser')
 const jwt = require('jsonwebtoken')
+const fetch = require('node-fetch')
 
 const errorHandler = (err) => {
     const error = { email: '', password: '' }
@@ -29,11 +31,25 @@ const errorHandler = (err) => {
 }
 
 // RENDERER
-exports.home = (req, res) => {
-    res.status(200).render('Home')
+exports.home = async (req, res) => {
+
+    res.status(200).render('Home',{url: req.url})
+}
+exports.employees = async (req, res)=>{
+    try {
+        const result = await fetch('http://localhost:3000/employees_get', {
+            headers: {'Content-Type': 'application/json'},
+            method: 'GET'
+        })
+        const data = await result.json()
+        console.log(data)
+        res.status(200).render('Employees', {data , url: req.url})
+    } catch (err) {
+        console.log(err)
+    }
 }
 
-exports.login_get = (req, res) => {
+exports.login = (req, res) => {
     if (req.cookies['token']) {
         res.status(200).redirect('/')
     } else {
@@ -41,7 +57,7 @@ exports.login_get = (req, res) => {
     }
 }
 
-exports.register_get = (req, res) => {
+exports.register = (req, res) => {
     if (req.cookies['token']) {
         res.status(200).redirect('/')
     } else {
@@ -50,7 +66,12 @@ exports.register_get = (req, res) => {
     }
 }
 
-// 
+// APIs
+exports.employees_get = async (req, res) => {
+    const emp = await employees.find()
+    res.status(200).send({emp})
+}
+
 
 // CREATE TOKEN
 const maxAge = 3 * 24 * 60 * 60;
