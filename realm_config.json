@@ -1,0 +1,7 @@
+{
+    "app_id": "managementapp-imdty",
+    "config_version": 20210101,
+    "name": "ManagementApp",
+    "location": "US-VA",
+    "deployment_model": "GLOBAL"
+}
