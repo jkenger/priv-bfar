@@ -15,15 +15,18 @@ route.get('/register', UserController.register)
 route.post('/register', UserController.register_post)
 
 // logout
-route.get('/logout', UserController.logout)
+route.get('/logout', UserController.logout) 
 
-// employees
-route.get('/employees', UserController.employees)
 
 //APIS
-route.get('/employees_get', UserController.employees_get)
+route.get('/EMPLOYEES_GET',  UserController.employees_get)
+route.get('/EMPLOYEES_COUNT_GET', UserController.employees_count_get)
+
 
 route.get('*', checkUser)
 route.get('/', checkToken, checkRoles, UserController.home)
+// employees
+route.get('/employees',checkToken, checkRoles, UserController.employees)
+
 
 module.exports = route
