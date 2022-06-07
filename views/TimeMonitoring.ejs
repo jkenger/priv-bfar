@@ -1,0 +1,48 @@
+<%-include('partials/Header')%>
+<%-include('partials/Nav') %> 
+<%-include('partials/Aside')%>
+
+<main>
+    <div class="container dashboard">
+        <div class="attendance-container">
+            <h1 class="date">TUESDAY - June 07, 2022</h1>
+            <h1 class="time">9:55 AM</h1>
+            <form>
+                <div class="attendance-component box-shadow components">
+                    <label for="">Enter Employee ID</label>
+                    <select name="time_type" id="">
+                        <option value="timein">Time In</option>
+                        <option value="timeout">Time Out</option>
+                    </select>
+                    <input type="text" name="empid"  placeholder="Enter Employee ID">
+                    <button class="button-submit">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</main>
+
+<script>
+    const wkDay = ['Monday','Tuesday','Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
+    const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+    const form = document.querySelector('form');
+    const d = document.querySelector('.date')
+    const t = document.querySelector('.time')
+    const date = new Date()
+    const empId = form.empid.value
+    const timeStatus = form.timestatus.value
+    const day = wkDay[date.getDay() - 1]
+    const month = months[date.getMonth() - 1]
+    const monthDate = date.getDate();
+    const year = date.getFullYear();
+    d.textContent = `${day} - ${month} ${monthDate}, ${year}`
+    t.textContent = `${date.toLocaleTimeString()}`
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault()
+        console.log('EMPLOYEE ID', empId, "Time Status", timeStatus, "TIME", `${day} - ${month} ${monthDate}, ${year}`)
+    })
+    
+</script>
+
+
+<%-include('partials/Footer')%>

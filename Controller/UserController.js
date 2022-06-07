@@ -1,8 +1,7 @@
 const users = require('./../Model/UserSchema')
-const employees = require('./../Model/EmployeesSchema')
+const {errorHandler, fetchData} = require('./services/services')
 const cookie = require('cookie-parser')
 const jwt = require('jsonwebtoken')
-const fetch = require('node-fetch')
 
 
 exports.login = (req, res) => {
@@ -86,18 +85,14 @@ exports.employees = async (req, res) => {
         console.log(err)
     }
 }
-
-
-// APIs
-exports.employees_count_get = async (req, res) => {
-    const empC = await employees.find().count()
-    res.status(200).send({ empC })
-}
-exports.employees_get = async (req, res) => {
-    const emp = await employees.find()
-    res.status(200).send({ emp })
-}
-
+exports.monitorTime = async (req, res) => {
+    try {
+        // const data = await fetchData('time_monito')
+        res.status(200).render('TimeMonitoring', { url: req.url })
+    } catch (err) {
+        console.log(err)
+    }
+}   
 
 exports.logout = (req, res) => {
     res.cookie('token', '')
@@ -105,39 +100,3 @@ exports.logout = (req, res) => {
     res.redirect('/login')
 }
 
-// FETCH DATA FROM API
-const fetchData = async (url) => {
-    const result = await fetch(`http://localhost:3000/${url}`, {
-        headers: { 'Content-Type': 'application/json' },
-        method: 'GET'
-    })
-    const data = await result.json()
-    return data
-}
-
-
-const errorHandler = (err) => {
-    const error = { email: '', password: '' }
-
-    if (err.message === 'Invalid email') {
-        error.email = err.message
-        return error
-    }
-
-    if (err.message === 'Invalid password') {
-        error.password = err.message
-        return error
-    }
-
-    if (err.code === 11000) {
-        error.email = 'Email already exist.'
-        return error
-    }
-
-    if (err.message.includes('users validation failed')) {
-        Object.values(err.errors).forEach(properties => {
-            error[properties.path] = properties.message
-        })
-    }
-    return error
-}

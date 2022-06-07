@@ -1,5 +1,16 @@
 <div class="container">
     <aside class="container-aside">
+        <% if(url === '/time_monitoring'){%>
+            <div class="container-aside-list">
+                <label for="employee">Attendance</label>
+                <div class="container-aside-list-dropdown <%if(url === '/time_monitoring'){%> active <% }%>  ">
+                    <a href="/time_monitoring">
+                        <i class="fa-solid fa-chart-bar"></i>
+                        <label for="">Time In & Out</label>
+                    </a>
+                </div>
+            </div>
+        <% }else{ %>  
         <div class="container-aside-list">
             <label for="employee">Dashboard</label>
             <div class="container-aside-list-dropdown <%if(url === '/'){%> active <% }%>  ">
@@ -44,6 +55,7 @@
                 </a>
             </div>
         </div>
+        <% } %> 
     </aside>
 
 

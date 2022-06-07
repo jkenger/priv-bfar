@@ -40,6 +40,12 @@ emp
 #00b894
 
 */ 
+.components{
+    border-bottom: 4px solid transparent;
+    border-image: linear-gradient(to right, #3498db, #feca57 , #1dd1a1);
+    border-image-slice: 1;
+}
+
 h1{
  font-size: 1.25rem;
 }
@@ -76,6 +82,10 @@ td{
 
 tr:hover{
     background-color: #FAFAFA;
+}
+
+input, select, button{
+    outline: none;
 }
 
 /*  */
@@ -149,7 +159,7 @@ tr:hover{
     flex-direction: column;
     width: 300px;
     padding-top: 1em;
-    height: 95.1vh;
+    height: 90vh;
     overflow-y: scroll;
     margin: 0;
 }
@@ -420,6 +430,48 @@ tr:hover{
     padding: 1em;
 }
 
+/* TIME MONITORING */
+.attendance-container, .attendance-component{
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.attendance-container{
+    height: 75vh;
+    margin: auto;
+    width: 720px;
+}
+
+.attendance-container h1{
+    font-size: 2.5rem;
+    line-height: 1.5em;
+    color: #2f3542;
+}
+
+.attendance-component{
+    background-color: #FAFAFA;
+    padding: 2em;
+    width: 480px;
+    gap: 1em;
+    margin-top: 1em;
+}
+.attendance-component select{
+    height: 35px;
+}
+.attendance-component input{
+    height: 50px;
+    font-size: .75rem;
+}
+.attendance-component button{
+    align-self: flex-start;
+    padding: .75em;
+}
+.attendance-component input, .attendance-component select {
+    width: 100%;
+    padding: 0 1em;
+}
 
 /*  */
 

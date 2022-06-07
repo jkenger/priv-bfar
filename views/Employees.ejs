@@ -5,7 +5,7 @@
             <main>
                 <div class="container dashboard">
                     <div class="employees">
-                        <div class="employee-query box-shadow">
+                        <div class="employee-query components box-shadow">
                             <h1>Employee</h1>
                             <div class="employee-query-search">
                                 <form novalidate role="search">
@@ -16,10 +16,11 @@
                                 </form>
                             </div>
                         </div>
-                        <div class="employee-container box-shadow">
+                        <div class="employee-container components box-shadow">
                             <table class="employee-table">
                                 <tr>
                                     <th>ID</th>
+                                    <th>Employee ID</th>
                                     <th>Name</th>
                                     <th>Age</th>
                                     <th>Email</th>
@@ -30,6 +31,7 @@
                                 <% Object.values(data.emp).forEach(user => { %> 
                                     <tr>
                                         <td><%=user._id%></td>
+                                        <td><%=user.employee_id%></td>
                                         <td><%=user.name%></td>
                                         <td><%=user.age%></td>
                                         <td><%=user.email%></td>

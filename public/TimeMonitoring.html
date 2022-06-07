@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
+        integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="styles/style.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <title>EMS</title>
+</head>
+
+<body>
+    <nav class="container-nav box-shadow">
+        <div class="container-nav-title">
+            <img src="img/bfar-logo.png" alt="">
+            <h1>BFAR <span>EMS</span></h1>
+        </div>
+    </nav>
+    <div class="container">
+        <aside class="container-aside">
+            <div class="container-aside-list">
+                <label for="employee">Attendance</label>
+                <div class="container-aside-list-dropdown <%if(url === '/'){%> active <% }%>  ">
+                    <a href="#">
+                        <i class="fa-solid fa-chart-bar"></i>
+                        <label for="">Time in & out</label>
+                    </a>
+                </div>
+            </div>
+        </aside>
+
+        <main>
+            <div class="container dashboard">
+                <div class="attendance-container">
+                    <h1>TUESDAY - June 07, 2022</h1>
+                    <h1>9:55 AM</h1>
+                    <form>
+                        <div class="attendance-component box-shadow components">
+                            <label for="">Enter Employee ID</label>
+                            <select name="timestatus" id="">
+                                <option value="timein">Time In</option>
+                                <option value="timeout">Time Out</option>
+                            </select>
+                            <input type="text" name="empid" placeholder="Enter Employee ID">
+                            <button class="button-submit">Submit</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </main>
+
+        <script>
+            const form = document.querySelector('form');
+            form.addEventListener('submit', async (e) => {
+                e.preventDefault()
+            })
+        </script>
+
+    </div>
+</body>
+
+</html>

@@ -29,7 +29,7 @@ app.use(express.static('public'))
 mongoose.connect('mongodb+srv://user-ken:1011jksg@cluster0.gej4o.mongodb.net/node?retryWrites=true&w=majority')
 .then(result=>{
     try{
-        app.listen(3000, (req, res)=>{
+        app.listen(3000, ['192.168.254.100' || 'localhost'], (req, res)=>{
             console.log('LISTENING AT PORT', 3000)
         })
     }catch(err){
