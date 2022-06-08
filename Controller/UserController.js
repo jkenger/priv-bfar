@@ -39,7 +39,6 @@ exports.login_post = async (req, res) => {
         try {
             const user = await users.login(email, password)
             const token = await createToken(user._id)
-            console.log(user)
             res.cookie('isAdmin', user.role, { httpOnly: true, expiresIn: maxAge * 1000 })
             res.cookie('token', token, { httpOnly: true, expiresIn: maxAge * 1000 })
             res.status(200).send({ user: user })

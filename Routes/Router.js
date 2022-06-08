@@ -26,7 +26,6 @@ route.post('/attendance', EmployeeController.attendance_post)
 route.get('/EMPLOYEES_GET',  userAPI.employees_get)
 route.get('/EMPLOYEES_COUNT_GET', userAPI.employees_count_get)
 
-
 route.get('*', checkUser)
 route.get('/', checkToken, checkRoles, UserController.home)
 // employees

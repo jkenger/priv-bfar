@@ -31,7 +31,7 @@ const errorHandler = (err) => {
         error.email = err.message
         return error
     }
-    if(err.message === 'You have already logged in within this day'){
+    if(err.message === 'You have already logged out within this day'){
         error.email = err.message
         return error
     }

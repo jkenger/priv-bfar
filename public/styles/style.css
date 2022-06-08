@@ -468,6 +468,9 @@ input, select, button{
     align-self: flex-start;
     padding: .75em;
 }
+.attendance-component label{
+    align-self: flex-start;
+}
 .attendance-component input, .attendance-component select {
     width: 100%;
     padding: 0 1em;

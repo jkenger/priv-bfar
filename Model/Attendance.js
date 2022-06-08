@@ -19,9 +19,6 @@ const EMP_TIME_RECORD = mongoose.Schema({
     duration: {
         type: String
     },
-    status: {
-        type: String
-    }
 })
 
 EMP_TIME_RECORD.statics.timein = async function (employee_id, date, time_in, time_out, status) {
@@ -57,15 +54,15 @@ EMP_TIME_RECORD.statics.timeout = async function (employee_id, time_out, date) {
 
     // THROW ERROR IF THE USER HAVEN'T LOGGED IN FIRST
     if (currentDate === date) {
-        throw Error('You have already logged in within this day');
+        throw Error('You have already logged out within this day');
     }
     throw Error('Cannot log in. Please try again');
 }
 
 const isValidTime_In = (empTime_In) => {
 
-    const validTime_in = "8:00:00 AM"
-    if (empTime_In <= validTime_in && !empTime_In.includes('PM')) {
+    const validTime_in = "6:00:00 PM"
+    if (empTime_In <= validTime_in && !empTime_In.includes('AM')) {
         return true
     } else {
         return false

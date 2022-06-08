@@ -10,10 +10,11 @@
             <form>
                 <div class="attendance-component box-shadow components">
                     <label for="">Enter Employee ID</label>
-                    <select name="time_type" id="">
+                    <select name="time_type" id="time_type">
                         <option value="timein">Time In</option>
                         <option value="timeout">Time Out</option>
                     </select>
+                    <label for="error" class="employee error">ASDASDAS</label>
                     <input type="text" name="empid"  placeholder="Enter Employee ID">
                     <button class="button-submit">Submit</button>
                 </div>
@@ -23,12 +24,14 @@
 </main>
 
 <script>
-    console.log('asdasdasdSDASDAS')
-    const wkDay = ['Monday','Tuesday','Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
-    const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
     const form = document.querySelector('form');
     const d = document.querySelector('.date')
     const t = document.querySelector('.time')
+    const lblError = document.querySelector('label.employee.error')
+    
+    // DATE AND TIME FORMATTING
+    const wkDay = ['Monday','Tuesday','Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
+    const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
     const date = new Date()
     const empId = form.empid.value
     const time_type = form.time_type.value
@@ -36,12 +39,41 @@
     const month = months[date.getMonth() - 1]
     const monthDate = date.getDate();
     const year = date.getFullYear();
+
     d.textContent = `${day} - ${month} ${monthDate}, ${year}`
     t.textContent = `${date.toLocaleTimeString()}`
+    
     form.addEventListener('submit', async (e) => {
         e.preventDefault()
-        console.log('EMPLOYEE ID', empId, "Time Status", time_type, "TIME", `${day} - ${month} ${monthDate}, ${year}`)
-    })
+        const employee_id = form.empid.value
+        const currentDate = (date.getMonth() + 1) + "/" + date.getDate() + "/" + date.getFullYear()
+        const time_in = date.toLocaleTimeString()
+        const time_out = date.toLocaleTimeString()
+        const time_type = form.time_type.value
+
+        try{
+            const res = await fetch('/attendance', {
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({ employee_id, currentDate ,time_in, time_out, time_type
+            }),
+            method: 'POST'
+            })
+            const data = await res.json()
+            console.log("DATA", data);
+            if(data.err){
+                lblError.textContent = data.err.email
+            }
+            if(data.log_in){
+                lblError.textContent = "SUCCSSFULLY LOGGED IN AT " + time_in
+            }
+            if(data.log_out){
+                lblError.textContent = "SUCCSSFULLY LOGGED OUT AT " + time_out
+            }
+
+        }catch(err){
+            console.log(err)
+        }
+    })  
     
 </script>
 
