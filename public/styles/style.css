@@ -222,7 +222,7 @@ input, select, button{
 /* BOX LAYOUT */
 .box{
     height: 150px;
-    
+    min-width: 280px;
     /* background-color: #ffff; */
     padding: 1em;
     display: flex;
@@ -403,7 +403,7 @@ input, select, button{
 }
 
 .auth-title{
-    margin-bottom: 4em;
+    margin-bottom: 2.5em;
 }
 
 .auth-title > label{

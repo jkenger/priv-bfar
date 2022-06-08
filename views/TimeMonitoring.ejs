@@ -23,6 +23,7 @@
 </main>
 
 <script>
+    console.log('asdasdasdSDASDAS')
     const wkDay = ['Monday','Tuesday','Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
     const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
     const form = document.querySelector('form');
@@ -30,7 +31,7 @@
     const t = document.querySelector('.time')
     const date = new Date()
     const empId = form.empid.value
-    const timeStatus = form.timestatus.value
+    const time_type = form.time_type.value
     const day = wkDay[date.getDay() - 1]
     const month = months[date.getMonth() - 1]
     const monthDate = date.getDate();
@@ -39,7 +40,7 @@
     t.textContent = `${date.toLocaleTimeString()}`
     form.addEventListener('submit', async (e) => {
         e.preventDefault()
-        console.log('EMPLOYEE ID', empId, "Time Status", timeStatus, "TIME", `${day} - ${month} ${monthDate}, ${year}`)
+        console.log('EMPLOYEE ID', empId, "Time Status", time_type, "TIME", `${day} - ${month} ${monthDate}, ${year}`)
     })
     
 </script>
