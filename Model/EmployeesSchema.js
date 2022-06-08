@@ -7,6 +7,11 @@ const EmpSchema = mongoose.Schema({
         lowercase: true,
         required: [true, "Please fill in the name."]
     },
+    employee_id:{
+        type:String,
+        unique:true,
+        required: [true, "Enter valid id"]
+    },
     age: {
         type: Number,
         required: [true, "Age is required."]

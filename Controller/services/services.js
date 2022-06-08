@@ -43,6 +43,10 @@ const errorHandler = (err) => {
         error.email = err.message
         return error
     }
+    if(err.message === 'Employee id does not exist'){
+        error.email = err.message
+        return error
+    }
 
     
     if (err.message.includes('users validation failed')) {

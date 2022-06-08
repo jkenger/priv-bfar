@@ -33,13 +33,12 @@
     const wkDay = ['Monday','Tuesday','Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
     const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
     const date = new Date()
-    const empId = form.empid.value
-    const time_type = form.time_type.value
     const day = wkDay[date.getDay() - 1]
     const month = months[date.getMonth() - 1]
     const monthDate = date.getDate();
     const year = date.getFullYear();
 
+    
     d.textContent = `${day} - ${month} ${monthDate}, ${year}`
     t.textContent = `${date.toLocaleTimeString()}`
     

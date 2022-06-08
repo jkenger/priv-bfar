@@ -23,6 +23,8 @@ const EMP_TIME_RECORD = mongoose.Schema({
 
 EMP_TIME_RECORD.statics.timein = async function (employee_id, date, time_in, time_out, status) {
     // FIND USER IF ALREADY LOGGED IN WITHIN THE DAY
+    // CHECK IF EMPLOYEE EXIST IN EMPLOYEE DATABASE
+    // OPTIMIZE ERRORS
     const isAttended = await this.find({ employee_id: employee_id, date: date })
     const empTime_in = time_in
     if (isAttended.length === 0) {
@@ -61,8 +63,8 @@ EMP_TIME_RECORD.statics.timeout = async function (employee_id, time_out, date) {
 
 const isValidTime_In = (empTime_In) => {
 
-    const validTime_in = "6:00:00 PM"
-    if (empTime_In <= validTime_in && !empTime_In.includes('AM')) {
+    const validTime_in = "8:00:00 AM"
+    if (empTime_In <= validTime_in && !empTime_In.includes('PM')) {
         return true
     } else {
         return false

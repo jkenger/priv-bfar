@@ -10,20 +10,31 @@ exports.attendance_post = async (req, res) => {
         try {
             const { employee_id, currentDate, time_in, time_out, time_type } = req.body
             console.log( employee_id, currentDate, time_in, time_type)
-            // USER WANTS TO TIME IN
-            if (time_type === 'timein') {
-                const loggedIn = await attendances.timein(employee_id, currentDate, time_in)
-                if (loggedIn) {
-                    res.status(200).send({log_in: loggedIn});
+            const empExist = await employees.findOne({employee_id: employee_id})
+            console.log(empExist)
+            if(!empExist){
+                throw Error('Employee id does not exist')
+                
+            }else{
+                // USER WANTS TO TIME IN
+                if (time_type === 'timein') {
+                    const loggedIn = await attendances.timein(employee_id, currentDate, time_in)
+                   
+                    if (loggedIn) {
+                        res.status(200).send({log_in: loggedIn});
+                    }
+                }
+                // USER WANTS TO TIME OUT
+                if (time_type === 'timeout') {
+                    const loggedOut = await attendances.timeout(employee_id, time_out, currentDate)
+                    if (loggedOut) {
+                        res.status(200).send({log_out: loggedOut});
+                    }
                 }
             }
-            // USER WANTS TO TIME OUT
-            if (time_type === 'timeout') {
-                const loggedOut = await attendances.timeout(employee_id, time_out, currentDate)
-                if (loggedOut) {
-                    res.status(200).send({log_out: loggedOut});
-                }
-            }
+
+            
+            
 
         } catch (err) {
             console.log(err)
