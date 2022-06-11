@@ -16,18 +16,16 @@ const errorHandler = (err) => {
         error.email = err.message
         return error
     }
-
     if (err.message === 'Invalid password') {
         error.password = err.message
         return error
     }
 
-    if (err.code === 11000) {
-        error.email = 'Email already exist.'
+    if (err.code === 11000) { 
+        error.email = 'Email already exist.' 
         return error
     }
-
-    if(err.message === 'Already logged in'){
+    if(err.message === 'You have already logged in within this day'){
         error.email = err.message
         return error
     }
@@ -43,20 +41,24 @@ const errorHandler = (err) => {
         error.email = err.message
         return error
     }
-    if(err.message === 'Employee id does not exist'){
+    if(err.message === 'Cannot logout, try again later'){
         error.email = err.message
         return error
     }
 
-    
+    if(err.message === 'Office hour will end at 5 PM, try again later'){
+        error.email = err.message
+        return error
+    }
+    if(err.message === 'Employee id does not exist'){
+        error.email = err.message
+        return error
+    }
     if (err.message.includes('users validation failed')) {
         Object.values(err.errors).forEach(properties => {
             error[properties.path] = properties.message
         })
     }
-
-    
-
     if (err.message.includes('attendances validation failed')) {
         Object.values(err.errors).forEach(properties => {
             error[properties.path] = properties.message

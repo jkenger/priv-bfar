@@ -76,14 +76,7 @@ exports.home = async (req, res) => {
         console.log(err)
     }
 }
-exports.employees = async (req, res) => {
-    try {
-        const data = await fetchData('employees_get')
-        res.status(200).render('Employees', { data, url: req.url })
-    } catch (err) {
-        console.log(err)
-    }
-}
+
 exports.monitorTime = async (req, res) => {
     try {
         // const data = await fetchData('time_monito')
