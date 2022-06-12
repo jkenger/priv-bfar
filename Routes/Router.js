@@ -30,7 +30,7 @@ route.get('*', checkUser)
 route.get('/', checkToken, checkRoles, UserController.home)
 // employees
 route.get('/employees',checkToken, checkRoles, EmployeeController.employees)
-route.get('/time_monitoring', checkToken, checkRoles, UserController.monitorTime)
+route.get('/time_monitoring', checkToken, checkRoles, EmployeeController.monitorTime)
 
 
 module.exports = route

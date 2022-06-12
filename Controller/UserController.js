@@ -77,15 +77,6 @@ exports.home = async (req, res) => {
     }
 }
 
-exports.monitorTime = async (req, res) => {
-    try {
-        // const data = await fetchData('time_monito')
-        res.status(200).render('TimeMonitoring', { url: req.url })
-    } catch (err) {
-        console.log(err)
-    }
-}   
-
 exports.logout = (req, res) => {
     res.cookie('token', '')
     res.cookie('isAdmin', '')

@@ -431,15 +431,20 @@ input, select, button{
 }
 
 /* TIME MONITORING */
-.attendance-container, .attendance-component{
+.attendance-container{
     display:flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
 }
 
+.attendance-component{
+    display:flex;
+    flex-direction: column;
+}
+
 .attendance-container{
-    height: 75vh;
+    height: 70vh;
     margin: auto;
     width: 720px;
 }
@@ -466,7 +471,8 @@ input, select, button{
 }
 .attendance-component button{
     align-self: flex-start;
-    padding: .75em;
+    padding: 1em;
+    width: 100%;
 }
 .attendance-component label{
     align-self: flex-start;
@@ -474,6 +480,25 @@ input, select, button{
 .attendance-component input, .attendance-component select {
     width: 100%;
     padding: 0 1em;
+}
+.attendance-component .date_time{
+    display: flex;
+    justify-content: space-between;
+    padding: .5em 1em;
+    background-color: #f5f6fa;
+}
+.attendance-component .date_time label{
+    font-size: 1.25rem;
+    font-weight: 500;
+}
+.attendance-component .alt{
+    font-size: 1.25rem;
+    font-weight: 500;
+    text-align: center;
+}
+.attendance-component .alt{
+    padding: .5em 1em;
+    background-color: #f5f6fa;
 }
 
 /*  */

@@ -3,7 +3,7 @@
         <% if(url === '/time_monitoring'){%>
             <div class="container-aside-list">
                 <label for="employee">Attendance</label>
-                <div class="container-aside-list-dropdown <%if(url === '/time_monitoring'){%> active <% }%>  ">
+                <div class="container-aside-list-dropdown <%if(url.includes('/time_monitoring')){%> active <% }%>  ">
                     <a href="/time_monitoring">
                         <i class="fa-solid fa-chart-bar"></i>
                         <label for="">Time In & Out</label>

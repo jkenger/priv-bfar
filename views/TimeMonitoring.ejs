@@ -5,8 +5,13 @@
 <main>
     <div class="container dashboard">
         <div class="attendance-container">
-            <h1 class="date">TUESDAY - June 07, 2022</h1>
-            <h1 class="time">9:55 AM</h1>
+                <div class="attendance-component box-shadow components">
+                    <div class="date_time box-shadow">
+                        <label for="date"> <%=currentDate%></label>
+                        <label for="time"><%=currentTime%></label>
+                    </div>
+                </div>
+                
             <form>
                 <div class="attendance-component box-shadow components">
                     <label for="">Enter Employee ID</label>
@@ -19,6 +24,12 @@
                     <button class="button-submit">Submit</button>
                 </div>
             </form>
+                <div class="attendance-component box-shadow components">
+                    <div class="alt box-shadow">
+                        <label for="alt"> OR SCAN BY RFID CARD</label>
+                    </div>
+                </div>
+            
         </div>
     </div>
 </main>
@@ -39,41 +50,28 @@
     const year = date.getFullYear();
 
     
-    d.textContent = `${day} - ${month} ${monthDate}, ${year}`
-    t.textContent = `${date.toLocaleTimeString()}`
-    
     form.addEventListener('submit', async (e) => {
         e.preventDefault()
         const employee_id = form.empid.value
-        // const currentDate = (date.getMonth() + 1) + "/" + date.getDate() + "/" + date.getFullYear()
-        // const time_in = date.toLocaleTimeString()
-        // const time_out = date.toLocaleTimeString()
         const time_type = form.time_type.value
-
         try{
             const res = await fetch('/attendance', {
             headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({ employee_id, currentDate ,time_in, time_out, time_type
+            body: JSON.stringify({
+                employee_id, 
+                time_type
             }),
             method: 'POST'
             })
             const data = await res.json()
             console.log("DATA", data);
-            if(data.err){
-                lblError.textContent = data.err.email
-            }
-            if(data.log_in){
-                lblError.textContent = "SUCCSSFULLY LOGGED IN AT " + time_in
-            }
-            if(data.log_out){
-                lblError.textContent = "SUCCSSFULLY LOGGED OUT AT " + time_out
-            }
-
+            if(data.err){lblError.textContent = data.err.email}
+            if(data.log_in){lblError.textContent = "SUCCSSFULLY LOGGED IN AT " + date.toLocaleTimeString()}
+            if(data.log_out){lblError.textContent = "SUCCSSFULLY LOGGED OUT AT " + date.toLocaleTimeString()}
         }catch(err){
             console.log(err)
         }
     })  
-    
 </script>
 
 
