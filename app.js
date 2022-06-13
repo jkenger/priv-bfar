@@ -9,6 +9,7 @@ const ejs = require('ejs')
 const cors = require('cors')
 const checkToken = require('./Middleware/AuthMiddleware')
 const UserController = require('./Controller/UserController')
+require('dotenv').config()
 
 const app = express()
 
@@ -26,11 +27,11 @@ app.use(express.static('public'))
 
 
 // CONNECTION
-mongoose.connect('mongodb+srv://user-ken:1011jksg@cluster0.gej4o.mongodb.net/node?retryWrites=true&w=majority')
+mongoose.connect(process.env.DB_URI)
 .then(result=>{
     try{
-        app.listen(3000, ['192.168.254.100' || 'localhost'], (req, res)=>{
-            console.log('LISTENING AT PORT', 3000)
+        app.listen(process.env.PORT, [process.env.HOST], (req, res)=>{
+            console.log('LISTENING AT PORT', process.env.PORT)
         })
     }catch(err){
         console.log('err')
