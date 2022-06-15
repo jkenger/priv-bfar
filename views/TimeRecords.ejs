@@ -1,0 +1,34 @@
+<%-include('partials/Header')%>
+    <%-include('partials/Nav') %>
+        <%-include('partials/Aside')%>
+
+            <main>
+                <div class="container dashboard">
+                    <div class="employees">
+                        <div class="employee-query components box-shadow">
+                            <h1>Records</h1>
+                            <div class="employee-query-search">
+                                <form novalidate role="search">
+                                    <label for="birthday">From:</label>
+                                    <input type="date" id="fromdate" name="fromdate">
+                                    <label for="birthday">To:</label>
+                                    <input type="date" id="todate" name="todate" >
+                                </form>
+                            </div>
+                        </div>
+                        <div class="employee-container components box-shadow">
+                            <table class="employee-table">
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Employee ID</th>
+                                    <th>Date</th>
+                                    <th>Time in</th>
+                                    <th>Time out</th>
+                                </tr>
+                                
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </main>
+            <%-include('partials/Footer')%>

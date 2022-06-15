@@ -109,6 +109,15 @@ input, select, button{
     box-shadow: 0px 2px 3px 0px rgba(0,0,0,0.1);
 }
 
+.btn-disable{
+    pointer-events: none;
+    cursor: not-allowed;
+    opacity: 0.65;
+    filter: alpha(opacity=65);
+    -webkit-box-shadow: none;
+    box-shadow: none;
+}
+
 /* LAYOUT */
 .container{
     margin: 0;
@@ -499,6 +508,16 @@ input, select, button{
 .attendance-component .alt{
     padding: .5em 1em;
     background-color: #f5f6fa;
+}
+
+.attendance-component .con-error{
+    color: #FAFAFA;
+    background-color: #e74c3c;
+}
+
+.attendance-component .con-success{
+    color: #FAFAFA;
+    background-color: #1dd1a1;
 }
 
 /*  */

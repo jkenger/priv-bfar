@@ -1,78 +1,101 @@
 <%-include('partials/Header')%>
-<%-include('partials/Nav') %> 
-<%-include('partials/Aside')%>
+    <%-include('partials/Nav') %>
+        <%-include('partials/Aside')%>
 
-<main>
-    <div class="container dashboard">
-        <div class="attendance-container">
-                <div class="attendance-component box-shadow components">
-                    <div class="date_time box-shadow">
-                        <label for="date"> <%=currentDate%></label>
-                        <label for="time"><%=currentTime%></label>
+            <main>
+                <div class="container dashboard">
+                    <div class="attendance-container">
+                        <div class="attendance-component box-shadow components">
+                            <div class="date_time box-shadow">
+                                <label for="date">
+                                    <%=currentDate%>
+                                </label>
+                                <label for="time">
+                                    <%=currentTime%>
+                                </label>
+                                
+                            </div>
+                        </div>
+                        <form>
+                            <div class="attendance-component box-shadow components">
+                                <label for="">Enter Employee ID</label>
+                                <select name="time_type" id="time_type">
+                                    <option value="timein">Time In</option>
+                                    <option value="timeout">Time Out</option>
+                                </select>
+                                <label for="error" class="employee error">ASDASDAS</label>
+                                <input type="text" name="empid" placeholder="Enter Employee ID">
+                                <button class="button-submit">Submit</button>
+                            </div>
+                        </form>
+                        <div class="attendance-component box-shadow components">
+                            <div class="alt box-shadow">
+                                <label for="alt" class="alt-label"> Or scan by RFID</label>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
-                
-            <form>
-                <div class="attendance-component box-shadow components">
-                    <label for="">Enter Employee ID</label>
-                    <select name="time_type" id="time_type">
-                        <option value="timein">Time In</option>
-                        <option value="timeout">Time Out</option>
-                    </select>
-                    <label for="error" class="employee error">ASDASDAS</label>
-                    <input type="text" name="empid"  placeholder="Enter Employee ID">
-                    <button class="button-submit">Submit</button>
-                </div>
-            </form>
-                <div class="attendance-component box-shadow components">
-                    <div class="alt box-shadow">
-                        <label for="alt"> OR SCAN BY RFID CARD</label>
-                    </div>
-                </div>
-            
-        </div>
-    </div>
-</main>
+            </main>
 
-<script>
-    const form = document.querySelector('form');
-    const d = document.querySelector('.date')
-    const t = document.querySelector('.time')
-    const lblError = document.querySelector('label.employee.error')
-    
-    // DATE AND TIME FORMATTING
-    const wkDay = ['Monday','Tuesday','Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
-    const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-    const date = new Date()
-    const day = wkDay[date.getDay() - 1]
-    const month = months[date.getMonth() - 1]
-    const monthDate = date.getDate();   
-    const year = date.getFullYear();
+            <script>
+                const form = document.querySelector('form');
+                const d = document.querySelector('.date')
+                const t = document.querySelector('.time')
+                const lblError = document.querySelector('label.employee.error')
+                const altCon = document.querySelector('.alt')
+                const altLbl = document.querySelector('.alt-label')
+                const btnSubmit = document.querySelector('.button-submit')
+                const date = new Date()
 
-    
-    form.addEventListener('submit', async (e) => {
-        e.preventDefault()
-        const employee_id = form.empid.value
-        const time_type = form.time_type.value
-        try{
-            const res = await fetch('/attendance', {
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({
-                employee_id, 
-                time_type
-            }),
-            method: 'POST'
-            })
-            const data = await res.json()
-            console.log("DATA", data);
-            if(data.err){lblError.textContent = data.err.email}
-            if(data.log_in){lblError.textContent = "SUCCSSFULLY LOGGED IN AT " + date.toLocaleTimeString()}
-            if(data.log_out){lblError.textContent = "SUCCSSFULLY LOGGED OUT AT " + date.toLocaleTimeString()}
-        }catch(err){
-            console.log(err)
-        }
-    })  
-</script>
+                form.addEventListener('submit', async (e) => {
+                    e.preventDefault()
+                    const employee_id = form.empid.value
+                    const time_type = form.time_type.value
+                    try {
+                        const res = await fetch('/attendance', {
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                                employee_id,
+                                time_type
+                            }),
+                            method: 'POST'
+                        })
+                        const data = await res.json()
+                        console.log("DATA", data);
+                        if (data.err) {
+                            altCon.classList.add('con-error')
+                            altLbl.textContent = data.err.email
+                            statusProcessing()
+
+                        }
+                        if (data.log_in) {
+                            altCon.classList.add('con-success')
+                            altLbl.textContent = "SUCCSSFULLY LOGGED IN AT " + date.toLocaleTimeString()
+                            statusProcessing()
+                        }
+                        if (data.log_out) {
+                            altCon.classList.add('con-success')
+                            altLbl.textContent = "SUCCSSFULLY LOGGED OUT AT " + date.toLocaleTimeString()
+                            statusProcessing()
+                        }
+                    } catch (err) {
+                        console.log(err)
+                    }
+                })
+
+                statusProcessing = () => {
+                    btnSubmit.classList.add('btn-disable')
+                    btnSubmit.textContent = "Processing...."
+                    setTimeout(() => {
+                        altLbl.textContent = "Or scan by RFID"
+                        altCon.classList.remove('con-error')
+                        altCon.classList.remove('con-success')
+                        btnSubmit.classList.remove('btn-disable')
+                        btnSubmit.textContent = "Submit"
+                    }, 1500)
+                }
+            </script>
 
 
-<%-include('partials/Footer')%>
+            <%-include('partials/Footer')%>

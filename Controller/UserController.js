@@ -2,6 +2,8 @@ const users = require('./../Model/UserSchema')
 const {errorHandler, fetchData} = require('./services/services')
 const cookie = require('cookie-parser')
 const jwt = require('jsonwebtoken')
+const employees = require('./../Model/EmployeesSchema')
+
 
 
 exports.login = (req, res) => {
@@ -66,6 +68,17 @@ exports.register_post = async (req, res) => {
         }
     }
 }
+exports.employees_count_get = async (req, res) => {
+    const empC = await employees.find().count()
+    res.status(200).send({ empC })
+}
+
+// GET ALL THE EMPLOYEE
+exports.employees_get = async (req, res) => {
+    const emp = await employees.find()
+    res.status(200).send({ emp })
+}
+
 
 // RENDERER
 exports.home = async (req, res) => {
@@ -76,6 +89,22 @@ exports.home = async (req, res) => {
         console.log(err)
     }
 }
+exports.employees = async (req, res) => {
+    try {
+        const data = await fetchData('employees_get')
+        res.status(200).render('Employees', { data, url: req.url })
+    } catch (err) {
+        console.log(err)
+    }
+}
+exports.records = async (req,res)=>{
+    try{
+        res.status(200).render('TimeRecords', {url: req.url })
+    }catch(err){
+        console.log(err)
+    }
+}
+
 
 exports.logout = (req, res) => {
     res.cookie('token', '')

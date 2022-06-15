@@ -18,8 +18,12 @@ exports.attendance_post = async (req, res) => {
                 employee_id: employee_id 
             })
             // send an error if not
+            console.log(result)
             if (!result) {
-                throw Error('Employee id does not exist')
+                if(!employee_id){
+                    throw Error(`Please input a valid employee ID!`)
+                }
+                throw Error(`ID Number: ${employee_id}, not recognized by the system!`)
             } else {
                 if (time_type==='timein') {
                     const logIn = await attendances.timein(employee_id)
@@ -56,12 +60,3 @@ exports.monitorTime = async (req, res) => {
     }
 }   
 
-
-exports.employees = async (req, res) => {
-    try {
-        const data = await fetchData('employees_get')
-        res.status(200).render('Employees', { data, url: req.url })
-    } catch (err) {
-        console.log(err)
-    }
-}

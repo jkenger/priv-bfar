@@ -50,7 +50,12 @@ const errorHandler = (err) => {
         error.email = err.message
         return error
     }
-    if(err.message === 'Employee id does not exist'){
+    if(err.message.includes('not recognized by the system!')){
+        error.email = err.message
+        return error
+    }
+
+    if(err.message.includes('Please input a valid employee ID!')){
         error.email = err.message
         return error
     }
