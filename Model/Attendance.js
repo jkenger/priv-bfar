@@ -4,6 +4,7 @@ const validator = require('validator')
 const EMP_TIME_RECORD = mongoose.Schema({
     employee_id: {
         type: String,
+        ref: "users",
         required: [true, 'Please enter employee id'],
         validate: [validator.isInt, "Invalid ID"]
     },
@@ -24,31 +25,29 @@ const EMP_TIME_RECORD = mongoose.Schema({
     }
 })
 
+// Convert time string to int
+function toMilitary(time) { 
+    var d = new Date("1/1/2013 " + time); 
+    
+    var trimmedTime = `${d.getHours()}${(d.getMinutes() < 10 ? "0" : "") + d.getMinutes()}${(d.getSeconds() < 10 ? "0" : "") + d.getSeconds()}`
+    
+    return trimmedTime; 
+}
 
 isEarlier = (currentTime, startTime) => {
-    if (currentTime.includes('AM')) {
-        if (parseInt(currentTime) <= parseInt(startTime)) {
-            return true
-        }
-        if(parseInt(currentTime) > parseInt(startTime)){
-            return false
-        }
-    }
-    if (currentTime.includes('PM')) {
+     if(parseInt(toMilitary(currentTime)) <= parseInt(toMilitary(startTime))){
+        return true
+     }else{
         return false
-    }
+     }
 }
 
 isEndTime = (currentTime, endTime)=>{
-    if(currentTime.includes('PM')){
-        if(parseInt(currentTime) >= parseInt(endTime)){
-            return true
-        }
-    }
-
-    if(currentTime.includes('AM')){
+    if(parseInt(toMilitary(currentTime)) <= parseInt(toMilitary(endTime))){
+        return true
+     }else{
         return false
-    }
+     }
 }
 
 EMP_TIME_RECORD.statics.timein = async function (employee_id) {
@@ -72,6 +71,7 @@ EMP_TIME_RECORD.statics.timein = async function (employee_id) {
     if (isAttended.length !== 0) {
         throw Error('You have already logged in within this day')
     }
+    
     // If current time is earlier that office start time
     if (isEarlier(currentTime, officeStartTime) === true) {
         // Set Attendance as 8 AM default time in
@@ -96,7 +96,7 @@ EMP_TIME_RECORD.statics.timein = async function (employee_id) {
         })
         return result
     }
-}
+    }
 
 EMP_TIME_RECORD.statics.timeout = async function (employee_id) {
     const currentDate = new Date().toLocaleDateString()

@@ -6,7 +6,7 @@
                 <div class="container dashboard">
                     <div class="employees">
                         <div class="employee-query components box-shadow">
-                            <h1>Records</h1>
+                            <h1>Records </h1>
                             <div class="employee-query-search">
                                 <form novalidate role="search">
                                     <label for="birthday">From:</label>
@@ -25,7 +25,15 @@
                                     <th>Time in</th>
                                     <th>Time out</th>
                                 </tr>
-                                
+                            <% Object.values(data.records).forEach(records => { %> 
+                                <tr>
+                                    <td><%=records._id%></td>
+                                    <td><%=records.employee_id%></td>
+                                    <td><%=records.date%></td>
+                                    <td><%=records.time_in%></td>
+                                    <td><%=records.time_out%></td>
+                                </tr>
+                            <%}); %>
                             </table>
                         </div>
                     </div>

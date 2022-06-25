@@ -77,7 +77,7 @@ th{
 }
 td{
     border-bottom: 1px solid #f1f2f6;
-    padding: 1em .25em;
+    padding: .5em .05em;
 }
 
 tr:hover{

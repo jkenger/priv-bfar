@@ -26,12 +26,14 @@ route.get('/', checkToken, checkRoles, UserController.home)
 route.post('/attendance', EmployeeController.attendance_post)
 // employees
 route.get('/employees',checkToken, checkRoles, UserController.employees)
-route.get('/time_monitoring', checkToken, checkRoles, EmployeeController.monitorTime)
+route.get('/time_monitoring', EmployeeController.monitorTime)
 
 route.get('/EMPLOYEES_GET',  UserController.employees_get)
 route.get('/EMPLOYEES_COUNT_GET', UserController.employees_count_get)
+route.get('/delete_attendance', UserController.delete_attendance)
 
 // records
 route.get('/records', checkToken, checkRoles, UserController.records)
+route.get('/records_get', UserController.records_get)
 
 module.exports = route

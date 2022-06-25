@@ -3,6 +3,7 @@ const {errorHandler, fetchData} = require('./services/services')
 const cookie = require('cookie-parser')
 const jwt = require('jsonwebtoken')
 const employees = require('./../Model/EmployeesSchema')
+const attendances = require('./../Model/Attendance')
 
 
 
@@ -80,6 +81,25 @@ exports.employees_get = async (req, res) => {
 }
 
 
+exports.delete_attendance = async (req,res)=>{
+    try{
+        const data = await attendances.deleteMany({date: new Date().toLocaleDateString()})
+        console.log(data)
+    }catch(err){
+        console.log(err)
+    }
+}
+
+exports.records_get = async(req,res)=>{
+    try{
+        const records = await attendances.find().sort({date: 'desc'});
+        res.status(200).send({records})
+    }catch(err)
+    {
+        console.log(err)
+    }
+}
+
 // RENDERER
 exports.home = async (req, res) => {
     try {
@@ -99,7 +119,8 @@ exports.employees = async (req, res) => {
 }
 exports.records = async (req,res)=>{
     try{
-        res.status(200).render('TimeRecords', {url: req.url })
+        const data = await fetchData('records_get')
+        res.status(200).render('TimeRecords', {data, url: req.url })
     }catch(err){
         console.log(err)
     }
