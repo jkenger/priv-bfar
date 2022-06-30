@@ -1,0 +1,48 @@
+<%-include('partials/Header')%>
+    <%-include('partials/Nav') %>
+        <%-include('partials/Aside')%>
+<main>
+    <div class="container dashboard">
+        <div class="employees">
+            <div class="employee-query components box-shadow">
+                <h1>Payroll Accounts</h1>
+                <div class="employee-query-search">
+                    <form novalidate role="search">
+                        <button>
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </button>
+                        <input type="text" placeholder="Type your query here and press enter">
+                    </form>
+                </div>
+            </div>
+            <div class="employee-container components box-shadow">
+                <table class="employee-table">
+                    <tr>
+                        <th>Employee Code</th>
+                        <th>Name</th>
+                        <th>Designation</th>
+                        <th>No. of Days</th>
+                        <th>No. of Hours</th>
+                        <th>Net Pay</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                    <% Object.values(data.user).forEach(user => { %> 
+                        <tr>
+                            <td><%=user.emp_code%></td>
+                            <td><%=user.name%></td>
+                            <td><%=user.designation%></td>
+                            <td><%=user.no_of_days%></td>
+                            <td><%=user.hours%></td>
+                            <td><%=user.net_pay%></td>
+                            <td><%=user.status%></td>
+                            <td><button>view</button>
+                                <button>edit</button></td>
+                        </tr>
+                    <%}); %>
+                </table>
+            </div>
+        </div>
+    </div>
+</main>
+<%-include('partials/Footer')%>

@@ -396,6 +396,9 @@ input, select, button{
     color: #FAFAFA;
     border-radius: 2px;
 }
+.employee-table tr td:nth-child(1), .employee-table tr td:nth-child(2){
+    width: 125px;
+}
 
 
 

@@ -50,13 +50,13 @@
 
                 form.addEventListener('submit', async (e) => {
                     e.preventDefault()
-                    const employee_id = form.empid.value
+                    const emp_code = form.empid.value
                     const time_type = form.time_type.value
                     try {
                         const res = await fetch('/attendance', {
                             headers: { 'Content-Type': 'application/json' },
                             body: JSON.stringify({
-                                employee_id,
+                                emp_code,
                                 time_type
                             }),
                             method: 'POST'

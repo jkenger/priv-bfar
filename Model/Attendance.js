@@ -2,11 +2,15 @@ const mongoose = require('mongoose')
 const validator = require('validator')
 
 const EMP_TIME_RECORD = mongoose.Schema({
-    employee_id: {
+    emp_code: {
         type: String,
         ref: "users",
-        required: [true, 'Please enter employee id'],
+        required: [true, 'Please enter employee code'],
         validate: [validator.isInt, "Invalid ID"]
+    },
+    emp_id: {
+        type: mongoose.Types.ObjectId,
+        required:[true, 'Employee ID was not found']
     },
     date: {
         type: String
@@ -43,14 +47,14 @@ isEarlier = (currentTime, startTime) => {
 }
 
 isEndTime = (currentTime, endTime)=>{
-    if(parseInt(toMilitary(currentTime)) <= parseInt(toMilitary(endTime))){
+    if(parseInt(toMilitary(currentTime)) >= parseInt(toMilitary(endTime))){
         return true
      }else{
         return false
      }
 }
 
-EMP_TIME_RECORD.statics.timein = async function (employee_id) {
+EMP_TIME_RECORD.statics.timein = async function (emp_code, _id) {
     const currentDate = new Date().toLocaleDateString()
     const currentTime = new Date().toLocaleTimeString()
 // const currentTime = '12:00:00 AM'
@@ -60,13 +64,13 @@ EMP_TIME_RECORD.statics.timein = async function (employee_id) {
     const officeEndTime = '5:00:00 PM'
     // Check if id exist.
     const isAttended = await this.find({
-        employee_id: employee_id,
+        emp_code: emp_code,
         date: currentDate
     })
     console.log('current:', currentTime)
     console.log('office:', officeStartTime)
     console.log('office:', currentDate)
-    console.log(isAttended)
+    console.log('Attendee', isAttended)
     // If the employee already attended this day.
     if (isAttended.length !== 0) {
         throw Error('You have already logged in within this day')
@@ -76,7 +80,8 @@ EMP_TIME_RECORD.statics.timein = async function (employee_id) {
     if (isEarlier(currentTime, officeStartTime) === true) {
         // Set Attendance as 8 AM default time in
         const result = await this.create({
-            employee_id: employee_id,
+            emp_code: emp_code,
+            emp_id: _id,
             date: currentDate,
             time_in: officeStartTime,
             time_out: '',
@@ -88,7 +93,8 @@ EMP_TIME_RECORD.statics.timein = async function (employee_id) {
     // If late display current time
     if (isEarlier(currentTime, officeStartTime) === false) {
         const result = await this.create({
-            employee_id: employee_id,
+            emp_code: emp_code,
+            emp_id: _id,
             date: currentDate,
             time_in: currentTime,
             time_out: '',
@@ -98,7 +104,7 @@ EMP_TIME_RECORD.statics.timein = async function (employee_id) {
     }
     }
 
-EMP_TIME_RECORD.statics.timeout = async function (employee_id) {
+EMP_TIME_RECORD.statics.timeout = async function (emp_code, _id) {
     const currentDate = new Date().toLocaleDateString()
     const currentTime = new Date().toLocaleTimeString()
     // const currentTime = '12:00:00 AM'
@@ -108,7 +114,7 @@ EMP_TIME_RECORD.statics.timeout = async function (employee_id) {
     const officeEndTime = '5:00:00 PM'
     // Check if the id has record within the day
     const isAttended = await this.find({
-        employee_id: employee_id,
+        emp_code: emp_code,
         date: currentDate,
         time_out: ''
     });
@@ -119,7 +125,7 @@ EMP_TIME_RECORD.statics.timeout = async function (employee_id) {
     // If office hour is over, allow the users to time out
     if(isEndTime(currentTime, officeEndTime) === true){
         const result = await this.findOneAndUpdate({
-            employee_id: employee_id,
+            emp_code: emp_code,
             date: currentDate
         },{
             time_out: officeEndTime

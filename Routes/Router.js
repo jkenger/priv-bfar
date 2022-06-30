@@ -36,4 +36,8 @@ route.get('/delete_attendance', UserController.delete_attendance)
 route.get('/records', checkToken, checkRoles, UserController.records)
 route.get('/records_get', UserController.records_get)
 
+// payroll
+route.get('/payroll', checkToken, checkRoles, UserController.payroll)
+route.get('/payroll_get', UserController.payroll_get)
+
 module.exports = route

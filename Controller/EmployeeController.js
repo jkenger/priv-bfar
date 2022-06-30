@@ -9,16 +9,18 @@ exports.attendance_post = async (req, res) => {
     } else {
         try {
             const {
-                employee_id,
+                emp_code,
                 time_type
             } = req.body
 
             // find if exist
             const result = await employees.findOne({
-                employee_id: employee_id 
+                employee_id: emp_code
             })
+            
             // send an error if not
             console.log(result)
+            const {employee_id, _id} = result
             if (!result) {
                 if(!employee_id){
                     throw Error(`Please input a valid employee ID!`)
@@ -26,13 +28,13 @@ exports.attendance_post = async (req, res) => {
                 throw Error(`ID Number: ${employee_id}, not recognized by the system!`)
             } else {
                 if (time_type==='timein') {
-                    const logIn = await attendances.timein(employee_id)
+                    const logIn = await attendances.timein(employee_id, _id)
                     if (logIn) {
                         res.status(200).send({log_in: logIn});
                     }
                 }
                 if (time_type==='timeout') {
-                    const logOut = await attendances.timeout(employee_id)
+                    const logOut = await attendances.timeout(employee_id, _id)
                     if (logOut) {
                         res.status(200).send({log_out: logOut});
                     }

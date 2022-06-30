@@ -1,9 +1,10 @@
 const users = require('./../Model/UserSchema')
-const {errorHandler, fetchData} = require('./services/services')
+const { errorHandler, fetchData } = require('./services/services')
 const cookie = require('cookie-parser')
 const jwt = require('jsonwebtoken')
 const employees = require('./../Model/EmployeesSchema')
 const attendances = require('./../Model/Attendance')
+const payroll = require('./../Model/Payroll')
 
 
 
@@ -81,21 +82,66 @@ exports.employees_get = async (req, res) => {
 }
 
 
-exports.delete_attendance = async (req,res)=>{
-    try{
-        const data = await attendances.deleteMany({date: new Date().toLocaleDateString()})
+exports.delete_attendance = async (req, res) => {
+    try {
+        const data = await attendances.deleteMany({})
         console.log(data)
-    }catch(err){
+    } catch (err) {
         console.log(err)
     }
 }
 
-exports.records_get = async(req,res)=>{
-    try{
-        const records = await attendances.find().sort({date: 'desc'});
-        res.status(200).send({records})
-    }catch(err)
-    {
+exports.records_get = async (req, res) => {
+    try {
+        const records = await attendances.find().sort({ date: 'desc' });
+        res.status(200).send({ records })
+    } catch (err) {
+        console.log(err)
+    }
+}
+
+// Payroll EMPLOYEES
+exports.payroll_get = async (req, res) => {
+    let doc = {}
+    try {
+        // Query the employee table
+        await employees.aggregate([
+            {
+                // Select the attendance table
+                $lookup: {
+                    from: 'attendances',
+                    localField: 'employee_id',
+                    foreignField: 'emp_code',
+                    as: 'attendance',
+                    let: { time_out: '$time_out' },
+                    pipeline: [
+                        {
+                            // where time_out is not equal to ''
+                            $match: { time_out: { $ne: '' } }
+                        }
+                    ]
+                }
+            },
+            {
+                // Join
+                $group: {
+                    _id: "$_id",
+                    emp_code: {$first: '$employee_id'},
+                    name: {$first: '$name'},
+                    designation: {$first: '$position'},
+                    // sum up the total attendance
+                    no_of_days: { $sum: { $size: "$attendance" } } 
+                }
+            },
+            {
+                $sort:{
+                    emp_code: 1
+                }
+            }
+        ]).then(async user => {
+            res.status(200).json({user})
+        })
+    } catch (err) {
         console.log(err)
     }
 }
@@ -117,11 +163,19 @@ exports.employees = async (req, res) => {
         console.log(err)
     }
 }
-exports.records = async (req,res)=>{
-    try{
+exports.records = async (req, res) => {
+    try {
         const data = await fetchData('records_get')
-        res.status(200).render('TimeRecords', {data, url: req.url })
-    }catch(err){
+        res.status(200).render('TimeRecords', { data, url: req.url })
+    } catch (err) {
+        console.log(err)
+    }
+}
+exports.payroll = async (req, res) => {
+    try {
+        const data = await fetchData('payroll_get')
+        res.status(200).render('Payroll', {data, url: req.url })
+    } catch (err) {
         console.log(err)
     }
 }

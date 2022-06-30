@@ -21,6 +21,7 @@
                                 <tr>
                                     <th>ID</th>
                                     <th>Employee ID</th>
+                                    <th>Employee Code</th>
                                     <th>Date</th>
                                     <th>Time in</th>
                                     <th>Time out</th>
@@ -28,7 +29,8 @@
                             <% Object.values(data.records).forEach(records => { %> 
                                 <tr>
                                     <td><%=records._id%></td>
-                                    <td><%=records.employee_id%></td>
+                                    <td><%=records.emp_id%></td>
+                                    <td><%=records.emp_code%></td>
                                     <td><%=records.date%></td>
                                     <td><%=records.time_in%></td>
                                     <td><%=records.time_out%></td>
