@@ -55,7 +55,7 @@ const errorHandler = (err) => {
         return error
     }
 
-    if(err.message.includes('Please input a valid employee ID!')){
+    if(err.message.includes('Please enter valid employee code!')){
         error.email = err.message
         return error
     }

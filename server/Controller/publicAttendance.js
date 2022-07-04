@@ -1,4 +1,4 @@
-const employees = require('./../Model/EmployeesSchema')
+const employees = require('../Model/EmployeesSchema')
 const attendances = require('../Model/Attendance')
 const { errorHandler, fetchData } = require('./services/services')
 const fetch = require('node-fetch')
@@ -15,26 +15,28 @@ exports.attendance_post = async (req, res) => {
 
             // find if exist
             const result = await employees.findOne({
-                employee_id: emp_code
+                emp_code: emp_code
             })
             
             // send an error if not
-            console.log(result)
-            const {employee_id, _id} = result
             if (!result) {
-                if(!employee_id){
-                    throw Error(`Please input a valid employee ID!`)
+                if(!emp_code){
+                    throw Error(`Please enter valid employee code!`)
                 }
-                throw Error(`ID Number: ${employee_id}, not recognized by the system!`)
+                throw Error(`ID Number: ${emp_code}, not recognized by the system!`)
             } else {
+                const _id = result._id
+                const currentDate = new Date().toISOString()
+                const currentTime = new Date().toLocaleTimeString()
+                const currentDateString = new Date().toLocaleDateString()
                 if (time_type==='timein') {
-                    const logIn = await attendances.timein(employee_id, _id)
+                    const logIn = await attendances.timein(emp_code, _id, currentDate, currentDateString, currentTime)
                     if (logIn) {
                         res.status(200).send({log_in: logIn});
                     }
                 }
                 if (time_type==='timeout') {
-                    const logOut = await attendances.timeout(employee_id, _id)
+                    const logOut = await attendances.timeout(emp_code, _id, currentDate, currentDateString, currentTime)
                     if (logOut) {
                         res.status(200).send({log_out: logOut});
                     }

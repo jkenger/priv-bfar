@@ -27,21 +27,45 @@
                         <th>Status</th>
                         <th>Actions</th>
                     </tr>
-                    <% Object.values(data.user).forEach(user => { %> 
-                        <tr>
-                            <td><%=user.emp_code%></td>
-                            <td><%=user.name%></td>
-                            <td><%=user.designation%></td>
-                            <td><%=user.no_of_days%></td>
-                            <td><%=user.hours%></td>
-                            <td><%=user.net_pay%></td>
-                            <td><%=user.status%></td>
-                            <td><button>view</button>
-                                <button>edit</button></td>
-                        </tr>
-                    <%}); %>
+                    
                 </table>
             </div>
+            <form novalidate role="search">
+                <label for="birthday">From:</label>
+                <input type="date" id="fromdate" name="fromdate">
+                <label for="birthday">To:</label>
+                <input type="date" id="todate" name="todate" >
+            </form>
+            <button class="button-submit find">Find</button>
+            <script>
+                const splitDate = (date)=>{
+                    const splitDate = date.split('-')
+                    const month = splitDate[2]
+                    const day = splitDate[1]
+                    const year = splitDate[0]
+                    const newDate = `${month}/${day}/${year}`
+                    return newDate
+                }
+                const inputFromDate = document.querySelector('#fromdate')
+                const inputToDate = document.querySelector('#todate')
+                inputFromDate.valueAsDate = new Date()
+                inputToDate.valueAsDate = new Date()
+                const btnSubmit = document.querySelector('.find')
+                btnSubmit.addEventListener('click', async (e)=>{
+                    fromDate = inputFromDate.value
+                    toDate = inputToDate.value
+                    console.log(fromDate, toDate)
+                    console.log(fromDate)
+                    console.log(toDate)
+                    const res = await fetch(`/admin/payroll_get?from=${fromDate}&to=${toDate}`, {
+                        headers: {'Content-Type': 'application/json'},
+                        method:'get'
+                    })
+                    const data = await res.json()
+                    console.log(data)
+                })
+                
+            </script>
         </div>
     </div>
 </main>

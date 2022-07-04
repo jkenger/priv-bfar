@@ -15,6 +15,9 @@ const EMP_TIME_RECORD = mongoose.Schema({
     date: {
         type: String
     },
+    date_string: {
+        type: String
+    },
     time_in: {
         type: String
     },
@@ -54,9 +57,9 @@ isEndTime = (currentTime, endTime)=>{
      }
 }
 
-EMP_TIME_RECORD.statics.timein = async function (emp_code, _id) {
-    const currentDate = new Date().toLocaleDateString()
-    const currentTime = new Date().toLocaleTimeString()
+// TABLE AND EMPLOYEE ID IS REQUIRED
+EMP_TIME_RECORD.statics.timein = async function (emp_code, _id, currentDate, currentDateString, currentTime) {
+    
 // const currentTime = '12:00:00 AM'
     const testDate = new Date('6/20/2022')
     const testTime = '5:00:00 AM'
@@ -65,12 +68,13 @@ EMP_TIME_RECORD.statics.timein = async function (emp_code, _id) {
     // Check if id exist.
     const isAttended = await this.find({
         emp_code: emp_code,
-        date: currentDate
+        date_string: currentDateString
     })
     console.log('current:', currentTime)
     console.log('office:', officeStartTime)
-    console.log('office:', currentDate)
+    console.log('office:', currentDateString)
     console.log('Attendee', isAttended)
+    console.log(emp_code)
     // If the employee already attended this day.
     if (isAttended.length !== 0) {
         throw Error('You have already logged in within this day')
@@ -83,6 +87,7 @@ EMP_TIME_RECORD.statics.timein = async function (emp_code, _id) {
             emp_code: emp_code,
             emp_id: _id,
             date: currentDate,
+            date_string: currentDateString,
             time_in: officeStartTime,
             time_out: '',
             isLate: false
@@ -96,6 +101,7 @@ EMP_TIME_RECORD.statics.timein = async function (emp_code, _id) {
             emp_code: emp_code,
             emp_id: _id,
             date: currentDate,
+            date_string: currentDateString,
             time_in: currentTime,
             time_out: '',
             isLate: true
@@ -104,9 +110,8 @@ EMP_TIME_RECORD.statics.timein = async function (emp_code, _id) {
     }
     }
 
-EMP_TIME_RECORD.statics.timeout = async function (emp_code, _id) {
-    const currentDate = new Date().toLocaleDateString()
-    const currentTime = new Date().toLocaleTimeString()
+    // TABLE AND EMPLOYEE ID IS REQUIRED
+EMP_TIME_RECORD.statics.timeout = async function (emp_code, _id, currentDate, currentDateString, currentTime) {
     // const currentTime = '12:00:00 AM'
     const testDate = new Date('6/20/2022')
     const testTime = '5:00:00 PM'
@@ -115,9 +120,10 @@ EMP_TIME_RECORD.statics.timeout = async function (emp_code, _id) {
     // Check if the id has record within the day
     const isAttended = await this.find({
         emp_code: emp_code,
-        date: currentDate,
+        date_string: currentDateString,
         time_out: ''
     });
+    console.log('Attendee out', isAttended.length)
     // If the system found no id time record within the day
     if (isAttended.length === 0) {
         throw Error('Cannot logout, try again later')
@@ -126,7 +132,7 @@ EMP_TIME_RECORD.statics.timeout = async function (emp_code, _id) {
     if(isEndTime(currentTime, officeEndTime) === true){
         const result = await this.findOneAndUpdate({
             emp_code: emp_code,
-            date: currentDate
+            date_string: currentDateString
         },{
             time_out: officeEndTime
         })

@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken')
-const UserSchema = require('./../Model/UserSchema')
+const UserSchema = require('../Model/UserSchema')
 
 // VERIFY TOKEN to access the home page
 const checkToken = (req, res, next) => {
@@ -8,7 +8,7 @@ const checkToken = (req, res, next) => {
         jwt.verify(token, '02fh1000movah', (err, decordedToken) => {
             if (err) {
                 res.cookie('token', '')
-                res.redirect('/login')
+                res.redirect('/admin/login')
             } else {
                 console.log(decordedToken)
                 next()
@@ -17,7 +17,7 @@ const checkToken = (req, res, next) => {
         })
     } else {
         console.log('Token not found')
-        res.redirect('/login')
+        res.redirect('/admin/login')
     }
 }
 
@@ -29,14 +29,14 @@ const checkRoles = (req, res, next)=>{
         jwt.verify(token, '02fh1000movah', (err, decordedToken) => {
             if (err) {
                 res.cookie('token', '')
-                res.redirect('/login')
+                res.redirect('/admin/login')
             } else {
                 if(role === 'admin'){
                     console.log(decordedToken)
                     next()
                 }else{
                     // DEFAULT ATM, REDIRECT TO USER ACCESS IF AVAIALABLE
-                    res.redirect('/logout') 
+                    res.redirect('/time_monitoring') 
                 }
                 
             }
@@ -44,7 +44,7 @@ const checkRoles = (req, res, next)=>{
         })
     } else {
         console.log('Token not found')
-        res.redirect('/login')
+        res.redirect('/admin/login')
     }
 }
 

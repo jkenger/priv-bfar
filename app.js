@@ -2,13 +2,12 @@ const express = require('express')
 const morgan = require('morgan')
 const bcrypt = require('bcrypt')
 const mongoose = require('mongoose')
-const userSchema = require('./Model/UserSchema')
-const route = require('./Routes/Router')
 const cookieParser = require('cookie-parser')
 const ejs = require('ejs')
 const cors = require('cors')
-const checkToken = require('./Middleware/AuthMiddleware')
-const UserController = require('./Controller/UserController')
+const adminRoute = require('./server/Routes/admin')
+const publicRoute = require('./server/Routes/public')
+var path = require('path')
 require('dotenv').config()
 
 const app = express()
@@ -18,12 +17,22 @@ app.use(morgan('dev'))
 app.use(express.json())
 app.use(express.urlencoded({extended:true}))
 app.use(cookieParser())
-app.use(route)
-app.options('*', cors())
+// MIDDLEWARES || Public Files
+app.use(express.static(path.join(__dirname, 'public')));
+
+// ROUTES
+app.use('/admin', adminRoute)
+app.use(publicRoute)
+// ROUTES || Not Found URLS
+app.use('*', (req, res)=>{
+    res.send('404 NOT FOUND')
+})
+
+
 // Template Engine
 app.set('view engine', 'ejs')
-// Public files
-app.use(express.static('public'))
+
+
 
 
 // CONNECTION

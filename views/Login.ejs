@@ -1,9 +1,9 @@
 <%-include('partials/Header')%>
 <div class="container-auth">
     <div class='head-banner'>
-        <img class="head-banner-bfar-bg" src='img/coralbacknew1.png'/>
-        <img class="head-banner-bfar-text" src='img/text.png'/>
-        <img class="head-banner-bfar-logo" src='img/bfar-logo.png' />
+        <img class="head-banner-bfar-bg" src='/img/coralbacknew1.png'/>
+        <img class="head-banner-bfar-text" src='/img/text.png'/>
+        <img class="head-banner-bfar-logo" src='/img/bfar-logo.png' />
     </div>
     <div class='main-auth'>
         <div class='auth-title'>
@@ -48,7 +48,7 @@ function submitFunc(url)
         const password = form.password.value
         
         try{
-            const res = await fetch(`/login`, {
+            const res = await fetch(`/admin/login`, {
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify({email, password}),
                 method: 'POST'
@@ -61,7 +61,7 @@ function submitFunc(url)
             }
 
             if(data.user){
-                location.assign('/')
+                location.assign('/admin')
             }
             
         }catch(err){
