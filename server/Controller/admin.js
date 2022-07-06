@@ -38,8 +38,8 @@ exports.records_get = async (req, res) => {
 
 exports.payroll_get = async (req, res) => {
     if (req.query) {
-        const fromDate = `${(req.query.from.includes('T')) ? req.query.from : req.query.from + 'T00:00:00.000Z'}`
-        const toDate = `${(req.query.to.includes('T')) ? req.query.to : req.query.to + 'T23:59:59.999Z'}`
+        const fromDate = new Date(`${(req.query.from.includes('T')) ? req.query.from : req.query.from + 'T00:00:00.000+00:00'}`)
+        const toDate = new Date(`${(req.query.to.includes('T')) ? req.query.to : req.query.to + 'T23:59:59.999+00:00'}`)
         console.log(fromDate)
         console.log(toDate)
         const pipeline = [
@@ -58,7 +58,7 @@ exports.payroll_get = async (req, res) => {
                         {
                             $match: {
                                 time_out: { $ne: '' },
-                                // date:{$gte: fromDate, $lte: toDate}
+                                date:{$gte: fromDate, $lte: toDate}
                             },
                         }
                     ]
@@ -89,7 +89,7 @@ exports.payroll_get = async (req, res) => {
                         {
                             $match: {
                                 time_out: { $ne: '' },
-                                // date:{$gte: fromDate, $lte: toDate}
+                                date:{$gte: fromDate, $lte: toDate}
                             },
 
                         },
