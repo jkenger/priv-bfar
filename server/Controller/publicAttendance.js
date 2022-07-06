@@ -17,28 +17,25 @@ exports.attendance_post = async (req, res) => {
             const result = await employees.findOne({
                 emp_code: emp_code
             })
-            
+
             // send an error if not
             if (!result) {
-                if(!emp_code){
+                if (!emp_code) {
                     throw Error(`Please enter valid employee code!`)
                 }
                 throw Error(`ID Number: ${emp_code}, not recognized by the system!`)
             } else {
                 const _id = result._id
-                const currentDate = new Date().toISOString()
-                const currentTime = new Date().toLocaleTimeString()
-                const currentDateString = new Date().toLocaleDateString()
-                if (time_type==='timein') {
-                    const logIn = await attendances.timein(emp_code, _id, currentDate, currentDateString, currentTime)
+                if (time_type === 'timein') {
+                    const logIn = await attendances.timein(emp_code, _id)
                     if (logIn) {
-                        res.status(200).send({log_in: logIn});
+                        res.status(200).send({ log_in: logIn });
                     }
                 }
-                if (time_type==='timeout') {
-                    const logOut = await attendances.timeout(emp_code, _id, currentDate, currentDateString, currentTime)
+                if (time_type === 'timeout') {
+                    const logOut = await attendances.timeout(emp_code, _id)
                     if (logOut) {
-                        res.status(200).send({log_out: logOut});
+                        res.status(200).send({ log_out: logOut });
                     }
                 }
             }
