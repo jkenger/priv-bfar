@@ -19,6 +19,8 @@ app.use(express.urlencoded({extended:true}))
 app.use(cookieParser())
 // MIDDLEWARES || Public Files
 app.use(express.static(path.join(__dirname, 'public')));
+app.use('/assets', express.static(path.join(__dirname, '/node_modules/onscan.js/')))
+app.use('/scripts', express.static(path.join(__dirname, '/public/script/')))
 
 // ROUTES
 app.use('/admin', adminRoute)
