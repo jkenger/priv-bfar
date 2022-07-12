@@ -1,19 +1,8 @@
 <div class="container">
     <aside class="container-aside">
-        <% if(url === '/time_monitoring'){%>
-            <div class="container-aside-list">
-                <label for="employee">Attendance</label>
-                <div class="container-aside-list-dropdown <%if(url.includes('/time_monitoring')){%> active <% }%>  ">
-                    <a href="/time_monitoring">
-                        <i class="fa-solid fa-chart-bar"></i>
-                        <label for="">Time In & Out</label>
-                    </a>
-                </div>
-            </div>
-        <% }else{ %>  
         <div class="container-aside-list">
             <label for="employee">Dashboard</label>
-            <div class="container-aside-list-dropdown <%if(url === '/'){%> active <% }%>  ">
+            <div class="container-aside-list-dropdown  ">
                 <a href="/admin/">
                     <i class="fa-solid fa-chart-bar"></i>
                     <label for="">Dashboard</label>
@@ -22,7 +11,7 @@
         </div>
         <div class="container-aside-list">
             <label for="employee">Employee Management</label>
-            <div class="container-aside-list-dropdown <%if(url === '/employees'){%> active <% }%>   ">
+            <div class="container-aside-list-dropdown  ">
                 <a href="/admin/employees">
                     <i class="fa-solid fa-user"></i>
                     <label for="">Employees</label>
@@ -31,7 +20,7 @@
         </div>
         <div class="container-aside-list">
             <label for="employee">Payroll Management</label>
-            <div class="container-aside-list-dropdown <%if(url === '/payroll'){%> active <% }%>  ">
+            <div class="container-aside-list-dropdown ">
                 <a href="/admin/payroll">
                     <i class="fa-solid fa-receipt"></i>
                     <label for="">Payment</label>
@@ -55,7 +44,6 @@
                 </a>
             </div>
         </div>
-        <% } %> 
     </aside>
 
 

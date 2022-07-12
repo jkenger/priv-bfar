@@ -24,7 +24,7 @@ app.use('/scripts', express.static(path.join(__dirname, '/public/script/')))
 
 // ROUTES
 app.use('/admin', adminRoute)
-app.use(publicRoute)
+app.use('/', publicRoute)
 // ROUTES || Not Found URLS
 app.use('*', (req, res)=>{
     res.send('404 NOT FOUND')

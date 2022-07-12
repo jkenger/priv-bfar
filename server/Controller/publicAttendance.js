@@ -25,19 +25,50 @@ exports.attendance_post = async (req, res) => {
                 }
                 throw Error(`ID Number: ${emp_code}, not recognized by the system!`)
             } else {
+                // ASSIGN EMPLOYEE TABLE ID
                 const _id = result._id
-                if (time_type === 'timein') {
-                    const logIn = await attendances.timein(emp_code, _id)
-                    if (logIn) {
-                        res.status(200).send({ log_in: logIn });
-                    }
-                }
-                if (time_type === 'timeout') {
-                    const logOut = await attendances.timeout(emp_code, _id)
-                    if (logOut) {
-                        res.status(200).send({ log_out: logOut });
-                    }
-                }
+                // // CURRENT ISO DATE AND TIME
+                // const currentISODate = new Date()
+                // currentISODate.setTime(currentISODate.getTime() - new Date().getTimezoneOffset() * 60 * 1000); // convert to local time zone
+                // // const officeISOEndTime = new Date().toISOString().split('T')[0] + 'T11:59:59.000Z';
+                // const officeISOEndTime = '2022-07-10T11:59:59.000Z';
+                // const OFFICE_AM_END_TIME = new Date(officeISOEndTime)
+
+                // if (time_type === 'timein') {
+                    // // AM
+                    // console.log('time in')
+                    // console.log(currentISODate <= OFFICE_AM_END_TIME)
+                    // console.log(currentISODate, OFFICE_AM_END_TIME)
+
+                    // if(currentISODate <= OFFICE_AM_END_TIME){
+                    //     console.log('AM')
+                        
+                    // }
+                    // const attendance = await attendances.am_attendance(emp_code, _id, time_type) // pass emp code, emp table id
+                    //     if (attendance) { res.status(200).send({ log_in: attendance }); }
+                    const attendance = await attendances.am_attendance(emp_code, _id, time_type) // pass emp code, emp table id
+                        if (attendance) { res.status(200).send({ log_in: attendance }); }
+                    // //PM
+                    // if(currentISODate > OFFICE_AM_END_TIME){
+                    //     const result = await attendances.pm_attendance(emp_code, _id, time_type) // pass emp code, emp table id
+                    //     if (result) {
+                    //         res.status(200).send({ log_in: result });
+                    //     }
+                    // }
+                // }
+                // if (time_type === 'timeout') {
+                //     // AM
+                //     if(currentISODate > OFFICE_AM_END_TIME){
+                //         const result = await attendances.am_attendance(emp_code, _id, time_type) // pass emp code, emp table id
+                //         if (result) {
+                //             res.status(200).send({ log_in: result });
+                //         }
+                //     }
+                //     // const result = await attendances.timeout(emp_code, _id)
+                //     // if (result) {
+                //     //     res.status(200).send({ log_out: result });
+                //     // }
+                // }
             }
         } catch (err) {
             console.log(err)
@@ -47,6 +78,9 @@ exports.attendance_post = async (req, res) => {
     }
 }
 
+exports.case = async(req,res)=>{
+    res.render('Case', {url: req.url});
+}
 
 exports.monitorTime = async (req, res) => {
     try {

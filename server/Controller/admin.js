@@ -43,6 +43,9 @@ exports.payroll_get = async (req, res) => {
         console.log(fromDate)
         console.log(toDate)
         const pipeline = [
+            
+            // IF ONE ATTENDANCE TIME OUT IS EMPTY, INITIATE AS HALF or .5 
+            
             {
                 // Select the attendance table
                 $lookup: {
@@ -125,20 +128,20 @@ exports.payroll_get = async (req, res) => {
                     no_of_hours: {$first: '$attendance'}
                 }
             },
-            {
-                $unwind:'$no_of_hours'
-            },
-            {
-                $group: {
-                    _id: "$_id",
-                    emp_code: { $first: '$emp_code' },
-                    name: { $first: '$name' },
-                    designation: { $first: '$designation' },
-                    // sum up the total attendance
-                    no_of_days: { $first: '$no_of_days' },
-                    no_of_hours: {$first: '$no_of_hours.no_of_hours'}
-                }
-            },
+            // {
+            //     $unwind:'$no_of_hours'
+            // },
+            // {
+            //     $group: {
+            //         _id: "$_id",
+            //         emp_code: { $first: '$emp_code' },
+            //         name: { $first: '$name' },
+            //         designation: { $first: '$designation' },
+            //         // sum up the total attendance
+            //         no_of_days: { $first: '$no_of_days' },
+            //         no_of_hours: {$first: '$no_of_hours.no_of_hours'}
+            //     }
+            // },
             { $sort: { emp_code: 1 } }
         ]
         try {

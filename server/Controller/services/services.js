@@ -25,11 +25,29 @@ const errorHandler = (err) => {
         error.email = 'Email already exist.' 
         return error
     }
-    if(err.message === 'You have already logged in within this day'){
+
+    // ATTENDANCE ERRORS
+    if(err.message === 'Next shift will start tommorow'){
         error.email = err.message
         return error
     }
-    if(err.message === 'You have already logged out within this day'){
+    if(err.message === 'You have already logged in for morning shift'){
+        error.email = err.message
+        return error
+    }
+    if(err.message === 'You have already logged out for afternoon shift'){
+        error.email = err.message
+        return error
+    }
+    if(err.message === 'Afternoon shift will end at 5 PM'){
+        error.email = err.message
+        return error
+    }
+    if(err.message === 'Morning shift ended'){
+        error.email = err.message
+        return error
+    }
+    if(err.message === 'Afternoon shift ended'){
         error.email = err.message
         return error
     }
