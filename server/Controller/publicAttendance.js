@@ -12,7 +12,6 @@ exports.attendance_post = async (req, res) => {
             // FIND
             const condition = (input_type === 'rfid') ? { rfid: emp_code } : { emp_code: emp_code }
             const result = await employees.findOne(condition)
-
             
             if (result) {
                 // ASSIGN EMPLOYEE TABLE ID

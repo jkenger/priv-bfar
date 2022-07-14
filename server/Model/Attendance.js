@@ -172,9 +172,12 @@ EMP_TIME_RECORD.statics.am_attendance = async function (emp_code, _id, time_type
 
     // TIME OUT STARTS HERE ---------------------------------------------------------------
     if (time_type === 'timeout') {
-        if (currentISODate >= OFFICE_ISO_AM_END && currentISODate < OFFICE_ISO_PM_START) { // between 12 and 1 PM
 
-            const status = await this.find({ // check if has record within the day
+        // CHECK BETWEEN 12 AND 12:45 PM
+        if (currentISODate >= OFFICE_ISO_AM_END) {
+
+            // FIND IF HAS RECORD WITHIN AM
+            const status = await this.find({ 
                 emp_code: emp_code,
                 date_string: currentDateString,
                 am_time_in: { $ne: '' },
@@ -182,19 +185,23 @@ EMP_TIME_RECORD.statics.am_attendance = async function (emp_code, _id, time_type
             });
             console.log('Attendee out', status)
 
-            if (status.length === 1) { // if record exist, update
+            // IF RECORD EXIST
+            if (status.length) {
                 const result = await this.findOneAndUpdate({
-                    emp_code: emp_code,
+                    emp_code: emp_code, 
                     date_string: currentDateString
                 }, {
                     am_time_out: currentISODate
                 })
                 return result
-            } else { throw Error('Afternoon shift will end at 5 PM') }
+            } 
 
-        } if (currentISODate >= OFFICE_ISO_PM_END) { // 5PM Onwards
+        }
+        
+        if (currentISODate >= OFFICE_ISO_PM_END) { // 5PM Onwards
 
-            const status = await this.find({ // chech if has record
+            // FIND IF HAS RECORD
+            const status = await this.find({ 
                 emp_code: emp_code,
                 date_string: currentDateString,
                 pm_time_in: { $ne: '' },
@@ -202,17 +209,26 @@ EMP_TIME_RECORD.statics.am_attendance = async function (emp_code, _id, time_type
             });
             console.log('Attendee out', status)
 
-            if (status.length === 1) { // if exist, update
+            // IF THERE IS, UPDATE THE DOCUMENT
+            if (status.length === 1) {
                 const result = await this.findOneAndUpdate({
                     emp_code: emp_code,
                     date_string: currentDateString
                 }, {
-                    pm_time_out: OFFICE_ISO_PM_END
+                    pm_time_out: currentISODate
                 })
                 return result
             } else {
                 throw Error('Afternoon shift ended')
             }
+        }
+        
+        if(currentISODate < OFFICE_ISO_PM_END){
+            throw Error('Shift will end at 5 PM') 
+        }
+
+        if(currentISODate < OFFICE_ISO_AM_END){
+            throw Error('Shift will end at 12 PM') 
         }
     }
     // TIME-OUT ENDS HERE------------------------------------------------------------

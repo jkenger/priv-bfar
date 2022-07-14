@@ -35,11 +35,15 @@ const errorHandler = (err) => {
         error.email = err.message
         return error
     }
+    if(err.message === 'You have already logged out for morning shift'){
+        error.email = err.message
+        return error
+    }
     if(err.message === 'You have already logged out for afternoon shift'){
         error.email = err.message
         return error
     }
-    if(err.message === 'Afternoon shift will end at 5 PM'){
+    if(err.message.includes('Shift will end at')){
         error.email = err.message
         return error
     }
