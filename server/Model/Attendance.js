@@ -48,7 +48,7 @@ EMP_TIME_RECORD.statics.am_attendance = async function (emp_code, _id, time_type
 
     // OFFICE ISO DATE AND TIME
     const officeISODate = new Date().toISOString().split('T')[0]; // current date || yyyy-mm-dd
-    const testISODate = '2022-07-13'; // current date || yyyy-mm-dd
+    const testISODate = '2022-07-14'; // current date || yyyy-mm-dd
     const OFFICE_AM_START = testISODate + 'T08:00:00.000Z';
     const OFFICE_ISO_AM_START = new Date(OFFICE_AM_START)
 
@@ -79,16 +79,20 @@ EMP_TIME_RECORD.statics.am_attendance = async function (emp_code, _id, time_type
 
     // TIME-IN STARTS HERE ----------------------------------------------
     if (time_type === 'timein') {
-
-        if (currentISODate < OFFICE_ISO_AM_END) { // after 8 AM || time in for AM
-
-            const status = await this.find({ // if the id have record within the day
+        
+        // BEFORE 12 PM || AM TIME FRAME
+        if (currentISODate < OFFICE_ISO_AM_END) {
+            // FIND ID WHERE THERE IS NO RECORD WITHIN TEH DAY
+            const status = await this.find({ 
                 emp_code: emp_code,
                 date_string: currentDateString,
-                am_time_in: { $ne: '' } // AM IS NOT EMPTY
+                am_time_in: { $ne: '' } 
             })
+            // LOG
             console.log('Attendee', status)
-            if (status.length === 0) { // if no have record
+
+            // IF STATUS RETURNED 0, CREATE NEW DOCUMENT
+            if (status.length === 0) { 
                 const result = await this.create({
                     emp_code: emp_code,
                     emp_id: _id,
@@ -101,6 +105,7 @@ EMP_TIME_RECORD.statics.am_attendance = async function (emp_code, _id, time_type
                     isLate: false
                 })
                 return result
+            // ELSE THROW AN ERROR
             } else { throw Error('You have already logged in for morning shift') }
         }
 
@@ -148,14 +153,15 @@ EMP_TIME_RECORD.statics.am_attendance = async function (emp_code, _id, time_type
                     am_time_in: {$ne: ''},
                     pm_time_in: ''
                 }, {
-                    // UPDATE PM TIME-IN AND AM TIME-OUT
+                // UPDATE PM TIME-IN AND AM TIME-OUT
                     am_time_out: currentISODate,
                     pm_time_in: currentISODate,
                     pm_time_out: ''
                 })
-                if (!result) {
-                    throw Error('You have already logged in for afternoon shifts')
-                }
+
+                // THROW AN ERROR 
+                if (!result) { throw Error('You have already logged in for afternoon shifts') }
+
                 return result
             }
 

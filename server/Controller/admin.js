@@ -42,6 +42,17 @@ exports.payroll_get = async (req, res) => {
         const toDate = new Date(`${(req.query.to.includes('T')) ? req.query.to : req.query.to + 'T23:59:59.999+00:00'}`)
         console.log(fromDate)
         console.log(toDate)
+
+        // QUERY AND JOIN EMPLOYEE AND ATTENDANCE DOCUMENT
+        // WHERE IT WILL RETURN:
+        // EMPLOYEE CODE, NAME, NUMBER OF DAYS, NUMBER OF ABSENTEE, TOTAL UNDERTIME.
+        // NO. OF DAYS MUST: 
+        // NOT INCLUDE WEEKENDS AS DAILY ATTENDANCE.
+        // CONSIDER HOLIDAYS 1 DAY IF: THE EMPLOYEE ATTENDED BEFORE THE HOLIDAY DATE.
+        // ELSE: EMPLOYEE WILL BE MARKED AS ABSENT FOR 2 WORKING DAYS.
+
+
+        // PIPELINES
         const pipeline = [
             
             // IF ONE ATTENDANCE TIME OUT IS EMPTY, INITIATE AS HALF or .5 
@@ -128,6 +139,37 @@ exports.payroll_get = async (req, res) => {
                     no_of_hours: {$first: '$attendance'}
                 }
             },
+
+            // ------------GET THE NUMBER OF DAYS INCLUDING HALFS-------------
+
+            // {
+            //     $unwind: '$attendance'
+            //   },
+            //   {
+            //     $project: {
+            //       '_id': '$name',
+            //       'status': '$attendance.status',
+            //       'attendance': {$cond: {
+            //       if: {
+            //         $eq: ['$attendance.status', 'full']}, 
+            //         then: {
+            //           $sum: 1
+            //         },
+            //         else:{
+            //           $sum: .5
+            //         }
+            //       }
+            //       }
+            //     }
+            //   },
+            //   {
+            //     $group: {
+            //       _id: '$_id',
+            //       'no_of_days': {$sum: '$attendance'}
+            //     }
+            //   }
+            // --------------------------------------------------------------
+
             // {
             //     $unwind:'$no_of_hours'
             // },

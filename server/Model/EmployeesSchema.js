@@ -9,8 +9,11 @@ const EmpSchema = mongoose.Schema({
     },
     emp_code:{
         type:String,
-        unique:true,
-        required: [true, "Enter valid id"]
+        unique:true
+    },
+    rfid: {
+        type: String,
+        unique:true
     },
     age: {
         type: Number,
