@@ -10,7 +10,8 @@ exports.attendance_post = async (req, res) => {
         try {
             const { emp_code, time_type, input_type } = req.body
             // FIND
-            const condition = (input_type === 'rfid') ? { rfid: emp_code } : { emp_code: emp_code }
+            // const condition = (input_type === 'rfid') ? { rfid: emp_code } : { emp_code: emp_code }
+            const condition = {$or: [{rfid: emp_code}, {emp_code: emp_code}]}
             const result = await employees.findOne(condition)
             
             if (result) {

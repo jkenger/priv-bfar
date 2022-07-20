@@ -31,27 +31,19 @@ const errorHandler = (err) => {
         error.email = err.message
         return error
     }
-    if(err.message === 'You have already logged in for morning shift'){
+    if(err.message.includes('You have already logged in for')){
         error.email = err.message
         return error
     }
-    if(err.message === 'You have already logged out for morning shift'){
+    if(err.message.includes('You have already logged out for')){
         error.email = err.message
         return error
     }
-    if(err.message === 'You have already logged out for afternoon shift'){
+    if(err.message.includes('shift will end at')){
         error.email = err.message
         return error
     }
-    if(err.message.includes('Shift will end at')){
-        error.email = err.message
-        return error
-    }
-    if(err.message === 'Morning shift ended'){
-        error.email = err.message
-        return error
-    }
-    if(err.message === 'Afternoon shift ended'){
+    if(err.message.includes('shift ended')){
         error.email = err.message
         return error
     }

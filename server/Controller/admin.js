@@ -26,14 +26,12 @@ exports.delete_attendance = async (req, res) => {
 
 exports.records_get = async (req, res) => {
     try {
-        const records = await attendances.find().sort({ emp_code: 1 });
+        const records = await attendances.find().sort({ date: -1 });
         res.status(200).send({ records })
     } catch (err) {
         console.log(err)
     }
 }
-
-// Payroll EMPLOYEES
 
 
 exports.payroll_get = async (req, res) => {
@@ -54,9 +52,8 @@ exports.payroll_get = async (req, res) => {
 
         // PIPELINES
         const pipeline = [
-            
+
             // IF ONE ATTENDANCE TIME OUT IS EMPTY, INITIATE AS HALF or .5 
-            
             {
                 // Select the attendance table
                 $lookup: {
@@ -72,7 +69,7 @@ exports.payroll_get = async (req, res) => {
                         {
                             $match: {
                                 time_out: { $ne: '' },
-                                date:{$gte: fromDate, $lte: toDate}
+                                date: { $gte: fromDate, $lte: toDate }
                             },
                         }
                     ]
@@ -103,7 +100,7 @@ exports.payroll_get = async (req, res) => {
                         {
                             $match: {
                                 time_out: { $ne: '' },
-                                date:{$gte: fromDate, $lte: toDate}
+                                date: { $gte: fromDate, $lte: toDate }
                             },
 
                         },
@@ -128,7 +125,7 @@ exports.payroll_get = async (req, res) => {
                     ]
                 }
             },
-             { // Join
+            { // Join
                 $group: {
                     _id: "$_id",
                     emp_code: { $first: '$emp_code' },
@@ -136,7 +133,7 @@ exports.payroll_get = async (req, res) => {
                     designation: { $first: '$designation' },
                     // sum up the total attendance
                     no_of_days: { $first: '$no_of_days' },
-                    no_of_hours: {$first: '$attendance'}
+                    no_of_hours: { $first: '$attendance' }
                 }
             },
 
@@ -184,10 +181,10 @@ exports.payroll_get = async (req, res) => {
             //         no_of_hours: {$first: '$no_of_hours.no_of_hours'}
             //     }
             // },
-            { $sort: { emp_code: 1 } }
+            { $sort: { date: 1 } }
         ]
         try {
-            // Query the employee table
+            // QUERY PAYROLL RECORDS
             await employees.aggregate(pipeline).then(async records => {
                 console.log(records)
                 res.status(200).send({ records })

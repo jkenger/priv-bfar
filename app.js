@@ -17,6 +17,7 @@ app.use(morgan('dev'))
 app.use(express.json())
 app.use(express.urlencoded({extended:true}))
 app.use(cookieParser())
+
 // MIDDLEWARES || Public Files
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/assets', express.static(path.join(__dirname, '/node_modules/onscan.js/')))
@@ -25,6 +26,7 @@ app.use('/scripts', express.static(path.join(__dirname, '/public/script/')))
 // ROUTES
 app.use('/admin', adminRoute)
 app.use('/', publicRoute)
+
 // ROUTES || Not Found URLS
 app.use('*', (req, res)=>{
     res.send('404 NOT FOUND')
