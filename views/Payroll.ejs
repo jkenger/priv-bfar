@@ -21,9 +21,12 @@
                         <th>Employee Code</th>
                         <th>Name</th>
                         <th>Designation</th>
+                        <th>Monthly Rate</th>
                         <th>No. of Days</th>
-                        <th>No. of Hours</th>
-                        <th>Net Pay</th>
+                        <th>No. of Absentee</th>
+                        <th>No. of Undertime</th>
+                        <th>Gross Amount Earned</th>
+                        <th>Net Amount Due</th>
                         <th>Status</th>
                         <th>Actions</th>
                     </tr>
@@ -38,6 +41,8 @@
             </form>
             <button class="button-submit find">Find</button>
             <script>
+
+                //  FORMAT DATE TO MM/DD/YYYY
                 const splitDate = (date)=>{
                     const splitDate = date.split('-')
                     const month = splitDate[2]
@@ -46,10 +51,15 @@
                     const newDate = `${month}/${day}/${year}`
                     return newDate
                 }
+                //  GET CALENDER ELEMENTS
                 const inputFromDate = document.querySelector('#fromdate')
                 const inputToDate = document.querySelector('#todate')
+
+                // SET DEFAULT DATE TODAY
                 inputFromDate.valueAsDate = new Date()
                 inputToDate.valueAsDate = new Date()
+
+                // GET ELEMENT OF FIND BUTTON, INITIATE WHEN CLICKED
                 const btnSubmit = document.querySelector('.find')
                 btnSubmit.addEventListener('click', async (e)=>{
                     fromDate = inputFromDate.value

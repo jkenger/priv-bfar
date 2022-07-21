@@ -23,17 +23,21 @@
                                     <th>Employee ID</th>
                                     <th>Employee Code</th>
                                     <th>Date</th>
-                                    <th>Time in</th>
-                                    <th>Time out</th>
+                                    <th>AM Time in</th>
+                                    <th>AM Time out</th>
+                                    <th>PM Time in</th>
+                                    <th>PM Time out</th>
                                 </tr>
-                            <% Object.values(data.records).forEach(records => { %> 
+                            <% Object.values(data.records).forEach(records =>{%> 
                                 <tr>
                                     <td><%=records._id%></td>
                                     <td><%=records.emp_id%></td>
                                     <td><%=records.emp_code%></td>
-                                    <td><%=records.date%></td>
-                                    <td><%=records.time_in%></td>
-                                    <td><%=records.time_out%></td>
+                                    <td><%=moment(records.date).format('LL')%></td>
+                                    <td><%=(!records.am_time_in)? '' : moment(records.am_time_in).format('LTS')%></td>
+                                    <td><%=(!records.am_time_out)? '' : moment(records.am_time_out).format('LTS')%></td>
+                                    <td><%=(!records.pm_time_in)? '' : moment(records.pm_time_in).format('LTS')%></td>
+                                    <td><%=(!records.pm_time_out)? '' : moment(records.pm_time_out).format('LTS')%></td>
                                 </tr>
                             <%}); %>
                             </table>

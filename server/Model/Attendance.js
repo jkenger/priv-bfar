@@ -35,6 +35,9 @@ const EMP_TIME_RECORD = mongoose.Schema({
     duration: {
         type: Number
     },
+    offset: {
+        type: Number
+    },
     isLate: {
         type: Boolean
     }
@@ -64,24 +67,21 @@ EMP_TIME_RECORD.statics.am_attendance = async function (emp_code, _id, time_type
     console.log(testISODate + OFFICE_PM_END)
 
     // CURRENT ISO DATE AND TIME
-    const currentISODate = new Date()
-    const myTimeZone = currentISODate.getTime() - new Date().getTimezoneOffset() * 60 * 1000 // convert to local time zone
-    currentISODate.setTime(myTimeZone);
+    const currentISODate = new Date() // UTC
+    const currentLocalISODate= currentISODate.getTime() - new Date().getTimezoneOffset() * 60 * 1000 // convert to local time zone
+
 
     // CURRENT DATE STRING
     const currentDateString = new Date().toLocaleDateString()
 
     //-------------------------------------------------------------------
 
-    console.log(currentISODate)
-    console.log(OFFICE_ISO_PM_END)
-
 
     // TIME-IN STARTS HERE ----------------------------------------------
     if (time_type === 'timein') {
 
         // BEFORE 12 PM || AM TIME FRAME
-        if (currentISODate < OFFICE_ISO_AM_END) {
+        if (currentLocalISODate < OFFICE_ISO_AM_END) {
             // FIND ID WHERE THERE IS NO RECORD WITHIN TEH DAY
             const status = await this.find({
                 emp_code: emp_code,
@@ -102,6 +102,7 @@ EMP_TIME_RECORD.statics.am_attendance = async function (emp_code, _id, time_type
                     am_time_out: '',
                     pm_time_in: '',
                     pm_time_out: '',
+                    offset: currentLocalISODate.getTimezoneOffset(),
                     isLate: false
                 })
                 return result
@@ -119,7 +120,7 @@ EMP_TIME_RECORD.statics.am_attendance = async function (emp_code, _id, time_type
 
 
         // 12 PM STARTS HERE
-        if (currentISODate > OFFICE_ISO_AM_END) {
+        if (currentLocalISODate > OFFICE_ISO_AM_END) {
 
             console.log('AFTER 12 PM')
 
@@ -139,6 +140,7 @@ EMP_TIME_RECORD.statics.am_attendance = async function (emp_code, _id, time_type
                     am_time_out: '',
                     pm_time_in: currentISODate,
                     pm_time_out: '',
+                    offset: new Date().getTimezoneOffset(),
                     isLate: false
                 })
                 return result
@@ -155,7 +157,7 @@ EMP_TIME_RECORD.statics.am_attendance = async function (emp_code, _id, time_type
                         emp_code: emp_code, date_string: currentDateString, // FIND
                         am_time_in: { $ne: '' }, pm_time_in: ''
                     },
-                    // UPDATE PM TIME-IN AND AM TIME-OUT
+                    // UPDATE PM TIME-IN AND AM TIME-OUT // DO NOT OVERWRITE AM TIME OUT IF NOT EMPTY
                     (status[0].am_time_out) ? {
                         pm_time_in: currentISODate, //UPDATE
                         pm_time_out: ''
@@ -173,7 +175,7 @@ EMP_TIME_RECORD.statics.am_attendance = async function (emp_code, _id, time_type
                 return result
             }
 
-        } else if (currentISODate > OFFICE_ISO_PM_END) { throw Error('Office hour ended') }
+        } else if (currentLocalISODate > OFFICE_ISO_PM_END) { throw Error('Office hour ended') }
 
     }
     // TIME-IN ENDS HERE-------------------------------------------------------------------
@@ -182,7 +184,7 @@ EMP_TIME_RECORD.statics.am_attendance = async function (emp_code, _id, time_type
     if (time_type === 'timeout') {
 
         // CHECK BETWEEN 12 AND 12:45 PM
-        if (currentISODate >= OFFICE_ISO_AM_END && currentISODate <= OFFICE_ISO_PM_START) {
+        if (currentLocalISODate >= OFFICE_ISO_AM_END && currentLocalISODate <= OFFICE_ISO_PM_START) {
 
             // FIND IF HAS RECORD WITHIN AM
             const status = await this.find({
@@ -201,7 +203,7 @@ EMP_TIME_RECORD.statics.am_attendance = async function (emp_code, _id, time_type
 
         }
 
-        if (currentISODate >= OFFICE_ISO_PM_END) { // 5PM Onwards
+        if (currentLocalISODate >= OFFICE_ISO_PM_END) { // 5PM Onwards
 
             // FIND IF HAS RECORD
             const status = await this.find({
@@ -222,8 +224,8 @@ EMP_TIME_RECORD.statics.am_attendance = async function (emp_code, _id, time_type
                 throw Error('Afternoon shift ended')
             }
         }
-        if (currentISODate < OFFICE_ISO_AM_END) { throw Error('Morning shift will end at 12 PM') }
-        if (currentISODate < OFFICE_ISO_PM_END) { throw Error('Afternoon shift will end at 5 PM') }
+        if (currentLocalISODate < OFFICE_ISO_AM_END) { throw Error('Morning shift will end at 12 PM') }
+        if (currentLocalISODate < OFFICE_ISO_PM_END) { throw Error('Afternoon shift will end at 5 PM') }
 
 
     }
