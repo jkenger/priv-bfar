@@ -6,6 +6,21 @@ const fetch = require('node-fetch')
 module.exports = {
     
     attendance_post : async (req, res) => {
+        function getTime()  {
+            var d = new Date();
+            return d.getTime();
+          }
+          
+          function checkTime()  {
+            if (Math.abs(getTime() - oldtime) > 2000)  {  // Changed by more than 2 seconds?
+              console.log("You changed the time!");
+            }
+            oldtime = getTime();
+          }
+          
+          var oldtime = getTime();
+          setInterval(checkTime, 1000);
+
         if (!req.body) {
             res.status(500).send('The system cannot process your attendance.')
         } else {

@@ -10,7 +10,7 @@ const checkToken = (req, res, next) => {
                 res.cookie('token', '')
                 res.redirect('/admin/login')
             } else {
-                console.log(decordedToken)
+                console.log('/auth.checkToken:', decordedToken)
                 next()
             }
 
@@ -32,7 +32,7 @@ const checkRoles = (req, res, next)=>{
                 res.redirect('/admin/login')
             } else {
                 if(role === 'admin'){
-                    console.log(decordedToken)
+                    console.log('/auth.checkRoles :', decordedToken)
                     next()
                 }else{
                     // DEFAULT ATM, REDIRECT TO USER ACCESS IF AVAIALABLE
@@ -60,7 +60,7 @@ const checkUser = (req, res, next) => {
             }else{
                 const data = await UserSchema.findById(decordedToken.id)
                 res.locals.user = data
-                console.log(res.locals.user)
+                console.log('/auth.checkUser:', res.locals.user)
                 next()
             }
         })

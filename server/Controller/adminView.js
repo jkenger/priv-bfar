@@ -25,7 +25,6 @@ module.exports = {
         try {
             const data = await fetchData('admin/records_get')
             res.status(200).render('TimeRecords', { data, url: req.url, moment: moment })
-            console.log(data)
         } catch (err) {
             console.log(err)
         }
