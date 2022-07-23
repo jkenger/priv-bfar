@@ -12,40 +12,41 @@ const createToken = (id) => {
 module.exports = {
 
     // LOGIN
-    login_post : async (req, res) => {
+    login_post: async (req, res) => {
         const email = req.body.email
         const password = req.body.password
-        if (!req.body) {
-            res.status(500).send("CANNOT LOGIN")
-        } else {
-            try {
-                const user = await users.login(email, password)
-                const token = await createToken(user._id)
-                res.cookie('isAdmin', user.role, { httpOnly: true, expiresIn: maxAge * 1000 })
-                res.cookie('token', token, { httpOnly: true, expiresIn: maxAge * 1000 })
-                res.status(200).send({ user: user })
-            } catch (err) {
-                const error = errorHandler(err)
-                res.status(500).send({ err: error })
-            }
+
+        if (!req.body) { res.status(500).send("Failed processing login authorization") }
+
+        try {
+            const user = await users.login(email, password)
+            const token = await createToken(user._id)
+            res.cookie('isAdmin', user.role, { httpOnly: true, expiresIn: maxAge * 1000 })
+            res.cookie('token', token, { httpOnly: true, expiresIn: maxAge * 1000 })
+            res.status(200).send({ user: user })
+        } catch (err) {
+            const error = errorHandler(err)
+            res.status(500).send({ err: error })
         }
+
     },
     // REGISTER POST
-    register_post : async (req, res) => {
-        if (!req.body) {
-            res.status(500).send('CANNOT REGISTER')
-        } else {
-            try {
-                const { email, password, role } = req.body
-                const user = await users.create({ email, password, role })
-                res.cookie('isAdmin', role, { httpOnly: true, expiresIn: maxAge * 1000 })
-                const token = await createToken(user._id)
-                res.cookie('token', token, { httpOnly: true, expiresIn: maxAge * 1000 })
-                res.status(200).send({ user: user })
-            } catch (err) {
-                const error = errorHandler(err)
-                res.status(500).send({ err: error })
-            }
+    register_post: async (req, res) => {
+        if (!req.body) { res.status(500).send('Failed processing registration') }
+
+        try {
+            const { email, password, role } = req.body
+            const user = await users.create({ email, password, role })
+
+            res.cookie('isAdmin', role, { httpOnly: true, expiresIn: maxAge * 1000 })
+
+            const token = await createToken(user._id)
+            res.cookie('token', token, { httpOnly: true, expiresIn: maxAge * 1000 })
+            res.status(200).send({ user: user })
+        } catch (err) {
+            const error = errorHandler(err)
+            res.status(500).send({ err: error })
         }
+
     }
 }

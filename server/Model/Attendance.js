@@ -183,7 +183,7 @@ EMP_TIME_RECORD.statics.am_attendance = async function (emp_code, _id, time_type
                         emp_code: emp_code, date_string: currentDateString, // FIND
                         am_time_in: { $ne: '' }, pm_time_in: ''
                     },
-                    // UPDATE PM TIME-IN AND AM TIME-OUT // DO NOT OVERWRITE AM TIME OUT IF NOT EMPTY
+                    // UPDATE PM TIME-IN AND AM TIME-OUT // DO NOT OVERWRITE AM TIME OUT IF EXIST
                     (status[0].am_time_out) ? {
                         pm_time_in: currentISODate, //UPDATE
                         pm_time_out: ''
