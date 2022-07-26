@@ -22,7 +22,7 @@ module.exports = {
 
     delete_attendance: async (req, res) => {
         try {
-            const data = await attendances.deleteMany({})
+            const data = await attendances.updateMany({$ne: {emp_code: ''}}, {am_office_in: '2022-07-26T00:00:00.000+00:00', pm_office_in: '2022-07-26T05:00:00.000+00:00'})
             console.log(data)
         } catch (err) { res.status(500).send(err) }
     },
@@ -53,44 +53,59 @@ module.exports = {
 
             // PIPELINES
             const pipeline = [
-
-                //JOIN THE EMPLOYEE AND ATTENDANCE MODEL TOGETHER
-                {
-                    $lookup: {
-                        from: 'attendances',
-                        localField: 'emp_code',
-                        foreignField: 'emp_code',
-                        as: 'attendances',
-                        let: { time_in: '$time_in', time_out: '$time_out' },
-                        pipeline: [{ $match: { pm_time_out: { $ne: '' }, date: { $gte: fromDate, $lte: toDate } } }] // NOTE: fromdate and todate should be formatted for accurate results
-                    }
-                },
-                // IF ONE ATTENDANCE TIME OUT IS EMPTY, INITIATE AS HALF or .5 
+                {$lookup: {
+                    from: 'attendances',
+                    localField: 'emp_code',
+                    foreignField: 'emp_code',
+                    as: 'attendances',
+                    let: { time_in: '$time_in', time_out: '$time_out' },
+                    pipeline: [{ $match: { pm_time_out: { $ne: '' }, date: { $gte: fromDate, $lte: toDate } } }] // NOTE: fromdate and todate should be formatted for accurate results
+                }},
+                // IF ONE ATTENDANCE TIME OUT IS EMPTY, COUNT AS HALF or .5 
                 { $unwind: '$attendances' },
-                {
-                    $project: {
-                        _id: '$emp_code',
-                        name: 1,
-                        isHalf: '$attendances.isHalf',
-                        no_of_absents: { $sum: 1 },
-                        no_of_days: { $cond: { if: { $eq: ['$attendances.isHalf', true] }, then: { $sum: .5 }, else: { $sum: 1 } } },
-
-                    }
-                },
-                {
-                    $group: {
-                        _id: '$_id',
-                        name: { $first: '$name' },
-                        no_of_absents: {$sum: '$no_of_absents'},
-                        no_of_days: { $sum: '$no_of_days' },
-                    }
-                },
-                {
-                    $addFields: {
-                        no_of_absents: { $subtract: [calendarDate, '$no_of_absents'] },
-                    }
-                },
-
+                {$project: {
+                    _id: '$emp_code',
+                    emp_code: '$emp_code',
+                    name: 1,
+                    isLate: '$attendances.isLate',
+                    no_of_absents: { $sum: 1 },
+                    no_of_days: { $cond: { if: { $eq: ['$attendances.isHalf', true] }, then: { $sum: .5 }, else: { $sum: 1 } } },
+                    am_office: '$attendances.am_office_in',
+                    pm_office: '$attendances.pm_office_in',
+                    am: '$attendances.am_time_in',
+                    pm: '$attendances.pm_time_in'
+                    // no_of_undertime: { $dateDiff: { startDate: "$attendances.am_office_in", endDate: "$attendances.am_time_in", unit: "minute" }}
+                    
+                }},
+                {$addFields: {
+                    // return 0 if time in has negative value; negative value denotes that the employee is not late for that shift
+                    no_of_undertime: {$cond: {
+                        if: {$eq: ['$isLate', false]}, 
+                        then: 0, 
+                        else: {$sum: [
+                            {$cond: {
+                                if: {$lt: [{ $dateDiff: { startDate: "$am_office", endDate: "$am", unit: "minute" }}, 0]}, 
+                                then: 0, 
+                                else: { $dateDiff: { startDate: "$am_office", endDate: "$am", unit: "minute" }}
+                            }}, 
+                            {$cond: {
+                                if: { $lt: [{ $dateDiff: { startDate: "$pm_office", endDate: "$pm", unit: "minute" }}, 0]}, 
+                                then: 0, 
+                                else: { $dateDiff: { startDate: "$pm_office", endDate: "$pm", unit: "minute" }}
+                        }}
+                    ]}}}
+                }},
+                {$group: {
+                    _id: '$_id',
+                    emp_code: {$first: '$emp_code'},
+                    name: { $first: '$name' },
+                    no_of_days: { $sum: '$no_of_days' },
+                    no_of_absents: {$sum: '$no_of_absents'},
+                    no_of_undertime: {$sum: '$no_of_undertime'}
+                }},
+                {$addFields: { 
+                    no_of_absents: { $subtract: [calendarDate, '$no_of_absents'] },
+                }},
                 /* TODO 
                     Create a query where it will return the total minutes of undertime 
                     If every employee's time in has gone above the given office time by identifying isLate as true.

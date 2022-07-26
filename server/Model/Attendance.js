@@ -21,10 +21,16 @@ const EMP_TIME_RECORD = mongoose.Schema({
     date_string: {
         type: String
     },
+    am_office_in: {
+        type: Date
+    },
     am_time_in: {
         type: Date
     },
     am_time_out: {
+        type: Date
+    },
+    pm_office_in: {
         type: Date
     },
     pm_time_in: {
@@ -43,7 +49,7 @@ const EMP_TIME_RECORD = mongoose.Schema({
         type: Boolean
     },
     isHalf: {
-        type: String,
+        type: Boolean,
         default: true
     }
 })
@@ -56,10 +62,11 @@ EMP_TIME_RECORD.statics.am_attendance = async function (emp_code, _id, time_type
 
     // OFFICE ISO DATE AND TIME
     const officeISODate = new Date().toISOString().split('T')[0]; // current date || yyyy-mm-dd
-    const testISODate = '2022-07-25'; // current date || yyyy-mm-dd
+    const testISODate = '2022-07-24'; // current date || yyyy-mm-dd
     console.log(officeISODate)
 
     // 8 AM TIME IN
+    const db_ISO_AM_START = officeISODate + 'T00:00:00.000Z'
     const OFFICE_AM_START = testISODate + 'T08:00:00.000Z';
     const OFFICE_ISO_AM_START = new Date(OFFICE_AM_START)
 
@@ -76,6 +83,7 @@ EMP_TIME_RECORD.statics.am_attendance = async function (emp_code, _id, time_type
     const OFFICE_ISO_OFF_PM_START = new Date(OFFICE_OFF_PM_START)
 
     // 5PM OUT
+    const db_ISO_PM_START = officeISODate + 'T05:00:00.000Z'
     const OFFICE_PM_END = testISODate + 'T17:00:00.000Z';
     const OFFICE_ISO_PM_END = new Date(OFFICE_PM_END)
 
@@ -115,8 +123,10 @@ EMP_TIME_RECORD.statics.am_attendance = async function (emp_code, _id, time_type
                     emp_id: _id,
                     date: moment(currentISODate).format(),
                     date_string: currentDateString,
+                    am_office_in: db_ISO_AM_START,
                     am_time_in: currentISODate,
                     am_time_out: '',
+                    pm_office_in: db_ISO_PM_START,
                     pm_time_in: '',
                     pm_time_out: '',
                     offset: new Date().getTimezoneOffset(),
@@ -162,8 +172,10 @@ EMP_TIME_RECORD.statics.am_attendance = async function (emp_code, _id, time_type
                     emp_id: _id,
                     date: moment(currentISODate).format(),
                     date_string: currentDateString,
+                    am_office_in: db_ISO_AM_START,
                     am_time_in: '',
                     am_time_out: '',
+                    pm_office_in: db_ISO_PM_START,
                     pm_time_in: currentISODate,
                     pm_time_out: '',
                     offset: new Date().getTimezoneOffset(),
@@ -246,9 +258,8 @@ EMP_TIME_RECORD.statics.am_attendance = async function (emp_code, _id, time_type
             }
 
         }
-
+        
         if (currentLocalISODate >= OFFICE_ISO_PM_END) { // 5PM Onwards
-
             // FIND IF HAS RECORD
             const status = await this.find({ // NOTE: status returns array
                 emp_code: emp_code, date_string: currentDateString,
