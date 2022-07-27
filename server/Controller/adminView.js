@@ -28,12 +28,19 @@ module.exports = {
 
     payroll: async (req, res) => {
         try {
-            const fromDate = new Date().toISOString()
-            const toDate = new Date().toISOString()
+            let fromDate = new Date().toISOString()
+            let toDate = new Date().toISOString()
 
+            if(!req.query.from || !req.query.to){
+                fromDate = new Date().toISOString()
+                toDate = new Date().toISOString()
+            }else{
+                fromDate = new Date(req.query.from).toISOString()
+                toDate = new Date(req.query.to).toISOString()
+            }
             const data = await fetchData(`admin/payroll_get?from=${fromDate}&to=${toDate}`)
             res.status(200).render('Payroll', { data, url: req.url })
-            
+
         } catch (err) { res.status(500).send(err) }
     }
 }

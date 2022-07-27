@@ -22,15 +22,29 @@
                         <th>Name</th>
                         <th>Designation</th>
                         <th>Monthly Rate</th>
-                        <th>No. of Days</th>
-                        <th>No. of Absentee</th>
-                        <th>No. of Undertime</th>
+                        <th>Days</th>
                         <th>Gross Amount Earned</th>
+                        <th>Absentee(s)</th>
+                        <th>Undertime</th>
                         <th>Net Amount Due</th>
                         <th>Status</th>
                         <th>Actions</th>
                     </tr>
-                    
+                    <% Object.values(data.records).forEach(records =>{%> 
+                        <tr>
+                            <td><%=records.emp_code%></td>
+                            <td><%=records.name%></td>
+                            <td><%=records.designation%></td>
+                            <td><%=records.salary%></td>
+                            <td><%=records.no_of_days%></td>
+                            <td>0</td>
+                            <td><%=records.no_of_absents%></td>
+                            <td><%=records.no_of_undertime%></td>
+                            <td><%=records.salary%></td>
+                            <td>0</td>
+                            <td>0</td>
+                        </tr>
+                    <%}); %>
                 </table>
             </div>
             <form novalidate role="search">
@@ -65,16 +79,18 @@
                     // fromDate = inputFromDate.value
                     // toDate = inputToDate.value
                     fromDate = '2022-07-15'
-                    toDate = '2022-07-25'
-                    console.log(fromDate, toDate)
-                    console.log(fromDate)
-                    console.log(toDate)
-                    const res = await fetch(`/admin/payroll_get?from=${fromDate}&to=${toDate}`, {
-                        headers: {'Content-Type': 'application/json'},
-                        method:'get'
-                    })
-                    const data = await res.json()
-                    console.log(data)
+                    toDate = '2022-07-28'
+                    location.href=`/admin/payroll?from=${fromDate}&to=${toDate}`
+                    // console.log(fromDate, toDate)
+                    // console.log(fromDate)
+                    // console.log(toDate)
+                    // const res = await fetch(`/admin/payroll_get?from=${fromDate}&to=${toDate}`, {
+                    //     headers: {'Content-Type': 'application/json'},
+                    //     method:'get'
+                    // })
+                    // const data = await res.json()
+                    // console.log(data)
+                    
                 })
                 
             </script>

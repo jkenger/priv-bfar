@@ -46,9 +46,7 @@ mongoose.connect(process.env.DB_URI)
         app.listen(process.env.PORT, [process.env.HOST], (req, res)=>{
             console.log('LISTENING AT PORT', process.env.PORT)
         })
-    }catch(err){
-        console.log('err')
-    }
+    }catch(err){console.log('err')}
 })
 
 

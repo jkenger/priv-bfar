@@ -35,11 +35,12 @@ module.exports = {
     payroll_get: async (req, res) => {
         if (req.query) {
             // const fromDate = new Date(`${(req.query.from.includes('T')) ? req.query.from : req.query.from + 'T00:00:00.000+00:00'}`)
+            
             const fromDate = new Date(req.query.from)
             const toDate = new Date(req.query.to)
             console.log(fromDate)
             console.log(toDate)
-            const calendarDate = 12
+            const calendarDate = 10
 
             // TODO//
             // QUERY AND JOIN EMPLOYEE AND ATTENDANCE DOCUMENT
@@ -59,14 +60,16 @@ module.exports = {
                     foreignField: 'emp_code',
                     as: 'attendances',
                     let: { time_in: '$time_in', time_out: '$time_out' },
-                    pipeline: [{ $match: { pm_time_out: { $ne: '' }, date: { $gte: fromDate, $lte: toDate } } }] // NOTE: fromdate and todate should be formatted for accurate results
+                    pipeline: [{ $match: { $or: [{pm_time_out: { $ne: '' }}, {am_time_out: {$ne: ''}}], date: { $gte: fromDate, $lte: toDate } } }] // NOTE: fromdate and todate should be formatted for accurate results
                 }},
                 // IF ONE ATTENDANCE TIME OUT IS EMPTY, COUNT AS HALF or .5 
                 { $unwind: '$attendances' },
                 {$project: {
                     _id: '$emp_code',
-                    emp_code: '$emp_code',
+                    emp_code: 1,
                     name: 1,
+                    salary: 1,
+                    designation: '$position',
                     isLate: '$attendances.isLate',
                     no_of_absents: { $sum: 1 },
                     no_of_days: { $cond: { if: { $eq: ['$attendances.isHalf', true] }, then: { $sum: .5 }, else: { $sum: 1 } } },
@@ -99,6 +102,8 @@ module.exports = {
                     _id: '$_id',
                     emp_code: {$first: '$emp_code'},
                     name: { $first: '$name' },
+                    designation: { $first: '$designation' },
+                    salary: {$first: '$salary'},
                     no_of_days: { $sum: '$no_of_days' },
                     no_of_absents: {$sum: '$no_of_absents'},
                     no_of_undertime: {$sum: '$no_of_undertime'}
@@ -108,7 +113,7 @@ module.exports = {
                 }},
                 /* TODO 
                     Create a query where it will return the total minutes of undertime 
-                    If every employee's time in has gone above the given office time by identifying isLate as true.
+                    If every employee's time in has gone above the given office time by isLate as true.
                 */
 
                 // {$group: { // Join
@@ -190,12 +195,11 @@ module.exports = {
                 //         no_of_hours: {$first: '$no_of_hours.no_of_hours'}
                 //     }
                 // },
-                { $sort: { date: 1 } }
+                { $sort: { emp_code: 1 } }
             ]
             try {
                 // QUERY PAYROLL RECORDS CONDITION
                 await employees.aggregate(pipeline).then(async records => {
-                    console.log(records)
                     res.status(200).send({ records })
                 })
             } catch (err) {

@@ -21,16 +21,11 @@ const EMP_TIME_RECORD = mongoose.Schema({
     date_string: {
         type: String
     },
-    am_office_in: {
-        type: Date
-    },
+    
     am_time_in: {
         type: Date
     },
     am_time_out: {
-        type: Date
-    },
-    pm_office_in: {
         type: Date
     },
     pm_time_in: {
@@ -41,6 +36,12 @@ const EMP_TIME_RECORD = mongoose.Schema({
     },
     duration: {
         type: Number
+    },
+    am_office_in: {
+        type: Date
+    },
+    pm_office_in: {
+        type: Date
     },
     offset: {
         type: Number
@@ -62,7 +63,7 @@ EMP_TIME_RECORD.statics.am_attendance = async function (emp_code, _id, time_type
 
     // OFFICE ISO DATE AND TIME
     const officeISODate = new Date().toISOString().split('T')[0]; // current date || yyyy-mm-dd
-    const testISODate = '2022-07-24'; // current date || yyyy-mm-dd
+    const testISODate = '2022-07-27'; // current date || yyyy-mm-dd
     console.log(officeISODate)
 
     // 8 AM TIME IN
@@ -132,6 +133,13 @@ EMP_TIME_RECORD.statics.am_attendance = async function (emp_code, _id, time_type
                     offset: new Date().getTimezoneOffset(),
                     isLate: false
                 })
+                if(currentLocalISODate > OFFICE_ISO_AM_START){
+                    console.log('AM IS LATE: **LATE**')
+                    await this.findOneAndUpdate({ 
+                        emp_code: emp_code,
+                        date_string: currentDateString},
+                        {isLate: true})
+                }
                 console.log(currentISODate)
                 return result
                 // ELSE THROW AN ERROR
@@ -139,13 +147,7 @@ EMP_TIME_RECORD.statics.am_attendance = async function (emp_code, _id, time_type
         }
 
         // IF LATE
-        if(currentLocalISODate > OFFICE_ISO_AM_START){
-            console.log('AM IS LATE: **LATE**')
-            await this.findOneAndUpdate({ 
-                emp_code: emp_code,
-                date_string: currentDateString},
-                {isLate: true})
-        }
+        
 
         // CREATE NEW DOCUMENT IF NO AM TIME IN AND TIME OUT IS EMPTY
         // UPDATE THE EXISTING DOCUMENT IF THERE IS AM TIME IN AND NO TIME OUT
@@ -181,32 +183,6 @@ EMP_TIME_RECORD.statics.am_attendance = async function (emp_code, _id, time_type
                     offset: new Date().getTimezoneOffset(),
                     isLate: false
                 })
-                return result
-
-                // IF STATUS RETURNED 1, UPDATE EXISTING
-            } else {
-                // FIND RECORD WHERE PM TIME IN IS EMPTY
-                const status = await this.find({
-                    emp_code: emp_code, date_string: currentDateString
-                })
-                
-                const result = await this.findOneAndUpdate(
-                    {
-                        emp_code: emp_code, date_string: currentDateString, // FIND
-                        am_time_in: { $ne: '' }, pm_time_in: ''
-                    },
-                    // UPDATE PM TIME-IN AND AM TIME-OUT // DO NOT OVERWRITE AM TIME OUT IF EXIST
-                    (status[0].am_time_out) ? {
-                        pm_time_in: currentISODate, //UPDATE
-                        pm_time_out: ''
-                        
-                    } : {
-                        am_time_out: currentISODate,
-                        pm_time_in: currentISODate, //UPDATE
-                        pm_time_out: ''
-                    }
-                )
-
                 // IF LATE
                 if(currentLocalISODate > OFFICE_ISO_OFF_PM_START){
                     console.log(currentLocalISODate > OFFICE_ISO_OFF_PM_START, currentLocalISODate, OFFICE_ISO_OFF_PM_START)
@@ -216,6 +192,22 @@ EMP_TIME_RECORD.statics.am_attendance = async function (emp_code, _id, time_type
                         date_string: currentDateString},
                         {isLate: true})
                 }
+                return result
+
+                // IF STATUS RETURNED 1, UPDATE EXISTING
+            } else {
+                const status = await this.find({ emp_code: emp_code, date_string: currentDateString })
+                
+                const result = await this.findOneAndUpdate(
+                    {emp_code: emp_code, date_string: currentDateString,
+                     am_time_in: { $ne: '' }, pm_time_in: ''},
+                    // UPDATE PM TIME-IN AND AM TIME-OUT // DO NOT OVERWRITE AM TIME OUT IF EXIST
+                    (status[0].am_time_out)
+                    ? { pm_time_in: currentISODate,  pm_time_out: ''}
+                    : {am_time_out: currentISODate, pm_time_in: currentISODate, pm_time_out: '' }
+                )
+
+                
 
                 // THROW AN ERROR 
                 if (!result) { throw Error('You have already logged in for afternoon shifts') }
