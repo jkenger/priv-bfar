@@ -37,7 +37,7 @@
                             <td><%=records.designation%></td>
                             <td><%=records.salary%></td>
                             <td><%=records.no_of_days%></td>
-                            <td>0</td>
+                            <td><%=records.gross_salary%></td>
                             <td><%=records.no_of_absents%></td>
                             <td><%=records.no_of_undertime%></td>
                             <td><%=records.salary%></td>
@@ -79,7 +79,7 @@
                     // fromDate = inputFromDate.value
                     // toDate = inputToDate.value
                     fromDate = '2022-07-15'
-                    toDate = '2022-07-28'
+                    toDate = '2022-07-30'
                     location.href=`/admin/payroll?from=${fromDate}&to=${toDate}`
                     // console.log(fromDate, toDate)
                     // console.log(fromDate)

@@ -63,7 +63,7 @@ EMP_TIME_RECORD.statics.am_attendance = async function (emp_code, _id, time_type
 
     // OFFICE ISO DATE AND TIME
     const officeISODate = new Date().toISOString().split('T')[0]; // current date || yyyy-mm-dd
-    const testISODate = '2022-07-27'; // current date || yyyy-mm-dd
+    const testISODate = '2022-07-29'; // current date || yyyy-mm-dd
     console.log(officeISODate)
 
     // 8 AM TIME IN
@@ -91,8 +91,8 @@ EMP_TIME_RECORD.statics.am_attendance = async function (emp_code, _id, time_type
     console.log(testISODate + OFFICE_PM_END)
 
     // CURRENT ISO DATE AND TIME
-    const currentISODate = new Date() // UTC
-    const currentLocalISODate = currentISODate.getTime() - new Date().getTimezoneOffset() * 60 * 1000 // convert to local time zone
+    const currentISODate = new Date() // FOR DATABASE STORING
+    const currentLocalISODate = currentISODate.getTime() - new Date().getTimezoneOffset() * 60 * 1000 // FOR TIME COMPARISON
 
 
     // CURRENT DATE STRING
@@ -104,7 +104,11 @@ EMP_TIME_RECORD.statics.am_attendance = async function (emp_code, _id, time_type
     // TIME-IN STARTS HERE ----------------------------------------------
     if (time_type === 'timein') {
 
-        // BEFORE 12 PM || AM TIME FRAME
+        if(currentLocalISODate > OFFICE_ISO_PM_END){
+            throw Error('Office hour ended')
+        }
+
+        //  AM TIME FRAME
         if (currentLocalISODate < OFFICE_ISO_AM_END) {
             console.log(currentLocalISODate < OFFICE_ISO_AM_END, currentLocalISODate, OFFICE_ISO_AM_END)
             // FIND ID WHERE THERE IS NO RECORD WITHIN TEH DAY
@@ -224,8 +228,8 @@ EMP_TIME_RECORD.statics.am_attendance = async function (emp_code, _id, time_type
     // TIME OUT STARTS HERE ---------------------------------------------------------------
     if (time_type === 'timeout') {
         console.log(new Date())
-        // CHECK BETWEEN 12 AND 12:45 PM
-        if (currentLocalISODate >= OFFICE_ISO_AM_END && currentLocalISODate <= OFFICE_ISO_PM_START) {
+        // CHECK 12 PM ONWARDS
+        if (currentLocalISODate >= OFFICE_ISO_AM_END) {
 
             // FIND IF HAS RECORD WITHIN AM
             const status = await this.find({

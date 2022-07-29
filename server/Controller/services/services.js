@@ -27,7 +27,7 @@ const errorHandler = (err) => {
     }
 
     // ATTENDANCE ERRORS
-    if(err.message === 'Next shift will start tommorow'){
+    if(err.message === 'Office hour ended'){
         error.email = err.message
         return error
     }

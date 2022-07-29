@@ -40,7 +40,8 @@ module.exports = {
             const toDate = new Date(req.query.to)
             console.log(fromDate)
             console.log(toDate)
-            const calendarDate = 10
+            const calendarDays = 12
+            
 
             // TODO//
             // QUERY AND JOIN EMPLOYEE AND ATTENDANCE DOCUMENT
@@ -71,7 +72,7 @@ module.exports = {
                     salary: 1,
                     designation: '$position',
                     isLate: '$attendances.isLate',
-                    no_of_absents: { $sum: 1 },
+                    full_days: { $sum: 1 },
                     no_of_days: { $cond: { if: { $eq: ['$attendances.isHalf', true] }, then: { $sum: .5 }, else: { $sum: 1 } } },
                     am_office: '$attendances.am_office_in',
                     pm_office: '$attendances.pm_office_in',
@@ -105,12 +106,76 @@ module.exports = {
                     designation: { $first: '$designation' },
                     salary: {$first: '$salary'},
                     no_of_days: { $sum: '$no_of_days' },
-                    no_of_absents: {$sum: '$no_of_absents'},
-                    no_of_undertime: {$sum: '$no_of_undertime'}
+                   full_days: {$sum: '$full_days'},
+                    no_of_undertime: {$sum: '$no_of_undertime'} // removed for testing purposes
+                    // full_days: {$first: 13},
+                    // no_of_undertime: {$first: 32} // test
+                    
                 }},
                 {$addFields: { 
-                    no_of_absents: { $subtract: [calendarDate, '$no_of_absents'] },
+                    // if this employee have no absentee, monthly salary will be divided by 2 and return the 2 weeks rate.
+                    week2_rate: {$divide: ['$salary', 2]},
+                    no_of_absents: {$cond: {
+                        if:{$lt: [{ $subtract: [calendarDays, '$full_days'] }, 0]},
+                        then: 0,
+                        else: { $subtract: [calendarDays, '$full_days'] }
+                    }},
+
+                    // IF HAS ABSENTEE, RETRIEVE ABSENTEE DEDUCTION
+                    hasab_deduction: {$let: {
+                        vars: { 
+                            daily_rate: {$round: [{$divide: [{$divide: ['$salary', 2]}, calendarDays]}, 2]},
+                            no_of_absents:  {$cond: {
+                                if:{$lt: [{ $subtract: [calendarDays, '$full_days'] }, 0]},
+                                then: 0,
+                                else: { $subtract: [calendarDays, '$full_days'] }
+                            }}
+                        },
+                        in: {$round: [{$multiply: ['$$no_of_absents', '$$daily_rate']},2]}
+                    }},
+
+                    // IF HAS UNDERTIME, RETRIEVE UNDERTIME DEDUCTION
+                    ut_deduction: {$let:{ 
+                    // ut_deduction = (((dailyrate / 8hr) / 60 secs) * 32) * no_of_undertime
+                        vars:{
+                            week2_rate: {$divide: ['$salary', 2]},
+                            daily_rate: {$round: [{$divide: [{$divide: ['$salary', 2]}, calendarDays]}, 2]},
+                        },
+                        in:{$round: [{$multiply: [{$divide: [{$divide: ['$$daily_rate', 8]}, 60]}, '$no_of_undertime']},2]}
+                    }},
                 }},
+                {$group: {
+                    _id: '$_id',
+                    emp_code: {$first: '$emp_code'},
+                    name: { $first: '$name' },
+                    designation: { $first: '$designation' },
+                    salary: {$first: '$salary'},
+                    no_of_days: { $first: '$no_of_days' },
+                    no_of_absents: {$first: '$no_of_absents'},
+                    no_of_undertime: {$first: '$no_of_undertime'},
+                    gross_salary: {$first: '$week2_rate'},
+                    hasab_deduction: {$first: '$hasab_deduction'},
+                    ut_deduction: {$first: '$ut_deduction'}
+                }},
+                {$addFields: {
+                    // 
+                    gross_salary: {$round: [{$subtract: ['$gross_salary', {$sum: ['$hasab_deduction', '$ut_deduction']}]},2]}
+                }},
+                // {$addFields: {
+                //     weekly_rate: {$divide: ['$salary', 2]}, // if this employee have no absentee, monthly salary will be divided by 2 and return the 2 weeks rate.
+                //     daily_rate: {$round: [{$divide: [{$divide: ['$salary', 2]}, calendarDays]}, 2]}, // daily rate
+
+                //     // IF HAS ABSENTEE, RETRIEVE THE DEDUCTION THE SUBTRACT WITH THE 2WKs RATE
+                //     deduction: {$multiply: ['$no_of_absents',{$round: [{$divide: [{$divide: ['$salary', 2]}, calendarDays]}, 2]}]}, // deduction
+                    
+                //     // gross amount = 2wks rate - deduction
+                //     //INSERT THE CONDITION HERE WHETHER THE EMPLOYEE HAS DEDUCTION OR NOT
+                //     nout_nondeducted_ga: {$divide: ['$salary', 2]}, // with no absent
+                //     nout_deducted_ga: {$subtract: [{$divide: ['$salary', 2]}, {$multiply: ['$no_of_absents',{$round: [{$divide: [{$divide: ['$salary', 2]}, calendarDays]}, 2]}]}]} //with absentee
+
+                //     // IF EMPLOYEE HAS UNDERTIME OR NUMBER OF MINUTES BY LATE, PERFORM THE FOLLOWING THEN RETURN AS NEW GROSS AMOUNT: 
+                //     // IF NOT, RETURN THE RESULT OF GROSS AMOUNT ABOVE
+                // }},
                 /* TODO 
                     Create a query where it will return the total minutes of undertime 
                     If every employee's time in has gone above the given office time by isLate as true.
@@ -200,6 +265,7 @@ module.exports = {
             try {
                 // QUERY PAYROLL RECORDS CONDITION
                 await employees.aggregate(pipeline).then(async records => {
+                    console.log(records)
                     res.status(200).send({ records })
                 })
             } catch (err) {
