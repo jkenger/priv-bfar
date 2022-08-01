@@ -63,7 +63,7 @@ EMP_TIME_RECORD.statics.am_attendance = async function (emp_code, _id, time_type
 
     // OFFICE ISO DATE AND TIME
     const officeISODate = new Date().toISOString().split('T')[0]; // current date || yyyy-mm-dd
-    const testISODate = '2022-07-29'; // current date || yyyy-mm-dd
+    const testISODate = '2022-08-01'; // current date || yyyy-mm-dd
     console.log(officeISODate)
 
     // 8 AM TIME IN
@@ -126,7 +126,7 @@ EMP_TIME_RECORD.statics.am_attendance = async function (emp_code, _id, time_type
                 const result = await this.create({
                     emp_code: emp_code,
                     emp_id: _id,
-                    date: moment(currentISODate).format(),
+                    date: currentLocalISODate,
                     date_string: currentDateString,
                     am_office_in: db_ISO_AM_START,
                     am_time_in: currentISODate,
@@ -176,7 +176,7 @@ EMP_TIME_RECORD.statics.am_attendance = async function (emp_code, _id, time_type
                 const result = await this.create({
                     emp_code: emp_code,
                     emp_id: _id,
-                    date: moment(currentISODate).format(),
+                    date: currentLocalISODate,
                     date_string: currentDateString,
                     am_office_in: db_ISO_AM_START,
                     am_time_in: '',
@@ -229,7 +229,7 @@ EMP_TIME_RECORD.statics.am_attendance = async function (emp_code, _id, time_type
     if (time_type === 'timeout') {
         console.log(new Date())
         // CHECK 12 PM ONWARDS
-        if (currentLocalISODate >= OFFICE_ISO_AM_END) {
+        if (currentLocalISODate >= OFFICE_ISO_AM_END && currentLocalISODate <= OFFICE_ISO_OFF_PM_START) {
 
             // FIND IF HAS RECORD WITHIN AM
             const status = await this.find({

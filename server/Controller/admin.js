@@ -38,10 +38,11 @@ module.exports = {
             
             const fromDate = new Date(req.query.from)
             const toDate = new Date(req.query.to)
+            const holiDate = new Date('2022-07-22')
             console.log(fromDate)
             console.log(toDate)
-            const calendarDays = 12
-            
+            const calendarDays = 11
+
 
             // TODO//
             // QUERY AND JOIN EMPLOYEE AND ATTENDANCE DOCUMENT
@@ -52,6 +53,9 @@ module.exports = {
             // CONSIDER HOLIDAYS 1 DAY IF: THE EMPLOYEE ATTENDED BEFORE THE HOLIDAY DATE.
             // ELSE: EMPLOYEE WILL BE MARKED AS ABSENT FOR 2 WORKING DAYS.
 
+            // DO NOT COUNT SATURDAYS
+            // FIND A WAY TO 
+
 
             // PIPELINES
             const pipeline = [
@@ -61,7 +65,8 @@ module.exports = {
                     foreignField: 'emp_code',
                     as: 'attendances',
                     let: { time_in: '$time_in', time_out: '$time_out' },
-                    pipeline: [{ $match: { $or: [{pm_time_out: { $ne: '' }}, {am_time_out: {$ne: ''}}], date: { $gte: fromDate, $lte: toDate } } }] // NOTE: fromdate and todate should be formatted for accurate results
+                    pipeline: [{ $match: { 
+                        $or: [{pm_time_out: { $ne: '' }}, {am_time_out: {$ne: ''}}], date: { $gte: fromDate, $lte: toDate } } }] // NOTE: fromdate and todate should be formatted for accurate results
                 }},
                 // IF ONE ATTENDANCE TIME OUT IS EMPTY, COUNT AS HALF or .5 
                 { $unwind: '$attendances' },
@@ -73,12 +78,13 @@ module.exports = {
                     designation: '$position',
                     isLate: '$attendances.isLate',
                     full_days: { $sum: 1 },
-                    no_of_days: { $cond: { if: { $eq: ['$attendances.isHalf', true] }, then: { $sum: .5 }, else: { $sum: 1 } } },
+                    whalf_days: { $cond: { if: { $eq: ['$attendances.isHalf', true] }, then: { $sum: .5 }, else: { $sum: 1 } } },
                     am_office: '$attendances.am_office_in',
                     pm_office: '$attendances.pm_office_in',
                     am: '$attendances.am_time_in',
-                    pm: '$attendances.pm_time_in'
+                    pm: '$attendances.pm_time_in',
                     // no_of_undertime: { $dateDiff: { startDate: "$attendances.am_office_in", endDate: "$attendances.am_time_in", unit: "minute" }}
+                    created_from: '$attendances.date'
                     
                 }},
                 {$addFields: {
@@ -97,22 +103,55 @@ module.exports = {
                                 then: 0, 
                                 else: { $dateDiff: { startDate: "$pm_office", endDate: "$pm", unit: "minute" }}
                         }}
-                    ]}}}
+                    ]}}},
+
+                    // HOLIDAY LOGIC HERE
+                    holiday: {$let:{
+                        vars: {
+                            holiday_date: {$cond: { // get the holiday date
+                                if: {$and: [{$gte:[holiDate, fromDate]}, {$lte: [holiDate, toDate]} ]},
+                                then: holiDate,
+                                else: 0
+                            }},
+                            holiday_date_before:  {$cond: { // if less than 0; return 0, else; get the day before holiday then return
+                                if: {$lt: [{$subtract: [{$cond: {
+                                    if: {$and: [{$gte:[holiDate, fromDate]}, {$lte: [holiDate, toDate]} ]},
+                                    then: holiDate,
+                                    else: 0
+                                }}, 24*60*60*1000]},0]}, // if negative return 0
+                                then: 0,
+                                else: {$subtract: [{$cond: {
+                                    if: {$and: [{$gte:[holiDate, fromDate]}, {$lte: [holiDate, toDate]} ]},
+                                    then: holiDate,
+                                    else: 0
+                                }}, 24*60*60*1000]} // else subtract by 1 day
+                            }},
+                            date: '$created_from'
+                        },
+                        in: {$cond: { // check each document if the user attended before the holiday date, return 2 if they do; else, 0. 
+                            if: {$and: [{$gte: ['$$date', '$$holiday_date_before']}, {$lt: ['$$date', '$$holiday_date']}]},
+                            then: 1,
+                            else: 0
+                        }}
+                    }},
                 }},
+
                 {$group: {
                     _id: '$_id',
                     emp_code: {$first: '$emp_code'},
                     name: { $first: '$name' },
                     designation: { $first: '$designation' },
                     salary: {$first: '$salary'},
-                    no_of_days: { $sum: '$no_of_days' },
-                   full_days: {$sum: '$full_days'},
+                    holiday: {$sum: '$holiday'},
+                    whalf_days: { $sum: '$whalf_days' },
+                    full_days: {$sum: '$full_days'},
                     no_of_undertime: {$sum: '$no_of_undertime'} // removed for testing purposes
-                    // full_days: {$first: 13},
+                    // full_days: {$first: 11},
                     // no_of_undertime: {$first: 32} // test
                     
                 }},
                 {$addFields: { 
+                    
                     // if this employee have no absentee, monthly salary will be divided by 2 and return the 2 weeks rate.
                     week2_rate: {$divide: ['$salary', 2]},
                     no_of_absents: {$cond: {
@@ -150,7 +189,8 @@ module.exports = {
                     name: { $first: '$name' },
                     designation: { $first: '$designation' },
                     salary: {$first: '$salary'},
-                    no_of_days: { $first: '$no_of_days' },
+                    holiday: {$first: '$holiday'},
+                    whalf_days: { $first: '$whalf_days' },
                     no_of_absents: {$first: '$no_of_absents'},
                     no_of_undertime: {$first: '$no_of_undertime'},
                     gross_salary: {$first: '$week2_rate'},
@@ -158,7 +198,6 @@ module.exports = {
                     ut_deduction: {$first: '$ut_deduction'}
                 }},
                 {$addFields: {
-                    // 
                     gross_salary: {$round: [{$subtract: ['$gross_salary', {$sum: ['$hasab_deduction', '$ut_deduction']}]},2]}
                 }},
                 // {$addFields: {
