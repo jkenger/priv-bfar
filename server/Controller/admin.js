@@ -37,11 +37,12 @@ module.exports = {
             // const fromDate = new Date(`${(req.query.from.includes('T')) ? req.query.from : req.query.from + 'T00:00:00.000+00:00'}`)
             
             const fromDate = new Date(req.query.from)
-            const toDate = new Date(req.query.to)
-            const holiDate = new Date('2022-07-22')
+            const toDate = new Date(req.query.to) 
             console.log(fromDate)
             console.log(toDate)
-            const calendarDays = 11
+            const holiDate = new Date('2022-07-29') // from user
+            
+            const calendarDays = 12 // from user
 
 
             // TODO//
@@ -77,8 +78,7 @@ module.exports = {
                     salary: 1,
                     designation: '$position',
                     isLate: '$attendances.isLate',
-                    full_days: { $sum: 1 },
-                    whalf_days: { $cond: { if: { $eq: ['$attendances.isHalf', true] }, then: { $sum: .5 }, else: { $sum: 1 } } },
+                    whalf_days: { $cond: {if: { $eq: ['$attendances.isHalf', true] }, then: { $sum: .5 }, else: { $sum: 1 }} },// 
                     am_office: '$attendances.am_office_in',
                     pm_office: '$attendances.pm_office_in',
                     am: '$attendances.am_time_in',
@@ -128,12 +128,13 @@ module.exports = {
                             }},
                             date: '$created_from'
                         },
-                        in: {$cond: { // check each document if the user attended before the holiday date, return 2 if they do; else, 0. 
-                            if: {$and: [{$gte: ['$$date', '$$holiday_date_before']}, {$lt: ['$$date', '$$holiday_date']}]},
-                            then: 1,
-                            else: 0
+                        in: {$cond: { // check each document if the user attended before the holiday date, return 1 if they do; else, 0. 
+                                if: {$and: [{$gte: ['$$date', '$$holiday_date_before']}, {$lt: ['$$date', '$$holiday_date']}]},
+                                then: 1,
+                                else: 0
                         }}
                     }},
+                    // 
                 }},
 
                 {$group: {
@@ -143,21 +144,32 @@ module.exports = {
                     designation: { $first: '$designation' },
                     salary: {$first: '$salary'},
                     holiday: {$sum: '$holiday'},
-                    whalf_days: { $sum: '$whalf_days' },
-                    full_days: {$sum: '$full_days'},
-                    no_of_undertime: {$sum: '$no_of_undertime'} // removed for testing purposes
-                    // full_days: {$first: 11},
-                    // no_of_undertime: {$first: 32} // test
+                    //whalf_days: {$sum: '$whalf_days'},
+                    no_of_undertime: {$sum: '$no_of_undertime'}, 
+                    whalf_days: {$first: 11}, // test
+                    // no_of_undertime: {$first: 0} // test
                     
                 }},
                 {$addFields: { 
                     
                     // if this employee have no absentee, monthly salary will be divided by 2 and return the 2 weeks rate.
                     week2_rate: {$divide: ['$salary', 2]},
+                     
+                    whalf_days: {$switch: {
+                        branches:[
+                            {case: {$eq: ['$holiday', 0]}, then: {$subtract: ['$whalf_days', 1]}},
+                            {case: {$eq: ['$holiday', 1]}, then: {$cond: {
+                                if: {$gte: [{$sum: ['$whalf_days', '$holiday']}, calendarDays]}, 
+                                then: calendarDays, 
+                                else: {$sum: ['$whalf_days', '$holiday']}}}
+                            }
+                        ]
+                     }},
+
                     no_of_absents: {$cond: {
-                        if:{$lt: [{ $subtract: [calendarDays, '$full_days'] }, 0]},
+                        if:{$lt: [{ $subtract: [calendarDays, {$sum: ['$whalf_days', '$holiday']}] }, 0]},
                         then: 0,
-                        else: { $subtract: [calendarDays, '$full_days'] }
+                        else: { $subtract: [calendarDays, {$sum: ['$whalf_days', '$holiday']}] }
                     }},
 
                     // IF HAS ABSENTEE, RETRIEVE ABSENTEE DEDUCTION
@@ -165,9 +177,9 @@ module.exports = {
                         vars: { 
                             daily_rate: {$round: [{$divide: [{$divide: ['$salary', 2]}, calendarDays]}, 2]},
                             no_of_absents:  {$cond: {
-                                if:{$lt: [{ $subtract: [calendarDays, '$full_days'] }, 0]},
+                                if:{$lt: [{ $subtract: [calendarDays, {$sum: ['$whalf_days', '$holiday']}] }, 0]},
                                 then: 0,
-                                else: { $subtract: [calendarDays, '$full_days'] }
+                                else: { $subtract: [calendarDays, {$sum: ['$whalf_days', '$holiday']}] }
                             }}
                         },
                         in: {$round: [{$multiply: ['$$no_of_absents', '$$daily_rate']},2]}
@@ -189,11 +201,11 @@ module.exports = {
                     name: { $first: '$name' },
                     designation: { $first: '$designation' },
                     salary: {$first: '$salary'},
-                    holiday: {$first: '$holiday'},
+                    holiday: {$first: '$holiday'}, // INCLUDED FOR TESTING PURPOSES
                     whalf_days: { $first: '$whalf_days' },
-                    no_of_absents: {$first: '$no_of_absents'},
-                    no_of_undertime: {$first: '$no_of_undertime'},
-                    gross_salary: {$first: '$week2_rate'},
+                    no_of_absents: {$first: '$no_of_absents'}, // INCLUDED FOR TESTING PURPOSES
+                    no_of_undertime: {$first: '$no_of_undertime'}, // INCLUDED FOR TESTING PURPOSES
+                    gross_salary: {$first: '$week2_rate'}, 
                     hasab_deduction: {$first: '$hasab_deduction'},
                     ut_deduction: {$first: '$ut_deduction'}
                 }},
