@@ -37,12 +37,14 @@ module.exports = {
             // const fromDate = new Date(`${(req.query.from.includes('T')) ? req.query.from : req.query.from + 'T00:00:00.000+00:00'}`)
             
             const fromDate = new Date(req.query.from)
-            const toDate = new Date(req.query.to) 
+            const toDate = new Date(req.query.to)
+            console.log(req.query.to)
             console.log(fromDate)
             console.log(toDate)
-            const holiDate = new Date('2022-07-29') // from user
+            const holiDate = new Date('2022-08-06') // from user
+            const holiDateBefore = new Date('2022-08-05') // from user
             
-            const calendarDays = 12 // from user
+            const calendarDays = 11 // from user
 
 
             // TODO//
@@ -108,34 +110,32 @@ module.exports = {
                     // HOLIDAY LOGIC HERE
                     holiday: {$let:{
                         vars: {
-                            holiday_date: {$cond: { // get the holiday date
+                            holiday_date: {$cond: { // get the holiday date, return 0 if there is no holiday given
                                 if: {$and: [{$gte:[holiDate, fromDate]}, {$lte: [holiDate, toDate]} ]},
                                 then: holiDate,
                                 else: 0
                             }},
-                            holiday_date_before:  {$cond: { // if less than 0; return 0, else; get the day before holiday then return
-                                if: {$lt: [{$subtract: [{$cond: {
-                                    if: {$and: [{$gte:[holiDate, fromDate]}, {$lte: [holiDate, toDate]} ]},
-                                    then: holiDate,
-                                    else: 0
-                                }}, 24*60*60*1000]},0]}, // if negative return 0
-                                then: 0,
-                                else: {$subtract: [{$cond: {
-                                    if: {$and: [{$gte:[holiDate, fromDate]}, {$lte: [holiDate, toDate]} ]},
-                                    then: holiDate,
-                                    else: 0
-                                }}, 24*60*60*1000]} // else subtract by 1 day
+                            holiday_date_before:  {$cond: { // get the holiday date, return 0 if there is no holiday given
+                                if: {$and: [{$gte:[holiDateBefore, fromDate]}, {$lte: [holiDateBefore, toDate]} ]},
+                                then: holiDateBefore,
+                                else: 0
                             }},
                             date: '$created_from'
                         },
-                        in: {$cond: { // check each document if the user attended before the holiday date, return 1 if they do; else, 0. 
-                                if: {$and: [{$gte: ['$$date', '$$holiday_date_before']}, {$lt: ['$$date', '$$holiday_date']}]},
-                                then: 1,
-                                else: 0
+                         // check each document if the user attended before the holiday date.
+                        in: {$cond: {
+                                if: {$eq: ['$$holiday_date', 0]},
+                                then: 0, // if no holiday
+                                else: {$cond:{
+                                    if: {$and: [{$gte: ['$$date', '$$holiday_date_before']}, {$lte: ['$$date', '$$holiday_date']}]},
+                                    then: 1, //if there is holiday
+                                    else: 2, // user didn't meet the condition 
+                                }}
                         }}
                     }},
                     // 
                 }},
+
 
                 {$group: {
                     _id: '$_id',
@@ -143,26 +143,24 @@ module.exports = {
                     name: { $first: '$name' },
                     designation: { $first: '$designation' },
                     salary: {$first: '$salary'},
-                    holiday: {$sum: '$holiday'},
-                    //whalf_days: {$sum: '$whalf_days'},
+                    holiday: {$first: '$holiday'},
+                    whalf_days: {$sum: '$whalf_days'},
                     no_of_undertime: {$sum: '$no_of_undertime'}, 
-                    whalf_days: {$first: 11}, // test
-                    // no_of_undertime: {$first: 0} // test
+                    // whalf_days: {$first: 11}, // test
+                    // no_of_undertime: {$first: 32} // test
                     
                 }},
                 {$addFields: { 
-                    
-                    // if this employee have no absentee, monthly salary will be divided by 2 and return the 2 weeks rate.
                     week2_rate: {$divide: ['$salary', 2]},
-                     
                     whalf_days: {$switch: {
                         branches:[
-                            {case: {$eq: ['$holiday', 0]}, then: {$subtract: ['$whalf_days', 1]}},
-                            {case: {$eq: ['$holiday', 1]}, then: {$cond: {
+                            {case: {$eq: ['$holiday', 0]}, then: '$whalf_days'},                // no holiday, no additions
+                            {case: {$eq: ['$holiday', 1]}, then: {$cond: {                      // add 1 day
                                 if: {$gte: [{$sum: ['$whalf_days', '$holiday']}, calendarDays]}, 
                                 then: calendarDays, 
                                 else: {$sum: ['$whalf_days', '$holiday']}}}
-                            }
+                            },
+                            {case: {$eq: ['$holiday', 2]}, then: {$subtract: ['$whalf_days', 1]}} // deduct 1 day
                         ]
                      }},
 
@@ -189,10 +187,10 @@ module.exports = {
                     ut_deduction: {$let:{ 
                     // ut_deduction = (((dailyrate / 8hr) / 60 secs) * 32) * no_of_undertime
                         vars:{
-                            week2_rate: {$divide: ['$salary', 2]},
+                            week2_rate: {$round: [{$divide: ['$salary', 2]},2]},
                             daily_rate: {$round: [{$divide: [{$divide: ['$salary', 2]}, calendarDays]}, 2]},
                         },
-                        in:{$round: [{$multiply: [{$divide: [{$divide: ['$$daily_rate', 8]}, 60]}, '$no_of_undertime']},2]}
+                        in:{$round: [{$multiply: [{$round: [{$divide: [{$divide: ['$$daily_rate', 8]}, 60]}, 2]}, '$no_of_undertime']},2]}
                     }},
                 }},
                 {$group: {
@@ -212,109 +210,9 @@ module.exports = {
                 {$addFields: {
                     gross_salary: {$round: [{$subtract: ['$gross_salary', {$sum: ['$hasab_deduction', '$ut_deduction']}]},2]}
                 }},
-                // {$addFields: {
-                //     weekly_rate: {$divide: ['$salary', 2]}, // if this employee have no absentee, monthly salary will be divided by 2 and return the 2 weeks rate.
-                //     daily_rate: {$round: [{$divide: [{$divide: ['$salary', 2]}, calendarDays]}, 2]}, // daily rate
-
-                //     // IF HAS ABSENTEE, RETRIEVE THE DEDUCTION THE SUBTRACT WITH THE 2WKs RATE
-                //     deduction: {$multiply: ['$no_of_absents',{$round: [{$divide: [{$divide: ['$salary', 2]}, calendarDays]}, 2]}]}, // deduction
-                    
-                //     // gross amount = 2wks rate - deduction
-                //     //INSERT THE CONDITION HERE WHETHER THE EMPLOYEE HAS DEDUCTION OR NOT
-                //     nout_nondeducted_ga: {$divide: ['$salary', 2]}, // with no absent
-                //     nout_deducted_ga: {$subtract: [{$divide: ['$salary', 2]}, {$multiply: ['$no_of_absents',{$round: [{$divide: [{$divide: ['$salary', 2]}, calendarDays]}, 2]}]}]} //with absentee
-
-                //     // IF EMPLOYEE HAS UNDERTIME OR NUMBER OF MINUTES BY LATE, PERFORM THE FOLLOWING THEN RETURN AS NEW GROSS AMOUNT: 
-                //     // IF NOT, RETURN THE RESULT OF GROSS AMOUNT ABOVE
-                // }},
-                /* TODO 
-                    Create a query where it will return the total minutes of undertime 
-                    If every employee's time in has gone above the given office time by isLate as true.
-                */
-
-                // {$group: { // Join
-                //         _id: "$_id",
-                //         emp_code: { $first: '$emp_code' },
-                //         name: { $first: '$name' },
-                //         designation: { $first: '$position' },
-                //         // sum up the total attendance
-                //         no_of_days: { $sum: { $size: "$attendance" } }
-                // }},
-                // {$lookup: {
-                //         from: 'attendances',
-                //         localField: 'emp_code',
-                //         foreignField: 'emp_code',
-                //         as: 'attendance',
-                //         let: { time_in: '$time_in', time_out: '$time_out' },
-                //         pipeline: [ {$match: { time_out: { $ne: '' },date: { $gte: fromDate, $lte: toDate } }},
-                //             { $project: {
-                //                     _id: '$emp_code',
-                //                     duration:
-                //                     { $dateDiff: { startDate: "$time_in", endDate: "$time_out", unit: "hour" }}
-                //             }},
-                //             { $group: {
-                //                     _id: '$_id',
-                //                     no_of_hours: { $sum: '$duration' }
-                //             }} ]
-                // }},
-                // {$group: { // Join
-                //         _id: "$_id",
-                //         emp_code: { $first: '$emp_code' },
-                //         name: { $first: '$name' },
-                //         designation: { $first: '$designation' },
-                //         // sum up the total attendance
-                //         no_of_days: { $first: '$no_of_days' },
-                //         no_of_hours: { $first: '$attendance' }
-                // }},
-
-                // ------------GET THE NUMBER OF DAYS INCLUDING HALFS-------------
-
-                // {
-                //     $unwind: '$attendance'
-                //   },
-                //   {
-                //     $project: {
-                //       '_id': '$name',
-                //       'status': '$attendance.status',
-                //       'attendance': {$cond: {
-                //       if: {
-                //         $eq: ['$attendance.status', 'full']}, 
-                //         then: {
-                //           $sum: 1
-                //         },
-                //         else:{
-                //           $sum: .5
-                //         }
-                //       }
-                //       }
-                //     }
-                //   },
-                //   {
-                //     $group: {
-                //       _id: '$_id',
-                //       'no_of_days': {$sum: '$attendance'}
-                //     }
-                //   }
-                // --------------------------------------------------------------
-
-                // {
-                //     $unwind:'$no_of_hours'
-                // },
-                // {
-                //     $group: {
-                //         _id: "$_id",
-                //         emp_code: { $first: '$emp_code' },
-                //         name: { $first: '$name' },
-                //         designation: { $first: '$designation' },
-                //         // sum up the total attendance
-                //         no_of_days: { $first: '$no_of_days' },
-                //         no_of_hours: {$first: '$no_of_hours.no_of_hours'}
-                //     }
-                // },
                 { $sort: { emp_code: 1 } }
             ]
             try {
-                // QUERY PAYROLL RECORDS CONDITION
                 await employees.aggregate(pipeline).then(async records => {
                     console.log(records)
                     res.status(200).send({ records })

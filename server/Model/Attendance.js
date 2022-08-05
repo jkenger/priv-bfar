@@ -63,7 +63,7 @@ EMP_TIME_RECORD.statics.am_attendance = async function (emp_code, _id, time_type
 
     // OFFICE ISO DATE AND TIME
     const officeISODate = new Date().toISOString().split('T')[0]; // current date || yyyy-mm-dd
-    const testISODate = '2022-08-01'; // current date || yyyy-mm-dd
+    const testISODate = '2022-08-05'; // current date || yyyy-mm-dd
     console.log(officeISODate)
 
     // 8 AM TIME IN
@@ -122,7 +122,7 @@ EMP_TIME_RECORD.statics.am_attendance = async function (emp_code, _id, time_type
 
             // IF STATUS RETURNED 0, CREATE NEW DOCUMENT
             // NOTE: date should be formatted to local date.
-            if (status.length === 0) {
+            if (!status.length) {
                 const result = await this.create({
                     emp_code: emp_code,
                     emp_id: _id,
@@ -131,7 +131,7 @@ EMP_TIME_RECORD.statics.am_attendance = async function (emp_code, _id, time_type
                     am_office_in: db_ISO_AM_START,
                     am_time_in: currentISODate,
                     am_time_out: '',
-                    pm_office_in: db_ISO_PM_START,
+                    pm_office_in: db_ISO_PM_START, 
                     pm_time_in: '',
                     pm_time_out: '',
                     offset: new Date().getTimezoneOffset(),
