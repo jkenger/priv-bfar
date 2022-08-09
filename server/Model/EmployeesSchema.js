@@ -34,7 +34,7 @@ const EmpSchema = mongoose.Schema({
         type: String,
         required: [true, "Please enter designation role."],
     },
-    Salary: {
+    salary: {
         type: Number,
         required: [true, "Please enter the right salary."]
     }

@@ -19,6 +19,22 @@ module.exports = {
         } catch (err) { res.status(500).send(err) }
     },
 
+    addEmployee: async (req, res)=>{
+        try{
+            res.status(200).render('addEmployee')
+        }catch(err) { res.status(500).send(err)}
+    },
+    viewEmployee: async (req, res)=>{
+        try{
+            res.status(200).render('addEmployee')
+        }catch(err) { res.status(500).send(err)}
+    },
+    editEmployee: async (req, res)=>{
+        try{
+            res.status(200).render('addEmployee')
+        }catch(err) { res.status(500).send(err)}
+    },
+
     records: async (req, res) => {
         try {
             const data = await fetchData('admin/records_get')

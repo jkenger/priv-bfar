@@ -24,26 +24,105 @@
     <div class="container">
         <aside class="container-aside">
             <div class="container-aside-list">
-                <label for="employee">Payroll management</label>
-                <div class="container-aside-list-dropdown <%if(url === '/'){%> active <% }%>  ">
-                    <a href="#">
+                <label for="employee">Dashboard</label>
+                <div class="container-aside-list-dropdown  ">
+                    <a href="/admin/">
                         <i class="fa-solid fa-chart-bar"></i>
-                        <label for="">Payroll</label>
+                        <label for="">Dashboard</label>
+                    </a>
+                </div>
+            </div>
+            <div class="container-aside-list">
+                <label for="employee">Employee Management</label>
+                <div class="container-aside-list-dropdown  ">
+                    <a href="/admin/employees">
+                        <i class="fa-solid fa-user"></i>
+                        <label for="">Employees</label>
+                    </a>
+                </div>
+            </div>
+            <div class="container-aside-list">
+                <label for="employee">Payroll Management</label>
+                <div class="container-aside-list-dropdown ">
+                    <a href="/admin/payroll">
+                        <i class="fa-solid fa-receipt"></i>
+                        <label for="">Payment</label>
+                    </a>
+                </div>
+            </div>
+            <div class="container-aside-list">
+                <label for="payroll">Attendance Management</label>
+                <div class="container-aside-list-dropdown">
+                    <a href="/admin/records">
+                        <i class="fa-solid fa-calendar-check"></i>
+                        <label for="">Records</label>
+                    </a>
+                </div>
+            </div>
+            <div class="container-aside-list">
+                <label for="payroll">Settings</label>
+                <div class="container-aside-list-dropdown">
+                    <a href="#">
+                        <i class="fa-solid fa-sliders"></i>
+                        <label for="">Accounts</label>
                     </a>
                 </div>
             </div>
         </aside>
+        <main>
+            <div class="container dashboard">
+                <div class="employees">
+                    <div class="employee-query components box-shadow">
+                        <h1> <a href="/admin/employees">Employees</a> / Add employee</h1>
+                        <div class="employee-query-search">
+                            <form novalidate role="search">
+                                <button>
+                                    <i class="fa-solid fa-magnifying-glass"></i>
+                                </button>
+                                <input type="text" placeholder="Type your query here and press enter">
+                            </form>
+                        </div>
+                    </div>
+                    <div class="employee-container box-shadow components">
+                        <div class="title">
+                            Add employee
+                        </div>
+                        <div class="addemp-form">
+                            <form>
+                                <label for="fullname">Full Name *</label>
+                                <input type="text" placeholder="Full Name" name="fullname">
+                                <label for="rfid">RFID *</label>
+                                <input type="text" placeholder="RFID">
+                                <label for="employeecode">ID No. (Employee Code) *</label>
+                                <input type="text" placeholder="ID No." name="employeecode">
+                                <label for="age">Age *</label>
+                                <input type="text" placeholder="Age" name="age">
+                                <label for="email">Email *</label>
+                                <input type="text" placeholder="Email" name="email">
+                                <label for="contact">Contact *</label>
+                                <input type="text" placeholder="Contact" name="contact">
+                                <label for="position">Position *</label>
+                                <input type="text" placeholder="Position" name="position">
+                                <label for="salary">Salary *</label>
+                                <input type="text" placeholder="Salary" name="salary">
+                                <button class="button-submit">Add</button>
+                            </form>
+                        </div>
+                        <script>
+                            const form = document.querySelector('form');
+                            form.addEventListener('submit', async (e) => {
+                                e.preventDefault()
+                            })
+                        </script>
+                    </div>
+                </div>
+            </div>
+        </main>
 
-        
 
-        <script>
-            const form = document.querySelector('form');
-            form.addEventListener('submit', async (e) => {
-                e.preventDefault()
-            })
-        </script>
 
     </div>
+
 </body>
 
 </html>

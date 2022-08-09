@@ -5,33 +5,68 @@ const { query } = require('express')
 const moment = require('moment')
 
 module.exports = {
-    // GET TOTAL EMPLOYEE
+    // get total employee count
     employees_count_get: async (req, res) => {
         try {
             const empC = await employees.find().count()
             res.status(200).send({ empC })
         } catch (err) { res.status(500).send(err) }
     },
-    // GET ALL THE EMPLOYEE
-    employees_get: async (req, res) => {
+
+    // employee controllers
+    readEmployees: async (req, res) => {
         try {
             const emp = await employees.find()
             res.status(200).send({ emp })
         } catch (err) { res.status(500).send(err) }
     },
+    addEmployee: async (req, res) => {
+        try {
+            const {name, emp_code, rfid, age, email, contact, position, salary} = req.body
+            console.log(name, emp_code, rfid, age, email, contact, position, salary)
+            const isAdded = await employees.create({
+                name: name,
+                emp_code: emp_code,
+                rfid: rfid,
+                age: age,
+                email: email,
+                contact: contact,
+                position: position,
+                salary: salary
+            })
+            
+            if(isAdded) res.status(200).send({isAdded})
+            else res.status(400).send({error: "Failure to process creation"})
+        } catch (err) { res.status(500).send(err) }
+    },
+    updateEmployee: async (req, res) => {
+        try {
+            res.send('UPDATED')
+        } catch (err) { res.status(500).send(err) }
+    },
+    deleteEmployee: async (req, res) => {
+        try {
+            res.send('DELETED')
+        } catch (err) { res.status(500).send(err) }
+    },
 
+    // test/ delete all attendances
     delete_attendance: async (req, res) => {
         try {
             const data = await attendances.updateMany({$ne: {emp_code: ''}}, {am_office_in: '2022-07-26T00:00:00.000+00:00', pm_office_in: '2022-07-26T05:00:00.000+00:00'})
             console.log(data)
         } catch (err) { res.status(500).send(err) }
     },
+
+    // get all records
     records_get: async (req, res) => {
         try {
             const records = await attendances.find().sort({ date: -1 });
             res.status(200).send({ records })
         } catch (err) { res.status(500).send(err) }
     },
+
+    // get payroll transaction
     payroll_get: async (req, res) => {
         if (req.query) {
             // const fromDate = new Date(`${(req.query.from.includes('T')) ? req.query.from : req.query.from + 'T00:00:00.000+00:00'}`)

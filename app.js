@@ -23,6 +23,16 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/assets', express.static(path.join(__dirname, '/node_modules/onscan.js/')))
 app.use('/scripts', express.static(path.join(__dirname, '/public/script/')))
 
+// CONNECTION
+mongoose.connect(process.env.DB_URI)
+.then(result=>{
+    try{
+        app.listen(process.env.PORT, [process.env.HOST], (req, res)=>{
+            console.log('LISTENING AT PORT', process.env.PORT)
+        })
+    }catch(err){console.log('err')}
+})
+
 // ROUTES
 app.use('/admin', adminRoute)
 app.use('/', publicRoute)
@@ -39,15 +49,6 @@ app.set('view engine', 'ejs')
 
 
 
-// CONNECTION
-mongoose.connect(process.env.DB_URI)
-.then(result=>{
-    try{
-        app.listen(process.env.PORT, [process.env.HOST], (req, res)=>{
-            console.log('LISTENING AT PORT', process.env.PORT)
-        })
-    }catch(err){console.log('err')}
-})
 
 
 

@@ -1,0 +1,40 @@
+[{
+  "_id": {
+    "$oid": "62c2c54138d16c86255f63f1"
+  },
+  "name": "Ning Ning Niego",
+  "emp_code": "11",
+  "age": 19,
+  "email": "ningning@gmail.com",
+  "contact": "09068322323",
+  "position": "Researcher",
+  "rfid": "0713907956",
+  "salary": 15000
+},{
+  "_id": {
+    "$oid": "62c2c54138d16c86255f63f2"
+  },
+  "name": "Montano Gallones",
+  "emp_code": "12",
+  "age": 23,
+  "email": "mgallones@gmail.com",
+  "contact": "09043311222",
+  "rfid": "0735749140",
+  "position": "QA",
+  "salary": 22316
+},{
+  "_id": {
+    "$oid": "62c2c59e0eadcff41a106d83"
+  },
+  "name": "john kenneth gervac",
+  "emp_code": "10",
+  "age": 20,
+  "email": "johnkgervacio@gmail.com",
+  "contact": {
+    "$numberLong": "9068848368"
+  },
+  "rfid": "1076529603",
+  "position": "Full Stack",
+  "__v": 0,
+  "salary": 24495
+}]

@@ -13,23 +13,44 @@ route.get('/REGISTER', adminAuthView.register)
 route.get('/LOGOUT', adminAuthView.logout) 
 
 // AUTHENTICATION CONTROLLERS
-route.post('/REGISTER', adminAuth.register_post)
-route.post('/LOGIN', adminAuth.login_post)
+route.post('/register', adminAuth.register_post)
+route.post('/login', adminAuth.login_post)
 
 
 // ADMIN VIEW
 route.get('*', checkUser)
 route.get('/', checkToken, checkRoles, adminView.home)
-route.get('/EMPLOYEES',checkToken, checkRoles, adminView.employees)
-route.get('/PAYROLL', checkToken, checkRoles, adminView.payroll)
-route.get('/RECORDS', checkToken, checkRoles, adminView.records)
+// employees page
 
-// ADMIN CONTROLLERS
-route.get('/EMPLOYEES_GET',  admin.employees_get)
+route.get('/employees',checkToken, checkRoles, adminView.employees)
+route.get('/employees/add',checkToken, checkRoles, adminView.addEmployee)
+route.get('/employees/view',checkToken, checkRoles, adminView.viewEmployee)
+route.get('/employees/view/edit',checkToken, checkRoles, adminView.editEmployee)
+
+route.get('/payroll', checkToken, checkRoles, adminView.payroll)
+route.get('/records', checkToken, checkRoles, adminView.records)
+
+// ADMIN CONTROLLERS || APIS
+
+// dashboard
 route.get('/EMPLOYEES_COUNT_GET', admin.employees_count_get)
-route.get('/DELETE_ATTENDANCE', admin.delete_attendance)
+
+// employee controller
+route.get('/employees_get',  admin.readEmployees)
+route.post('/employee_add',  admin.addEmployee)
+route.put('/employee_delete',  admin.updateEmployee)
+route.delete('/employee_delete',  admin.deleteEmployee)
+
+// record page
 route.get('/RECORDS_GET', admin.records_get)
+
+// payroll page
 route.get('/PAYROLL_GET', admin.payroll_get)
+
+
+
+// tests
+route.get('/DELETE_ATTENDANCE', admin.delete_attendance)
 
 
 
