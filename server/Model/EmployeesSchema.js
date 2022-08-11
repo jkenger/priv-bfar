@@ -4,7 +4,6 @@ const validator = require('validator')
 const EmpSchema = mongoose.Schema({
     name: {
         type: String,
-        lowercase: true,
         required: [true, "Please fill in the name."]
     },
     emp_code:{

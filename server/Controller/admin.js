@@ -9,59 +9,56 @@ module.exports = {
     employees_count_get: async (req, res) => {
         try {
             const result = await employees.find().count()
-            if(!result) res.status(500).send('System couldn\'t find any data.')
+            if(!result) res.status(500).send('Failure to find any data.')
             res.status(200).send({ result })
-        } catch (err) { res.status(500).send(err) }
+        } catch (e) { res.status(500).send(e) }
     },
 
     // employee controllers
     readEmployees: async (req, res) => {
         try {
             const result = await employees.find()
-            if(!result) res.status(500).send('System couldn\'t found any data.')
-            res.status(200).send({result})
+            if(!result) res.status(500).send('Failure to find any data')
+            else res.status(200).send({result})
 
-        } catch (err) { res.status(500).send(err) }
+        } catch (e) { res.status(500).send(e) }
     },
     viewEmployee: async (req, res) => {
-        try {
+        try{
             const id = req.query.id
-            if (!id) res.status(500).send('There is an error processing your id.')
+            if (!id) res.status(500).send('Failutre to process the given id')
             
             const result = await employees.findById(id)
-            if(!result) res.status(500).send('System couldn\'t recognized the given id.')
+            if(!result) res.status(500).send('Failure to find any document by the id')
             else res.status(200).send({result})
+        }catch(e) {res.status(500).send(e)}
             
-        } catch (err) { res.status(500).send(err) }
     },
     addEmployee: async (req, res) => {
         try {
-            const {name, emp_code, rfid, age, email, contact, position, salary} = req.body
-            console.log(name, emp_code, rfid, age, email, contact, position, salary)
-            const isAdded = await employees.create({
-                name: name,
-                emp_code: emp_code,
-                rfid: rfid,
-                age: age,
-                email: email,
-                contact: contact,
-                position: position,
-                salary: salary
-            })
+            const doc = req.body
+            const result = await employees.create(doc)
             
-            if(isAdded) res.status(200).send({isAdded})
-            else res.status(400).send({error: "Failure to process creation"})
-        } catch (err) { res.status(500).send(err) }
+            if(!result) res.status(500).send('Failure to process creation')
+            else res.status(200).send({result})
+        } catch (e) { res.status(500).send(e) }
     },
     updateEmployee: async (req, res) => {
         try {
-            res.send('UPDATED')
-        } catch (err) { res.status(500).send(err) }
+            const id = req.params.id
+            const update = req.body
+            if(!id) res.status(500).send('Failure to process the given id')
+
+            const result = await employees.updateOne({_id: id}, {$set: update})
+            if(!result) res.status(500).send('Failure to update the employee')
+            res.status(200).send(result)
+        } catch (e) { res.status(500).send(e) }
     },
     deleteEmployee: async (req, res) => {
         try {
-            res.send('DELETED')
-        } catch (err) { res.status(500).send(err) }
+            const id = req.params.id
+            res.send(id)
+        } catch (e) { res.status(500).send(e) }
     },
 
     // test/ delete all attendances
@@ -69,7 +66,7 @@ module.exports = {
         try {
             const data = await attendances.updateMany({$ne: {emp_code: ''}}, {am_office_in: '2022-07-26T00:00:00.000+00:00', pm_office_in: '2022-07-26T05:00:00.000+00:00'})
             console.log(data)
-        } catch (err) { res.status(500).send(err) }
+        } catch (e) { res.status(500).send(e) }
     },
 
     // get all records
@@ -77,7 +74,7 @@ module.exports = {
         try {
             const records = await attendances.find().sort({ date: -1 });
             res.status(200).send({ records })
-        } catch (err) { res.status(500).send(err) }
+        } catch (e) { res.status(500).send(e) }
     },
 
     // get payroll transaction
@@ -265,9 +262,9 @@ module.exports = {
                 const result = await employees.aggregate(pipeline)
                 if (!result) res.status(500).send('Invalid request')
                 res.status(200).send({result})
-            } catch (err) {
-                res.status(500).send(err)
-                console.log(err)
+            } catch (e) {
+                res.status(500).send(e)
+                console.log(e)
             }
         }
 

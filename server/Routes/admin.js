@@ -7,46 +7,48 @@ const {checkToken, checkUser, checkRoles}  = require('../Middleware/auth')
 
 
 
-// AUTHENTICATION VIEW
-route.get('/LOGIN', adminAuthView.login)
-route.get('/REGISTER', adminAuthView.register)
-route.get('/LOGOUT', adminAuthView.logout) 
+// authentication endpoints
+route.get('/login', adminAuthView.login)
+route.get('/register', adminAuthView.register)
+route.get('/logout', adminAuthView.logout) 
 
-// AUTHENTICATION CONTROLLERS
+// authentication api
 route.post('/register', adminAuth.register_post)
 route.post('/login', adminAuth.login_post)
 
 
-// ADMIN VIEW
+// all
 route.get('*', checkUser)
 route.get('/', checkToken, checkRoles, adminView.home)
-// employees page
 
+// employee endpoints
 route.get('/employees',checkToken, checkRoles, adminView.employees)
 route.get('/employees/add',checkToken, checkRoles, adminView.addEmployee)
 route.get('/employees/view',checkToken, checkRoles, adminView.viewEmployee)
 route.get('/employees/view/edit',checkToken, checkRoles, adminView.editEmployee)
 
+// payroll endpoints
 route.get('/payroll', checkToken, checkRoles, adminView.payroll)
+
+// record endpoints 
 route.get('/records', checkToken, checkRoles, adminView.records)
 
-// ADMIN CONTROLLERS || APIS
-
+// [api]
 // dashboard
-route.get('/EMPLOYEES_COUNT_GET', admin.employees_count_get)
+route.get('/api/employees_count', admin.employees_count_get)
 
-// employee controller
-route.get('/employees_get',  admin.readEmployees)
-route.get('/employee_view',  admin.viewEmployee)
-route.post('/employee_add',  admin.addEmployee)
-route.put('/employee_update',  admin.updateEmployee)
-route.delete('/employee_delete',  admin.deleteEmployee)
+// employee api
+route.get('/api/employees',  admin.readEmployees)
+route.get('/api/employees/:id',  admin.viewEmployee)
+route.post('/api/employees',  admin.addEmployee)
+route.patch('/api/employees/:id',  admin.updateEmployee)
+route.delete('api/employee_delete/:id',  admin.deleteEmployee)
 
-// record page
-route.get('/RECORDS_GET', admin.records_get)
+// record api
+route.get('/api/records', admin.records_get)
 
-// payroll page
-route.get('/PAYROLL_GET', admin.payroll_get)
+// payroll api
+route.get('/api/payrolls', admin.payroll_get)
 
 
 
