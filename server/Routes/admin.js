@@ -37,8 +37,9 @@ route.get('/EMPLOYEES_COUNT_GET', admin.employees_count_get)
 
 // employee controller
 route.get('/employees_get',  admin.readEmployees)
+route.get('/employee_view',  admin.viewEmployee)
 route.post('/employee_add',  admin.addEmployee)
-route.put('/employee_delete',  admin.updateEmployee)
+route.put('/employee_update',  admin.updateEmployee)
 route.delete('/employee_delete',  admin.deleteEmployee)
 
 // record page

@@ -7,15 +7,15 @@ module.exports = {
     // RENDERER
     home: async (req, res) => {
         try {
-            const data = await fetchData('admin/employees_count_get')
-            res.status(200).render('Home', { data })
+            const datas = await fetchData('admin/employees_count_get')
+            res.status(200).render('Home', { datas })
         } catch (err) { res.status(500).send(err) }
     },
 
     employees: async (req, res) => {
         try {
-            const data = await fetchData('admin/employees_get')
-            res.status(200).render('Employees', { data })
+            const datas = await fetchData('admin/employees_get')
+            res.status(200).render('Employees', { datas })
         } catch (err) { res.status(500).send(err) }
     },
 

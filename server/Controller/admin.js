@@ -8,16 +8,30 @@ module.exports = {
     // get total employee count
     employees_count_get: async (req, res) => {
         try {
-            const empC = await employees.find().count()
-            res.status(200).send({ empC })
+            const result = await employees.find().count()
+            if(!result) res.status(500).send('System couldn\'t find any data.')
+            res.status(200).send({ result })
         } catch (err) { res.status(500).send(err) }
     },
 
     // employee controllers
     readEmployees: async (req, res) => {
         try {
-            const emp = await employees.find()
-            res.status(200).send({ emp })
+            const result = await employees.find()
+            if(!result) res.status(500).send('System couldn\'t found any data.')
+            res.status(200).send({result})
+
+        } catch (err) { res.status(500).send(err) }
+    },
+    viewEmployee: async (req, res) => {
+        try {
+            const id = req.query.id
+            if (!id) res.status(500).send('There is an error processing your id.')
+            
+            const result = await employees.findById(id)
+            if(!result) res.status(500).send('System couldn\'t recognized the given id.')
+            else res.status(200).send({result})
+            
         } catch (err) { res.status(500).send(err) }
     },
     addEmployee: async (req, res) => {
@@ -248,10 +262,9 @@ module.exports = {
                 { $sort: { emp_code: 1 } }
             ]
             try {
-                await employees.aggregate(pipeline).then(async records => {
-                    console.log(records)
-                    res.status(200).send({ records })
-                })
+                const result = await employees.aggregate(pipeline)
+                if (!result) res.status(500).send('Invalid request')
+                res.status(200).send({result})
             } catch (err) {
                 res.status(500).send(err)
                 console.log(err)

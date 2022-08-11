@@ -30,17 +30,17 @@
                         <th>Status</th>
                         <th>Actions</th>
                     </tr>
-                    <% Object.values(data.records).forEach(records =>{%> 
+                    <% Object.values(data.result).forEach(user =>{%> 
                         <tr>
-                            <td><%=records.emp_code%></td>
-                            <td><%=records.name%></td>
-                            <td><%=records.designation%></td>
-                            <td><%=records.salary%></td>
-                            <td><%=records.whalf_days%></td>
-                            <td><%=records.gross_salary%></td>
-                            <td><%=records.no_of_absents%></td>
-                            <td><%=records.no_of_undertime%></td>
-                            <td><%=records.gross_salary%></td>
+                            <td><%=user.emp_code%></td>
+                            <td><%=user.name%></td>
+                            <td><%=user.designation%></td>
+                            <td><%=user.salary%></td>
+                            <td><%=user.whalf_days%></td>
+                            <td><%=user.gross_salary%></td>
+                            <td><%=user.no_of_absents%></td>
+                            <td><%=user.no_of_undertime%></td>
+                            <td><%=user.gross_salary%></td>
                             <td>0</td>
                             <td>0</td>
                         </tr>
