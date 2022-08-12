@@ -59,3 +59,5 @@ form.addEventListener('submit', async (e) => {
     }
     
 })
+
+setInterval(() => t.textContent = new Date().toLocaleTimeString(),1000);

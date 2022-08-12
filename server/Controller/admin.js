@@ -87,8 +87,8 @@ module.exports = {
             console.log(req.query.to)
             console.log(fromDate)
             console.log(toDate)
-            const holiDate = new Date('2022-08-06') // from user
-            const holiDateBefore = new Date('2022-08-05') // from user
+            const holiDate = new Date('2022-09-06') // from user
+            const holiDateBefore = new Date('2022-09-05') // from user
             
             const calendarDays = 11 // from user
 
@@ -114,8 +114,7 @@ module.exports = {
                     foreignField: 'emp_code',
                     as: 'attendances',
                     let: { time_in: '$time_in', time_out: '$time_out' },
-                    pipeline: [{ $match: { 
-                        $or: [{pm_time_out: { $ne: '' }}, {am_time_out: {$ne: ''}}], date: { $gte: fromDate, $lte: toDate } } }] // NOTE: fromdate and todate should be formatted for accurate results
+                    pipeline: [{ $match: { $or: [{am_time_out: {$ne: null}}, {pm_time_out: {$ne: null}}],date: { $gte: fromDate, $lte: toDate } } }] // NOTE: fromdate and todate should be formatted for accurate results
                 }},
                 // IF ONE ATTENDANCE TIME OUT IS EMPTY, COUNT AS HALF or .5 
                 { $unwind: '$attendances' },
@@ -261,6 +260,7 @@ module.exports = {
             try {
                 const result = await employees.aggregate(pipeline)
                 if (!result) res.status(500).send('Invalid request')
+                console.log(result)
                 res.status(200).send({result})
             } catch (e) {
                 res.status(500).send(e)
