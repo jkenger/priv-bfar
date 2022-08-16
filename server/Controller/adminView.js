@@ -8,14 +8,14 @@ module.exports = {
     home: async (req, res) => {
         try {
             const datas = await fetchData('admin/api/employees_count')
-            res.status(200).render('Home', { datas })
+            res.status(200).render('home', { datas })
         } catch (err) { res.status(500).send(err) }
     },
 
     employees: async (req, res) => {
         try {
             const datas = await fetchData('admin/api/employees')
-            res.status(200).render('Employees', { datas })
+            res.status(200).render('employees', { datas })
         } catch (err) { res.status(500).send(err) }
     },
 
@@ -38,7 +38,7 @@ module.exports = {
     records: async (req, res) => {
         try {
             const data = await fetchData('admin/api/records')
-            res.status(200).render('TimeRecords', { data, moment: moment })
+            res.status(200).render('timeRecords', { data, moment: moment })
         } catch (err) { res.status(500).send(err) }
     },
 
@@ -52,7 +52,7 @@ module.exports = {
             else fromDate = new Date(req.query.from).toISOString(), toDate = new Date(req.query.to + 'T23:59:59.999Z').toISOString()
 
             const data = await fetchData(`admin/api/payrolls?from=${fromDate}&to=${toDate}`)
-            res.status(200).render('Payroll', { data, url: req.url })
+            res.status(200).render('payroll', { data, url: req.url })
 
         } catch (err) { res.status(500).send(err) }
     }

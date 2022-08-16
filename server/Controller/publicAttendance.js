@@ -56,7 +56,7 @@ module.exports = {
     monitorTime : async (req, res) => {
         try {
             // const data = await fetchData('time_monito')
-            res.status(200).render('TimeMonitoring', {
+            res.status(200).render('timeMonitoring', {
                 url: req.url,
                 currentDate: new Date().toLocaleDateString(),
                 currentTime: new Date().toLocaleTimeString()

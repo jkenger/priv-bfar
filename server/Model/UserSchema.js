@@ -33,8 +33,7 @@ UserSchema.statics.login = async function(email, password){
     // find user if exist
     const user = await this.findOne({email})
 
-    if(!user){throw Error('Invalid email') } 
-
+    if(!user) throw Error('Invalid email') 
     if(user){
         // authenticate
         const auth = await bcrypt.compare(password, user.password)
@@ -43,6 +42,6 @@ UserSchema.statics.login = async function(email, password){
     }
 }
 
-const Users = mongoose.model('users', UserSchema)
+const users = mongoose.model('users', UserSchema)
 
-module.exports = Users
+module.exports = users

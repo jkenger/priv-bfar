@@ -17,9 +17,59 @@
                             </div>
                         </div>
                     <div class="employee-container box-shadow components">
-                        asdsd
+                        <div class="title">
+                            Add employee
+                        </div>
+                        <div class="addemp-form">
+                            <form class="add-emp">
+                                <label for="fullname">Full Name *</label>
+                                <input type="text" placeholder="Full Name" name="name">
+                                <label for="employeecode">ID No. (Employee Code) *</label>
+                                <input type="text" placeholder="ID No." name="emp_code">
+                                <label for="rfid">RFID *</label>
+                                <input type="text" placeholder="RFID" name="rfid">
+                                <label for="age">Age *</label>
+                                <input type="text" placeholder="Age" name="age">
+                                <label for="email">Email *</label>
+                                <input type="text" placeholder="Email" name="email">
+                                <label for="contact">Contact *</label>
+                                <input type="text" placeholder="Contact" name="contact">
+                                <label for="position">Position *</label>
+                                <input type="text" placeholder="Position" name="position">
+                                <label for="salary">Salary *</label>
+                                <input type="text" placeholder="Salary" name="salary">
+                                <button class="button-submit">add</button>
+                            </form>
+                        </div>
+                        
                     </div>
                     </div>
                 </div>
             </main>
+            <script>
+                let form = document.querySelector('.add-emp')
+                form.addEventListener('submit', async (e) => {
+                    console.log('ASDASFAS')
+                    e.preventDefault();
+                    const doc = {
+                        name : form.name.value,
+                        emp_code : form.emp_code.value,
+                        rfid : form.rfid.value,
+                        age : form.age.value,
+                        email : form.email.value,
+                        contact : form.contact.value,
+                        position : form.position.value,
+                        salary : form.salary.value
+                    }
+
+                    console.log(doc)
+                    const res = await fetch('http://localhost:3000/admin/api/employees',{
+                        headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify(doc),
+                        method: 'POST'
+                    })
+                    const data = await res.json()
+                    console.log(data)
+                })
+            </script>
             <%-include('partials/Footer')%>

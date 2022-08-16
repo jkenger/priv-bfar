@@ -37,6 +37,7 @@ module.exports = {
     addEmployee: async (req, res) => {
         try {
             const doc = req.body
+            console.log(doc)
             const result = await employees.create(doc)
             
             if(!result) res.status(500).send('Failure to process creation')
@@ -73,7 +74,7 @@ module.exports = {
     records_get: async (req, res) => {
         try {
             const records = await attendances.find().sort({ date: -1 });
-            res.status(200).send({ records })
+            res.status(200).send({records})
         } catch (e) { res.status(500).send(e) }
     },
 

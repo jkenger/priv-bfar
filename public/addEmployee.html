@@ -73,7 +73,7 @@
             <div class="container dashboard">
                 <div class="employees">
                     <div class="employee-query components box-shadow">
-                        <h1>Payroll Accounts</h1>
+                        <h1> <a href="/admin/employees">Employees</a> / Add employee</h1>
                         <div class="employee-query-search">
                             <form novalidate role="search">
                                 <button>
@@ -83,74 +83,50 @@
                             </form>
                         </div>
                     </div>
-                    <div class="employee-container components box-shadow">
-                        <table class="employee-table">
-                            <tr>
-                                <th>Employee Code</th>
-                                <th>Name</th>
-                                <th>Designation</th>
-                                <th>Monthly Rate</th>
-                                <th>Days</th>
-                                <th>Gross Amount Earned</th>
-                                <th>Absentee(s)</th>
-                                <th>Undertime</th>
-                                <th>Net Amount Due</th>
-                                <th>Status</th>
-                                <th>Actions</th>
-                            </tr>
-                            
-                        </table>
+                    <div class="employee-container box-shadow components">
+                        <div class="title">
+                            Add employee
+                        </div>
+                        <div class="addemp-form">
+                            <form class="add-emp">
+                                <label for="fullname">Full Name *</label>
+                                <input type="text" placeholder="Full Name" name="fullname"/>
+                                <label for="rfid">RFID *</label>
+                                <input type="text" placeholder="RFID"/>
+                                <label for="employeecode">ID No. (Employee Code) *</label>
+                                <input type="text" placeholder="ID No." name="empcode"/>
+                                <label for="age">Age *</label>
+                                <input type="text" placeholder="Age" name="age"/>
+                                <label for="email">Email *</label>
+                                <input type="text" placeholder="Email" name="email"/>
+                                <label for="contact">Contact *</label>
+                                <input type="text" placeholder="Contact" name="contact"/>
+                                <label for="position">Position *</label>
+                                <input type="text" placeholder="Position" name="position"/>
+                                <label for="salary">Salary *</label>
+                                <input type="text" placeholder="Salary" name="salary"/>
+                                <button class="button-submit">Add</button>
+                            </form>
+                        </div>
+                        <script>
+                            let form = document.querySelector('.add-emp')
+                            form.addEventListener('submit', async (e) => {
+                                console.log('ASDASFAS')
+                                e.preventDefault();
+
+                                const email = form.email.value
+                                const password = form.email.value
+
+
+                            })
+                        </script>
                     </div>
-                    <form novalidate role="search">
-                        <label for="birthday">From:</label>
-                        <input type="date" id="fromdate" name="fromdate">
-                        <label for="birthday">To:</label>
-                        <input type="date" id="todate" name="todate">
-                    </form>
-                    <button class="button-submit find">Find</button>
-                    <script>
-
-                        //  FORMAT DATE TO MM/DD/YYYY
-                        const splitDate = (date) => {
-                            const splitDate = date.split('-')
-                            const month = splitDate[2]
-                            const day = splitDate[1]
-                            const year = splitDate[0]
-                            const newDate = `${month}/${day}/${year}`
-                            return newDate
-                        }
-                        //  GET CALENDER ELEMENTS
-                        const inputFromDate = document.querySelector('#fromdate')
-                        const inputToDate = document.querySelector('#todate')
-
-                        // SET DEFAULT DATE TODAY
-                        inputFromDate.valueAsDate = new Date()
-                        inputToDate.valueAsDate = new Date()
-
-                        // GET ELEMENT OF FIND BUTTON, INITIATE WHEN CLICKED
-                        const btnSubmit = document.querySelector('.find')
-                        btnSubmit.addEventListener('click', async (e) => {
-                            // fromDate = inputFromDate.value
-                            // toDate = inputToDate.value
-                            fromDate = '2022-07-15'
-                            toDate = '2022-07-30'
-                            location.href = `/admin/payroll?from=${fromDate}&to=${toDate}`
-                            // console.log(fromDate, toDate)
-                            // console.log(fromDate)
-                            // console.log(toDate)
-                            // const res = await fetch(`/admin/payroll_get?from=${fromDate}&to=${toDate}`, {
-                            //     headers: {'Content-Type': 'application/json'},
-                            //     method:'get'
-                            // })
-                            // const data = await res.json()
-                            // console.log(data)
-
-                        })
-
-                    </script>
                 </div>
             </div>
         </main>
+
+
+
     </div>
 
 </body>

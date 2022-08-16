@@ -1,10 +1,10 @@
 module.exports = {
 
-    login : (req, res) => {
+    login:(req, res) => {
         if (req.cookies['token']) {
             res.status(200).redirect('/login')
         } else {
-            res.status(200).render('Login')
+            res.status(200).render('login')
         }
     },
     register : (req, res) => {
@@ -12,7 +12,7 @@ module.exports = {
             res.status(200).redirect('/register')
         } else {
     
-            res.status(200).render('Signup')
+            res.status(200).render('signup')
         }
     },
     logout : (req, res) => {

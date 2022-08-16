@@ -7,31 +7,47 @@ const {checkToken, checkUser, checkRoles}  = require('../Middleware/auth')
 
 
 
-// authentication endpoints
-route.get('/login', adminAuthView.login)
-route.get('/register', adminAuthView.register)
-route.get('/logout', adminAuthView.logout) 
+// // authentication endpoints
+// route.get('/login', adminAuthView.login)
+// route.get('/register', adminAuthView.register)
+// route.get('/logout', adminAuthView.logout) 
 
-// authentication api
-route.post('/register', adminAuth.register_post)
-route.post('/login', adminAuth.login_post)
+// // authentication api
+// route.post('/register', adminAuth.register_post)
+// route.post('/login', adminAuth.login_post)
 
+
+// // all
+// route.get('*', checkUser)
+// route.get('/', checkToken, checkRoles, adminView.home)
+
+// // employee endpoints
+// route.get('/employees',checkToken, checkRoles, adminView.employees)
+// route.get('/employees/add',checkToken, checkRoles, adminView.addEmployee)
+// route.get('/employees/view',checkToken, checkRoles, adminView.viewEmployee)
+// route.get('/employees/view/edit',checkToken, checkRoles, adminView.editEmployee)
+
+// // payroll endpoints
+// route.get('/payroll', checkToken, checkRoles, adminView.payroll)
+
+// // record endpoints 
+// route.get('/records', checkToken, checkRoles, adminView.records)
 
 // all
-route.get('*', checkUser)
-route.get('/', checkToken, checkRoles, adminView.home)
+route.get('*', )
+route.get('/', adminView.home)
 
 // employee endpoints
-route.get('/employees',checkToken, checkRoles, adminView.employees)
-route.get('/employees/add',checkToken, checkRoles, adminView.addEmployee)
-route.get('/employees/view',checkToken, checkRoles, adminView.viewEmployee)
-route.get('/employees/view/edit',checkToken, checkRoles, adminView.editEmployee)
+route.get('/employees', adminView.employees)
+route.get('/employees/add', adminView.addEmployee)
+route.get('/employees/view', adminView.viewEmployee)
+route.get('/employees/view/edit', adminView.editEmployee)
 
 // payroll endpoints
-route.get('/payroll', checkToken, checkRoles, adminView.payroll)
+route.get('/payroll', adminView.payroll)
 
 // record endpoints 
-route.get('/records', checkToken, checkRoles, adminView.records)
+route.get('/records',  adminView.records)
 
 // [api]
 // dashboard
