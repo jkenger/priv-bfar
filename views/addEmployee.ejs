@@ -22,24 +22,46 @@
                         </div>
                         <div class="addemp-form">
                             <form class="add-emp">
-                                <label for="fullname">Full Name *</label>
-                                <input type="text" placeholder="Full Name" name="name">
-                                <label for="employeecode">ID No. (Employee Code) *</label>
-                                <input type="text" placeholder="ID No." name="emp_code">
-                                <label for="rfid">RFID *</label>
-                                <input type="text" placeholder="RFID" name="rfid">
-                                <label for="age">Age *</label>
-                                <input type="text" placeholder="Age" name="age">
-                                <label for="email">Email *</label>
-                                <input type="text" placeholder="Email" name="email">
-                                <label for="contact">Contact *</label>
-                                <input type="text" placeholder="Contact" name="contact">
-                                <label for="position">Position *</label>
-                                <input type="text" placeholder="Position" name="position">
-                                <label for="salary">Salary *</label>
-                                <input type="text" placeholder="Salary" name="salary">
-                                <button class="button-submit">add</button>
+                                <div class="add-emp-section">
+                                    <div>
+                                        <label for="fullname">Full Name *</label>
+                                        <input type="text" placeholder="Full Name" name="name">
+                                        <label for="error" class="fname-error error">a</label>
+                                        <label for="employeecode">ID No. (Employee Code) *</label>
+                                        <input type="text" placeholder="ID No." name="emp_code">
+                                        <label for="error" class="id-error error">a</label>
+                                    </div>
+                                    <div>
+                                        <label for="rfid">RFID *</label>
+                                        <input type="text" placeholder="RFID" name="rfid">
+                                        <label for="error" class="rfid-error error">a</label>
+                                        <label for="age">Age *</label>
+                                        <input type="text" placeholder="Age" name="age">
+                                        <label for="error" class="age-error error">a</label>
+                                    </div>
+                                    <div>
+                                        <label for="email">Email *</label>
+                                        <input type="text" placeholder="Email" name="email">
+                                        <label for="error" class="email-error error">a</label>
+                                        <label for="contact">Contact *</label>
+                                        <input type="text" placeholder="Contact" name="contact">
+                                        <label for="error" class="contact-error error">a</label>
+                                    </div>
+                                    <div>
+                                        <label for="position">Position *</label>
+                                        <input type="text" placeholder="Position" name="position">
+                                        <label for="error" class="position-error error">a</label>
+                                        <label for="salary">Salary *</label>
+                                        <input type="text" placeholder="Salary" name="salary">
+                                        <label for="error" class="salary-error error">a</label>
+                                    </div>
+                                </div>
+                                
+                                <div>
+                                    <button class="button-submit add-emp-btn">Save this employee</button>
+                                </div>
                             </form>
+                            
                         </div>
                         
                     </div>
@@ -48,6 +70,14 @@
             </main>
             <script>
                 let form = document.querySelector('.add-emp')
+                const fnameErr = document.querySelector('.fname-error')
+                const idErr = document.querySelector('.id-error')
+                const rfidErr = document.querySelector('.rfid-error')
+                const ageErr = document.querySelector('.age-error')
+                const emailErr = document.querySelector('.email-error')
+                const contactErr = document.querySelector('.contact-error')
+                const positionErr = document.querySelector('.position-error')
+                const salaryErr = document.querySelector('.salary-error')
                 form.addEventListener('submit', async (e) => {
                     console.log('ASDASFAS')
                     e.preventDefault();
@@ -69,6 +99,20 @@
                         method: 'POST'
                     })
                     const data = await res.json()
+
+                    if(data.result) console.log(data.result)
+                    console.log(data)
+                    if(data.err) {
+                        fnameErr.textContent = data.err.name
+                        idErr.textContent = data.err.emp_code
+                        rfidErr.textContent = data.err.rfid
+                        ageErr.textContent = data.err.age
+                        emailErr.textContent = data.err.email
+                        contactErr.textContent = data.err.contact
+                        positionErr.textContent = data.err.position
+                        salaryErr.textContent = data.err.salary
+                    }
+                    
                     console.log(data)
                 })
             </script>

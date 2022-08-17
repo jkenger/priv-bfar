@@ -4,11 +4,12 @@ const validator = require('validator')
 const EmpSchema = mongoose.Schema({
     name: {
         type: String,
-        required: [true, "Please fill in the name."]
+        required: [true, "Name is required"]
     },
     emp_code:{
         type:String,
-        unique:true
+        unique:true,
+        required: [true, "ID No. is required"]
     },
     rfid: {
         type: String,
@@ -16,26 +17,26 @@ const EmpSchema = mongoose.Schema({
     },
     age: {
         type: Number,
-        required: [true, "Age is required."]
+        required: [true, "Age is required"]
     },
     email: {
         type: String,
-        required: [true, "Please enter an email."],
+        required: [true, "Email is required"],
         unique: true,
         lowercase: true,
-        validate: [validator.isEmail, "Invalid email"]
+        validate: [validator.isEmail, "Enter a valid email"]
     },
     contact: {
         type: Number,
-        required: [true, "Enter contact number."],
+        required: [true, "Contact number is required"],
     },
     position:{
         type: String,
-        required: [true, "Please enter designation role."],
+        required: [true, "Designation role is required"],
     },
     salary: {
         type: Number,
-        required: [true, "Please enter the right salary."]
+        required: [true, "Salary is required"]
     }
 
 })

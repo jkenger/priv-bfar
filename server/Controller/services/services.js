@@ -10,7 +10,17 @@ const fetchData = async (url) => {
 
 
 const errorHandler = (err) => {
-    const error = { email: '', password: '' }
+    const error = { email: '', password: ''}
+    const empFormErr = { 
+        name: '',
+        emp_code: '', 
+        rfid: '', 
+        age: '', 
+        email: '', 
+        contact: '', 
+        position:'', 
+        salary: ''}
+    
 
     if (err.message === 'Invalid email') {
         error.email = err.message
@@ -83,7 +93,13 @@ const errorHandler = (err) => {
             error[properties.path] = properties.message
         })
     }
-    return error
+    if(err.message.includes('employees validation failed')){
+        Object.values(err.errors).forEach(properties => {
+            //empFormErr[properties.path] = properties.message
+            empFormErr[properties.path] = properties.message
+        })
+    }
+    return empFormErr
 }
 
 module.exports = {

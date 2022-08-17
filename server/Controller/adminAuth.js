@@ -26,7 +26,7 @@ module.exports = {
             res.status(200).send({ user: user })
         } catch (err) {
             const error = errorHandler(err)
-            res.status(500).send({ err: error })
+            res.status(500).send({err: error})
         }
 
     },

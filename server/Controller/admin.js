@@ -10,7 +10,7 @@ module.exports = {
         try {
             const result = await employees.find().count()
             if(!result) res.status(500).send('Failure to find any data.')
-            res.status(200).send({ result })
+            res.status(200).send({result})
         } catch (e) { res.status(500).send(e) }
     },
 
@@ -42,7 +42,10 @@ module.exports = {
             
             if(!result) res.status(500).send('Failure to process creation')
             else res.status(200).send({result})
-        } catch (e) { res.status(500).send(e) }
+        } catch (e) { 
+            const error = errorHandler(e)
+            res.status(500).send({err: error}) 
+        }
     },
     updateEmployee: async (req, res) => {
         try {

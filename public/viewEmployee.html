@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
+        integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="styles/style.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <title>EMS</title>
+</head>
+
+<body>
+    <nav class="container-nav box-shadow">
+        <div class="container-nav-title">
+            <img src="img/bfar-logo.png" alt="">
+            <h1>BFAR <span>EMS</span></h1>
+        </div>
+    </nav>
+    <div class="container">
+        <aside class="container-aside">
+            <div class="container-aside-list">
+                <label for="employee">Dashboard</label>
+                <div class="container-aside-list-dropdown  ">
+                    <a href="/admin/">
+                        <i class="fa-solid fa-chart-bar"></i>
+                        <label for="">Dashboard</label>
+                    </a>
+                </div>
+            </div>
+            <div class="container-aside-list">
+                <label for="employee">Employee Management</label>
+                <div class="container-aside-list-dropdown  ">
+                    <a href="/admin/employees">
+                        <i class="fa-solid fa-user"></i>
+                        <label for="">Employees</label>
+                    </a>
+                </div>
+            </div>
+            <div class="container-aside-list">
+                <label for="employee">Payroll Management</label>
+                <div class="container-aside-list-dropdown ">
+                    <a href="/admin/payroll">
+                        <i class="fa-solid fa-receipt"></i>
+                        <label for="">Payment</label>
+                    </a>
+                </div>
+            </div>
+            <div class="container-aside-list">
+                <label for="payroll">Attendance Management</label>
+                <div class="container-aside-list-dropdown">
+                    <a href="/admin/records">
+                        <i class="fa-solid fa-calendar-check"></i>
+                        <label for="">Records</label>
+                    </a>
+                </div>
+            </div>
+            <div class="container-aside-list">
+                <label for="payroll">Settings</label>
+                <div class="container-aside-list-dropdown">
+                    <a href="#">
+                        <i class="fa-solid fa-sliders"></i>
+                        <label for="">Accounts</label>
+                    </a>
+                </div>
+            </div>
+        </aside>
+        <main>
+            <div class="container dashboard">
+                <div class="employees">
+                    <div class="employee-query components box-shadow">
+                        <h1> <a href="/admin/employees">Employees</a> / View employee</h1>
+                        <div class="employee-query-search">
+                            <form novalidate role="search">
+                                <button>
+                                    <i class="fa-solid fa-magnifying-glass"></i>
+                                </button>
+                                <input type="text" placeholder="Type your query here and press enter">
+                            </form>
+                        </div>
+                    </div>
+                    <div class="employee-container box-shadow components">
+                        <div class="addemp-form">
+                            <form class="add-emp">
+                                <label for="fullname">Full Name *</label>
+                                <input type="text" placeholder="Full Name" name="fullname" readonly/>
+                                <label for="error">a</label>
+                                <label for="rfid">RFID *</label>
+                                <input type="text" placeholder="RFID" readonly/>
+                                <label for="error">a</label>
+                                <label for="employeecode">ID No. (Employee Code) *</label>
+                                <input type="text" placeholder="ID No." name="empcode" readonly/>
+                                <label for="error">a</label>
+                                <label for="age">Age *</label>
+                                <input type="text" placeholder="Age" name="age" readonly/>
+                                <label for="error">a</label>
+                                <label for="email">Email *</label>
+                                <input type="text" placeholder="Email" name="email" readonly/>
+                                <label for="error">a</label>
+                                <label for="contact">Contact *</label>
+                                <input type="text" placeholder="Contact" name="contact" readonly/>
+                                <label for="error">a</label>
+                                <label for="position">Position *</label>
+                                <input type="text" placeholder="Position" name="position" readonly/>
+                                <label for="error">a</label>
+                                <label for="salary">Salary *</label>
+                                <input type="text" placeholder="Salary" name="salary" readonly/>
+                                <label for="error">a</label>
+                                <button class="button-submit">Add</button>
+                            </form>
+                        </div>
+                        <script>
+                            let form = document.querySelector('.add-emp')
+                            form.addEventListener('submit', async (e) => {
+                                console.log('ASDASFAS')
+                                e.preventDefault();
+
+                                const email = form.email.value
+                                const password = form.email.value
+
+
+                            })
+                        </script>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+
+
+    </div>
+
+</body>
+
+</html>
