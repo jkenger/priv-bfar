@@ -25,7 +25,7 @@ module.exports = {
     },
     viewEmployee: async (req, res) => {
         try{
-            const id = req.query.id
+            const id = req.params.id
             if (!id) res.status(500).send('Failutre to process the given id')
             
             const result = await employees.findById(id)

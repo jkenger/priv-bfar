@@ -6,7 +6,7 @@
                 <div class="container dashboard">
                     <div class="employees">
                         <div class="employee-query components box-shadow">
-                            <h1> <a href="/admin/employees">Employees</a>  / Add employee</h1>
+                            <h1> <a href="/admin/employees">Employees</a>  / Profile</h1>
                             <div class="employee-query-search">
                                 <form novalidate role="search">
                                     <button>
@@ -19,7 +19,11 @@
                     <div class="employee-container box-shadow components">
                         <div class="head">
                             <div class="title">
-                                Add employee
+                                <%=datas.result.name%>'s profile
+                            </div>
+                            <div class="actions">
+                                <Button class="button-edit">Edit</Button>
+                                <Button class="button-delete">Delete</Button>
                             </div>
                         </div>
                         
@@ -29,25 +33,25 @@
                                     <div>
                                         <div>
                                             <label for="fullname">Full Name *</label>
-                                            <input type="text" placeholder="Full Name" name="name" class="box-shadow">
-                                            <label for="error" class="fname-error error">a</label>
+                                            <input value='<%=datas.result.name%>'type="text" placeholder="Full Name" name="name" class="view-input box-shadow" id="name">
+                                            <label for="error" class="fname-error error"></label>
                                         </div>
                                         <div>
                                             <label for="employeecode">ID No. (Employee Code) *</label>
-                                            <input type="text" placeholder="ID No." name="emp_code" class="box-shadow">
-                                            <label for="error" class="id-error error">a</label>
+                                            <input value='<%=datas.result.emp_code%>' type="text" placeholder="ID No." name="emp_code" class="view-input box-shadow" id="id_no">
+                                            <label for="error" class="id-error error"></label>
                                         </div>
                                     </div>
                                     <div>
                                         <div>
-                                            <label for="rfid">RFID *</label>
-                                            <input type="text" placeholder="RFID" name="rfid" class="box-shadow">
-                                            <label for="error" class="rfid-error error">a</label>
+                                            <label for="rfid">RFID (optional)</label>
+                                            <input value='<%=datas.result.rfid%>' type="text" placeholder="RFID" name="rfid" class="view-input box-shadow" id="rfid">
+                                            <label for="error" class="rfid-error error"></label>
                                         </div>
                                         <div>
                                             <label for="age">Age *</label>
-                                            <input type="text" placeholder="Age" name="age" class="box-shadow">
-                                            <label for="error" class="age-error error">a</label>
+                                            <input value='<%=datas.result.age%>' type="text" placeholder="Age" name="age" class="view-input box-shadow" id="age">
+                                            <label for="error" class="age-error error"></label>
                                         </div>
                                         
                                         
@@ -55,26 +59,26 @@
                                     <div>
                                         <div>
                                             <label for="email">Email *</label>
-                                            <input type="text" placeholder="Email" name="email" class="box-shadow">
-                                            <label for="error" class="email-error error">a</label>
+                                            <input value='<%=datas.result.email%>' type="text" placeholder="Email" name="email" class="view-input box-shadow" id="email">
+                                            <label for="error" class="email-error error"></label>
                                         </div>
                                         <div>
                                             <label for="contact">Contact *</label>
-                                            <input type="text" placeholder="Contact" name="contact" class="box-shadow">
-                                            <label for="error" class="contact-error error">a</label>
+                                            <input value='<%=datas.result.contact%>' type="text" placeholder="Contact" name="contact" class="view-input box-shadow" id="contact">
+                                            <label for="error" class="contact-error error"></label>
                                         </div>
                                         
                                     </div>
                                     <div>
                                         <div>
                                             <label for="position">Position *</label>
-                                            <input type="text" placeholder="Position" name="position" class="box-shadow">
-                                            <label for="error" class="position-error error">a</label>
+                                            <input value='<%=datas.result.position%>' type="text" placeholder="Position" name="position" class="view-input box-shadow" id="position">
+                                            <label for="error" class="position-error error"></label>
                                         </div>
                                         <div>
                                             <label for="salary">Salary *</label>
-                                            <input type="text" placeholder="Salary" name="salary" class="box-shadow">
-                                            <label for="error" class="salary-error error">a</label>
+                                            <input value='<%=datas.result.salary%>' type="text" placeholder="Salary" name="salary" class="view-input box-shadow" id="salary">
+                                            <label for="error" class="salary-error error"></label>
                                         </div>
                                         
                                         
@@ -82,7 +86,7 @@
                                 </div>
                                 
                                 <div>
-                                    <button class="button-submit add-emp-btn">Save this employee</button>
+                                    <button class="button-submit add-emp-btn btn-disable">Save this employee</button>
                                 </div>
                             </form>
                             
@@ -102,7 +106,24 @@
                 const contactErr = document.querySelector('.contact-error')
                 const positionErr = document.querySelector('.position-error')
                 const salaryErr = document.querySelector('.salary-error')
-                form.addEventListener('submit', async (e) => {
+
+                const fnamEl = document.querySelector('#name')
+                const idEl = document.querySelector('#id_no')
+                const rfidEl = document.querySelector('#rfid')
+                const ageEl = document.querySelector('#age')
+                const emailEl = document.querySelector('#email')
+                const contactEl = document.querySelector('#contact')
+                const posEl = document.querySelector('#position')
+                const salaryEl = document.querySelector('#salary')
+
+                window.addEventListener('DOMContentLoaded', (event)=>{
+                    const viewInputs = document.querySelectorAll('input.view-input')
+                    for(let i = 0; i < viewInputs.length; i ++){
+                        viewInputs[i].readOnly=true
+                    }
+
+
+                    form.addEventListener('submit', async (e) => {
                     console.log('ASDASFAS')
                     e.preventDefault();
                     const doc = {
@@ -136,8 +157,10 @@
                         positionErr.textContent = data.err.position
                         salaryErr.textContent = data.err.salary
                     }
-                    
                     console.log(data)
+                    })
                 })
+
+                
             </script>
             <%-include('partials/Footer')%>

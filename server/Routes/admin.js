@@ -40,7 +40,7 @@ route.get('/', adminView.home)
 // employee endpoints
 route.get('/employees', adminView.employees)
 route.get('/employees/add', adminView.addEmployee)
-route.get('/employees/view', adminView.viewEmployee)
+route.get('/employees/view/:id', adminView.viewEmployee)
 route.get('/employees/view/edit', adminView.editEmployee)
 
 // payroll endpoints

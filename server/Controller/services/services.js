@@ -95,11 +95,10 @@ const errorHandler = (err) => {
     }
     if(err.message.includes('employees validation failed')){
         Object.values(err.errors).forEach(properties => {
-            //empFormErr[properties.path] = properties.message
             empFormErr[properties.path] = properties.message
         })
     }
-    return empFormErr
+    return error,empFormErr
 }
 
 module.exports = {

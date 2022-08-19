@@ -40,12 +40,28 @@
                                         <td><%=user.contact%></td>
                                         <td><%=user.position%></td>
                                         <td>
-                                            <button class="view">view</button>
-                                            <button class="edit">edit</button>
+                                            <button class="button" data-id='<%=user._id%>'>view</button>
+                                            <button class="button-edit">edit</button>
                                         </td>
                                     </tr>
                                 <%}); %>
                             </table>
+                            <script>
+                                const viewBtns = document.querySelectorAll('.button')
+                                const editBtn = document.querySelector('.button-edit')
+                                // const id = viewBtn.dataset.id
+                                for(let i = 0; i < viewBtns.length; i++){
+                                    viewBtns[i].addEventListener('click', (e)=>{
+                                        const id = viewBtns[i].dataset.id
+                                        location.assign(`http://localhost:3000/admin/employees/view/${id}`)
+                                    })
+                                }
+                               
+                                // viewBtn.addEventListener('click', (e)=>{
+                                //     location.assign(`http://localhost:3000/admin/employees/view/${id}`)
+                                // })
+
+                            </script>
                         </div>
                     </div>
                 </div>

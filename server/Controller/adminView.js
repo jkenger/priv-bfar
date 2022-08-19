@@ -26,12 +26,17 @@ module.exports = {
     },
     viewEmployee: async (req, res)=>{
         try{
-            res.status(200).render('addEmployee')
+            const id = req.params.id
+            if(!id) throw Error('ID not found from the client')
+            
+            const datas = await fetchData(`admin/api/employees/${id}`)
+            console.log(datas)
+            res.status(200).render('viewEmployee', { datas })
         }catch(err) { res.status(500).send(err)}
     },
     editEmployee: async (req, res)=>{
         try{
-            res.status(200).render('addEmployee')
+            res.status(200).render('editEmployee')
         }catch(err) { res.status(500).send(err)}
     },
 
