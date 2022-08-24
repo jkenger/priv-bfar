@@ -22,8 +22,8 @@
                                 <%=datas.result.name%>'s profile
                             </div>
                             <div class="actions">
-                                <Button class="button-edit">Edit</Button>
-                                <Button class="button-delete">Delete</Button>
+                                <Button class="button" id="edit">Edit</Button>
+                                <Button class="button-delete" id="delete" data-id="<%=datas.result._id%> ">Delete</Button>
                             </div>
                         </div>
                         
@@ -86,7 +86,7 @@
                                 </div>
                                 
                                 <div>
-                                    <button class="button-submit add-emp-btn btn-disable">Save this employee</button>
+                                    <button class="button add-emp-btn btn-disable" id="update" data-id="<%=datas.result._id%>">Save this employee</button>
                                 </div>
                             </form>
                             
@@ -98,6 +98,10 @@
             </main>
             <script>
                 let form = document.querySelector('.add-emp')
+                const deleteBtn = document.querySelector('#delete')
+                const editBtn = document.querySelector('#edit')
+                const updateBtn = document.querySelector('#update')
+
                 const fnameErr = document.querySelector('.fname-error')
                 const idErr = document.querySelector('.id-error')
                 const rfidErr = document.querySelector('.rfid-error')
@@ -117,47 +121,72 @@
                 const salaryEl = document.querySelector('#salary')
 
                 window.addEventListener('DOMContentLoaded', (event)=>{
+
+                    // edit function
+                    editBtn.addEventListener('click', (e)=>{
+                        console.log('ASDASDAS')
+                        updateBtn.classList.remove('btn-disable')
+                        const viewInputs = document.querySelectorAll('input.view-input')
+                        for(let i = 0; i < viewInputs.length; i ++){
+                            viewInputs[i].readOnly=false
+                            viewInputs[i].classList.remove('disabled')
+                        }
+                    })
+                    // get inputs
                     const viewInputs = document.querySelectorAll('input.view-input')
                     for(let i = 0; i < viewInputs.length; i ++){
                         viewInputs[i].readOnly=true
+                        viewInputs[i].classList.add('disabled')
                     }
-
-
+                    // update
                     form.addEventListener('submit', async (e) => {
-                    console.log('ASDASFAS')
-                    e.preventDefault();
-                    const doc = {
-                        name : form.name.value,
-                        emp_code : form.emp_code.value,
-                        rfid : form.rfid.value,
-                        age : form.age.value,
-                        email : form.email.value,
-                        contact : form.contact.value,
-                        position : form.position.value,
-                        salary : form.salary.value
-                    }
+                        e.preventDefault();
+                        const doc = {
+                            name : form.name.value,
+                            emp_code : form.emp_code.value,
+                            rfid : form.rfid.value,
+                            age : form.age.value,
+                            email : form.email.value,
+                            contact : form.contact.value,
+                            position : form.position.value,
+                            salary : form.salary.value
+                        }
+                        const id = updateBtn.dataset.id
+                        console.log(`http://localhost:3000/admin/api/employees/${id}`)
+                        console.log(id)
 
-                    console.log(doc)
-                    const res = await fetch('http://localhost:3000/admin/api/employees',{
-                        headers: {'Content-Type': 'application/json'},
-                        body: JSON.stringify(doc),
-                        method: 'POST'
+                        const res = await fetch(`http://localhost:3000/admin/api/employees/${id}`,{
+                            headers: {'Content-Type': 'application/json'},
+                            body: JSON.stringify(doc),
+                            method: 'PATCH'
+                        })
+                        const data = await res.json()
+
+                        if(data.result) console.log(data.result)
+                        console.log(data)
+                        if(data.err) {
+                            fnameErr.textContent = data.err.name
+                            idErr.textContent = data.err.emp_code
+                            rfidErr.textContent = data.err.rfid
+                            ageErr.textContent = data.err.age
+                            emailErr.textContent = data.err.email
+                            contactErr.textContent = data.err.contact
+                            positionErr.textContent = data.err.position
+                            salaryErr.textContent = data.err.salary
+                        }
+                        console.log(data)
                     })
-                    const data = await res.json()
-
-                    if(data.result) console.log(data.result)
-                    console.log(data)
-                    if(data.err) {
-                        fnameErr.textContent = data.err.name
-                        idErr.textContent = data.err.emp_code
-                        rfidErr.textContent = data.err.rfid
-                        ageErr.textContent = data.err.age
-                        emailErr.textContent = data.err.email
-                        contactErr.textContent = data.err.contact
-                        positionErr.textContent = data.err.position
-                        salaryErr.textContent = data.err.salary
-                    }
-                    console.log(data)
+                     // delete function
+                     deleteBtn.addEventListener('click', async (e)=>{
+                        const id = deleteBtn.dataset.id
+                        console.log(id)
+                        const res = await fetch(`http://localhost:3000/admin/api/employees/${id}`, {
+                            headers: {'Content-Type': 'application/json'},
+                            method: 'DELETE'
+                        })
+                        const data = await res.json()
+                        console.log(data)
+                        // Note: this page should have a popup for result and redirect to employee page
                     })
                 })
 

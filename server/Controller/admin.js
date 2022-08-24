@@ -19,7 +19,7 @@ module.exports = {
         try {
             const result = await employees.find()
             if(!result) res.status(500).send('Failure to find any data')
-            else res.status(200).send({result})
+            res.status(200).send({result})
 
         } catch (e) { res.status(500).send(e) }
     },
@@ -30,7 +30,7 @@ module.exports = {
             
             const result = await employees.findById(id)
             if(!result) res.status(500).send('Failure to find any document by the id')
-            else res.status(200).send({result})
+            res.status(200).send({result})
         }catch(e) {res.status(500).send(e)}
             
     },
@@ -41,7 +41,7 @@ module.exports = {
             const result = await employees.create(doc)
             
             if(!result) res.status(500).send('Failure to process creation')
-            else res.status(200).send({result})
+            res.status(200).send({result})
         } catch (e) { 
             const error = errorHandler(e)
             res.status(500).send({err: error}) 
@@ -49,6 +49,7 @@ module.exports = {
     },
     updateEmployee: async (req, res) => {
         try {
+            console.log('UPDATING')
             const id = req.params.id
             const update = req.body
             if(!id) res.status(500).send('Failure to process the given id')
@@ -59,9 +60,14 @@ module.exports = {
         } catch (e) { res.status(500).send(e) }
     },
     deleteEmployee: async (req, res) => {
+        console.log('ASDASDS')
         try {
             const id = req.params.id
-            res.send(id)
+            if(!id) res.status(500).send('Failure to process the given id')
+
+            const result = await employees.updateOne({_id: id}, {$set: {isDeleted: true}})
+            if(!result) res.status(500).send('Failure to delete employee')
+            res.status(200).send(result)
         } catch (e) { res.status(500).send(e) }
     },
 
@@ -74,7 +80,7 @@ module.exports = {
     },
 
     // get all records
-    records_get: async (req, res) => {
+    readRecords: async (req, res) => {
         try {
             const records = await attendances.find().sort({ date: -1 });
             res.status(200).send({records})
@@ -82,7 +88,7 @@ module.exports = {
     },
 
     // get payroll transaction
-    payroll_get: async (req, res) => {
+    readPayrolls: async (req, res) => {
         if (req.query) {
             // const fromDate = new Date(`${(req.query.from.includes('T')) ? req.query.from : req.query.from + 'T00:00:00.000+00:00'}`)
             

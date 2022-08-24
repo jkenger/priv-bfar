@@ -89,14 +89,23 @@ tr:hover{
 input, select, button{
     outline: none;
 }
+button{
+    
+    font-weight: 600;
+    border: 1px solid rgba(0, 0, 0, .15);
+}
 
 /*  */
 
 .button{
-    background-color: #576574;
+    
+    background-color: #f5f6fa;
+    color: #2f3542;
+    padding: .5em 1.25em;
+    
 }
 .button:hover{
-    background-color: #222f3e;
+    background-color: #f1f2f6;
 }
 
 .button-submit{
@@ -105,13 +114,6 @@ input, select, button{
 
 .button-submit:hover{
     background-color: #2980b9;
-}
-
-.button-edit{
-    background-color: #1dd1a1;
-}
-.button-edit:hover{
-    background-color: #10ac84;
 }
 
 .button-delete{
@@ -402,24 +404,6 @@ input, select, button{
     background-color: #ffff;
 }
 
-.employee-table button.view{
-    background-color: #1dd1a1;
-}
-
-.employee-table button.edit{
-    background-color: #54a0ff;
-}
-.employee-table button.view:hover{
-    background-color: #10ac84;
-}
-
-.employee-table button.edit:hover{
-    background-color: #2e86de;
-}
-.employee-table button{
-    color: #FAFAFA;
-    border-radius: 2px;
-}
 .employee-table tr td:nth-child(1), .employee-table tr td:nth-child(2){
     width: 125px;
 }
@@ -454,7 +438,12 @@ input, select, button{
 .employee-container .addemp-form form .add-emp-section div label.error{
     font-size: .75rem;
     font-weight: 300;
-    color: #e74c3c
+    color: #e74c3c;
+    width: 300px;
+}
+
+.employee-container .addemp-form form .add-emp-section div input.view-input.disabled{
+    color:#636e72;
 }
 
 /* add employee --inputs */

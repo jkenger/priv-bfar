@@ -58,13 +58,13 @@ route.get('/api/employees',  admin.readEmployees)
 route.get('/api/employees/:id',  admin.viewEmployee)
 route.post('/api/employees',  admin.addEmployee)
 route.patch('/api/employees/:id',  admin.updateEmployee)
-route.delete('api/employees/:id',  admin.deleteEmployee)
+route.delete('/api/employees/:id',  admin.deleteEmployee)
 
 // record api
-route.get('/api/records', admin.records_get)
+route.get('/api/records', admin.readRecords)
 
 // payroll api
-route.get('/api/payrolls', admin.payroll_get)
+route.get('/api/payrolls', admin.readPayrolls)
 
 
 
