@@ -38,10 +38,10 @@ route.get('*', )
 route.get('/', adminView.home)
 
 // employee endpoints
-route.get('/employees', adminView.employees)
-route.get('/employees/add', adminView.addEmployee)
-route.get('/employees/view/:id', adminView.viewEmployee)
-route.get('/employees/view/edit', adminView.editEmployee)
+route.get('/employees', adminView.readEmployeesView)
+route.get('/employees/add', adminView.addEmployeeView)
+route.get('/employees/view/:id', adminView.viewEmployeeView)
+route.get('/employees/view/edit', adminView.editEmployeeView)
 
 // payroll endpoints
 route.get('/payroll', adminView.payroll)

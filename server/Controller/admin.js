@@ -52,23 +52,27 @@ module.exports = {
             console.log('UPDATING')
             const id = req.params.id
             const update = req.body
+            if(!req.body){ throw Error('Invalid input')}
+
             if(!id) res.status(500).send('Failure to process the given id')
 
             const result = await employees.updateOne({_id: id}, {$set: update})
             if(!result) res.status(500).send('Failure to update the employee')
             res.status(200).send(result)
-        } catch (e) { res.status(500).send(e) }
+        } catch (e) { 
+            const error = errorHandler(e)
+            res.status(500).send({err: error}) 
+        }
     },
     deleteEmployee: async (req, res) => {
         console.log('ASDASDS')
         try {
             const id = req.params.id
             if(!id) res.status(500).send('Failure to process the given id')
-
-            const result = await employees.updateOne({_id: id}, {$set: {isDeleted: true}})
+            const result = await employees.findOneAndDelete({_id: id})
             if(!result) res.status(500).send('Failure to delete employee')
             res.status(200).send(result)
-        } catch (e) { res.status(500).send(e) }
+        } catch (e) {res.status(500).send(e)}
     },
 
     // test/ delete all attendances

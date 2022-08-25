@@ -12,19 +12,19 @@ module.exports = {
         } catch (err) { res.status(500).send(err) }
     },
 
-    employees: async (req, res) => {
+    readEmployeesView: async (req, res) => {
         try {
             const datas = await fetchData('admin/api/employees')
             res.status(200).render('employees', { datas })
         } catch (err) { res.status(500).send(err) }
     },
 
-    addEmployee: async (req, res)=>{
+    addEmployeeView: async (req, res)=>{
         try{
             res.status(200).render('addEmployee')
         }catch(err) { res.status(500).send(err)}
     },
-    viewEmployee: async (req, res)=>{
+    viewEmployeeView: async (req, res)=>{
         try{
             const id = req.params.id
             if(!id) throw Error('ID not found from the client')
@@ -34,7 +34,7 @@ module.exports = {
             res.status(200).render('viewEmployee', { datas })
         }catch(err) { res.status(500).send(err)}
     },
-    editEmployee: async (req, res)=>{
+    editEmployeeView: async (req, res)=>{
         try{
             res.status(200).render('editEmployee')
         }catch(err) { res.status(500).send(err)}

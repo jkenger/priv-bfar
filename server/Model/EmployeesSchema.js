@@ -45,6 +45,11 @@ const EmpSchema = mongoose.Schema({
     }
 })
 
+EmpSchema.pre('updateOne', function(next) {
+    this.options.runValidators = true;
+    next();
+  });
+
 const Employee = mongoose.model('employees', EmpSchema)
 
 module.exports = Employee

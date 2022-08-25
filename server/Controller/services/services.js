@@ -98,6 +98,11 @@ const errorHandler = (err) => {
             empFormErr[properties.path] = properties.message
         })
     }
+    if(err.message.includes('Validation failed')){
+        Object.values(err.errors).forEach(properties => {
+            empFormErr[properties.path] = properties.message
+        })
+    }
     return error,empFormErr
 }
 

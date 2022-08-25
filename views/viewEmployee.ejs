@@ -139,7 +139,7 @@
                         viewInputs[i].classList.add('disabled')
                     }
                     // update
-                    form.addEventListener('submit', async (e) => {
+                    updateBtn.addEventListener('click', async (e) => {
                         e.preventDefault();
                         const doc = {
                             name : form.name.value,
