@@ -60,6 +60,15 @@ route.post('/api/employees',  admin.addEmployee)
 route.patch('/api/employees/:id',  admin.updateEmployee)
 route.delete('/api/employees/:id',  admin.deleteEmployee)
 
+    // travel orders and official businesses must be retrieve from the admin client,
+    // after the client submitted the date and name of the person that was to be excused in that day,
+    // the system must create an attendance that write the current order# in am pm
+
+// events | holidays and travel orders api
+route.post('/api/events/travelorder', admin.addTravelOrder)
+
+    // 
+
 // record api
 route.get('/api/records', admin.readRecords)
 
@@ -69,7 +78,7 @@ route.get('/api/payrolls', admin.readPayrolls)
 
 
 // tests
-route.get('/DELETE_ATTENDANCE', admin.delete_attendance)
+route.delete('/api/testdelete', admin.testdelete)
 
 
 

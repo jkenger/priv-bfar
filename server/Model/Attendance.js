@@ -23,7 +23,7 @@ const EMP_TIME_RECORD = mongoose.Schema({
     },
     
     am_time_in: {
-        type: Date
+        
     },
     am_time_out: {
         type: Date
@@ -99,11 +99,9 @@ EMP_TIME_RECORD.statics.am_attendance = async function (emp_code, _id, time_type
     const currentDateString = new Date().toLocaleDateString()
 
     //-------------------------------------------------------------------
-
-
+    
     // TIME-IN STARTS HERE ----------------------------------------------
     if (time_type === 'timein') {
-
         if(currentLocalISODate > OFFICE_ISO_PM_END){
             throw Error('Office hour ended')
         }
@@ -119,7 +117,6 @@ EMP_TIME_RECORD.statics.am_attendance = async function (emp_code, _id, time_type
             })
             // LOG
             console.log('Attendee', status)
-
             // IF STATUS RETURNED 0, CREATE NEW DOCUMENT
             // NOTE: date should be formatted to local date.
             if (!status.length) {
@@ -146,8 +143,7 @@ EMP_TIME_RECORD.statics.am_attendance = async function (emp_code, _id, time_type
                 }
                 console.log(currentISODate)
                 return result
-                // ELSE THROW AN ERROR
-            } else { throw Error('You have already logged in for morning shift') }
+            }else { throw Error('You have already logged in for morning shift') }
         }
 
         // IF LATE
