@@ -35,7 +35,7 @@
                                     <td><%=records.emp_id%></td>
                                     <td><%=records.emp_code%></td>
                                     <td><%=moment(records.date).format('LL')%></td>
-                                    <td><%=(!records.am_time_in)? '': (records.am_time_in.includes('.')) ?  records.am_time_in : moment(records.am_time_in).format('LTS')%></td>
+                                    <td><%=(!records.am_time_in)? '': (records.am_time_in.includes('T.O') || records.am_time_in.includes('O.B')) ? records.am_time_in : moment(records.am_time_in).format('LTS')%></td>
                                     <td><%=(!records.am_time_out)? '' : moment(records.am_time_out).format('LTS')%></td>
                                     <td><%=(!records.pm_time_in)? '' : moment(records.pm_time_in).format('LTS')%></td>
                                     <td><%=(!records.pm_time_out)? '' : moment(records.pm_time_out).format('LTS')%></td>

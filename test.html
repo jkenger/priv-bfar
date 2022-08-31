@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div style="display: flex; gap: 50px;">
+        <div>
+
+            <h1>NAME</h1> has <h3>n avg searches</h3>
+        </div>
+        <div>
+
+            <h1>NAME</h1> has <h3>n avg searches</h3>
+            <form id="hilow">
+                <input type="button" value="HIGHER" id="high">
+                <input type="button" value="LOWER" id="low">
+            </form>
+        </div>
+    </div>
+
+    your choice
+    <form>
+        <label for="" id="response"></label>
+        <input type="button" id ='btn'value="next">
+    </form>
+    <br>
+
+</body>
+</html>
+
+<script>
+    const labelEl = document.querySelector('label#response')
+    const inputBtn = document.querySelector('input#btn')
+    const form = document.querySelector('form#hilow')
+    const highBtn = document.querySelector('input#high')
+    const lowBtn = document.querySelector('input#low')
+
+    form.addEventListener('submit', (e)=>{
+        e.preventDefault()
+        console.log('ASDS')
+        console.log(labelEl.value)
+    })
+</script>

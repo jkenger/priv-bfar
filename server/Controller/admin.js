@@ -149,6 +149,8 @@ module.exports = {
             const holiDateBefore = new Date('2022-09-05') // from user
             const calendarDays = 11 // from user
 
+            const tax = 0.02
+
 
 
             // TODO//
@@ -273,16 +275,18 @@ module.exports = {
                         designation: { $first: '$designation' },
                         salary: { $first: '$salary' },
                         holiday: { $first: '$holiday' },
-                        whalf_days: { $sum: '$whalf_days' },
-                        no_of_undertime: { $sum: '$no_of_undertime' },
-                        // whalf_days: {$first: 11}, // test
-                        // no_of_undertime: {$first: 32} // test
+                        // whalf_days: { $sum: '$whalf_days' },
+                        // no_of_undertime: { $sum: '$no_of_undertime' },
+                        holiday: { $first: 0 },
+                        whalf_days: {$first: 11}, // test
+                        no_of_undertime: {$first: 0} // test
 
                     }
                 },
                 {
                     $addFields: {
                         week2_rate: { $divide: ['$salary', 2] },
+                        net_amount_due: { $multiply: [{ $divide: [{ $divide: ['$salary', 2] }, calendarDays] }, {$subtract: ['$whalf_days',{$multiply: ['$no_of_undertime', tax]}]} ]},
                         whalf_days: {
                             $switch: {
                                 branches: [
@@ -352,7 +356,8 @@ module.exports = {
                         no_of_undertime: { $first: '$no_of_undertime' }, // INCLUDED FOR TESTING PURPOSES
                         gross_salary: { $first: '$week2_rate' },
                         hasab_deduction: { $first: '$hasab_deduction' },
-                        ut_deduction: { $first: '$ut_deduction' }
+                        ut_deduction: { $first: '$ut_deduction' },
+                        net_amount_due: { $first: '$net_amount_due'}
                     }
                 },
                 {
