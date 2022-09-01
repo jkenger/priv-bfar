@@ -286,7 +286,6 @@ module.exports = {
                 {
                     $addFields: {
                         week2_rate: { $divide: ['$salary', 2] },
-                        net_amount_due: { $multiply: [{ $divide: [{ $divide: ['$salary', 2] }, calendarDays] }, {$subtract: ['$whalf_days',{$multiply: ['$no_of_undertime', tax]}]} ]},
                         whalf_days: {
                             $switch: {
                                 branches: [
@@ -357,12 +356,40 @@ module.exports = {
                         gross_salary: { $first: '$week2_rate' },
                         hasab_deduction: { $first: '$hasab_deduction' },
                         ut_deduction: { $first: '$ut_deduction' },
-                        net_amount_due: { $first: '$net_amount_due'}
                     }
                 },
                 {
                     $addFields: {
-                        gross_salary: { $round: [{ $subtract: ['$gross_salary', { $sum: ['$hasab_deduction', '$ut_deduction'] }] }, 2] }
+                        gross_salary: { $round: [{ $subtract: ['$gross_salary', { $sum: ['$hasab_deduction', '$ut_deduction'] }] }, 2] },
+                        // per month/2/11*no.of.days - 10417*.02
+                        tax_deduction: { $let:{
+                            vars:{ gross_salary: { $round: [{ $subtract: ['$gross_salary', { $sum: ['$hasab_deduction', '$ut_deduction'] }] }, 2] } },
+                            in: {
+                                $cond: {
+                                    if: {$lt: [{$round: [{ $multiply: [{$round: [{$subtract: ['$$gross_salary', 10417.00]},2]}, tax] }, 2]}, 0]},
+                                    then: 0,
+                                    else: {$round: [{ $multiply: [{$round: [{$subtract: ['$$gross_salary', 10417.00]},2]}, tax] }, 2]}
+                                }
+                            }
+                        }},
+                        // gross salary - tax deduction
+                        net_amount_due: {$let:{
+                            vars: {
+                                gross_salary: { $round: [{ $subtract: ['$gross_salary', { $sum: ['$hasab_deduction', '$ut_deduction'] }] }, 2] },
+                                tax_deduction: { $let:{
+                                    vars:{ gross_salary: { $round: [{ $subtract: ['$gross_salary', { $sum: ['$hasab_deduction', '$ut_deduction'] }] }, 2] } },
+                                    in: {
+                                        $cond: {
+                                            if: {$lt: [{$round: [{ $multiply: [{$round: [{$subtract: ['$$gross_salary', 10417.00]},2]}, tax] }, 2]}, 0]},
+                                            then: 0,
+                                            else: {$round: [{ $multiply: [{$round: [{$subtract: ['$$gross_salary', 10417.00]},2]}, tax] }, 2]}
+                                        }
+                                    }
+                                }}
+                            },
+                            in: {$subtract: ['$$gross_salary', '$$tax_deduction']}
+                            
+                        }}
                     }
                 },
                 { $sort: { emp_code: 1 } }
