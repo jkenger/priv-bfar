@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken')
-const UserSchema = require('../Model/UserSchema')
+const UserSchema = require('../Model/user')
 
 // VERIFY TOKEN to access the home page
 const checkToken = (req, res, next) => {

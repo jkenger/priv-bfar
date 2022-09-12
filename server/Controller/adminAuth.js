@@ -1,4 +1,4 @@
-const users = require('../Model/UserSchema')
+const users = require('../Model/user')
 const { errorHandler, fetchData } = require('./services/services')
 const cookie = require('cookie-parser')
 const jwt = require('jsonwebtoken')

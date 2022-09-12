@@ -1,5 +1,5 @@
-const employees = require('../Model/EmployeesSchema')
-const attendances = require('../Model/Attendance')
+const employees = require('../Model/employee')
+const attendances = require('../Model/attendance')
 const { errorHandler, fetchData } = require('./services/services')
 const fetch = require('node-fetch')
 

@@ -1,7 +1,7 @@
 const { errorHandler, fetchData } = require('./services/services')
-const employees = require('../Model/EmployeesSchema')
-const attendances = require('../Model/Attendance')
-const event = require('../Model/eventSchema')
+const employees = require('../Model/employee')
+const attendances = require('../Model/attendance')
+const event = require('../Model/event')
 const { query } = require('express')
 const moment = require('moment')
 
@@ -114,7 +114,8 @@ module.exports = {
                         name: employee.name,
                         date: newDay,
                         date_string: newDay.toLocaleDateString(),
-                        am_time_in: 'O.B',
+                        am_time_in: 'T.O',
+                        isHalf: 'false'
                     })
                 }
                 const result = await attendances.insertMany(docs)
@@ -147,9 +148,10 @@ module.exports = {
             // variables that must be retrive from the client
             const holiDate = new Date('2022-09-06') // from user
             const holiDateBefore = new Date('2022-09-05') // from user
-            const calendarDays = 11 // from user
+            const calendarDays = 12 // from user
 
             const tax = 0.02
+            
 
 
 
@@ -175,7 +177,7 @@ module.exports = {
                         foreignField: 'emp_code',
                         as: 'attendances',
                         let: { time_in: '$time_in', time_out: '$time_out' },
-                        pipeline: [{ $match: { $or: [{ am_time_out: { $ne: null } }, { pm_time_out: { $ne: null } }], date: { $gte: fromDate, $lte: toDate } } }] // NOTE: fromdate and todate should be formatted for accurate results
+                        pipeline: [{ $match: { $or: [{$or: [{am_time_out: { $ne: null }}, {$or: [{am_time_in: 'T.O'}, {am_time_in: 'O.B'}]}]}, { pm_time_out: { $ne: null } }], date: { $gte: fromDate, $lte: toDate } } }] // NOTE: fromdate and todate should be formatted for accurate results
                     }
                 },
                 // IF ONE ATTENDANCE TIME OUT IS EMPTY, COUNT AS HALF or .5 
@@ -275,11 +277,11 @@ module.exports = {
                         designation: { $first: '$designation' },
                         salary: { $first: '$salary' },
                         holiday: { $first: '$holiday' },
-                        // whalf_days: { $sum: '$whalf_days' },
-                        // no_of_undertime: { $sum: '$no_of_undertime' },
-                        holiday: { $first: 0 },
-                        whalf_days: {$first: 11}, // test
-                        no_of_undertime: {$first: 0} // test
+                        whalf_days: { $sum: '$whalf_days' },
+                        no_of_undertime: { $sum: '$no_of_undertime' },
+                        // holiday: { $first: 0 },
+                        // whalf_days: {$first: 11}, // test
+                        // no_of_undertime: {$first: 0} // test
 
                     }
                 },
@@ -362,32 +364,18 @@ module.exports = {
                     $addFields: {
                         gross_salary: { $round: [{ $subtract: ['$gross_salary', { $sum: ['$hasab_deduction', '$ut_deduction'] }] }, 2] },
                         // per month/2/11*no.of.days - 10417*.02
-                        tax_deduction: { $let:{
-                            vars:{ gross_salary: { $round: [{ $subtract: ['$gross_salary', { $sum: ['$hasab_deduction', '$ut_deduction'] }] }, 2] } },
-                            in: {
-                                $cond: {
-                                    if: {$lt: [{$round: [{ $multiply: [{$round: [{$subtract: ['$$gross_salary', 10417.00]},2]}, tax] }, 2]}, 0]},
-                                    then: 0,
-                                    else: {$round: [{ $multiply: [{$round: [{$subtract: ['$$gross_salary', 10417.00]},2]}, tax] }, 2]}
-                                }
-                            }
-                        }},
+                        tax_deduction: {$multiply: [{$subtract: ['$gross_salary', 10417]}, tax]},
                         // gross salary - tax deduction
                         net_amount_due: {$let:{
                             vars: {
                                 gross_salary: { $round: [{ $subtract: ['$gross_salary', { $sum: ['$hasab_deduction', '$ut_deduction'] }] }, 2] },
-                                tax_deduction: { $let:{
-                                    vars:{ gross_salary: { $round: [{ $subtract: ['$gross_salary', { $sum: ['$hasab_deduction', '$ut_deduction'] }] }, 2] } },
-                                    in: {
-                                        $cond: {
-                                            if: {$lt: [{$round: [{ $multiply: [{$round: [{$subtract: ['$$gross_salary', 10417.00]},2]}, tax] }, 2]}, 0]},
-                                            then: 0,
-                                            else: {$round: [{ $multiply: [{$round: [{$subtract: ['$$gross_salary', 10417.00]},2]}, tax] }, 2]}
-                                        }
-                                    }
+                                tax_deduction: { $cond: {
+                                    if: {$lt: [{$round: [{ $multiply: [{$round: [{$subtract: ['$gross_salary', 10417.00]},2]}, tax] }, 2]}, 0]},
+                                    then: 0,
+                                    else: {$round: [{ $multiply: [{$round: [{$subtract: ['$gross_salary', 10417.00]},2]}, tax] }, 2]}
                                 }}
                             },
-                            in: {$subtract: ['$$gross_salary', '$$tax_deduction']}
+                            in: {$round:[{$subtract: ['$$gross_salary', '$$tax_deduction']}, 2]}
                             
                         }}
                     }
