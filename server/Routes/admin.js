@@ -34,7 +34,8 @@ route.get('/payroll', checkToken, checkRoles, adminView.payrollView)
 route.get('/records', checkToken, checkRoles, adminView.recordView)
 
 // holidays and travel orders endpoint
-route.get('/event', checkToken, checkRoles, adminView.eventView)
+route.get('/holidays', checkToken, checkRoles, adminView.holidayView)
+route.get('/holidays/add', checkToken, checkRoles, adminView.addHolidayView)
 
 // // all
 // route.get('*', )

@@ -16,28 +16,27 @@
                                 </form>
                             </div>
                         </div>
-                        <a href="/admin/employees/add" class="edit">Add Employee</a>
+                        <a href="/admin/holidays/add" class="edit">Add event</a>
                         <div class="employee-container components box-shadow">
                             
                             <table class="employee-table">
                                 <tr>
-                                    <th>Employee Code</th>
-                                    <th>Name</th>
+                                    <th>Holiday Name</th>
                                     <th>Prerequisite Date</th>
                                     <th>Holiday Date</th>
                                     <th>Actions</th>
                                 </tr>
                             </table>
                             <script>
-                                const viewBtns = document.querySelectorAll('.button')
-                                const editBtn = document.querySelector('.button-edit')
-                                // const id = viewBtn.dataset.id
-                                for(let i = 0; i < viewBtns.length; i++){
-                                    viewBtns[i].addEventListener('click', (e)=>{
-                                        const id = viewBtns[i].dataset.id
-                                        location.assign(`http://localhost:3000/admin/employees/view/${id}`)
-                                    })
-                                }
+                                // const viewBtns = document.querySelectorAll('.button')
+                                // const editBtn = document.querySelector('.button-edit')
+                                // // const id = viewBtn.dataset.id
+                                // for(let i = 0; i < viewBtns.length; i++){
+                                //     viewBtns[i].addEventListener('click', (e)=>{
+                                //         const id = viewBtns[i].dataset.id
+                                //         location.assign(`http://localhost:3000/admin/employees/view/${id}`)
+                                //     })
+                                // }
                                
                                 // viewBtn.addEventListener('click', (e)=>{
                                 //     location.assign(`http://localhost:3000/admin/employees/view/${id}`)

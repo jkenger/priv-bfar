@@ -1,0 +1,143 @@
+<%-include('partials/Header')%>
+    <%-include('partials/Nav') %>
+        <%-include('partials/Aside')%>
+
+            <main>
+                <div class="container dashboard">
+                    <div class="employees">
+                        <div class="employee-query components box-shadow">
+                            <h1> <a href="/admin/employees">Holidays</a>  / Add employee</h1>
+                            <div class="employee-query-search">
+                                <form novalidate role="search">
+                                    <button>
+                                        <i class="fa-solid fa-magnifying-glass"></i>
+                                    </button>
+                                    <input type="text" placeholder="Type your query here and press enter">
+                                </form>
+                            </div>
+                        </div>
+                    <div class="employee-container box-shadow components">
+                        <div class="head">
+                            <div class="title">
+                                Add holidays
+                            </div>
+                        </div>
+                        
+                        <div class="addemp-form">
+                            <form class="add-emp">
+                                <div class="add-emp-section">
+                                    <div>
+                                        <div>
+                                            <label for="fullname">Full Name *</label>
+                                            <input type="text" placeholder="Full Name" name="name" class="box-shadow">
+                                            <label for="error" class="fname-error error">a</label>
+                                        </div>
+                                        <div>
+                                            <label for="employeecode">ID No. (Employee Code) *</label>
+                                            <input type="text" placeholder="ID No." name="emp_code" class="box-shadow">
+                                            <label for="error" class="id-error error">a</label>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div>
+                                            <label for="rfid">RFID *</label>
+                                            <input type="text" placeholder="RFID" name="rfid" class="box-shadow">
+                                            <label for="error" class="rfid-error error">a</label>
+                                        </div>
+                                        <div>
+                                            <label for="age">Age *</label>
+                                            <input type="text" placeholder="Age" name="age" class="box-shadow">
+                                            <label for="error" class="age-error error">a</label>
+                                        </div>
+                                        
+                                        
+                                    </div>
+                                    <div>
+                                        <div>
+                                            <label for="email">Email *</label>
+                                            <input type="text" placeholder="Email" name="email" class="box-shadow">
+                                            <label for="error" class="email-error error">a</label>
+                                        </div>
+                                        <div>
+                                            <label for="contact">Contact *</label>
+                                            <input type="text" placeholder="Contact" name="contact" class="box-shadow">
+                                            <label for="error" class="contact-error error">a</label>
+                                        </div>
+                                        
+                                    </div>
+                                    <div>
+                                        <div>
+                                            <label for="position">Position *</label>
+                                            <input type="text" placeholder="Position" name="position" class="box-shadow">
+                                            <label for="error" class="position-error error">a</label>
+                                        </div>
+                                        <div>
+                                            <label for="salary">Salary *</label>
+                                            <input type="text" placeholder="Salary" name="salary" class="box-shadow">
+                                            <label for="error" class="salary-error error">a</label>
+                                        </div>
+                                        
+                                        
+                                    </div>
+                                </div>
+                                
+                                <div>
+                                    <button class="button-submit add-emp-btn">Save this event</button>
+                                </div>
+                            </form>
+                            
+                        </div>
+                        
+                    </div>
+                    </div>
+                </div>
+            </main>
+            <script>
+                let form = document.querySelector('.add-emp')
+                const fnameErr = document.querySelector('.fname-error')
+                const idErr = document.querySelector('.id-error')
+                const rfidErr = document.querySelector('.rfid-error')
+                const ageErr = document.querySelector('.age-error')
+                const emailErr = document.querySelector('.email-error')
+                const contactErr = document.querySelector('.contact-error')
+                const positionErr = document.querySelector('.position-error')
+                const salaryErr = document.querySelector('.salary-error')
+                form.addEventListener('submit', async (e) => {
+                    console.log('ASDASFAS')
+                    e.preventDefault();
+                    const doc = {
+                        name : form.name.value,
+                        emp_code : form.emp_code.value,
+                        rfid : form.rfid.value,
+                        age : form.age.value,
+                        email : form.email.value,
+                        contact : form.contact.value,
+                        position : form.position.value,
+                        salary : form.salary.value
+                    }
+
+                    console.log(doc)
+                    const res = await fetch('http://localhost:3000/admin/api/employees',{
+                        headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify(doc),
+                        method: 'POST'
+                    })
+                    const data = await res.json()
+
+                    if(data.result) console.log(data.result)
+                    console.log(data)
+                    if(data.err) {
+                        fnameErr.textContent = data.err.name
+                        idErr.textContent = data.err.emp_code
+                        rfidErr.textContent = data.err.rfid
+                        ageErr.textContent = data.err.age
+                        emailErr.textContent = data.err.email
+                        contactErr.textContent = data.err.contact
+                        positionErr.textContent = data.err.position
+                        salaryErr.textContent = data.err.salary
+                    }
+                    
+                    console.log(data)
+                })
+            </script>
+            <%-include('partials/Footer')%>

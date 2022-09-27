@@ -75,9 +75,16 @@ module.exports = {
             res.status(500).send(err) 
         }
     },
-    eventView: async (req, res) => {
+    holidayView: async (req, res) => {
         try{
-            res.status(200).render('event')
+            res.status(200).render('holiday')
+        }catch(err){
+            res.status(500).send(err)
+        }
+    },
+    addHolidayView: async (req, res) => {
+        try{
+            res.status(200).render('addHoliday')
         }catch(err){
             res.status(500).send(err)
         }
