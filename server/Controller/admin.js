@@ -148,7 +148,7 @@ module.exports = {
             // variables that must be retrive from the client
             const holiDate = new Date('2022-09-06') // from user
             const holiDateBefore = new Date('2022-09-05') // from user
-            const calendarDays = 12 // from user
+            const calendarDays = 11 // from user
 
             const tax = 0.02
             
@@ -276,12 +276,12 @@ module.exports = {
                         name: { $first: '$name' },
                         designation: { $first: '$designation' },
                         salary: { $first: '$salary' },
-                        holiday: { $first: '$holiday' },
+                        // holiday: { $first: '$holiday' },
                         whalf_days: { $sum: '$whalf_days' },
                         no_of_undertime: { $sum: '$no_of_undertime' },
-                        // holiday: { $first: 0 },
+                        holiday: { $first: 0 },
                         // whalf_days: {$first: 11}, // test
-                        // no_of_undertime: {$first: 0} // test
+                        // no_of_undertime: {$first: 32} // test
 
                     }
                 },

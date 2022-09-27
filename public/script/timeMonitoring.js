@@ -10,10 +10,71 @@ const lblError = document.querySelector('label.employee.error')
 const btnSubmit = document.querySelector('.button-submit')
 const idInput = document.querySelector('.emp_id')
 
+const timeTypeSelection = document.querySelector('#time_type')
+
+
 
 const date = new Date()
+const getDate = new Date().toISOString().split('T')[0]
+const pht = date.getTime() - new Date().getTimezoneOffset() * 60 * 1000 // FOR TIME COMPARISON
 
-// attach the listener to the current document
+
+const sevenAmIso = getDate + 'T08:00:00.000Z';
+const sevenAm = new Date(sevenAmIso)
+
+const twelvePmIso = getDate + 'T12:00:00.000Z';
+const twelvePm = new Date(twelvePmIso)
+
+const twelveFPmIso = getDate + 'T12:45:00.000Z';
+const twelveFPm = new Date(twelveFPmIso)
+
+const fivePmIso = getDate + 'T17:00:00.000Z';
+const fivePm = new Date(fivePmIso)
+
+console.log('phtIso', pht, 'twelveIso:', sevenAm)
+console.log('phtIso', pht > fivePmIso)
+
+// refresh when current time reaches specified time
+setInterval(() => {
+    t.textContent = new Date().toLocaleTimeString()
+},1000);
+
+function refreshAt(hours, minutes, seconds) {
+    var now = new Date();
+    var then = new Date();
+
+    if(now.getHours() > hours ||
+       (now.getHours() == hours && now.getMinutes() > minutes) ||
+        now.getHours() == hours && now.getMinutes() == minutes && now.getSeconds() >= seconds) {
+        then.setDate(now.getDate() + 1);
+    }
+    then.setHours(hours);
+    then.setMinutes(minutes);
+    then.setSeconds(seconds);
+
+    var timeout = (then.getTime() - now.getTime());
+    setTimeout(function() { window.location.reload(true); }, timeout);
+}
+
+refreshAt(7,0,0);
+refreshAt(12,0,0);
+refreshAt(12,45,0);
+refreshAt(17,0,0);
+
+if(pht > sevenAm && pht < twelvePm){
+    timeTypeSelection.value = 'timein'
+}else if(pht > twelvePm && pht < twelveFPm){
+    timeTypeSelection.value = 'timeout'
+    
+}else if(pht > twelveFPm && pht < fivePm){
+    timeTypeSelection.value = 'timein'
+}else if (pht > fivePm){
+    timeTypeSelection.value = 'timeout'
+}else{
+    timeTypeSelection.value = 'timein'
+}
+
+// attach the listener to the current dcument
 onScan.attachTo(document, {
     onScan: function (sCode, iQty) {  // after successful scan
         console.log(sCode, ' ', iQty)
@@ -60,4 +121,3 @@ form.addEventListener('submit', async (e) => {
     
 })
 
-setInterval(() => t.textContent = new Date().toLocaleTimeString(),1000);
