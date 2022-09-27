@@ -64,7 +64,7 @@ EMP_TIME_RECORD.statics.am_attendance = async function (emp_code, _id, time_type
     // OFFICE ISO DATE AND TIME
     const officeISODate = new Date().toISOString().split('T')[0]; // current date || yyyy-mm-dd
     console.log(officeISODate)
-    const testISODate = '2022-09-26'; // current date for tioday|| yyyy-mm-dd (ie 2022-09-27)
+    const testISODate = '2022-09-27'; // current date for tioday|| yyyy-mm-dd (ie 2022-09-27)
     console.log(officeISODate)
 
     // 8 AM TIME IN

@@ -43,7 +43,7 @@ function submitFunc(url)
     
     form.addEventListener('submit', async (e)=>{
         e.preventDefault();
-        
+        new Notification("New Notification!")
         const email = form.email.value
         const password = form.password.value
         

@@ -19,19 +19,22 @@ route.post('/login', adminAuth.login_post)
 
 // all
 route.get('*', checkUser)
-route.get('/', checkToken, checkRoles, adminView.home)
+route.get('/', checkToken, checkRoles, adminView.homeView)
 
 // employee endpoints
 route.get('/employees',checkToken, checkRoles, adminView.readEmployeesView)
 route.get('/employees/add',checkToken, checkRoles, adminView.addEmployeeView)
-route.get('/employees/view',checkToken, checkRoles, adminView.viewEmployeeView)
+route.get('/employees/view/:id',checkToken, checkRoles, adminView.viewEmployeeView)
 route.get('/employees/view/edit',checkToken, checkRoles, adminView.editEmployeeView)
 
 // payroll endpoints
-route.get('/payroll', checkToken, checkRoles, adminView.payroll)
+route.get('/payroll', checkToken, checkRoles, adminView.payrollView)
 
 // record endpoints 
-route.get('/records', checkToken, checkRoles, adminView.records)
+route.get('/records', checkToken, checkRoles, adminView.recordView)
+
+// holidays and travel orders endpoint
+route.get('/event', checkToken, checkRoles, adminView.eventView)
 
 // // all
 // route.get('*', )
@@ -75,7 +78,7 @@ route.get('/api/records', admin.readRecords)
 // payroll api
 route.get('/api/payrolls', admin.readPayrolls)
 
-
+// holiday and travel orders api
 
 // tests
 route.delete('/api/testdelete', admin.testdelete)

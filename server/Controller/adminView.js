@@ -5,24 +5,30 @@ const moment = require('moment')
 
 module.exports = {
     // RENDERER
-    home: async (req, res) => {
+    homeView: async (req, res) => {
         try {
             const datas = await fetchData('admin/api/employees_count')
             res.status(200).render('home', { datas })
-        } catch (err) { res.status(500).send(err) }
+        } catch (err) {
+             res.status(500).send(err) 
+            }
     },
 
     readEmployeesView: async (req, res) => {
         try {
             const datas = await fetchData('admin/api/employees')
             res.status(200).render('employees', { datas })
-        } catch (err) { res.status(500).send(err) }
+        } catch (err) {
+            res.status(500).send(err) 
+            }
     },
 
     addEmployeeView: async (req, res)=>{
         try{
             res.status(200).render('addEmployee')
-        }catch(err) { res.status(500).send(err)}
+        }catch(err) {
+            res.status(500).send(err)
+            }
     },
     viewEmployeeView: async (req, res)=>{
         try{
@@ -32,22 +38,28 @@ module.exports = {
             const datas = await fetchData(`admin/api/employees/${id}`)
             console.log(datas)
             res.status(200).render('viewEmployee', { datas })
-        }catch(err) { res.status(500).send(err)}
+        }catch(err) {
+             res.status(500).send(err)
+            }
     },
     editEmployeeView: async (req, res)=>{
         try{
             res.status(200).render('editEmployee')
-        }catch(err) { res.status(500).send(err)}
+        }catch(err) {
+            res.status(500).send(err)
+            }
     },
 
-    records: async (req, res) => {
+    recordView: async (req, res) => {
         try {
             const data = await fetchData('admin/api/records')
             res.status(200).render('timeRecords', { data, moment: moment })
-        } catch (err) { res.status(500).send(err) }
+        } catch (err) {
+            res.status(500).send(err) 
+            }
     },
 
-    payroll: async (req, res) => {
+    payrollView: async (req, res) => {
         try {
             // Get the dates then retrieve all the data based from the given dates
             let fromDate = new Date().toISOString()
@@ -59,6 +71,15 @@ module.exports = {
             const data = await fetchData(`admin/api/payrolls?from=${fromDate}&to=${toDate}`)
             res.status(200).render('payroll', { data, url: req.url })
 
-        } catch (err) { res.status(500).send(err) }
+        } catch (err) { 
+            res.status(500).send(err) 
+        }
+    },
+    eventView: async (req, res) => {
+        try{
+            res.status(200).render('event')
+        }catch(err){
+            res.status(500).send(err)
+        }
     }
 }

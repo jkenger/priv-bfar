@@ -6,7 +6,7 @@
                 <div class="container dashboard">
                     <div class="employees">
                         <div class="employee-query components box-shadow">
-                            <h1>Employee</h1>
+                            <h1>Holidays</h1>
                             <div class="employee-query-search">
                                 <form novalidate role="search">
                                     <button>
@@ -21,29 +21,12 @@
                             
                             <table class="employee-table">
                                 <tr>
-                                    <th>ID</th>
                                     <th>Employee Code</th>
                                     <th>Name</th>
-                                    <th>Age</th>
-                                    <th>Email</th>
-                                    <th>Contact</th>
-                                    <th>Position</th>
+                                    <th>Prerequisite Date</th>
+                                    <th>Holiday Date</th>
                                     <th>Actions</th>
                                 </tr>
-                                <% Object.values(datas.result).forEach(user => { %> 
-                                    <tr>
-                                        <td><%=user._id%></td>
-                                        <td><%=user.emp_code%></td>
-                                        <td><%=user.name%></td>
-                                        <td><%=user.age%></td>
-                                        <td><%=user.email%></td>
-                                        <td><%=user.contact%></td>
-                                        <td><%=user.position%></td>
-                                        <td>
-                                            <button class="button" data-id='<%=user._id%>'>view details</button>
-                                        </td>
-                                    </tr>
-                                <%}); %>
                             </table>
                             <script>
                                 const viewBtns = document.querySelectorAll('.button')
