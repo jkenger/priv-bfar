@@ -445,21 +445,31 @@ button{
     color:#636e72;
 }
 
+/* holiday */
+.employee-container .add-holiday-form form .add-holiday-section div label.error{
+    font-size: .75rem;
+    font-weight: 300;
+    color: #e74c3c;
+    width: 300px;
+}
+
 /* add employee --inputs */
-.employee-container .addemp-form form label{
+.employee-container form label{
     color: #2f3542;
     font-weight: 600;
     padding-bottom: .5em;
 }
-.employee-container .addemp-form form input[type='text']{
+.employee-container form input[type='text']{
     padding: .55em .75em;
     width: 300px;
     border: #636e72 1px solid;
     border-radius: 3px;
 }
-.employee-container .addemp-form form .add-emp-btn{
+.employee-container form .add-emp-btn{
     padding: .5em 5em;
 }
+
+
 
 
 
