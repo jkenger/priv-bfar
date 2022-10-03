@@ -1,7 +1,7 @@
 const { errorHandler, fetchData } = require('./services/services')
 const employees = require('../Model/employee')
 const attendances = require('../Model/attendance')
-const event = require('../Model/event')
+const Holiday = require('../Model/holiday')
 const { query } = require('express')
 const moment = require('moment')
 
@@ -85,6 +85,29 @@ module.exports = {
     },
 
     // events || holiday and traver orders
+    addHoliday: async(req, res) =>{
+        try{
+            const {name, predate, date} = req.body
+            
+            var from = new Date(predate)
+            var to = new Date(date)
+            if(from < new Date()) res.status(500).send({err: 'Given date must be equal or ahead of the current date'})
+            const schema = {
+                name: name,
+                preDate: predate,
+                date: date
+            }
+            const result = await Holiday.create(schema)
+            if(!result){
+                res.status(500).send('failure to create data.')
+            }
+            res.status(200).send(result)
+            
+        }catch(e){
+            res.status(500).send(e)
+        }
+    },
+
     addTravelOrder: async (req, res) => {
         try {
             // PROBLEM

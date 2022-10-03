@@ -27,24 +27,25 @@
                             <form class="submit">
                                 <div class="section">
                                         <div>
-                                            <label for="employeecode">ID No. (Employee Code) *</label>
-                                            <input type="text" placeholder="ID No." name="emp_code" class="box-shadow" id="idNo">
-                                            <label for="error" class="id-error error">a</label>
-                                        </div>
-                                        <div>
-                                            <label for="fullname">Full Name *</label>
-                                            <input type="text" placeholder="Full Name" name="name" class="box-shadow" id='fName'disabled>
+                                            <div class="label-ico">
+                                                <label for="fullname">Holiday Name *</label> <i class="fa-regular fa-circle-question"></i>
+                                            </div>
+                                            <input type="text" placeholder="Holiday Name" name="name" class="box-shadow" id='holidayName'>
                                             <label for="error" class="fname-error error">a</label>
                                         </div>
                                         <div>
-                                            <label for="fullname">Full Name *</label>
-                                            <input type="text" placeholder="Full Name" name="name" class="box-shadow" disabled>
-                                            <label for="error" class="fname-error error">a</label>
+                                            <div class="label-ico">
+                                                <label for="predate">Preqrequisite Date *</label> <i title="date an employee must attend" class="fa-regular fa-circle-question"></i>
+                                            </div>
+                                            <input type="date" placeholder="Preqrequisite Date" name="predate" class="box-shadow" >
+                                            <label for="error" class="predate-error error">a</label>
                                         </div>
                                         <div>
-                                            <label for="fullname">Full Name *</label>
-                                            <input type="text" placeholder="Full Name" name="name" class="box-shadow" disabled>
-                                            <label for="error" class="fname-error error">a</label>
+                                            <div class="label-ico">
+                                                <label for="date">Requisite Date *</label> <i title="date of holiday" class="fa-regular fa-circle-question"></i>
+                                            </div>
+                                            <input type="date" placeholder="Requisite Date" name="date" class="box-shadow">
+                                            <label for="error" class="date-error error">a</label>
                                         </div>
                                 </div>
                                 
@@ -63,97 +64,77 @@
                 let form = document.querySelector('.submit')
                 const fnameErr = document.querySelector('.fname-error')
                 const idErr = document.querySelector('.id-error')
-                const rfidErr = document.querySelector('.rfid-error')
-                const ageErr = document.querySelector('.age-error')
-                const emailErr = document.querySelector('.email-error')
-                const contactErr = document.querySelector('.contact-error')
-                const positionErr = document.querySelector('.position-error')
-                const salaryErr = document.querySelector('.salary-error')
+                const preDateErr = document.querySelector('.predate-error')
+                const dateErr = document.querySelector('.date-error')
 
                 const idInput = document.querySelector('#idNo')
-                const fNameInput = document.querySelector('#fName')
+                const holidayNameInput = document.querySelector('#holidayName')
 
-                var typingTimer;                //timer identifier
-                var doneTypingInterval = 1000;  //time in ms, 5 seconds for example 
-                let result = ''
-                let data = ''
+                // var typingTimer;                //timer identifier
+                // var doneTypingInterval = 1000;  //time in ms, 5 seconds for example 
+                // let result = ''
+                // let data = ''
 
-                const fetchEmployees = async () => {
-                    result = await fetch(`http://localhost:3000/admin/api/employees`)
-                    data = await result.json()
-                } 
-                // fetch employees onload
-                fetchEmployees()
+                // const fetchEmployees = async () => {
+                //     result = await fetch(`http://localhost:3000/admin/api/employees`)
+                //     data = await result.json()
+                // } 
+                // // fetch employees onload
+                // fetchEmployees()
 
-                idInput.addEventListener('keyup', ()=>{
-                    clearTimeout(typingTimer);
-                    typingTimer = setTimeout(doneTyping, doneTypingInterval);
-                    fNameInput.value = ''
-                    // check if input is a number
-                    if(!isNaN(idInput.value)){
-                        fnameErr.textContent = 'fetching data....'
-                    }
-                })
+                // idInput.addEventListener('keyup', ()=>{
+                //     clearTimeout(typingTimer);
+                //     typingTimer = setTimeout(doneTyping, doneTypingInterval);
+                //     fNameInput.value = ''
+                //     // check if input is a number
+                //     if(!isNaN(idInput.value)){
+                //         fnameErr.textContent = 'fetching data....'
+                //     }
+                // })
 
-                idInput.addEventListener('keydown', ()=>{
-                    clearTimeout(typingTimer);
-                })
+                // idInput.addEventListener('keydown', ()=>{
+                //     clearTimeout(typingTimer);
+                // })
 
-                const doneTyping = ()=>{
-                    let id = idInput.value
-                    if(data){
-                        (data.result).forEach(emp=>{
-                            // if matched, display name in the textfield
-                            if(id === emp.emp_code){
-                                console.log(id === emp.emp_code)
-                                fnameErr.textContent = ''   
-                                fNameInput.value = emp.name
-                            }
-                            // error if did not match
-                            if(fNameInput.value === '' || fNameInput.value === null || !fNameInput.value){
-                                fnameErr.textContent = 'cannot find any data with this id'
-                            }
-                        })
-                        id = ''
-                    }
-                }
+                // const doneTyping = ()=>{
+                //     let id = idInput.value
+                //     if(data){
+                //         (data.result).forEach(emp=>{
+                //             // if matched, display name in the textfield
+                //             if(id === emp.emp_code){
+                //                 console.log(id === emp.emp_code)
+                //                 fnameErr.textContent = ''   
+                //                 fNameInput.value = emp.name
+                //             }
+                //             // error if did not match
+                //             if(fNameInput.value === '' || fNameInput.value === null || !fNameInput.value){
+                //                 fnameErr.textContent = 'cannot find any data with this id'
+                //             }
+                //         })
+                //         id = ''
+                //     }
+                // }
 
                 form.addEventListener('submit', async (e) => {
-                    console.log('ASDASFAS')
                     e.preventDefault();
                     const doc = {
                         name : form.name.value,
-                        emp_code : form.emp_code.value,
-                        rfid : form.rfid.value,
-                        age : form.age.value,
-                        email : form.email.value,
-                        contact : form.contact.value,
-                        position : form.position.value,
-                        salary : form.salary.value
+                        predate : form.predate.value,
+                        date : form.date.value,
                     }
-
-                    console.log(doc)
-                    const res = await fetch('http://localhost:3000/admin/api/employees',{
-                        headers: {'Content-Type': 'application/json'},
+                    console.log('client 1:', doc)
+                    const res = await fetch('http://localhost:3000/admin/api/events/addholiday',{
+                        headers:{'Content-Type': 'application/json'},
                         body: JSON.stringify(doc),
                         method: 'POST'
                     })
-                    const data = await res.json()
 
-                    if(data.result) console.log(data.result)
-                    console.log(data)
+                    const data = await res.json()
+                
+                    if(data) console.log('response:', data)
                     if(data.err) {
-                        fnameErr.textContent = data.err.name
-                        idErr.textContent = data.err.emp_code
-                        rfidErr.textContent = data.err.rfid
-                        ageErr.textContent = data.err.age
-                        emailErr.textContent = data.err.email
-                        contactErr.textContent = data.err.contact
-                        positionErr.textContent = data.err.position
-                        salaryErr.textContent = data.err.salary
+                        preDateErr.textContent = data.err
                     }
-                    
-                    console.log(data)
                 })
 
 

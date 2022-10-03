@@ -430,6 +430,12 @@ button{
     display: flex;
     flex-direction: column;
 }
+.employee-container .add form .section div .label-ico{
+    display: inline-block;
+    padding-bottom: .5em;
+}
+
+
 
 .employee-container .add form .section div label.error{
     font-size: .75rem;
@@ -447,9 +453,8 @@ button{
 .employee-container form label{
     color: #2f3542;
     font-weight: 600;
-    padding-bottom: .5em;
 }
-.employee-container form input[type='text']{
+.employee-container form input{
     padding: .55em .75em;
     width: 300px;
     border: #636e72 1px solid;
