@@ -88,8 +88,14 @@ module.exports = {
 
     // events || holiday and traver orders
     readHoliday: async(req, res) =>{
-        const result = await Holiday.find()
-        res.status(200).send(result)
+        try{
+            const result = await Holiday.find()
+            res.status(200).send(result)
+        }catch(e){
+            const error = errorHandler(e)
+            res.status(500).send({ err: error })
+        }
+        
     },
     addHoliday: async(req, res) =>{
         try{
@@ -100,11 +106,13 @@ module.exports = {
             var currentDate = new Date(formattedDate)
             console.log(from, to)
             if(from < currentDate) {
-                res.status(500).send({err: 'Given date must be equal or ahead of the current date'})
+                const error = errorHandler({message: 'Given date must be equal or ahead of the current date'})
+                res.status(500).send({err: error })
             }
 
             if(to < from){
-                res.status(500).send({err: 'Given date must not be ahead with the holiday date'})
+                const error = errorHandler({message: 'Holiday must be ahead of prerequisite date'})
+                res.status(500).send({ err: error })
             }
             const schema = {
                 name: name,
@@ -117,7 +125,8 @@ module.exports = {
             }
             res.status(200).send(result)
         }catch(e){
-            res.status(500).send(e)
+            const error = errorHandler(e)
+            res.status(500).send({ err: error })
         }
     },
 

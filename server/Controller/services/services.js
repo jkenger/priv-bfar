@@ -19,7 +19,13 @@ const errorHandler = (err) => {
         email: '', 
         contact: '', 
         position:'', 
-        salary: ''}
+        salary: '',
+    }
+    const holidayErr = {
+        name: '',
+        preDate: '',
+        date: ''
+    }
     
 
     if (err.message === 'Invalid email') {
@@ -78,6 +84,14 @@ const errorHandler = (err) => {
         error.email = err.message
         return error
     }
+    if(err.message === 'Given date must be equal or ahead of the current date'){
+        holidayErr.preDate = err.message
+        return holidayErr
+    }
+    if(err.message === 'Holiday must be ahead of prerequisite date'){
+        holidayErr.date = err.message
+        return holidayErr
+    }
 
     if(err.message.includes('Please enter valid employee code!')){
         error.email = err.message
@@ -98,11 +112,17 @@ const errorHandler = (err) => {
             empFormErr[properties.path] = properties.message
         })
     }
+    if(err.message.includes('holidays validation failed')){
+        Object.values(err.errors).forEach(properties => {
+            empFormErr[properties.path] = properties.message
+        })
+    }
     if(err.message.includes('Validation failed')){
         Object.values(err.errors).forEach(properties => {
             empFormErr[properties.path] = properties.message
         })
     }
+    
     return error,empFormErr
 }
 

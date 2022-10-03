@@ -133,7 +133,9 @@
                 
                     if(data) console.log('response:', data)
                     if(data.err) {
-                        preDateErr.textContent = data.err
+                        fnameErr.textContent = data.err.name
+                        preDateErr.textContent = data.err.preDate
+                        dateErr.textContent = data.err.date
                     }
                 })
 
