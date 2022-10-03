@@ -123,7 +123,7 @@
                         date : form.date.value,
                     }
                     console.log('client 1:', doc)
-                    const res = await fetch('http://localhost:3000/admin/api/events/addholiday',{
+                    const res = await fetch('http://localhost:3000/admin/api/events/holiday',{
                         headers:{'Content-Type': 'application/json'},
                         body: JSON.stringify(doc),
                         method: 'POST'

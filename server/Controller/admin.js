@@ -1,9 +1,11 @@
 const { errorHandler, fetchData } = require('./services/services')
+const { getFormattedDate } = require('./services/date')
 const employees = require('../Model/employee')
 const attendances = require('../Model/attendance')
 const Holiday = require('../Model/holiday')
 const { query } = require('express')
 const moment = require('moment')
+const { default: isURL } = require('validator/lib/isurl')
 
 module.exports = {
     // get total employee count
@@ -92,10 +94,18 @@ module.exports = {
     addHoliday: async(req, res) =>{
         try{
             const {name, predate, date} = req.body
-            
+            const formattedDate = getFormattedDate()
             var from = new Date(predate)
             var to = new Date(date)
-            if(from < new Date()) res.status(500).send({err: 'Given date must be equal or ahead of the current date'})
+            var currentDate = new Date(formattedDate)
+            console.log(from, to)
+            if(from < currentDate) {
+                res.status(500).send({err: 'Given date must be equal or ahead of the current date'})
+            }
+
+            if(to < from){
+                res.status(500).send({err: 'Given date must not be ahead with the holiday date'})
+            }
             const schema = {
                 name: name,
                 preDate: predate,
@@ -106,7 +116,6 @@ module.exports = {
                 res.status(500).send('failure to create data.')
             }
             res.status(200).send(result)
-            
         }catch(e){
             res.status(500).send(e)
         }
