@@ -35,9 +35,9 @@ module.exports = {
             const id = req.params.id
             if(!id) throw Error('ID not found from the client')
             
-            const datas = await fetchData(`admin/api/employees/${id}`)
-            console.log(datas)
-            res.status(200).render('viewEmployee', { datas })
+            const data = await fetchData(`admin/api/employees/${id}`)
+            console.log(data)
+            res.status(200).render('viewEmployee', { data })
         }catch(err) {
              res.status(500).send(err)
             }

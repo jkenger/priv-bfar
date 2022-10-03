@@ -421,37 +421,27 @@ button{
 
 
 
-.employee-container .addemp-form form .add-emp-section{
+.employee-container .add form .section{
     display: flex;
     flex-wrap: wrap;
-    padding: 0 1em 1em 1em;
     gap: 0 20px;
 }
-.employee-container .addemp-form form .add-emp-section div{
+.employee-container .add form .section div{
     display: flex;
     flex-direction: column;
 }
-.employee-container .addemp-form form .add-emp-section div div{
-    height: 80px;
-}
-.employee-container .addemp-form form .add-emp-section div label.error{
+
+.employee-container .add form .section div label.error{
     font-size: .75rem;
     font-weight: 300;
     color: #e74c3c;
     width: 300px;
 }
 
-.employee-container .addemp-form form .add-emp-section div input.view-input.disabled{
+.employee-container .add form .section div input.view-input.disabled{
     color:#636e72;
 }
 
-/* holiday */
-.employee-container .add-holiday-form form .add-holiday-section div label.error{
-    font-size: .75rem;
-    font-weight: 300;
-    color: #e74c3c;
-    width: 300px;
-}
 
 /* add employee --inputs */
 .employee-container form label{

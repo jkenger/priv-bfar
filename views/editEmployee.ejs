@@ -20,10 +20,10 @@
                         <div class="title">
                             Update employee
                         </div>
-                        <div class="addemp-form">
-                            <form class="add-emp">
-                                <div class="add-emp-section">
-                                    <div>
+
+                        <div class="add">
+                            <form class="submit">
+                                <div class="section">
                                         <div>
                                             <label for="fullname">Full Name *</label>
                                             <input type="text" placeholder="Full Name" name="name" class="box-shadow">
@@ -34,8 +34,6 @@
                                             <input type="text" placeholder="ID No." name="emp_code" class="box-shadow">
                                             <label for="error" class="id-error error">a</label>
                                         </div>
-                                    </div>
-                                    <div>
                                         <div>
                                             <label for="rfid">RFID *</label>
                                             <input type="text" placeholder="RFID" name="rfid" class="box-shadow">
@@ -46,10 +44,6 @@
                                             <input type="text" placeholder="Age" name="age" class="box-shadow">
                                             <label for="error" class="age-error error">a</label>
                                         </div>
-                                        
-                                        
-                                    </div>
-                                    <div>
                                         <div>
                                             <label for="email">Email *</label>
                                             <input type="text" placeholder="Email" name="email" class="box-shadow">
@@ -60,12 +54,10 @@
                                             <input type="text" placeholder="Contact" name="contact" class="box-shadow">
                                             <label for="error" class="contact-error error">a</label>
                                         </div>
-                                        
-                                    </div>
-                                    <div>
                                         <div>
                                             <label for="position">Position *</label>
-                                            <input type="text" placeholder="Position" name="position" class="box-shadow">
+                                            <input type="text" placeholder="Position" name="position"
+                                                class="box-shadow">
                                             <label for="error" class="position-error error">a</label>
                                         </div>
                                         <div>
@@ -73,14 +65,10 @@
                                             <input type="text" placeholder="Salary" name="salary" class="box-shadow">
                                             <label for="error" class="salary-error error">a</label>
                                         </div>
-                                        
-                                        
                                     </div>
-                                </div>
-                                
-                                <div>
-                                    <button class="button-submit add-emp-btn">Update this employee</button>
-                                </div>
+                                    <div class="submit">
+                                        <button class="button-submit add-emp-btn">Update this employee</button>
+                                    </div>
                             </form>
                             
                         </div>
@@ -90,7 +78,7 @@
                 </div>
             </main>
             <script>
-                let form = document.querySelector('.add-emp')
+                let form = document.querySelector('.submit')
                 const fnameErr = document.querySelector('.fname-error')
                 const idErr = document.querySelector('.id-error')
                 const rfidErr = document.querySelector('.rfid-error')

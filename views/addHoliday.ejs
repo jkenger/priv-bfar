@@ -23,21 +23,29 @@
                             </div>
                         </div>
                         
-                        <div class="add-holiday-form">
-                            <form class="add-holiday">
-                                <div class="add-holiday-section">
-                                    <div>
+                        <div class="add">
+                            <form class="submit">
+                                <div class="section">
                                         <div>
                                             <label for="employeecode">ID No. (Employee Code) *</label>
-                                            <input type="text" placeholder="ID No." name="emp_code" class="box-shadow">
+                                            <input type="text" placeholder="ID No." name="emp_code" class="box-shadow" id="idNo">
                                             <label for="error" class="id-error error">a</label>
+                                        </div>
+                                        <div>
+                                            <label for="fullname">Full Name *</label>
+                                            <input type="text" placeholder="Full Name" name="name" class="box-shadow" id='fName'disabled>
+                                            <label for="error" class="fname-error error">a</label>
                                         </div>
                                         <div>
                                             <label for="fullname">Full Name *</label>
                                             <input type="text" placeholder="Full Name" name="name" class="box-shadow" disabled>
                                             <label for="error" class="fname-error error">a</label>
                                         </div>
-                                    </div>
+                                        <div>
+                                            <label for="fullname">Full Name *</label>
+                                            <input type="text" placeholder="Full Name" name="name" class="box-shadow" disabled>
+                                            <label for="error" class="fname-error error">a</label>
+                                        </div>
                                 </div>
                                 
                                 <div>
@@ -52,7 +60,7 @@
                 </div>
             </main>
             <script>
-                let form = document.querySelector('.add-emp')
+                let form = document.querySelector('.submit')
                 const fnameErr = document.querySelector('.fname-error')
                 const idErr = document.querySelector('.id-error')
                 const rfidErr = document.querySelector('.rfid-error')
@@ -61,6 +69,55 @@
                 const contactErr = document.querySelector('.contact-error')
                 const positionErr = document.querySelector('.position-error')
                 const salaryErr = document.querySelector('.salary-error')
+
+                const idInput = document.querySelector('#idNo')
+                const fNameInput = document.querySelector('#fName')
+
+                var typingTimer;                //timer identifier
+                var doneTypingInterval = 1000;  //time in ms, 5 seconds for example 
+                let result = ''
+                let data = ''
+
+                const fetchEmployees = async () => {
+                    result = await fetch(`http://localhost:3000/admin/api/employees`)
+                    data = await result.json()
+                } 
+                // fetch employees onload
+                fetchEmployees()
+
+                idInput.addEventListener('keyup', ()=>{
+                    clearTimeout(typingTimer);
+                    typingTimer = setTimeout(doneTyping, doneTypingInterval);
+                    fNameInput.value = ''
+                    // check if input is a number
+                    if(!isNaN(idInput.value)){
+                        fnameErr.textContent = 'fetching data....'
+                    }
+                })
+
+                idInput.addEventListener('keydown', ()=>{
+                    clearTimeout(typingTimer);
+                })
+
+                const doneTyping = ()=>{
+                    let id = idInput.value
+                    if(data){
+                        (data.result).forEach(emp=>{
+                            // if matched, display name in the textfield
+                            if(id === emp.emp_code){
+                                console.log(id === emp.emp_code)
+                                fnameErr.textContent = ''   
+                                fNameInput.value = emp.name
+                            }
+                            // error if did not match
+                            if(fNameInput.value === '' || fNameInput.value === null || !fNameInput.value){
+                                fnameErr.textContent = 'cannot find any data with this id'
+                            }
+                        })
+                        id = ''
+                    }
+                }
+
                 form.addEventListener('submit', async (e) => {
                     console.log('ASDASFAS')
                     e.preventDefault();
@@ -98,5 +155,7 @@
                     
                     console.log(data)
                 })
+
+
             </script>
             <%-include('partials/Footer')%>
