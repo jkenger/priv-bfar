@@ -77,7 +77,9 @@ module.exports = {
     },
     holidayView: async (req, res) => {
         try{
-            res.status(200).render('holiday')
+            const data = await fetchData('admin/api/events/holiday')
+            console.log(data)
+            res.status(200).render('holiday', {data, url: req.url})
         }catch(err){
             res.status(500).send(err)
         }

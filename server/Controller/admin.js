@@ -79,12 +79,16 @@ module.exports = {
     // test/ delete all attendances
     testdelete: async (req, res) => {
         try {
-            const data = await attendances.deleteMany({am_time_in: 'T.O'})
-            res.send(data)
+            const result = await attendances.deleteMany({am_time_in: 'T.O'})
+            res.send(result)
         } catch (e) { res.status(500).send(e) }
     },
 
     // events || holiday and traver orders
+    readHoliday: async(req, res) =>{
+        const result = await Holiday.find()
+        res.status(200).send(result)
+    },
     addHoliday: async(req, res) =>{
         try{
             const {name, predate, date} = req.body

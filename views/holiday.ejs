@@ -21,11 +21,18 @@
                             
                             <table class="employee-table">
                                 <tr>
-                                    <th>Holiday Name</th>
-                                    <th>Prerequisite Date</th>
-                                    <th>Holiday Date</th>
-                                    <th>Actions</th>
+                                    <th style="width: 30%">Holiday Name</th>
+                                    <th style="width: 30%">Prerequisite Date</th>
+                                    <th style="width: 30%">Holiday Date</th>
+                                    <th style="width: 30%">Actions</th>
                                 </tr>
+                                <% Object.values(data).forEach(event => { %> 
+                                <tr>
+                                    <td><%=event.name%></td>
+                                    <td><%=event.preDate%></td>
+                                    <td><%=event.date%></td>
+                                </tr>
+                                <%}); %>
                             </table>
                             <script>
                                 // const viewBtns = document.querySelectorAll('.button')

@@ -69,7 +69,8 @@ route.delete('/api/employees/:id',  admin.deleteEmployee)
     // the system must create an attendance that write the current order# in am pm
 
 // events | holidays and travel orders api
-route.post('/api/events/addholiday', admin.addHoliday)
+route.get('/api/events/holiday', admin.readHoliday)
+route.post('/api/events/holiday', admin.addHoliday)
 route.post('/api/events/travelorder', admin.addTravelOrder)
 
     // 
