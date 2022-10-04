@@ -73,7 +73,7 @@ td, th, tr{
 }
 
 th{
-    
+    width: 10%;
     background-color: #FAFAFA;
     padding: .5em .25em;
 }
@@ -123,6 +123,11 @@ button{
     background-color: #ee5253;
 }
 
+.table-btn{
+    font-size: .75rem;
+    width: 50px;
+    padding: .25em;
+}
 
 .error{
     color: #ee5253;
@@ -145,6 +150,13 @@ button{
     margin: 0;
     padding:0;
     display: flex;
+}
+
+.container a.button{
+    color: #f1f2f6;
+    border-radius: 3px;
+    width: 250px;
+    text-align: center;
 }
 
 /* NAV */
@@ -464,7 +476,17 @@ button{
     padding: .5em 5em;
 }
 
+.event-container{
+    display: flex;
+    gap: 2em;
+}
 
+.event-container-layout{
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+    align-items: flex-end;
+}
 
 
 

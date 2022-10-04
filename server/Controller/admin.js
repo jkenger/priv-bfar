@@ -326,7 +326,7 @@ module.exports = {
                         no_of_undertime: { $sum: '$no_of_undertime' },
                         holiday: { $first: 0 },
                         // whalf_days: {$first: 11}, // test
-                        // no_of_undertime: {$first: 32} // test
+                        // no_of_undertime: {$first: 0} // test
 
                     }
                 },
@@ -407,6 +407,11 @@ module.exports = {
                 },
                 {
                     $addFields: {
+                        whalf_days: {$cond: {
+                            if: {$gte:['$whalf_days', calendarDays]},
+                            then: calendarDays,
+                            else: '$whalf_days'
+                        }},
                         gross_salary: { $round: [{ $subtract: ['$gross_salary', { $sum: ['$hasab_deduction', '$ut_deduction'] }] }, 2] },
                         // per month/2/11*no.of.days - 10417*.02
                         tax_deduction: {$multiply: [{$subtract: ['$gross_salary', 10417]}, tax]},

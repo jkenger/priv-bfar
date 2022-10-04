@@ -16,40 +16,89 @@
                                 </form>
                             </div>
                         </div>
-                        <a href="/admin/holidays/add" class="edit">Add event</a>
-                        <div class="employee-container components box-shadow">
+                        <div class="event-container">
+                            <div class="event-container-layout">
+                                <div class="employee-container components box-shadow">
+                                    <div>
+                                        <div class="label-ico">
+                                            <label for="fullname">Holiday Name *</label> <i class="fa-regular fa-circle-question"></i>
+                                        </div>
+                                        <input type="text" placeholder="Holiday Name" name="name" class="box-shadow" id='holidayName'>
+                                        <label for="error" class="fname-error error">a</label>
+                                    </div>
+                                    <div>
+                                        <div class="label-ico">
+                                            <label for="predate">Preqrequisite Date *</label> <i title="date an employee must attend" class="fa-regular fa-circle-question"></i>
+                                        </div>
+                                        <input type="date" placeholder="Preqrequisite Date" name="predate" class="box-shadow" >
+                                        <label for="error" class="predate-error error">a</label>
+                                    </div>
+                                    <div>
+                                        <div class="label-ico">
+                                            <label for="date">Requisite Date *</label> <i title="date of holiday" class="fa-regular fa-circle-question"></i>
+                                        </div>
+                                        <input type="date" placeholder="Requisite Date" name="date" class="box-shadow">
+                                        <label for="error" class="date-error error">a</label>
+                                    </div>
+                                    <script>
+                                        // const viewBtns = document.querySelectorAll('.button')
+                                        // const editBtn = document.querySelector('.button-edit')
+                                        // // const id = viewBtn.dataset.id
+                                        // for(let i = 0; i < viewBtns.length; i++){
+                                        //     viewBtns[i].addEventListener('click', (e)=>{
+                                        //         const id = viewBtns[i].dataset.id
+                                        //         location.assign(`http://localhost:3000/admin/employees/view/${id}`)
+                                        //     })
+                                        // }
+                                       
+                                        // viewBtn.addEventListener('click', (e)=>{
+                                        //     location.assign(`http://localhost:3000/admin/employees/view/${id}`)
+                                        // })
+        
+                                    </script>
+                                </div>
+                                <a href="/admin/holidays/add" class="button button-submit">Add holiday</a>
+                            </div>
                             
-                            <table class="employee-table">
-                                <tr>
-                                    <th style="width: 30%">Holiday Name</th>
-                                    <th style="width: 30%">Prerequisite Date</th>
-                                    <th style="width: 30%">Holiday Date</th>
-                                    <th style="width: 30%">Actions</th>
-                                </tr>
-                                <% Object.values(data).forEach(event => { %> 
-                                <tr>
-                                    <td><%=event.name%></td>
-                                    <td><%=event.preDate%></td>
-                                    <td><%=event.date%></td>
-                                </tr>
-                                <%}); %>
-                            </table>
-                            <script>
-                                // const viewBtns = document.querySelectorAll('.button')
-                                // const editBtn = document.querySelector('.button-edit')
-                                // // const id = viewBtn.dataset.id
-                                // for(let i = 0; i < viewBtns.length; i++){
-                                //     viewBtns[i].addEventListener('click', (e)=>{
-                                //         const id = viewBtns[i].dataset.id
-                                //         location.assign(`http://localhost:3000/admin/employees/view/${id}`)
-                                //     })
-                                // }
-                               
-                                // viewBtn.addEventListener('click', (e)=>{
-                                //     location.assign(`http://localhost:3000/admin/employees/view/${id}`)
-                                // })
-
-                            </script>
+                            <div class="event-container-layout">
+                                <div class="employee-container components box-shadow">
+                                    <table class="employee-table">
+                                        <tr>
+                                            <th style="width: 30%">Holiday Name</th>
+                                            <th style="width: 30%">Prerequisite Date</th>
+                                            <th style="width: 30%">Holiday Date</th>
+                                            <th style="width: 30%">Actions</th>
+                                        </tr>
+                                        <% Object.values(data).forEach(event => { %> 
+                                        <tr>
+                                            <td><%=event.name%></td>
+                                            <td><%=event.preDate%></td>
+                                            <td><%=event.date%></td>
+                                            <td>
+                                                <button class="button table-btn">edit</button>
+                                                <button class="button-delete table-btn">delete</button>
+                                            </td>
+                                        </tr>
+                                        <%}); %>
+                                    </table>
+                                    <script>
+                                        // const viewBtns = document.querySelectorAll('.button')
+                                        // const editBtn = document.querySelector('.button-edit')
+                                        // // const id = viewBtn.dataset.id
+                                        // for(let i = 0; i < viewBtns.length; i++){
+                                        //     viewBtns[i].addEventListener('click', (e)=>{
+                                        //         const id = viewBtns[i].dataset.id
+                                        //         location.assign(`http://localhost:3000/admin/employees/view/${id}`)
+                                        //     })
+                                        // }
+                                       
+                                        // viewBtn.addEventListener('click', (e)=>{
+                                        //     location.assign(`http://localhost:3000/admin/employees/view/${id}`)
+                                        // })
+        
+                                    </script>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
