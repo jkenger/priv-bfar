@@ -3,9 +3,9 @@ const { getFormattedDate } = require('./services/date')
 const employees = require('../Model/employee')
 const attendances = require('../Model/attendance')
 const Holiday = require('../Model/holiday')
+const TravelPass = require('../Model/Travelpass')
 const { query } = require('express')
 const moment = require('moment')
-const { default: isURL } = require('validator/lib/isurl')
 
 module.exports = {
     // get total employee count
@@ -114,16 +114,20 @@ module.exports = {
                 const error = errorHandler({message: 'Holiday must be ahead of prerequisite date'})
                 res.status(500).send({ err: error })
             }
-            const schema = {
-                name: name,
-                preDate: predate,
-                date: date
+
+            if(from > currentDate && to > from){
+                const schema = {
+                    name: name,
+                    preDate: predate,
+                    date: date
+                }
+                const result = await Holiday.create(schema)
+                if(!result){
+                    res.status(500).send('failure to create data.')
+                }
+                res.status(200).send(result)
             }
-            const result = await Holiday.create(schema)
-            if(!result){
-                res.status(500).send('failure to create data.')
-            }
-            res.status(200).send(result)
+            
         }catch(e){
             const error = errorHandler(e)
             res.status(500).send({ err: error })
@@ -134,10 +138,13 @@ module.exports = {
         try {
             // PROBLEM
             const { emp_code, name, fromDate, toDate } = req.body
+            
+            const formattedDate = getFormattedDate()
             var from = new Date(fromDate)
             var to = new Date(toDate)
+            var currentDate = new Date(formattedDate)
             var docs = []
-            if(from < new Date()) res.status(500).send({err: 'Given date must be equal or ahead of the current date'})
+            console.log('travel', fromDate, toDate)
             const attendance = await attendances.findOne({
                 emp_code: emp_code,
                 $and: [{date: {$gte: from}}, {date: {$lte: to}}],
@@ -148,26 +155,63 @@ module.exports = {
             // NOTE: date should be formatted to local date.
             if (!attendance) {   
                 console.log('ATTENDANCE')
-                const employee = await employees.findOne({emp_code: emp_code})
-                //loop for every day
-                for (var day = from; day <= to; day.setDate(day.getDate() + 1)) {
-
-                    var newDay = new Date(day.setDate(day.getDate()))
-                    docs.push({
-                        emp_code: employee.emp_code,
-                        emp_id: employee._id,
-                        name: employee.name,
-                        date: newDay,
-                        date_string: newDay.toLocaleDateString(),
-                        am_time_in: 'T.O',
-                        isHalf: 'false'
-                    })
-                }
-                const result = await attendances.insertMany(docs)
-                if (!result) res.status(500).send({err: 'Failed creating attendance'})
-                console.log(employee)
-                //console.log(docs)
-                res.status.send(employee)
+                employees.findOne({emp_code: emp_code})
+                .then(async (employee, err)=>{
+                    if(err){
+                        res.status(500).send({err: "System can't find employee with this id"})
+                    }else if(!fromDate || !toDate) {
+                        const error = errorHandler({message: 'Dates are required'})
+                        res.status(500).send({ err: error })
+                    }else  if(from < currentDate) {
+                        const error = errorHandler({message: 'Given date must be equal or ahead of the current date'})
+                        res.status(500).send({err: error})
+                    }else if(to < from){
+                        const error = errorHandler({message: 'Date must be ahead of prerequisite date'})
+                        res.status(500).send({ err: error })
+                    }else{
+                        TravelPass.find({emp_code: emp_code, date_added: from})
+                            .then(dateExist =>{
+                                console.log('date: ', !dateExist.length)
+                                if(dateExist.length){
+                                    const error = errorHandler({message: 'Selected date were already given'})
+                                    res.status(500).send({ err: error })
+                                }
+                                if(!dateExist.length){
+                                    TravelPass.insertMany({
+                                        emp_code: employee.emp_code,
+                                        emp_id: employee._id,
+                                        name: employee.name,
+                                        from_date: from,
+                                        to_date:to,
+                                        date_added: from
+                                    })
+                                        .then(async (pass, err)=>{
+                                            console.log(pass)
+                                            if(err){
+                                                res.status(500).send({err: 'Failed creating travel pass'})
+                                            }
+                                            if(pass){
+                                                //loop for every day
+                                                for (var day = from; day <= to; day.setDate(day.getDate() + 1)) {
+                                                    
+                                                    var newDay = new Date(day.setDate(day.getDate()))
+                                                    docs.push({
+                                                        emp_code: employee.emp_code,
+                                                        emp_id: employee._id,
+                                                        name: employee.name,
+                                                        date: newDay,
+                                                        date_string: newDay.toLocaleDateString(),
+                                                        isHalf: 'false',
+                                                        message: 'T.O',
+                                                    })
+                                                }
+                                                attendances.insertMany(docs)
+                                            }
+                                        })
+                                }
+                            })
+                    }
+                })
             } else{ res.status(500).send({err: 'Failed to process event creation. Employee might already attended between the selected date'})}
         } catch (e) { res.status(500).send(e) }
     },
@@ -193,20 +237,21 @@ module.exports = {
             // variables that must be retrive from the client
             const holiDate = new Date('2022-09-06') // from user
             const holiDateBefore = new Date('2022-09-05') // from user
-            const holidays = await Holiday.find().sort({date: 1})
+           // const holidays = await Holiday.find().sort({date: 1})
 
-            let holidayDates = []
-            holidays.forEach(holiday=>{
-                let date = new Date(holiday.date)
-                // if holiday date is within two queried date, add as valid holiday dates.
-                if(fromDate < date && toDate > date){
-                    holidayDates.push({
-                        preDate: holiday.preDate,
-                        date: holiday.date
-                    })
-                }
-            })
-            console.log(holidayDates)
+            // let holidayDates = []
+            // holidays.forEach(holiday=>{
+            //     let date = new Date(holiday.date)
+            //     // if holiday date is within two queried date, add as valid holiday dates.
+            //     if(fromDate < date && toDate > date){
+            //         holidayDates.push({
+            //             preDate: holiday.preDate,
+            //             date: holiday.date
+            //         })
+            //     }
+            // })
+
+            // console.log(holidayDates)
 
             const calendarDays = 11 // from user
 
@@ -278,7 +323,6 @@ module.exports = {
                         // TASK:
                         // BETEEN TWO DATES CHECK IF THERE IS HOLIDAYS
                         // GET HOW MANY HOLIDAYS IS IN TWO DATES
-                    holidays: holidayDates,
                     holiday: {$let: {
                         vars: {
                             holiday_date: {$cond: {
@@ -305,112 +349,113 @@ module.exports = {
                         }}
                     }},
                 }},
-                // {$group: {
-                //     _id: '$_id',
-                //     emp_code: { $first: '$emp_code' },
-                //     name: { $first: '$name' },
-                //     designation: { $first: '$designation' },
-                //     salary: { $first: '$salary' },
-                //     // holiday: { $first: '$holiday' },
-                //     whalf_days: { $sum: '$whalf_days' },
-                //     no_of_undertime: { $sum: '$no_of_undertime' },
-                //     holiday: { $first: 0 },
-                //     // whalf_days: {$first: 11}, // test
-                //     // no_of_undertime: {$first: 0} // test
-                // }},
-                // {$addFields: {
-                //     week2_rate: { $divide: ['$salary', 2] },
-                //     whalf_days: {
-                //         $switch: {
-                //             branches: [
-                //                 {case: { $eq: ['$holiday', 0] }, then: '$whalf_days' },                // no holiday, no additions
-                //                 {case: { $eq: ['$holiday', 1] }, then: {
-                //                     $cond: {
-                //                         if: {$gte: [{ $sum: ['$whalf_days', '$holiday'] }, calendarDays] },
-                //                         then: calendarDays,
-                //                         else: { $sum: ['$whalf_days', '$holiday'] }
-                //                     }
-                //                 }},
-                //                 { case: { $eq: ['$holiday', 2] }, then: { $subtract: ['$whalf_days', 1] } } // deduct 1 day
-                //             ]
-                //         }},
+                {$group: {
+                    _id: '$_id',
+                    emp_code: { $first: '$emp_code' },
+                    name: { $first: '$name' },
+                    designation: { $first: '$designation' },
+                    salary: { $first: '$salary' },
+                    // holiday: { $first: '$holiday' },
+                    whalf_days: { $sum: '$whalf_days' },
+                    no_of_undertime: { $sum: '$no_of_undertime' },
+                    holiday: { $first: 1 },
+                    // whalf_days: {$first: 11}, // test
+                    // no_of_undertime: {$first: 0} // test
+                }},
+                {$addFields: {
+                    week2_rate: { $divide: ['$salary', 2] },
+                    whalf_days: {
+                        $switch: {
+                            branches: [
+                                {case: { $eq: ['$holiday', 0] }, then: '$whalf_days' },                // no holiday, no additions
+                                {case: { $eq: ['$holiday', 1] }, then: {
+                                    $cond: {
+                                        if: {$gte: [{ $sum: ['$whalf_days', '$holiday'] }, calendarDays] },
+                                        then: calendarDays,
+                                        else: { $sum: ['$whalf_days', '$holiday'] }
+                                    }
+                                }},
+                                { case: { $eq: ['$holiday', 2] }, then: { $subtract: ['$whalf_days', 1] } } // deduct 1 day
+                            ]
+                        }},
 
-                //         no_of_absents: {$cond: {
-                //             if: { $lt: [{ $subtract: [calendarDays, { $sum: ['$whalf_days', '$holiday'] }] }, 0] },
-                //             then: 0,
-                //             else: { $subtract: [calendarDays, { $sum: ['$whalf_days', '$holiday'] }] }
-                //         }},
-                //         // IF HAS ABSENTEE, RETRIEVE ABSENTEE DEDUCTION
-                //         hasab_deduction: { 
-                //             $let: {
-                //                 vars: {
-                //                     daily_rate: { $round: [{ $divide: [{ $divide: ['$salary', 2] }, calendarDays] }, 2] },
-                //                     no_of_absents: {$cond: {
-                //                         if: { $lt: [{ $subtract: [calendarDays, { $sum: ['$whalf_days', '$holiday'] }] }, 0] },
-                //                         then: 0,
-                //                         else: { $subtract: [calendarDays, { $sum: ['$whalf_days', '$holiday'] }] }
-                //                     }
-                //                 }},
-                //                 in: { $round: [{ $multiply: ['$$no_of_absents', '$$daily_rate'] }, 2] }
-                //             }
-                //         },
+                        no_of_absents: {$cond: {
+                            if: { $lt: [{ $subtract: [calendarDays, { $sum: ['$whalf_days', '$holiday'] }] }, 0] },
+                            then: 0,
+                            else: { $subtract: [calendarDays, { $sum: ['$whalf_days', '$holiday'] }] }
+                        }},
+                        // IF HAS ABSENTEE, RETRIEVE ABSENTEE DEDUCTION
+                        hasab_deduction: { 
+                            $let: {
+                                vars: {
+                                    daily_rate: { $round: [{ $divide: [{ $divide: ['$salary', 2] }, calendarDays] }, 2] },
+                                    no_of_absents: {$cond: {
+                                        if: { $lt: [{ $subtract: [calendarDays, { $sum: ['$whalf_days', '$holiday'] }] }, 0] },
+                                        then: 0,
+                                        else: { $subtract: [calendarDays, { $sum: ['$whalf_days', '$holiday'] }] }
+                                    }
+                                }},
+                                in: { $round: [{ $multiply: ['$$no_of_absents', '$$daily_rate'] }, 2] }
+                            }
+                        },
 
-                //         // IF HAS UNDERTIME, RETRIEVE UNDERTIME DEDUCTION
-                //         // ut_deduction = (((dailyrate / 8hr) / 60 secs) * 32) * no_of_undertime
-                //         ut_deduction: {
-                //             $let: {
-                //                 vars: {
-                //                     week2_rate: { $round: [{ $divide: ['$salary', 2] }, 2] },
-                //                     daily_rate: { $round: [{ $divide: [{ $divide: ['$salary', 2] }, calendarDays] }, 2] },
-                //                 },
-                //                 in: { $round: [{ $multiply: [{ $round: [{ $divide: [{ $divide: ['$$daily_rate', 8] }, 60] }, 2] }, '$no_of_undertime'] }, 2] }
-                //             }
-                //         },
-                //     }},
-                //     {$group: {
-                //         _id: '$_id',
-                //         emp_code: { $first: '$emp_code' },
-                //         name: { $first: '$name' },
-                //         designation: { $first: '$designation' },
-                //         salary: { $first: '$salary' },
-                //         holiday: { $first: '$holiday' }, // INCLUDED FOR TESTING PURPOSES
-                //         whalf_days: { $first: '$whalf_days' },
-                //         no_of_absents: { $first: '$no_of_absents' }, // INCLUDED FOR TESTING PURPOSES
-                //         no_of_undertime: { $first: '$no_of_undertime' }, // INCLUDED FOR TESTING PURPOSES
-                //         gross_salary: { $first: '$week2_rate' },
-                //         hasab_deduction: { $first: '$hasab_deduction' },
-                //         ut_deduction: { $first: '$ut_deduction' },
-                //     }},
-                //     {$addFields: {
-                //         whalf_days: {
-                //             $cond: {
-                //                 if: {$gte:['$whalf_days', calendarDays]},
-                //                 then: calendarDays,
-                //                 else: '$whalf_days'
-                //             }
-                //         },
-                //         gross_salary: { $round: [{ $subtract: ['$gross_salary', { $sum: ['$hasab_deduction', '$ut_deduction'] }] }, 2] },
-                //             // per month/2/11*no.of.days - 10417*.02
-                //         tax_deduction: {$multiply: [{$subtract: ['$gross_salary', 10417]}, tax]},
-                //             // gross salary - tax deduction
-                //         net_amount_due: {$let:{
-                //             vars: {
-                //                 gross_salary: { $round: [{ $subtract: ['$gross_salary', { $sum: ['$hasab_deduction', '$ut_deduction'] }] }, 2] },
-                //                 tax_deduction: { $cond: {
-                //                     if: {$lt: [{$round: [{ $multiply: [{$round: [{$subtract: ['$gross_salary', 10417.00]},2]}, tax] }, 2]}, 0]},
-                //                     then: 0,
-                //                 else: {$round: [{ $multiply: [{$round: [{$subtract: ['$gross_salary', 10417.00]},2]}, tax] }, 2]}
-                //                 }}
-                //             },
-                //             in: {$round:[{$subtract: ['$$gross_salary', '$$tax_deduction']}, 2]}
-                //         }}
-                //     }},
+                        // IF HAS UNDERTIME, RETRIEVE UNDERTIME DEDUCTION
+                        // ut_deduction = (((dailyrate / 8hr) / 60 secs) * 32) * no_of_undertime
+                        ut_deduction: {
+                            $let: {
+                                vars: {
+                                    week2_rate: { $round: [{ $divide: ['$salary', 2] }, 2] },
+                                    daily_rate: { $round: [{ $divide: [{ $divide: ['$salary', 2] }, calendarDays] }, 2] },
+                                },
+                                in: { $round: [{ $multiply: [{ $round: [{ $divide: [{ $divide: ['$$daily_rate', 8] }, 60] }, 2] }, '$no_of_undertime'] }, 2] }
+                            }
+                        },
+                    }},
+                    {$group: {
+                        _id: '$_id',
+                        emp_code: { $first: '$emp_code' },
+                        name: { $first: '$name' },
+                        designation: { $first: '$designation' },
+                        salary: { $first: '$salary' },
+                        holiday: { $first: '$holiday' }, // INCLUDED FOR TESTING PURPOSES
+                        whalf_days: { $first: '$whalf_days' },
+                        no_of_absents: { $first: '$no_of_absents' }, // INCLUDED FOR TESTING PURPOSES
+                        no_of_undertime: { $first: '$no_of_undertime' }, // INCLUDED FOR TESTING PURPOSES
+                        gross_salary: { $first: '$week2_rate' },
+                        hasab_deduction: { $first: '$hasab_deduction' },
+                        ut_deduction: { $first: '$ut_deduction' },
+                    }},
+                    {$addFields: {
+                        whalf_days: {
+                            $cond: {
+                                if: {$gte:['$whalf_days', calendarDays]},
+                                then: calendarDays,
+                                else: '$whalf_days'
+                            }
+                        },
+                        gross_salary: { $round: [{ $subtract: ['$gross_salary', { $sum: ['$hasab_deduction', '$ut_deduction'] }] }, 2] },
+                            // (gross salary - 10417) *.02 // 2% Tax
+                        tax_deduction: {$multiply: [{$subtract: ['$gross_salary', 10417]}, tax]},
+                            // gross salary - tax deduction
+                        net_amount_due: {$let:{
+                            vars: {
+                                gross_salary: { $round: [{ $subtract: ['$gross_salary', { $sum: ['$hasab_deduction', '$ut_deduction'] }] }, 2] },
+                                tax_deduction: { $cond: {
+                                    if: {$lt: [{$round: [{ $multiply: [{$round: [{$subtract: ['$gross_salary', 10417.00]},2]}, tax] }, 2]}, 0]},
+                                    then: 0,
+                                else: {$round: [{ $multiply: [{$round: [{$subtract: ['$gross_salary', 10417.00]},2]}, tax] }, 2]}
+                                }}
+                            },
+                            in: {$round:[{$subtract: ['$$gross_salary', '$$tax_deduction']}, 2]}
+                        }}
+                    }},
                     {$sort: { emp_code: 1 }}
             ]
             try {
                 const result = await employees.aggregate(pipeline)
+                
                 if (!result) res.status(500).send({err: 'Invalid request'})
-                // console.log(result)
+                 console.log(result)
                 res.status(200).send({ result })
             } catch (e) {
                 res.status(500).send(e)

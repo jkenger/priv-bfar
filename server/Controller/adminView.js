@@ -78,7 +78,6 @@ module.exports = {
     holidayView: async (req, res) => {
         try{
             const data = await fetchData('admin/api/events/holiday')
-            console.log(data)
             res.status(200).render('holiday', {data, url: req.url})
         }catch(err){
             res.status(500).send(err)
@@ -87,6 +86,13 @@ module.exports = {
     addHolidayView: async (req, res) => {
         try{
             res.status(200).render('addHoliday')
+        }catch(err){
+            res.status(500).send(err)
+        }
+    },
+    travelPassView: async (req, res) => {
+        try{
+            res.status(200).render('travelPass')
         }catch(err){
             res.status(500).send(err)
         }

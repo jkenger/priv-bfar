@@ -7,13 +7,17 @@ const moment = require('moment')
 const EMP_TIME_RECORD = mongoose.Schema({
     emp_code: {
         type: String,
-        ref: "users",
+        ref: "Employees",
         required: [true, 'Please enter employee code'],
         validate: [validator.isInt, "Invalid ID"]
     },
     emp_id: {
         type: mongoose.Types.ObjectId,
-        required: [true, 'Employee ID was not found']
+        required: [true, 'Employee ID was not found'],
+        ref: 'Employees'
+    },
+    name:{
+        type: String,
     },
     date: {
         type: Date
@@ -52,6 +56,10 @@ const EMP_TIME_RECORD = mongoose.Schema({
     isHalf: {
         type: Boolean,
         default: true
+    },
+    message: {
+        type: String,
+        default: "Office"
     }
 })
 
@@ -64,7 +72,7 @@ EMP_TIME_RECORD.statics.am_attendance = async function (emp_code, _id, time_type
     // OFFICE ISO DATE AND TIME
     const officeISODate = new Date().toISOString().split('T')[0]; // current date || yyyy-mm-dd
     console.log(officeISODate)
-    const testISODate = '2022-09-27'; // current date for tioday|| yyyy-mm-dd (ie 2022-09-27)
+    const testISODate = '2022-10-29'; // current date for tioday|| yyyy-mm-dd (ie 2022-09-27)
     console.log(officeISODate)
 
     // 8 AM TIME IN

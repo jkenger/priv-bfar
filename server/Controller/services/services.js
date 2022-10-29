@@ -88,7 +88,12 @@ const errorHandler = (err) => {
         holidayErr.preDate = err.message
         return holidayErr
     }
-    if(err.message === 'Holiday must be ahead of prerequisite date'){
+    if(err.message === 'Date must be ahead of prerequisite date'){
+        holidayErr.date = err.message
+        return holidayErr
+    }
+
+    if(err.message === 'Dates are required'){
         holidayErr.date = err.message
         return holidayErr
     }

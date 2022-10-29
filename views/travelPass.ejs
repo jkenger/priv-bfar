@@ -1,0 +1,195 @@
+<%-include('partials/Header')%>
+    <%-include('partials/Nav') %>
+        <%-include('partials/Aside')%>
+
+        <main>
+            <div class="container dashboard">
+                <div class="employees">
+                    <div class="employee-query components box-shadow">
+                        <h1>Holidays</h1>
+                        <div class="employee-query-search">
+                            <form novalidate role="search">
+                                <button>
+                                    <i class="fa-solid fa-magnifying-glass"></i>
+                                </button>
+                                <input type="text" placeholder="Type your query here and press enter">
+                            </form>
+                        </div>
+                    </div>
+                    <div class="event-container">
+                        <div class="event-container-layout">
+                            <div class="employee-container components box-shadow" style="width: 30%; height:280px">
+                                <div class="add">
+                                    <form class="submit">
+                                        <div class="section">
+                                            <div>
+                                                <div class="label-ico">
+                                                    <label for="fullname">Employee ID *</label> <i class="fa-regular fa-circle-question"></i>
+                                                </div>
+                                                <input type="number" placeholder="e.g 20" name="id" class="box-shadow" id='idNo'>
+                                                <label for="error" class="id-error error"></label>
+                                            </div>
+                                            <div>
+                                                <div class="label-ico">
+                                                    <label for="fullname"> Name *</label> <i class="fa-regular fa-circle-question"></i>
+                                                </div>
+                                                <input type="text" placeholder="Name" name="name" class="box-shadow" id='empName'>
+                                                <label for="error" class="name-error error"></label>
+                                            </div>
+                                            <div>
+                                                <div class="label-ico">
+                                                    <label for="predate">From *</label> <i title="date an employee must attend" class="fa-regular fa-circle-question"></i>
+                                                </div>
+                                                <input type="date" placeholder="From Date" name="fromDate" class="box-shadow" >
+                                                <label for="error" class="fromdate-error error"></label>
+                                            </div>
+                                            <div>
+                                                <div class="label-ico">
+                                                    <label for="date">To *</label> <i title="date of holiday" class="fa-regular fa-circle-question"></i>
+                                                </div>
+                                                <input type="date" placeholder="To Date" name="toDate" class="box-shadow">
+                                                <label for="error" class="todate-error error"></label>
+                                            </div>
+                                            <script>
+                                                let form = document.querySelector('.submit')
+                                                const nameErr = document.querySelector('.name-error')
+                                                const idErr = document.querySelector('.id-error')
+                                                const fromDate = document.querySelector('.fromdate-error')
+                                                const toDate = document.querySelector('.todate-error')
+
+                                                const idInput = document.querySelector('#idNo')
+                                                const fNameInput = document.querySelector('#empName')
+                                                var typingTimer;                //timer identifier
+                                                var doneTypingInterval = 1000;  //time in ms, 5 seconds for example 
+                                                let result = ''
+                                                let data = ''
+
+                                                var regex=/^[a-zA-Z]+$/;
+
+                                                const fetchEmployees = async () => {
+                                                    result = await fetch(`http://localhost:3000/admin/api/employees`)
+                                                    data = await result.json()
+                                                } 
+                                                // fetch employees onload
+                                                fetchEmployees()
+
+                                                idInput.addEventListener('keyup', ()=>{
+                                                    clearTimeout(typingTimer);
+                                                    typingTimer = setTimeout(doneTyping, doneTypingInterval);
+                                                    fNameInput.value = ''
+                                                    // check if input is a number
+                                                    
+                                                    if(!isNaN(idInput.value)){
+                                                        nameErr.textContent = 'fetching data....'
+                                                    }
+                                                })
+
+                                                idInput.addEventListener('keydown', ()=>{
+                                                    clearTimeout(typingTimer);
+                                                })
+
+                                                const doneTyping = ()=>{
+                                                    let id = idInput.value
+                                                    if(data){
+                                                        (data.result).forEach(emp=>{
+                                                            // if matched, display name in the textfield
+                                                            if(id === emp.emp_code){
+                                                                console.log(id === emp.emp_code)
+                                                                nameErr.textContent = ''   
+                                                                fNameInput.value = emp.name
+                                                            }
+                                                            // error if did not match
+                                                            if(fNameInput.value === '' || fNameInput.value === null || !fNameInput.value){
+                                                                nameErr.textContent = 'cannot find any data with this id'
+                                                            }
+                                                        })
+                                                        id = ''
+                                                    }
+                                                }
+                                                form.addEventListener('submit', async (e) => {
+                                                    e.preventDefault();
+                                                    console.log('SUBMITTED')
+                                                    const doc = {
+                                                        emp_code: form.id.value,
+                                                        name : form.name.value,
+                                                        fromDate : form.fromDate.value,
+                                                        toDate : form.toDate.value
+                                                    }
+                                                    console.log('client 1:', doc)
+                                                    const res = await fetch('http://localhost:3000/admin/api/events/travelorder',{
+                                                        headers:{'Content-Type': 'application/json'},
+                                                        body: JSON.stringify(doc),
+                                                        method: 'POST'
+                                                    })
+
+                                                    const data = await res.json()
+                                                    
+                                                    if(data) {
+                                                        // location.href = 'http://localhost:3000/admin/travelpass'
+                                                        console.log('response:', data)
+                                                    }
+                                                    if(data.err) {
+                                                        idErr.textContent = data.err.emp_code
+                                                        nameErr.textContent = data.err.name
+                                                        fromDate.textContent = data.err.preDate
+                                                        toDate.textContent = data.err.date
+                                                    }
+                                                    
+                                                })
+
+                                                // const viewBtns = document.querySelectorAll('.button')
+                                                // const editBtn = document.querySelector('.button-edit')
+                                                // // const id = viewBtn.dataset.id
+                                                // for(let i = 0; i < viewBtns.length; i++){
+                                                //     viewBtns[i].addEventListener('click', (e)=>{
+                                                //         const id = viewBtns[i].dataset.id
+                                                //         location.assign(`http://localhost:3000/admin/employees/view/${id}`)
+                                                //     })
+                                                // }
+                                            
+                                                // viewBtn.addEventListener('click', (e)=>{
+                                                //     location.assign(`http://localhost:3000/admin/employees/view/${id}`)
+                                                // })
+                                                
+                                            </script>
+                                        </div>
+                                        <button class="button-submit add-emp-btn">Save this event</button>
+                                    </form>
+                                </div>
+                            
+                        </div>
+                        
+                        <div class="event-container-layout">
+                            <div class="employee-container components box-shadow" style="width:auto">
+                                <table class="employee-table">
+                                    <tr>
+                                        <th style="width: 30%">Holiday Name</th>
+                                        <th style="width: 30%">Prerequisite Date</th>
+                                        <th style="width: 30%">Holiday Date</th>
+                                        <th style="width: 30%">Actions</th>
+                                    </tr>
+                                    
+                                </table>
+                                <script> 
+                                    // const viewBtns = document.querySelectorAll('.button')
+                                    // const editBtn = document.querySelector('.button-edit')
+                                    // // const id = viewBtn.dataset.id
+                                    // for(let i = 0; i < viewBtns.length; i++){
+                                    //     viewBtns[i].addEventListener('click', (e)=>{
+                                    //         const id = viewBtns[i].dataset.id
+                                    //         location.assign(`http://localhost:3000/admin/employees/view/${id}`)
+                                    //     })
+                                    // }
+                                
+                                    // viewBtn.addEventListener('click', (e)=>{
+                                    //     location.assign(`http://localhost:3000/admin/employees/view/${id}`)
+                                    // })
+
+                                </script>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+<%-include('partials/Footer')%>

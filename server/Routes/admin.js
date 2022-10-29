@@ -36,6 +36,7 @@ route.get('/records', checkToken, checkRoles, adminView.recordView)
 // holidays and travel orders endpoint
 route.get('/holidays', checkToken, checkRoles, adminView.holidayView)
 route.get('/holidays/add', checkToken, checkRoles, adminView.addHolidayView)
+route.get('/travelpass', checkToken, checkRoles, adminView.travelPassView)
 
 // // all
 // route.get('*', )
