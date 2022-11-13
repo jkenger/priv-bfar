@@ -6,6 +6,7 @@ const Holiday = require('../Model/holiday')
 const TravelPass = require('../Model/Travelpass')
 const { query } = require('express')
 const moment = require('moment')
+const { createIndexes } = require('../Model/employee')
 
 module.exports = {
     // get total employee count
@@ -97,6 +98,15 @@ module.exports = {
         }
         
     },
+    readTravelPass: async(req, res) =>{
+        try{
+            const result = await TravelPass.find()
+            res.status(200).send(result)
+        }catch(e){
+            const error = errorHandler(e)
+            res.status(500).send({ err: error })
+        }
+    },
     addHoliday: async(req, res) =>{
         try{
             const {name, predate, date} = req.body
@@ -115,7 +125,7 @@ module.exports = {
                 res.status(500).send({ err: error })
             }
 
-            if(from > currentDate && to > from){
+            if(from >= currentDate && to >= from){
                 const schema = {
                     name: name,
                     preDate: predate,
@@ -134,7 +144,7 @@ module.exports = {
         }
     },
 
-    addTravelOrder: async (req, res) => {
+    addTravelPass: async (req, res) => {
         try {
             // PROBLEM
             const { emp_code, name, fromDate, toDate } = req.body
@@ -145,6 +155,7 @@ module.exports = {
             var currentDate = new Date(formattedDate)
             var docs = []
             console.log('travel', fromDate, toDate)
+
             const attendance = await attendances.findOne({
                 emp_code: emp_code,
                 $and: [{date: {$gte: from}}, {date: {$lte: to}}],
@@ -169,14 +180,22 @@ module.exports = {
                         const error = errorHandler({message: 'Date must be ahead of prerequisite date'})
                         res.status(500).send({ err: error })
                     }else{
-                        TravelPass.find({emp_code: emp_code, date_added: from})
-                            .then(dateExist =>{
-                                console.log('date: ', !dateExist.length)
-                                if(dateExist.length){
+                        TravelPass.find({emp_code: emp_code, date_added: ({$gte:moment(from).startOf('isoweek').toDate()} || {$lte:moment(to).startOf('isoweek').toDate()})})
+                            .then(documents =>{
+                                let existingDoc = []
+                                console.log('date: ', documents)
+                                console.log('from-to', moment(from).startOf('isoweek').toDate(), moment(to).endOf('isoweek').toDate())
+                                for(let i = 0; i < documents.length; i++){
+                                    if(documents[i].from_date >= from || to <= documents[i].to_date){
+                                        existingDoc.push(documents[i])
+                                    }
+                                }
+                                console.log('valid Documents:', existingDoc)
+                                if(existingDoc.length){
                                     const error = errorHandler({message: 'Selected date were already given'})
                                     res.status(500).send({ err: error })
                                 }
-                                if(!dateExist.length){
+                                if(!existingDoc.length){
                                     TravelPass.insertMany({
                                         emp_code: employee.emp_code,
                                         emp_id: employee._id,
@@ -186,7 +205,7 @@ module.exports = {
                                         date_added: from
                                     })
                                         .then(async (pass, err)=>{
-                                            console.log(pass)
+                                            console.log('pass:', pass)
                                             if(err){
                                                 res.status(500).send({err: 'Failed creating travel pass'})
                                             }
@@ -205,7 +224,21 @@ module.exports = {
                                                         message: 'T.O',
                                                     })
                                                 }
+                                                // [done] NOTE: attendance document not inserting as subdocument from the travel order
+                                                // TO DO: attendances must be deleted from the originally collection when a user deleted a travel order record.
                                                 attendances.insertMany(docs)
+                                                .then(result=>{
+                                                    TravelPass.findOneAndUpdate(
+                                                        {_id: pass[0]._id},
+                                                        {$push: {attendances: result}}
+                                                    )
+                                                    .then(result=>{
+                                                        res.status(200).send(result)
+                                                    })
+                                                })
+                                                    
+                                                
+
                                             }
                                         })
                                 }
@@ -214,6 +247,44 @@ module.exports = {
                 })
             } else{ res.status(500).send({err: 'Failed to process event creation. Employee might already attended between the selected date'})}
         } catch (e) { res.status(500).send(e) }
+    },
+
+    deleteTravelPass: async(req, res)=>{
+        try{
+            const id = req.params.id
+            TravelPass.findOneAndDelete({_id: id})
+                .then((result, err)=>{
+                    const resLength = result.attendances.length
+                    const dataId = []
+                    if(result){
+                        if(resLength > 1){
+                            result.attendances.forEach(data=>{
+                                dataId.push(data._id)
+                            })
+                        }else{
+                            dataId.push(result.attendances[0]._id)
+                        }
+                        if(dataId.length){
+                            attendances.deleteMany({_id: {$in: dataId}})
+                                .then((result, err)=>{
+                                    res.status(200).send({
+                                        dataId: dataId,
+                                        datas: result   
+                                    })
+                                })
+                            
+                        }else{
+                            res.status(501).send({err:'No IDS Found.'})
+                        }
+                    }else{
+                        res.status(501).send({err:'Failed to process deletion. Try again later.'})
+                    }
+                })
+            
+            
+        }catch(e){
+            res.status(500).send(e)
+        }
     },
 
     // get all records

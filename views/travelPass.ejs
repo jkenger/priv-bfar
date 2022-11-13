@@ -116,7 +116,7 @@
                                                         toDate : form.toDate.value
                                                     }
                                                     console.log('client 1:', doc)
-                                                    const res = await fetch('http://localhost:3000/admin/api/events/travelorder',{
+                                                    const res = await fetch('http://localhost:3000/admin/api/events/travelpass',{
                                                         headers:{'Content-Type': 'application/json'},
                                                         body: JSON.stringify(doc),
                                                         method: 'POST'
@@ -163,27 +163,43 @@
                             <div class="employee-container components box-shadow" style="width:auto">
                                 <table class="employee-table">
                                     <tr>
-                                        <th style="width: 30%">Holiday Name</th>
-                                        <th style="width: 30%">Prerequisite Date</th>
-                                        <th style="width: 30%">Holiday Date</th>
+                                        <th style="width: 30%">Employee name</th>
+                                        <th style="width: 30%">From</th>
+                                        <th style="width: 30%">To</th>
                                         <th style="width: 30%">Actions</th>
                                     </tr>
-                                    
+                                    <% Object.values(data).forEach(event => { %> 
+                                        <tr>
+                                            <td><%=event.name%></td>
+                                            <td><%=moment(event.from_date).format('LL')%></td>
+                                            <td><%=moment(event.to_date).format('LL')%></td>
+                                            <td>
+                                                <button class="button table-btn">edit</button>
+                                                <button class="button-delete table-btn" data-id="<%=event._id%>">delete</button>
+                                            </td>
+                                        </tr>
+                                        <%})%>
                                 </table>
                                 <script> 
                                     // const viewBtns = document.querySelectorAll('.button')
-                                    // const editBtn = document.querySelector('.button-edit')
-                                    // // const id = viewBtn.dataset.id
+                                    const deleteBtn = document.querySelectorAll('.button-delete')
                                     // for(let i = 0; i < viewBtns.length; i++){
                                     //     viewBtns[i].addEventListener('click', (e)=>{
                                     //         const id = viewBtns[i].dataset.id
                                     //         location.assign(`http://localhost:3000/admin/employees/view/${id}`)
                                     //     })
                                     // }
-                                
-                                    // viewBtn.addEventListener('click', (e)=>{
-                                    //     location.assign(`http://localhost:3000/admin/employees/view/${id}`)
-                                    // })
+                                    for(let i = 0; i < deleteBtn.length; i++){
+                                        deleteBtn[i].addEventListener('click', async (e)=>{
+                                            const id = deleteBtn[i].dataset.id
+                                            const res = await fetch(`http://localhost:3000/admin/api/events/travelpass/${id}`, {
+                                                headers: { 'Content-Type': 'application/json' },
+                                                method: 'DELETE'
+                                            })
+                                            const data = await res.json()
+                                            console.log(data)
+                                        })
+                                    }   
 
                                 </script>
                             </div>

@@ -23,9 +23,8 @@ const EMP_TIME_RECORD = mongoose.Schema({
         type: Date
     },
     date_string: {
-        type: String
+        type: String,
     },
-    
     am_time_in: {
         type: Date
     },
@@ -62,8 +61,6 @@ const EMP_TIME_RECORD = mongoose.Schema({
         default: "Office"
     }
 })
-
-
 // TABLE AND EMPLOYEE ID IS REQUIRED
 EMP_TIME_RECORD.statics.am_attendance = async function (emp_code, _id, time_type) {
 

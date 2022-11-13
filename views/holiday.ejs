@@ -74,7 +74,7 @@
                                                             preDateErr.textContent = data.err.preDate
                                                             dateErr.textContent = data.err.date
                                                         }
-                                                        location.href = 'http://localhost:3000/admin/holidays'
+                                                        // location.href = 'http://localhost:3000/admin/holidays'
                                                     })
 
                                                     // const viewBtns = document.querySelectorAll('.button')
@@ -111,12 +111,13 @@
                                         <% Object.values(data).forEach(event => { %> 
                                         <tr>
                                             <td><%=event.name%></td>
-                                            <td><%=event.preDate%></td>
-                                            <td><%=event.date%></td>
+                                            <td><%=moment(event.preDate).format('LL')%></td>
+                                            <td><%=moment(event.date).format('LL')%></td>
                                             <td>
                                                 <button class="button table-btn">edit</button>
                                                 <button class="button-delete table-btn">delete</button>
                                             </td>
+                                            
                                         </tr>
                                         <%}); %>
                                     </table>

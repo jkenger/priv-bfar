@@ -4,6 +4,7 @@ const adminAuthView = require('../Controller/adminAuthView')
 const adminAuth = require('../Controller/adminAuth')
 const adminView = require('../Controller/adminView')
 const {checkToken, checkUser, checkRoles}  = require('../Middleware/auth')
+const { id } = require('date-fns/locale')
 
 
 
@@ -71,8 +72,10 @@ route.delete('/api/employees/:id',  admin.deleteEmployee)
 
 // events | holidays and travel orders api
 route.get('/api/events/holiday', admin.readHoliday)
+route.get('/api/events/travelpass', admin.readTravelPass)
 route.post('/api/events/holiday', admin.addHoliday)
-route.post('/api/events/travelorder', admin.addTravelOrder)
+route.post('/api/events/travelpass', admin.addTravelPass)
+route.delete('/api/events/travelpass/:id', admin.deleteTravelPass)
 
     // 
 

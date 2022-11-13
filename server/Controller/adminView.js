@@ -78,7 +78,11 @@ module.exports = {
     holidayView: async (req, res) => {
         try{
             const data = await fetchData('admin/api/events/holiday')
-            res.status(200).render('holiday', {data, url: req.url})
+            res.status(200).render('holiday', {
+                data, 
+                url: req.url, 
+                moment: moment
+            })
         }catch(err){
             res.status(500).send(err)
         }
@@ -92,7 +96,13 @@ module.exports = {
     },
     travelPassView: async (req, res) => {
         try{
-            res.status(200).render('travelPass')
+            const data = await fetchData('admin/api/events/travelpass')
+            res.status(200).render('travelPass', {
+                data, 
+                url: req.url, 
+                moment: moment
+            })
+            console.log(data)
         }catch(err){
             res.status(500).send(err)
         }
