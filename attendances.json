@@ -1,0 +1,1739 @@
+[{
+  "_id": {
+    "$oid": "636a641064387c3cefcdae88"
+  },
+  "emp_code": "12",
+  "emp_id": {
+    "$oid": "6306d35654f5aa37b8ee239f"
+  },
+  "name": "John Manuel",
+  "date": {
+    "$date": {
+      "$numberLong": "1667865600000"
+    }
+  },
+  "date_string": "11/8/2022",
+  "isHalf": false,
+  "message": "T.O",
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "636a641064387c3cefcdae89"
+  },
+  "emp_code": "12",
+  "emp_id": {
+    "$oid": "6306d35654f5aa37b8ee239f"
+  },
+  "name": "John Manuel",
+  "date": {
+    "$date": {
+      "$numberLong": "1667952000000"
+    }
+  },
+  "date_string": "11/9/2022",
+  "isHalf": false,
+  "message": "T.O",
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "636a64c3555fcbc8b172b22d"
+  },
+  "emp_code": "10",
+  "emp_id": {
+    "$oid": "6306d29a54f5aa37b8ee2395"
+  },
+  "name": "John Kenneth Gervacio",
+  "date": {
+    "$date": {
+      "$numberLong": "1667865600000"
+    }
+  },
+  "date_string": "11/8/2022",
+  "isHalf": false,
+  "message": "T.O",
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "636a64c3555fcbc8b172b22e"
+  },
+  "emp_code": "10",
+  "emp_id": {
+    "$oid": "6306d29a54f5aa37b8ee2395"
+  },
+  "name": "John Kenneth Gervacio",
+  "date": {
+    "$date": {
+      "$numberLong": "1667952000000"
+    }
+  },
+  "date_string": "11/9/2022",
+  "isHalf": false,
+  "message": "T.O",
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "636a64c3555fcbc8b172b22f"
+  },
+  "emp_code": "10",
+  "emp_id": {
+    "$oid": "6306d29a54f5aa37b8ee2395"
+  },
+  "name": "John Kenneth Gervacio",
+  "date": {
+    "$date": {
+      "$numberLong": "1668038400000"
+    }
+  },
+  "date_string": "11/10/2022",
+  "isHalf": false,
+  "message": "T.O",
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "636a64c3555fcbc8b172b230"
+  },
+  "emp_code": "10",
+  "emp_id": {
+    "$oid": "6306d29a54f5aa37b8ee2395"
+  },
+  "name": "John Kenneth Gervacio",
+  "date": {
+    "$date": {
+      "$numberLong": "1668124800000"
+    }
+  },
+  "date_string": "11/11/2022",
+  "isHalf": false,
+  "message": "T.O",
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "62d889fb41a68514444f6213"
+  },
+  "emp_code": "11",
+  "emp_id": {
+    "$oid": "62c2c54138d16c86255f63f1"
+  },
+  "date": {
+    "$date": {
+      "$numberLong": "1658275200000"
+    }
+  },
+  "date_string": "7/26/2022",
+  "am_time_in": {
+    "$date": {
+      "$numberLong": "1658358267179"
+    }
+  },
+  "am_time_out": {
+    "$date": {
+      "$numberLong": "1658723184724"
+    }
+  },
+  "pm_time_in": {
+    "$date": {
+      "$numberLong": "1658378313301"
+    }
+  },
+  "pm_time_out": {
+    "$date": {
+      "$numberLong": "1658396540414"
+    }
+  },
+  "offset": -480,
+  "isLate": false,
+  "__v": 0,
+  "isHalf": false,
+  "am_office_in": {
+    "$date": {
+      "$numberLong": "1658275200000"
+    }
+  },
+  "pm_office_in": {
+    "$date": {
+      "$numberLong": "1658379600000"
+    }
+  }
+},{
+  "_id": {
+    "$oid": "62d88a0041a68514444f6219"
+  },
+  "emp_code": "12",
+  "emp_id": {
+    "$oid": "62c2c54138d16c86255f63f2"
+  },
+  "date": {
+    "$date": {
+      "$numberLong": "1658444672549"
+    }
+  },
+  "date_string": "7/21/2022",
+  "am_time_in": {
+    "$date": {
+      "$numberLong": "1658358272549"
+    }
+  },
+  "am_time_out": {
+    "$date": {
+      "$numberLong": "1658376432680"
+    }
+  },
+  "pm_time_in": {
+    "$date": {
+      "$numberLong": "1658378317772"
+    }
+  },
+  "pm_time_out": {
+    "$date": {
+      "$numberLong": "1658396543819"
+    }
+  },
+  "offset": -480,
+  "isLate": false,
+  "__v": 0,
+  "am_office_in": {
+    "$date": {
+      "$numberLong": "1658275200000"
+    }
+  },
+  "pm_office_in": {
+    "$date": {
+      "$numberLong": "1658379600000"
+    }
+  }
+},{
+  "_id": {
+    "$oid": "62d8984dcf4e83dcc3f60745"
+  },
+  "emp_code": "10",
+  "emp_id": {
+    "$oid": "62c2c59e0eadcff41a106d83"
+  },
+  "date": {
+    "$date": {
+      "$numberLong": "1658361933600"
+    }
+  },
+  "date_string": "7/21/2022",
+  "am_time_in": {
+    "$date": {
+      "$numberLong": "1658361933600"
+    }
+  },
+  "am_time_out": {
+    "$date": {
+      "$numberLong": "1658376431838"
+    }
+  },
+  "pm_time_in": {
+    "$date": {
+      "$numberLong": "1658381940798"
+    }
+  },
+  "pm_time_out": {
+    "$date": {
+      "$numberLong": "1658396542172"
+    }
+  },
+  "offset": -480,
+  "isLate": true,
+  "__v": 0,
+  "am_office_in": {
+    "$date": {
+      "$numberLong": "1658361600000"
+    }
+  },
+  "pm_office_in": {
+    "$date": {
+      "$numberLong": "1658379600000"
+    }
+  },
+  "isHalf": false
+},{
+  "_id": {
+    "$oid": "62d9e4ce22de2f808e514956"
+  },
+  "emp_code": "12",
+  "emp_id": {
+    "$oid": "62c2c54138d16c86255f63f2"
+  },
+  "date": {
+    "$date": {
+      "$numberLong": "1658533454055"
+    }
+  },
+  "date_string": "7/22/2022",
+  "am_time_in": {
+    "$date": {
+      "$numberLong": "1658447054055"
+    }
+  },
+  "am_time_out": {
+    "$date": {
+      "$numberLong": "1658463861561"
+    }
+  },
+  "pm_time_in": {
+    "$date": {
+      "$numberLong": "1658463867974"
+    }
+  },
+  "pm_time_out": {
+    "$date": {
+      "$numberLong": "1658480812003"
+    }
+  },
+  "offset": -480,
+  "isLate": false,
+  "__v": 0,
+  "am_office_in": {
+    "$date": {
+      "$numberLong": "1658361600000"
+    }
+  },
+  "pm_office_in": {
+    "$date": {
+      "$numberLong": "1658466000000"
+    }
+  }
+},{
+  "_id": {
+    "$oid": "62d9ee08eb019604f172fcc5"
+  },
+  "emp_code": "10",
+  "emp_id": {
+    "$oid": "62c2c59e0eadcff41a106d83"
+  },
+  "date": {
+    "$date": {
+      "$numberLong": "1658449416757"
+    }
+  },
+  "date_string": "7/22/2022",
+  "am_time_in": {
+    "$date": {
+      "$numberLong": "1658449416757"
+    }
+  },
+  "am_time_out": {
+    "$date": {
+      "$numberLong": "1658463859284"
+    }
+  },
+  "pm_time_in": {
+    "$date": {
+      "$numberLong": "1658463913608"
+    }
+  },
+  "pm_time_out": {
+    "$date": {
+      "$numberLong": "1658480809824"
+    }
+  },
+  "offset": -480,
+  "isLate": true,
+  "__v": 0,
+  "am_office_in": {
+    "$date": {
+      "$numberLong": "1658448000000"
+    }
+  },
+  "pm_office_in": {
+    "$date": {
+      "$numberLong": "1658466000000"
+    }
+  },
+  "isHalf": false
+},{
+  "_id": {
+    "$oid": "62d9ee0beb019604f172fcc9"
+  },
+  "emp_code": "11",
+  "emp_id": {
+    "$oid": "62c2c54138d16c86255f63f1"
+  },
+  "date": {
+    "$date": {
+      "$numberLong": "1658448000000"
+    }
+  },
+  "date_string": "7/22/2022",
+  "am_time_in": {
+    "$date": {
+      "$numberLong": "1658449419082"
+    }
+  },
+  "am_time_out": {
+    "$date": {
+      "$numberLong": "1658463860491"
+    }
+  },
+  "pm_time_in": {
+    "$date": {
+      "$numberLong": "1658466211033"
+    }
+  },
+  "pm_time_out": {
+    "$date": {
+      "$numberLong": "1658480811026"
+    }
+  },
+  "offset": -480,
+  "isLate": true,
+  "__v": 0,
+  "am_office_in": {
+    "$date": {
+      "$numberLong": "1658448000000"
+    }
+  },
+  "pm_office_in": {
+    "$date": {
+      "$numberLong": "1658466000000"
+    }
+  }
+},{
+  "_id": {
+    "$oid": "62db2e0765eb1d7a7bb3f788"
+  },
+  "emp_code": "11",
+  "emp_id": {
+    "$oid": "62c2c54138d16c86255f63f1"
+  },
+  "date": {
+    "$date": {
+      "$numberLong": "1658534400000"
+    }
+  },
+  "date_string": "7/23/2022",
+  "am_time_in": {
+    "$date": {
+      "$numberLong": "1658531335227"
+    }
+  },
+  "am_time_out": {
+    "$date": {
+      "$numberLong": "1658551893861"
+    }
+  },
+  "pm_time_in": {
+    "$date": {
+      "$numberLong": "1658551893861"
+    }
+  },
+  "pm_time_out": {
+    "$date": {
+      "$numberLong": "1658570184892"
+    }
+  },
+  "offset": -480,
+  "isLate": false,
+  "__v": 0,
+  "am_office_in": {
+    "$date": {
+      "$numberLong": "1658534400000"
+    }
+  },
+  "pm_office_in": {
+    "$date": {
+      "$numberLong": "1658552400000"
+    }
+  }
+},{
+  "_id": {
+    "$oid": "62db2e46ff473c6c3d67bfba"
+  },
+  "emp_code": "10",
+  "emp_id": {
+    "$oid": "62c2c59e0eadcff41a106d83"
+  },
+  "date": {
+    "$date": {
+      "$numberLong": "1658617798350"
+    }
+  },
+  "date_string": "7/23/2022",
+  "am_time_in": {
+    "$date": {
+      "$numberLong": "1658531398350"
+    }
+  },
+  "am_time_out": {
+    "$date": {
+      "$numberLong": "1658551895787"
+    }
+  },
+  "pm_time_in": {
+    "$date": {
+      "$numberLong": "1658551895787"
+    }
+  },
+  "pm_time_out": {
+    "$date": {
+      "$numberLong": "1658570183775"
+    }
+  },
+  "offset": -480,
+  "isLate": false,
+  "__v": 0,
+  "am_office_in": {
+    "$date": {
+      "$numberLong": "1658534400000"
+    }
+  },
+  "pm_office_in": {
+    "$date": {
+      "$numberLong": "1658552400000"
+    }
+  },
+  "isHalf": false
+},{
+  "_id": {
+    "$oid": "62db2e47ff473c6c3d67bfbe"
+  },
+  "emp_code": "12",
+  "emp_id": {
+    "$oid": "62c2c54138d16c86255f63f2"
+  },
+  "date": {
+    "$date": {
+      "$numberLong": "1658617799319"
+    }
+  },
+  "date_string": "7/23/2022",
+  "am_time_in": {
+    "$date": {
+      "$numberLong": "1658531399319"
+    }
+  },
+  "am_time_out": {
+    "$date": {
+      "$numberLong": "1658552191610"
+    }
+  },
+  "pm_time_in": {
+    "$date": {
+      "$numberLong": "1658552191610"
+    }
+  },
+  "pm_time_out": {
+    "$date": {
+      "$numberLong": "1658570185700"
+    }
+  },
+  "offset": -480,
+  "isLate": false,
+  "__v": 0,
+  "am_office_in": {
+    "$date": {
+      "$numberLong": "1658534400000"
+    }
+  },
+  "pm_office_in": {
+    "$date": {
+      "$numberLong": "1658552400000"
+    }
+  }
+},{
+  "_id": {
+    "$oid": "62ddd74714217e6550470654"
+  },
+  "emp_code": "11",
+  "emp_id": {
+    "$oid": "62c2c54138d16c86255f63f1"
+  },
+  "date": {
+    "$date": {
+      "$numberLong": "1658620800000"
+    }
+  },
+  "date_string": "7/25/2022",
+  "am_time_in": {
+    "$date": {
+      "$numberLong": "1658705735335"
+    }
+  },
+  "am_time_out": {
+    "$date": {
+      "$numberLong": "1658724861006"
+    }
+  },
+  "pm_time_in": null,
+  "pm_time_out": null,
+  "offset": -480,
+  "isLate": false,
+  "__v": 1,
+  "isHalf": true,
+  "am_office_in": {
+    "$date": {
+      "$numberLong": "1658620800000"
+    }
+  },
+  "pm_office_in": {
+    "$date": {
+      "$numberLong": "1658638800000"
+    }
+  }
+},{
+  "_id": {
+    "$oid": "62dcdc182cef4b9218964129"
+  },
+  "emp_code": "11",
+  "emp_id": {
+    "$oid": "62c2c54138d16c86255f63f1"
+  },
+  "date": {
+    "$date": {
+      "$numberLong": "1658620800000"
+    }
+  },
+  "date_string": "7/24/2022",
+  "am_time_in": null,
+  "am_time_out": null,
+  "pm_time_in": {
+    "$date": {
+      "$numberLong": "1658641432709"
+    }
+  },
+  "pm_time_out": {
+    "$date": {
+      "$numberLong": "1658655851854"
+    }
+  },
+  "offset": -480,
+  "isLate": true,
+  "isHalf": true,
+  "__v": 0,
+  "am_office_in": {
+    "$date": {
+      "$numberLong": "1658620800000"
+    }
+  },
+  "pm_office_in": {
+    "$date": {
+      "$numberLong": "1658638800000"
+    }
+  }
+},{
+  "_id": {
+    "$oid": "62dcdc1b2cef4b9218964133"
+  },
+  "emp_code": "10",
+  "emp_id": {
+    "$oid": "62c2c59e0eadcff41a106d83"
+  },
+  "date": {
+    "$date": {
+      "$numberLong": "1658641435000"
+    }
+  },
+  "date_string": "7/24/2022",
+  "am_time_in": null,
+  "am_time_out": null,
+  "pm_time_in": {
+    "$date": {
+      "$numberLong": "1658641435681"
+    }
+  },
+  "pm_time_out": {
+    "$date": {
+      "$numberLong": "1658655854873"
+    }
+  },
+  "offset": -480,
+  "isLate": true,
+  "isHalf": true,
+  "__v": 0,
+  "am_office_in": {
+    "$date": {
+      "$numberLong": "1658620800000"
+    }
+  },
+  "pm_office_in": {
+    "$date": {
+      "$numberLong": "1658638800000"
+    }
+  }
+},{
+  "_id": {
+    "$oid": "62df9fcb68794fb6ee454931"
+  },
+  "emp_code": "11",
+  "emp_id": {
+    "$oid": "62c2c54138d16c86255f63f1"
+  },
+  "date": {
+    "$date": {
+      "$numberLong": "1658793600000"
+    }
+  },
+  "date_string": "7/19/2022",
+  "am_time_in": null,
+  "am_time_out": null,
+  "pm_time_in": {
+    "$date": {
+      "$numberLong": "1658822603828"
+    }
+  },
+  "pm_time_out": {
+    "$date": {
+      "$numberLong": "1658826250710"
+    }
+  },
+  "am_office_in": {
+    "$date": {
+      "$numberLong": "1658793600000"
+    }
+  },
+  "pm_office_in": {
+    "$date": {
+      "$numberLong": "1658811600000"
+    }
+  },
+  "offset": -480,
+  "isLate": true,
+  "isHalf": true,
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "62df9fcd68794fb6ee454936"
+  },
+  "emp_code": "10",
+  "emp_id": {
+    "$oid": "62c2c59e0eadcff41a106d83"
+  },
+  "date": {
+    "$date": {
+      "$numberLong": "1658822605000"
+    }
+  },
+  "date_string": "7/26/2022",
+  "am_time_in": null,
+  "am_time_out": null,
+  "pm_time_in": {
+    "$date": {
+      "$numberLong": "1658822605407"
+    }
+  },
+  "pm_time_out": {
+    "$date": {
+      "$numberLong": "1658826254077"
+    }
+  },
+  "am_office_in": {
+    "$date": {
+      "$numberLong": "1658793600000"
+    }
+  },
+  "pm_office_in": {
+    "$date": {
+      "$numberLong": "1658811600000"
+    }
+  },
+  "offset": -480,
+  "isLate": true,
+  "isHalf": true,
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "62df9fce68794fb6ee45493b"
+  },
+  "emp_code": "12",
+  "emp_id": {
+    "$oid": "62c2c54138d16c86255f63f2"
+  },
+  "date": {
+    "$date": {
+      "$numberLong": "1658822606000"
+    }
+  },
+  "date_string": "7/26/2022",
+  "am_time_in": null,
+  "am_time_out": null,
+  "pm_time_in": {
+    "$date": {
+      "$numberLong": "1658822606563"
+    }
+  },
+  "pm_time_out": {
+    "$date": {
+      "$numberLong": "1658826251803"
+    }
+  },
+  "am_office_in": {
+    "$date": {
+      "$numberLong": "1658793600000"
+    }
+  },
+  "pm_office_in": {
+    "$date": {
+      "$numberLong": "1658811600000"
+    }
+  },
+  "offset": -480,
+  "isLate": true,
+  "isHalf": true,
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "62e0871d2b4231a58fdad96b"
+  },
+  "emp_code": "11",
+  "emp_id": {
+    "$oid": "62c2c54138d16c86255f63f1"
+  },
+  "date": {
+    "$date": {
+      "$numberLong": "1658880000000"
+    }
+  },
+  "date_string": "7/27/2022",
+  "am_time_in": {
+    "$date": {
+      "$numberLong": "1658880021237"
+    }
+  },
+  "am_time_out": {
+    "$date": {
+      "$numberLong": "1658896272133"
+    }
+  },
+  "pm_time_in": {
+    "$date": {
+      "$numberLong": "1658896272133"
+    }
+  },
+  "pm_time_out": {
+    "$date": {
+      "$numberLong": "1658918038954"
+    }
+  },
+  "am_office_in": {
+    "$date": {
+      "$numberLong": "1658880000000"
+    }
+  },
+  "pm_office_in": {
+    "$date": {
+      "$numberLong": "1658898000000"
+    }
+  },
+  "offset": -480,
+  "isLate": true,
+  "isHalf": false,
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "62e0c003ed80abb9a5d8b34d"
+  },
+  "emp_code": "12",
+  "emp_id": {
+    "$oid": "62c2c54138d16c86255f63f2"
+  },
+  "date": {
+    "$date": {
+      "$numberLong": "1658896387000"
+    }
+  },
+  "date_string": "7/27/2022",
+  "am_time_in": null,
+  "am_time_out": null,
+  "pm_time_in": {
+    "$date": {
+      "$numberLong": "1658896387839"
+    }
+  },
+  "pm_time_out": {
+    "$date": {
+      "$numberLong": "1658918041626"
+    }
+  },
+  "am_office_in": {
+    "$date": {
+      "$numberLong": "1658880000000"
+    }
+  },
+  "pm_office_in": {
+    "$date": {
+      "$numberLong": "1658898000000"
+    }
+  },
+  "offset": -480,
+  "isLate": false,
+  "isHalf": true,
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "62e0c005ed80abb9a5d8b351"
+  },
+  "emp_code": "10",
+  "emp_id": {
+    "$oid": "62c2c59e0eadcff41a106d83"
+  },
+  "date": {
+    "$date": {
+      "$numberLong": "1658896389000"
+    }
+  },
+  "date_string": "7/27/2022",
+  "am_time_in": null,
+  "am_time_out": null,
+  "pm_time_in": {
+    "$date": {
+      "$numberLong": "1658896389423"
+    }
+  },
+  "pm_time_out": {
+    "$date": {
+      "$numberLong": "1658918040580"
+    }
+  },
+  "am_office_in": {
+    "$date": {
+      "$numberLong": "1658880000000"
+    }
+  },
+  "pm_office_in": {
+    "$date": {
+      "$numberLong": "1658898000000"
+    }
+  },
+  "offset": -480,
+  "isLate": false,
+  "isHalf": true,
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "62e2161e2baec3b5bc4cb427"
+  },
+  "emp_code": "11",
+  "emp_id": {
+    "$oid": "62c2c54138d16c86255f63f1"
+  },
+  "date": {
+    "$date": {
+      "$numberLong": "1658966400000"
+    }
+  },
+  "date_string": "7/28/2022",
+  "am_time_in": null,
+  "am_time_out": null,
+  "pm_time_in": {
+    "$date": {
+      "$numberLong": "1658983966927"
+    }
+  },
+  "pm_time_out": {
+    "$date": {
+      "$numberLong": "1659005606607"
+    }
+  },
+  "am_office_in": {
+    "$date": {
+      "$numberLong": "1658966400000"
+    }
+  },
+  "pm_office_in": {
+    "$date": {
+      "$numberLong": "1658984400000"
+    }
+  },
+  "offset": -480,
+  "isLate": false,
+  "isHalf": true,
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "62e30e8233c6ccc1896900bc"
+  },
+  "emp_code": "10",
+  "emp_id": {
+    "$oid": "62c2c59e0eadcff41a106d83"
+  },
+  "date": {
+    "$date": {
+      "$numberLong": "1659076354569"
+    }
+  },
+  "date_string": "7/29/2022",
+  "am_time_in": {
+    "$date": {
+      "$numberLong": "1659047554569"
+    }
+  },
+  "am_time_out": {
+    "$date": {
+      "$numberLong": "1659069354171"
+    }
+  },
+  "pm_time_in": {
+    "$date": {
+      "$numberLong": "1659069354171"
+    }
+  },
+  "pm_time_out": {
+    "$date": {
+      "$numberLong": "1659094646975"
+    }
+  },
+  "am_office_in": {
+    "$date": {
+      "$numberLong": "1658966400000"
+    }
+  },
+  "pm_office_in": {
+    "$date": {
+      "$numberLong": "1658984400000"
+    }
+  },
+  "offset": -480,
+  "isLate": false,
+  "isHalf": false,
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "62e7404bbceef1d1a12a2685"
+  },
+  "emp_code": "11",
+  "emp_id": {
+    "$oid": "62c2c54138d16c86255f63f1"
+  },
+  "date": {
+    "$date": {
+      "$numberLong": "1659312000000"
+    }
+  },
+  "date_string": "8/1/2022",
+  "am_time_in": {
+    "$date": {
+      "$numberLong": "1659322443291"
+    }
+  },
+  "am_time_out": {
+    "$date": {
+      "$numberLong": "1659334893552"
+    }
+  },
+  "pm_time_in": {
+    "$date": {
+      "$numberLong": "1659334893552"
+    }
+  },
+  "pm_time_out": null,
+  "am_office_in": {
+    "$date": {
+      "$numberLong": "1659312000000"
+    }
+  },
+  "pm_office_in": {
+    "$date": {
+      "$numberLong": "1659330000000"
+    }
+  },
+  "offset": -480,
+  "isLate": true,
+  "isHalf": true,
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "62ec3cf56295e102d42586c4"
+  },
+  "emp_code": "11",
+  "emp_id": {
+    "$oid": "62c2c54138d16c86255f63f1"
+  },
+  "date": {
+    "$date": {
+      "$numberLong": "1659678069852"
+    }
+  },
+  "date_string": "8/5/2022",
+  "am_time_in": {
+    "$date": {
+      "$numberLong": "1659649269852"
+    }
+  },
+  "am_time_out": {
+    "$date": {
+      "$numberLong": "1659674726486"
+    }
+  },
+  "pm_time_in": {
+    "$date": {
+      "$numberLong": "1659674726486"
+    }
+  },
+  "pm_time_out": {
+    "$date": {
+      "$numberLong": "1659692762213"
+    }
+  },
+  "am_office_in": {
+    "$date": {
+      "$numberLong": "1659571200000"
+    }
+  },
+  "pm_office_in": {
+    "$date": {
+      "$numberLong": "1659589200000"
+    }
+  },
+  "offset": -480,
+  "isLate": false,
+  "isHalf": false,
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "62f5de42ee6958e8907bcb3d"
+  },
+  "emp_code": "12",
+  "emp_id": {
+    "$oid": "62c2c54138d16c86255f63f2"
+  },
+  "date": {
+    "$date": {
+      "$numberLong": "1660309186286"
+    }
+  },
+  "date_string": "8/12/2022",
+  "am_time_in": null,
+  "am_time_out": null,
+  "pm_time_in": {
+    "$date": {
+      "$numberLong": "1660280386286"
+    }
+  },
+  "pm_time_out": null,
+  "am_office_in": {
+    "$date": {
+      "$numberLong": "1660262400000"
+    }
+  },
+  "pm_office_in": {
+    "$date": {
+      "$numberLong": "1660280400000"
+    }
+  },
+  "offset": -480,
+  "isLate": false,
+  "isHalf": true,
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "62f5de50ee6958e8907bcb4d"
+  },
+  "emp_code": "112",
+  "emp_id": {
+    "$oid": "62f1cb18d987436eb999d2ce"
+  },
+  "date": {
+    "$date": {
+      "$numberLong": "1660309200885"
+    }
+  },
+  "date_string": "8/12/2022",
+  "am_time_in": null,
+  "am_time_out": null,
+  "pm_time_in": {
+    "$date": {
+      "$numberLong": "1660280400885"
+    }
+  },
+  "pm_time_out": {
+    "$date": {
+      "$numberLong": "1660295014141"
+    }
+  },
+  "am_office_in": {
+    "$date": {
+      "$numberLong": "1660262400000"
+    }
+  },
+  "pm_office_in": {
+    "$date": {
+      "$numberLong": "1660280400000"
+    }
+  },
+  "offset": -480,
+  "isLate": true,
+  "isHalf": true,
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "62f5de59ee6958e8907bcb53"
+  },
+  "emp_code": "111",
+  "emp_id": {
+    "$oid": "62f1cb31d987436eb999d2d8"
+  },
+  "date": {
+    "$date": {
+      "$numberLong": "1660309209040"
+    }
+  },
+  "date_string": "8/12/2022",
+  "am_time_in": null,
+  "am_time_out": null,
+  "pm_time_in": {
+    "$date": {
+      "$numberLong": "1660280409040"
+    }
+  },
+  "pm_time_out": {
+    "$date": {
+      "$numberLong": "1660297479045"
+    }
+  },
+  "am_office_in": {
+    "$date": {
+      "$numberLong": "1660262400000"
+    }
+  },
+  "pm_office_in": {
+    "$date": {
+      "$numberLong": "1660280400000"
+    }
+  },
+  "offset": -480,
+  "isLate": true,
+  "isHalf": true,
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "6302ec9d055cf925533fc9a2"
+  },
+  "emp_code": "112",
+  "emp_id": {
+    "$oid": "62f1cb18d987436eb999d2ce"
+  },
+  "date": {
+    "$date": {
+      "$numberLong": "1661164829256"
+    }
+  },
+  "date_string": "8/22/2022",
+  "am_time_in": {
+    "$date": {
+      "$numberLong": "1661136029256"
+    }
+  },
+  "am_time_out": null,
+  "pm_time_in": null,
+  "pm_time_out": null,
+  "am_office_in": {
+    "$date": {
+      "$numberLong": "1661126400000"
+    }
+  },
+  "pm_office_in": {
+    "$date": {
+      "$numberLong": "1661144400000"
+    }
+  },
+  "offset": -480,
+  "isLate": true,
+  "isHalf": true,
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "630313dd733824de5787055e"
+  },
+  "emp_code": "10",
+  "emp_id": {
+    "$oid": "62c2c59e0eadcff41a106d83"
+  },
+  "date": {
+    "$date": {
+      "$numberLong": "1661174877175"
+    }
+  },
+  "date_string": "8/22/2022",
+  "am_time_in": null,
+  "am_time_out": null,
+  "pm_time_in": {
+    "$date": {
+      "$numberLong": "1661146077175"
+    }
+  },
+  "pm_time_out": null,
+  "am_office_in": {
+    "$date": {
+      "$numberLong": "1661126400000"
+    }
+  },
+  "pm_office_in": {
+    "$date": {
+      "$numberLong": "1661144400000"
+    }
+  },
+  "offset": -480,
+  "isLate": true,
+  "isHalf": true,
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "6319b56b51b036507afd12e1"
+  },
+  "emp_code": "10",
+  "emp_id": {
+    "$oid": "6306d29a54f5aa37b8ee2395"
+  },
+  "date": {
+    "$date": {
+      "$numberLong": "1662768000000"
+    }
+  },
+  "date_string": "9/10/2022",
+  "am_time_in": "T.O",
+  "isHalf": false,
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "6319b56b51b036507afd12e2"
+  },
+  "emp_code": "10",
+  "emp_id": {
+    "$oid": "6306d29a54f5aa37b8ee2395"
+  },
+  "date": {
+    "$date": {
+      "$numberLong": "1662854400000"
+    }
+  },
+  "date_string": "9/11/2022",
+  "am_time_in": "T.O",
+  "isHalf": false,
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "633aae7378e70f6c2835bf08"
+  },
+  "emp_code": "11",
+  "emp_id": {
+    "$oid": "62c2c54138d16c86255f63f1"
+  },
+  "date": {
+    "$date": {
+      "$numberLong": "1658275200000"
+    }
+  },
+  "date_string": "7/29/2022",
+  "am_time_in": {
+    "$date": {
+      "$numberLong": "1658358267179"
+    }
+  },
+  "am_time_out": {
+    "$date": {
+      "$numberLong": "1658723184724"
+    }
+  },
+  "pm_time_in": {
+    "$date": {
+      "$numberLong": "1658378313301"
+    }
+  },
+  "pm_time_out": {
+    "$date": {
+      "$numberLong": "1658396540414"
+    }
+  },
+  "offset": -480,
+  "isLate": false,
+  "__v": 0,
+  "isHalf": false,
+  "am_office_in": {
+    "$date": {
+      "$numberLong": "1658275200000"
+    }
+  },
+  "pm_office_in": {
+    "$date": {
+      "$numberLong": "1658379600000"
+    }
+  }
+},{
+  "_id": {
+    "$oid": "633aaf1378e70f6c2835bf0a"
+  },
+  "emp_code": "11",
+  "emp_id": {
+    "$oid": "62c2c54138d16c86255f63f1"
+  },
+  "date": {
+    "$date": {
+      "$numberLong": "1658275200000"
+    }
+  },
+  "date_string": "7/17/2022",
+  "am_time_in": {
+    "$date": {
+      "$numberLong": "1658358267179"
+    }
+  },
+  "am_time_out": {
+    "$date": {
+      "$numberLong": "1658723184724"
+    }
+  },
+  "pm_time_in": {
+    "$date": {
+      "$numberLong": "1658378313301"
+    }
+  },
+  "pm_time_out": {
+    "$date": {
+      "$numberLong": "1658396540414"
+    }
+  },
+  "offset": -480,
+  "isLate": false,
+  "__v": 0,
+  "isHalf": false,
+  "am_office_in": {
+    "$date": {
+      "$numberLong": "1658275200000"
+    }
+  },
+  "pm_office_in": {
+    "$date": {
+      "$numberLong": "1658379600000"
+    }
+  }
+},{
+  "_id": {
+    "$oid": "633ab0dd78e70f6c2835bf0e"
+  },
+  "emp_code": "11",
+  "emp_id": {
+    "$oid": "62c2c54138d16c86255f63f1"
+  },
+  "date": {
+    "$date": {
+      "$numberLong": "1658275200000"
+    }
+  },
+  "date_string": "7/15/2022",
+  "am_time_in": {
+    "$date": {
+      "$numberLong": "1658358267179"
+    }
+  },
+  "am_time_out": {
+    "$date": {
+      "$numberLong": "1658723184724"
+    }
+  },
+  "pm_time_in": {
+    "$date": {
+      "$numberLong": "1658378313301"
+    }
+  },
+  "pm_time_out": {
+    "$date": {
+      "$numberLong": "1658396540414"
+    }
+  },
+  "offset": -480,
+  "isLate": false,
+  "__v": 0,
+  "isHalf": false,
+  "am_office_in": {
+    "$date": {
+      "$numberLong": "1658275200000"
+    }
+  },
+  "pm_office_in": {
+    "$date": {
+      "$numberLong": "1658379600000"
+    }
+  }
+},{
+  "_id": {
+    "$oid": "633ab0e878e70f6c2835bf10"
+  },
+  "emp_code": "11",
+  "emp_id": {
+    "$oid": "62c2c54138d16c86255f63f1"
+  },
+  "date": {
+    "$date": {
+      "$numberLong": "1657929600000"
+    }
+  },
+  "date_string": "7/16/2022",
+  "am_time_in": {
+    "$date": {
+      "$numberLong": "1658012667179"
+    }
+  },
+  "am_time_out": {
+    "$date": {
+      "$numberLong": "1657945584724"
+    }
+  },
+  "pm_time_in": {
+    "$date": {
+      "$numberLong": "1657946313301"
+    }
+  },
+  "pm_time_out": {
+    "$date": {
+      "$numberLong": "1657964540414"
+    }
+  },
+  "offset": -480,
+  "isLate": false,
+  "__v": 0,
+  "isHalf": false,
+  "am_office_in": {
+    "$date": {
+      "$numberLong": "1657929600000"
+    }
+  },
+  "pm_office_in": {
+    "$date": {
+      "$numberLong": "1657947600000"
+    }
+  }
+},{
+  "_id": {
+    "$oid": "633ab16f78e70f6c2835bf12"
+  },
+  "emp_code": "11",
+  "emp_id": {
+    "$oid": "62c2c54138d16c86255f63f1"
+  },
+  "date": {
+    "$date": {
+      "$numberLong": "1658275200000"
+    }
+  },
+  "date_string": "7/18/2022",
+  "am_time_in": {
+    "$date": {
+      "$numberLong": "1658358267179"
+    }
+  },
+  "am_time_out": {
+    "$date": {
+      "$numberLong": "1658723184724"
+    }
+  },
+  "pm_time_in": {
+    "$date": {
+      "$numberLong": "1658378313301"
+    }
+  },
+  "pm_time_out": {
+    "$date": {
+      "$numberLong": "1658396540414"
+    }
+  },
+  "offset": -480,
+  "isLate": false,
+  "__v": 0,
+  "isHalf": false,
+  "am_office_in": {
+    "$date": {
+      "$numberLong": "1658275200000"
+    }
+  },
+  "pm_office_in": {
+    "$date": {
+      "$numberLong": "1658379600000"
+    }
+  }
+},{
+  "_id": {
+    "$oid": "633ab18d78e70f6c2835bf14"
+  },
+  "emp_code": "11",
+  "emp_id": {
+    "$oid": "62c2c54138d16c86255f63f1"
+  },
+  "date": {
+    "$date": {
+      "$numberLong": "1658275200000"
+    }
+  },
+  "date_string": "7/20/2022",
+  "am_time_in": {
+    "$date": {
+      "$numberLong": "1658358267179"
+    }
+  },
+  "am_time_out": {
+    "$date": {
+      "$numberLong": "1658723184724"
+    }
+  },
+  "pm_time_in": {
+    "$date": {
+      "$numberLong": "1658378313301"
+    }
+  },
+  "pm_time_out": {
+    "$date": {
+      "$numberLong": "1658396540414"
+    }
+  },
+  "offset": -480,
+  "isLate": false,
+  "__v": 0,
+  "isHalf": false,
+  "am_office_in": {
+    "$date": {
+      "$numberLong": "1658275200000"
+    }
+  },
+  "pm_office_in": {
+    "$date": {
+      "$numberLong": "1658379600000"
+    }
+  }
+},{
+  "_id": {
+    "$oid": "635c95a7aced682d2b6abc71"
+  },
+  "emp_code": "11",
+  "emp_id": {
+    "$oid": "63058a9e030121a7e4b74f67"
+  },
+  "name": "Ningning Picones",
+  "date": {
+    "$date": {
+      "$numberLong": "1667001600000"
+    }
+  },
+  "date_string": "10/29/2022",
+  "isHalf": false,
+  "message": "T.O",
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "635cba0be9cb05d0ffc86794"
+  },
+  "emp_code": "11",
+  "emp_id": {
+    "$oid": "63058a9e030121a7e4b74f67"
+  },
+  "name": "Ningning Picones",
+  "date": {
+    "$date": {
+      "$numberLong": "1667088000000"
+    }
+  },
+  "date_string": "10/30/2022",
+  "isHalf": false,
+  "message": "T.O",
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "635cba0be9cb05d0ffc86795"
+  },
+  "emp_code": "11",
+  "emp_id": {
+    "$oid": "63058a9e030121a7e4b74f67"
+  },
+  "name": "Ningning Picones",
+  "date": {
+    "$date": {
+      "$numberLong": "1667174400000"
+    }
+  },
+  "date_string": "10/31/2022",
+  "isHalf": false,
+  "message": "T.O",
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "6369c3deed03a75c4021720a"
+  },
+  "emp_code": "12",
+  "emp_id": {
+    "$oid": "6306d35654f5aa37b8ee239f"
+  },
+  "name": "John Manuel",
+  "date": {
+    "$date": {
+      "$numberLong": "1667952000000"
+    }
+  },
+  "date_string": "11/9/2022",
+  "isHalf": false,
+  "message": "T.O",
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "6376f0cfa5ec2db66cfddfb4"
+  },
+  "emp_code": "12",
+  "emp_id": {
+    "$oid": "6306d35654f5aa37b8ee239f"
+  },
+  "name": "John Manuel",
+  "date": {
+    "$date": {
+      "$numberLong": "1668816000000"
+    }
+  },
+  "date_string": "11/19/2022",
+  "isHalf": false,
+  "message": "T.O",
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "6376f0cfa5ec2db66cfddfb5"
+  },
+  "emp_code": "12",
+  "emp_id": {
+    "$oid": "6306d35654f5aa37b8ee239f"
+  },
+  "name": "John Manuel",
+  "date": {
+    "$date": {
+      "$numberLong": "1668902400000"
+    }
+  },
+  "date_string": "11/20/2022",
+  "isHalf": false,
+  "message": "T.O",
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "63772a31152a9c00dde05c26"
+  },
+  "emp_code": "11",
+  "emp_id": {
+    "$oid": "63058a9e030121a7e4b74f67"
+  },
+  "date": {
+    "$date": {
+      "$numberLong": "1668729600000"
+    }
+  },
+  "date_string": "11/18/2022",
+  "am_time_in": null,
+  "am_time_out": null,
+  "pm_time_in": {
+    "$date": {
+      "$numberLong": "1668753969236"
+    }
+  },
+  "pm_time_out": null,
+  "am_office_in": {
+    "$date": {
+      "$numberLong": "1668729600000"
+    }
+  },
+  "pm_office_in": {
+    "$date": {
+      "$numberLong": "1668747600000"
+    }
+  },
+  "offset": -480,
+  "isLate": true,
+  "isHalf": true,
+  "message": "Office",
+  "__v": 0
+}]

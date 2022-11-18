@@ -20,6 +20,10 @@ main, aside, nav{
     width: 100%;
 }
 
+main{
+    width: 70%;
+}
+
 /*
 
 ASIDE
@@ -80,7 +84,7 @@ th{
 }
 td{
     border-bottom: 1px solid #f1f2f6;
-    padding: .5em .05em;
+    padding: 1em;
 }
 
 tr:hover{
@@ -126,8 +130,8 @@ button{
 
 .table-btn{
     font-size: .75rem;
-    width: 50px;
-    padding: .25em;
+    width: 100%;
+    padding: .25em 1em;
 }
 
 .error{

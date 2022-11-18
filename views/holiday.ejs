@@ -115,22 +115,29 @@
                                             <td><%=moment(event.date).format('LL')%></td>
                                             <td>
                                                 <button class="button table-btn">edit</button>
-                                                <button class="button-delete table-btn">delete</button>
+                                                <button class="button-delete table-btn" data-id='<%=event._id%>'>delete</button>
                                             </td>
                                             
                                         </tr>
                                         <%}); %>
                                     </table>
                                     <script> 
-                                        // const viewBtns = document.querySelectorAll('.button')
+                                        const deleteBtns = document.querySelectorAll('.button-delete')
                                         // const editBtn = document.querySelector('.button-edit')
                                         // // const id = viewBtn.dataset.id
-                                        // for(let i = 0; i < viewBtns.length; i++){
-                                        //     viewBtns[i].addEventListener('click', (e)=>{
-                                        //         const id = viewBtns[i].dataset.id
-                                        //         location.assign(`http://localhost:3000/admin/employees/view/${id}`)
-                                        //     })
-                                        // }
+                                        for(let i = 0; i < deleteBtns.length; i++){
+                                            deleteBtns[i].addEventListener('click', async (e)=>{
+                                                const id = deleteBtns[i].dataset.id;
+                                                const res = await fetch(`http://localhost:3000/admin/api/events/holiday/${id}`, {
+                                                    headers: { 'Content-Type': 'application/json' },
+                                                    method: 'DELETE'
+                                                })
+                                                const data = await res.json()
+                                                console.log(data)
+                                                // location.assign(`http://localhost:3000/admin/api/events/holiday/${id}`)
+                                                console.log(id)
+                                            })  
+                                        }
                                        
                                         // viewBtn.addEventListener('click', (e)=>{
                                         //     location.assign(`http://localhost:3000/admin/employees/view/${id}`)

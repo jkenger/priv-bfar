@@ -30,21 +30,27 @@
                         <th>Status</th>
                         <th>Actions</th>
                     </tr>
-                    <% Object.values(data.result).forEach(user =>{%> 
-                        <tr>
-                            <td><%=user.emp_code%></td>
-                            <td><%=user.name%></td>
-                            <td><%=user.designation%></td>
-                            <td><%=user.salary%></td>
-                            <td><%=user.whalf_days%></td>
-                            <td><%=user.gross_salary%></td>
-                            <td><%=user.no_of_absents%></td>
-                            <td><%=user.no_of_undertime%></td>
-                            <td><%=user.net_amount_due%></td>
-                            <td>0</td>
-                            <td>0</td>
+                    <%if(data.result.length){%>
+                        <% Object.values(data.result).forEach(user =>{%> 
+                            <tr>
+                                <td><%=user.emp_code%></td>
+                                <td><%=user.name%></td>
+                                <td><%=user.designation%></td>
+                                <td><%=user.salary%></td>
+                                <td><%=user.whalf_days%></td>
+                                <td><%=user.gross_salary%></td>
+                                <td><%=user.no_of_absents%></td>
+                                <td><%=user.no_of_undertime%></td>
+                                <td><%=user.net_amount_due%></td>
+                                <td>0</td>
+                                <td><button class="button table-btn">calculate</button></td>
+                            </tr>
+                        <%}); %>
+                    <% }else{%> 
+                        <tr> 
+                            <td colspan="11">NO DATA</td>
                         </tr>
-                    <%}); %>
+                    <% }%> 
                 </table>
             </div>
             <form novalidate role="search">

@@ -74,6 +74,7 @@ route.delete('/api/employees/:id',  admin.deleteEmployee)
 route.get('/api/events/holiday', admin.readHoliday)
 route.get('/api/events/travelpass', admin.readTravelPass)
 route.post('/api/events/holiday', admin.addHoliday)
+route.delete('/api/events/holiday/:id', admin.deleteHoliday)
 route.post('/api/events/travelpass', admin.addTravelPass)
 route.delete('/api/events/travelpass/:id', admin.deleteTravelPass)
 
