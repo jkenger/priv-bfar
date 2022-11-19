@@ -408,7 +408,11 @@ module.exports = {
                         designation: '$position',
                         attendances_dup: 1,
                         // no_of_undertime: { $dateDiff: { startDate: "$attendances.am_office_in", endDate: "$attendances.am_time_in", unit: "minute" }}
-                        holiday_dates: holidayDates,
+                        holiday_dates: {$cond:{
+                            if: {$eq:[holidayDates.length, 0]},
+                            then: 0,
+                            else: holidayDates
+                        }},
                         date: '$attendances.date'
 
                 }},
@@ -464,6 +468,35 @@ module.exports = {
                         }}]}
                     }},
                 }},
+                {$group:{
+                    _id:'$emp_code',
+                    emp_code: {$first: '$emp_code'},
+                    name: {$first: '$name'},
+                    salary: {$first: '$salary'},
+                    designation: {$first: '$designation'},
+                    holidays: {$first: '$holidays'},
+                    isLate: {$first: '$isLate'},
+                    whalf_days: {$sum: '$whalf_days'},
+                    date: {$first: '$date'},
+                    no_of_undertime: {$sum: '$no_of_undertime'},
+                }},
+                {$addFields:{
+                    holidays_deduction:{$cond:{
+                        if: {$lte:[{$cond:{
+                                if: {$eq:['$holidays', 0]},
+                                then: holidayDates.length,
+                                else: {$subtract: [holidayDates.length, '$holidays']}
+                            }}, 0]},
+                        then: 0,
+                        else: {$cond:{
+                            if: {$eq:['$holidays', 0]},
+                            then: holidayDates.length,
+                            else: {$subtract: [holidayDates.length, '$holidays']}
+                        }}
+                    }}
+                }},
+                
+                // TO DO: DEDUCT HOLIDAYS DEDUCTION TO EMPLOYEE's workdays.
                     //HOLIDAY LOGIC HERE
                     
                 //         // TASK:
@@ -495,108 +528,114 @@ module.exports = {
                 //         }}
                 //     }}
                 // }},
-                // {$group: {
-                //     _id: '$_id',
-                //     emp_code: { $first: '$emp_code' },
-                //     name: { $first: '$name' },
-                //     designation: { $first: '$designation' },
-                //     salary: { $first: '$salary' },
-                //     // holiday: { $first: '$holiday' },
-                //     whalf_days: { $sum: '$whalf_days' },
-                //     no_of_undertime: { $sum: '$no_of_undertime' },
-                //     holiday: { $first: 1 },
-                //     whalf_days: {$first: 11}, // test
-                //     no_of_undertime: {$first: 32} // test
-                // }},
-                // {$addFields: {
-                //     week2_rate: { $divide: ['$salary', 2] },
-                //     whalf_days: {
-                //         $switch: {
-                //             branches: [
-                //                 {case: { $eq: ['$holiday', 0] }, then: '$whalf_days' },                // no holiday, no additions
-                //                 {case: { $eq: ['$holiday', 1] }, then: {
-                //                     $cond: {
-                //                         if: {$gte: [{ $sum: ['$whalf_days', '$holiday'] }, calendarDays] },
-                //                         then: calendarDays,
-                //                         else: { $sum: ['$whalf_days', '$holiday'] }
-                //                     }
-                //                 }},
-                //                 { case: { $eq: ['$holiday', 2] }, then: { $subtract: ['$whalf_days', 1] } } // deduct 1 day
-                //             ]
-                //         }},
 
-                //         no_of_absents: {$cond: {
-                //             if: { $lt: [{ $subtract: [calendarDays, { $sum: ['$whalf_days', '$holiday'] }] }, 0] },
-                //             then: 0,
-                //             else: { $subtract: [calendarDays, { $sum: ['$whalf_days', '$holiday'] }] }
-                //         }},
-                //         // IF HAS ABSENTEE, RETRIEVE ABSENTEE DEDUCTION
-                //         hasab_deduction: { 
-                //             $let: {
-                //                 vars: {
-                //                     daily_rate: { $round: [{ $divide: [{ $divide: ['$salary', 2] }, calendarDays] }, 2] },
-                //                     no_of_absents: {$cond: {
-                //                         if: { $lt: [{ $subtract: [calendarDays, { $sum: ['$whalf_days', '$holiday'] }] }, 0] },
-                //                         then: 0,
-                //                         else: { $subtract: [calendarDays, { $sum: ['$whalf_days', '$holiday'] }] }
-                //                     }
-                //                 }},
-                //                 in: { $round: [{ $multiply: ['$$no_of_absents', '$$daily_rate'] }, 2] }
-                //             }
-                //         },
+                // this pipeline can be used for debugging.
+                {$group: {
+                    _id: '$_id',
+                    emp_code: { $first: '$emp_code' },
+                    name: { $first: '$name' },
+                    designation: { $first: '$designation' },
+                    salary: { $first: '$salary' },
+                    date: {$first: '$date'},
+                    //whalf_days: { $first: '$whalf_days' },
+                    //no_of_undertime: { $first: '$no_of_undertime' },
+                    //holiday: { $first: '$holidays' },
+                    //holiday_deduction: {$first: '$holidays_deduction'},
 
-                //         // IF HAS UNDERTIME, RETRIEVE UNDERTIME DEDUCTION
-                //         // ut_deduction = (((dailyrate / 8hr) / 60 secs) * 32) * no_of_undertime
-                //         ut_deduction: {
-                //             $let: {
-                //                 vars: {
-                //                     week2_rate: { $round: [{ $divide: ['$salary', 2] }, 2] },
-                //                     daily_rate: { $round: [{ $divide: [{ $divide: ['$salary', 2] }, calendarDays] }, 2] },
-                //                 },
-                //                 in: { $round: [{ $multiply: [{ $round: [{ $divide: [{ $divide: ['$$daily_rate', 8] }, 60] }, 2] }, '$no_of_undertime'] }, 2] }
-                //             }
-                //         },
-                //     }},
-                //     {$group: {
-                //         _id: '$_id',
-                //         emp_code: { $first: '$emp_code' },
-                //         name: { $first: '$name' },
-                //         designation: { $first: '$designation' },
-                //         salary: { $first: '$salary' },
-                //         holiday: { $first: '$holiday' }, // INCLUDED FOR TESTING PURPOSES
-                //         whalf_days: { $first: '$whalf_days' },
-                //         no_of_absents: { $first: '$no_of_absents' }, // INCLUDED FOR TESTING PURPOSES
-                //         no_of_undertime: { $first: '$no_of_undertime' }, // INCLUDED FOR TESTING PURPOSES
-                //         gross_salary: { $first: '$week2_rate' },
-                //         hasab_deduction: { $first: '$hasab_deduction' },
-                //         ut_deduction: { $first: '$ut_deduction' },
-                //     }},
-                //     {$addFields: {
-                //         whalf_days: {
-                //             $cond: {
-                //                 if: {$gte:['$whalf_days', calendarDays]},
-                //                 then: calendarDays,
-                //                 else: '$whalf_days'
-                //             }
-                //         },
-                //         gross_salary: { $round: [{ $subtract: ['$gross_salary', { $sum: ['$hasab_deduction', '$ut_deduction'] }] }, 2] },
-                //             // (gross salary - 10417) *.02 // 2% Tax
-                //         tax_deduction: {$multiply: [{$subtract: ['$gross_salary', 10417]}, tax]},
-                //             // gross salary - tax deduction
-                //         net_amount_due: {$let:{
-                //             vars: {
-                //                 gross_salary: { $round: [{ $subtract: ['$gross_salary', { $sum: ['$hasab_deduction', '$ut_deduction'] }] }, 2] },
-                //                 tax_deduction: { $cond: {
-                //                     if: {$lt: [{$round: [{ $multiply: [{$round: [{$subtract: ['$gross_salary', 10417.00]},2]}, tax] }, 2]}, 0]},
-                //                     then: 0,
-                //                 else: {$round: [{ $multiply: [{$round: [{$subtract: ['$gross_salary', 10417.00]},2]}, tax] }, 2]}
-                //                 }}
-                //             },
-                //             in: {$round:[{$subtract: ['$$gross_salary', '$$tax_deduction']}, 2]}
-                //         }}
-                //     }},
-                    {$sort: { emp_code: 1 }}
-            ]
+                    holiday_deduction: {$first: 2}, //test
+                    whalf_days: {$first: 11}, // test
+                    holiday: { $first: 0 }, //test
+                    no_of_undertime: {$first: 32} // test
+                }},
+                {$addFields:{
+                    semimo_rate: { $divide: ['$salary', 2] },
+                    whalf_days: {$cond:{
+                        if: {$gte: ['$holiday_deduction', 1]}, then: { $subtract: ['$whalf_days', '$holiday_deduction'] }, //deduct on number of holidays
+                        else: '$whalf_days'
+                    }},
+                }},
+                {$addFields:{
+                    whalf_days: {
+                        $switch: {
+                            branches: [
+                                {case: { $eq: ['$holiday', 0] }, then: '$whalf_days' },                // no holiday, no additions
+                                {case: { $gte: ['$holiday', 1] }, then: {
+                                    $cond: {
+                                        if: {$gte: [{ $sum: ['$whalf_days', '$holiday'] }, calendarDays] },
+                                        then: calendarDays,
+                                        else: { $sum: ['$whalf_days', '$holiday'] }
+                                    }
+                                }},
+                            ]
+                        }
+                    },
+                    no_of_absents: {$cond: {
+                        if: { $lt: [{ $subtract: [calendarDays, { $sum: ['$whalf_days', '$holiday'] }] }, 0] },
+                        then: 0,
+                        else: { $subtract: [calendarDays, { $sum: ['$whalf_days', '$holiday'] }] }
+                    }},
+                        // IF HAS ABSENTEE, RETRIEVE ABSENTEE DEDUCTION
+                    hasab_deduction: { 
+                    $let: {
+                        vars: {
+                            daily_rate: { $round: [{ $divide: [{ $divide: ['$salary', 2] }, calendarDays] }, 2] },
+                            no_of_absents: {$cond: {
+                                if: { $lt: [{ $subtract: [calendarDays, { $sum: ['$whalf_days', '$holiday'] }] }, 0] },
+                                then: 0,
+                                else: { $subtract: [calendarDays, { $sum: ['$whalf_days', '$holiday'] }] }
+                            }
+                        }},
+                        in: { $round: [{ $multiply: ['$$no_of_absents', '$$daily_rate'] }, 2] }
+                        }
+                    },
+
+                    // IF HAS UNDERTIME, RETRIEVE UNDERTIME DEDUCTION
+                    // ut_deduction = (((dailyrate / 8hr) / 60 secs) * 32) * no_of_undertime
+                    ut_deduction: {
+                        $let: {
+                            vars: {
+                                semimo_rate: { $round: [{ $divide: ['$salary', 2] }, 2] },
+                                daily_rate: { $round: [{ $divide: [{ $divide: ['$salary', 2] }, calendarDays] }, 2] },
+                            },
+                            in: { $round: [{ $multiply: [{ $round: [{ $divide: [{ $divide: ['$$daily_rate', 8] }, 60] }, 2] }, '$no_of_undertime'] }, 2] }
+                        }
+                    },
+                }},
+                {$group: {
+                    _id: '$_id',
+                    emp_code: { $first: '$emp_code' },
+                    name: { $first: '$name' },
+                    designation: { $first: '$designation' },
+                    salary: { $first: '$salary' },
+                    whalf_days: { $first: '$whalf_days' },
+                    no_of_undertime: { $first: '$no_of_undertime' },
+                    no_of_absents: {$first: '$no_of_absents'},
+                    date: {$first: '$date'},
+                    holiday: { $first: '$holiday' },
+                    holiday_deduction: {$first: '$holiday_deduction'},
+                    gross_salary: {$first: '$semimo_rate'},
+                    hasab_deduction: {$first: '$hasab_deduction'},
+                    ut_deduction: {$first: '$ut_deduction'},
+                }},
+                {$addFields: {
+                    gross_salary: { $round: [{ $subtract: ['$gross_salary', { $sum: ['$hasab_deduction', '$ut_deduction'] }] }, 2] },
+                        // (gross salary - 10417) *.02 // 2% Tax
+                    tax_deduction: {$multiply: [{$subtract: ['$gross_salary', 10417]}, tax]},
+                        // gross salary - tax deduction
+                    net_amount_due: {$let:{
+                        vars: {
+                            gross_salary: { $round: [{ $subtract: ['$gross_salary', { $sum: ['$hasab_deduction', '$ut_deduction'] }] }, 2] },
+                            tax_deduction: { $cond: {
+                                if: {$lt: [{$round: [{ $multiply: [{$round: [{$subtract: ['$gross_salary', 10417.00]},2]}, tax] }, 2]}, 0]},
+                                then: 0,
+                            else: {$round: [{ $multiply: [{$round: [{$subtract: ['$gross_salary', 10417.00]},2]}, tax] }, 2]}
+                            }}
+                        },
+                        in: {$round:[{$subtract: ['$$gross_salary', '$$tax_deduction']}, 2]}
+                    }}
+                }},
+                            
+                {$sort: { emp_code: 1 }}]
             try {
                 const result = await employees.aggregate(pipeline)
                 
