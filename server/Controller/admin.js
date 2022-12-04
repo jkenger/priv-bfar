@@ -4,11 +4,17 @@ const employees = require('../Model/employee')
 const attendances = require('../Model/attendance')
 const Holiday = require('../Model/holiday')
 const TravelPass = require('../Model/Travelpass')
+const Deductions = require('../Model/deductions')
 const { query } = require('express')
 const moment = require('moment')
 const { createIndexes } = require('../Model/employee')
 
 module.exports = {
+    // TODO: ACCOUNTS MUST BE CREATED BY THE ADMIN.
+        // must be included when creating new employee.
+    
+
+
     // get total employee count
     employees_count_get: async (req, res) => {
         try {
@@ -86,27 +92,49 @@ module.exports = {
             res.send(result)
         } catch (e) { res.status(500).send(e) }
     },
+    // deductions
+    
+    // read deduction
+    readDeductions: async(req, res)=>{
+        Deductions.find().sort({createdAt: 1})
+            .then(result=>{
+                res.status(200).send(result)
+            })
+    },
+    // add deduction
+    addDeduction: async(req, res)=>{
+        const {name, amount} = req.body
+        const doc = {
+            name: name,
+            amount: amount
+        }
+        Deductions.create(doc)
+            .then(result=>{
+                res.status(200).send(result)
+            })
+    },
+    // delete deduction
+    deleteDeduction: async(req, res)=>{
+        const id = req.query.id
+        Deductions.findByIdAndDelete(id)
+            .then(result=>{
+                res.status(200).send(result)
+            })
+    },
+    // edit deduction
+    editDeduction: async(req, res)=>{
+        const {id, name, amount} = req.body
+        const doc = {
+            name: name,
+            amount: amount
+        }
+        Deductions.findByIdAndUpdate(id, doc)
+            .then(result=>{
+                res.status(200).send(result)
+            })
+    },
 
     // events || holiday and traver orders
-    readHoliday: async(req, res) =>{
-        try{
-            const result = await Holiday.find()
-            res.status(200).send(result)
-        }catch(e){
-            const error = errorHandler(e)
-            res.status(500).send({ err: error })
-        }
-        
-    },
-    readTravelPass: async(req, res) =>{
-        try{
-            const result = await TravelPass.find()
-            res.status(200).send(result)
-        }catch(e){
-            const error = errorHandler(e)
-            res.status(500).send({ err: error })
-        }
-    },
     addHoliday: async(req, res) =>{
         try{
             const {name, predate, date} = req.body
@@ -166,6 +194,26 @@ module.exports = {
                 })
         }catch(err){
             res.status(500).send(err)
+        }
+    },
+    
+    readHoliday: async(req, res) =>{
+        try{
+            const result = await Holiday.find()
+            res.status(200).send(result)
+        }catch(e){
+            const error = errorHandler(e)
+            res.status(500).send({ err: error })
+        }
+        
+    },
+    readTravelPass: async(req, res) =>{
+        try{
+            const result = await TravelPass.find()
+            res.status(200).send(result)
+        }catch(e){
+            const error = errorHandler(e)
+            res.status(500).send({ err: error })
         }
     },
     addTravelPass: async (req, res) => {
@@ -272,7 +320,6 @@ module.exports = {
             } else{ res.status(500).send({err: 'Failed to process event creation. Employee might already attended between the selected date'})}
         } catch (e) { res.status(500).send(e) }
     },
-
     deleteTravelPass: async(req, res)=>{
         try{
             const id = req.params.id
@@ -365,33 +412,19 @@ module.exports = {
             // DO NOT COUNT SATURDAYS
             // FIND A WAY TO 
 
+            // 11/22/2022 - created payslip report
+            // TO DO: GET TOTAL SALARY AFTER HOLIDAY DEDUCTION
 
             // PIPELINES
             const pipeline = [
-                // {$match:{emp_code: {$not:{$eq: ''} }}},
-                // {$group:{
-                //     _id: '$emp_code',
-                //     emp_code: {$first: '$emp_code'},
-                //     name: {$first:'$name'},
-                //     salary: {$first:'$salary'},
-                // }},
-                // {$addFields:{
-                //     holiday_dates: holidayDates
-                // }},
-                // {$addFields:{
-                //     holidays:{$cond:{
-                //         if: {$eq:['$holiday_dates.preDate', '$date']},
-                //         then: 1,
-                //         else: 0
-                //     }}
-                // }},
+               
                 {$lookup: {
                     from: 'attendances',
                     localField: 'emp_code',
                     foreignField: 'emp_code',
                     as: 'attendances',
                     let: { time_in: '$time_in', time_out: '$time_out' },
-                    pipeline: [{ $match: { $or: [{$or: [{am_time_out: { $ne: null }}, {$or: [{am_time_in: 'T.O'}, {am_time_in: 'O.B'}]}]}, { pm_time_out: { $ne: null } }], date: { $gte: fromDate, $lte: toDate }, emp_code: '11' } }] // NOTE: fromdate and todate should be formatted for accurate results
+                    pipeline: [{ $match: { $or: [{$or: [{am_time_out: { $ne: null }}, {$or: [{message: 'T.O'}, {message: 'O.B'}]}]}, { pm_time_out: { $ne: null } }], date: { $gte: fromDate, $lte: toDate }},  }] // NOTE: fromdate and todate should be formatted for accurate results
                     
                 }},
                 {$addFields:{
@@ -477,6 +510,7 @@ module.exports = {
                     holidays: {$first: '$holidays'},
                     isLate: {$first: '$isLate'},
                     whalf_days: {$sum: '$whalf_days'},
+                    total_days: {$sum: '$whalf_days'},
                     date: {$first: '$date'},
                     no_of_undertime: {$sum: '$no_of_undertime'},
                 }},
@@ -497,39 +531,9 @@ module.exports = {
                 }},
                 
                 // TO DO: DEDUCT HOLIDAYS DEDUCTION TO EMPLOYEE's workdays.
-                    //HOLIDAY LOGIC HERE
-                    
-                //         // TASK:
-                //         // BETEEN TWO DATES CHECK IF THERE IS HOLIDAYS
-                //         // GET HOW MANY HOLIDAYS IS IN TWO DATES
-                //     holiday: {$let: {
-                //         vars: {
-                //             holiday_date: {$cond: {
-                //                 if: { $and: [{ $gte: [holiDate, fromDate] }, { $lte: [holiDate, toDate] }] },
-                //                 then: holiDate,
-                //                 else: 0
-                //             }},
-                //             holiday_date_before: {$cond: { // get the holiday date, return 0 if there is no holiday given
-                //                 if: { $and: [{ $gte: [holiDateBefore, fromDate] }, { $lte: [holiDateBefore, toDate] }] },
-                //                 then: holiDateBefore,
-                //                 else: 0
-                //             }},
-                //             date: '$created_from'
-                //         },
-                //             // check each document if the user attended before the holiday date.
-                //         in: {$cond: {
-                //             if: { $eq: ['$$holiday_date', 0] },
-                //             then: 0, // no holiday
-                //             else: {$cond:{
-                //                 if: { $and: [{ $gte: ['$$date', '$$holiday_date_before'] }, { $lte: ['$$date', '$$holiday_date'] }] },
-                //                 then: 1, //if there is holiday
-                //                 else: 2, // user didn't meet the condition 
-                //             }}
-                //         }}
-                //     }}
-                // }},
+                //HOLIDAY LOGIC HERE
 
-                // this pipeline can be used for debugging.
+                // this pipeline [GROUP] can be used for debugging.
                 {$group: {
                     _id: '$_id',
                     emp_code: { $first: '$emp_code' },
@@ -537,20 +541,25 @@ module.exports = {
                     designation: { $first: '$designation' },
                     salary: { $first: '$salary' },
                     date: {$first: '$date'},
-                    //whalf_days: { $first: '$whalf_days' },
-                    //no_of_undertime: { $first: '$no_of_undertime' },
-                    //holiday: { $first: '$holidays' },
-                    //holiday_deduction: {$first: '$holidays_deduction'},
+                    whalf_days: { $first: '$whalf_days'},
+                    total_days: {$first: '$total_days'},
+                    no_of_undertime: { $first: '$no_of_undertime' },
+                    holiday: { $first: '$holidays'},
+                    holiday_deduction: {$first: '$holidays_deduction'},
 
-                    holiday_deduction: {$first: 2}, //test
-                    whalf_days: {$first: 11}, // test
-                    holiday: { $first: 0 }, //test
-                    no_of_undertime: {$first: 32} // test
+                    // holiday_deduction: {$first: 0}, //test
+                    // whalf_days: {$first: 11}, // test
+                    // holiday: { $first: 0}, //test
+                    // no_of_undertime: {$first: 32} // test
                 }},
                 {$addFields:{
                     semimo_rate: { $divide: ['$salary', 2] },
                     whalf_days: {$cond:{
-                        if: {$gte: ['$holiday_deduction', 1]}, then: { $subtract: ['$whalf_days', '$holiday_deduction'] }, //deduct on number of holidays
+                        if: {$gte: ['$holiday_deduction', 1]}, then: {$cond:{
+                            if:{$lte: [{$subtract: ['$whalf_days', '$holiday_deduction']}, 0]},
+                            then: 0,
+                            else: {$subtract: ['$whalf_days', '$holiday_deduction']}
+                        }}, //deduct on number of holidays
                         else: '$whalf_days'
                     }},
                 }},
@@ -558,7 +567,12 @@ module.exports = {
                     whalf_days: {
                         $switch: {
                             branches: [
-                                {case: { $eq: ['$holiday', 0] }, then: '$whalf_days' },                // no holiday, no additions
+                                // no holiday, no additions
+                                {case: { $eq: ['$holiday', 0] }, then: {$cond: {
+                                    if: {$gte: ['$whalf_days', calendarDays]},
+                                    then: calendarDays,
+                                    else: '$whalf_days'
+                                }}},                
                                 {case: { $gte: ['$holiday', 1] }, then: {
                                     $cond: {
                                         if: {$gte: [{ $sum: ['$whalf_days', '$holiday'] }, calendarDays] },
@@ -569,6 +583,8 @@ module.exports = {
                             ]
                         }
                     },
+                    holiday_additional:{$round: [{$multiply: ['$holiday',{$divide: ['$semimo_rate', calendarDays]}]}    , 2]},
+                    holiday_rate_deduction: {$round: [{$multiply: ['$holiday_deduction', {$divide: ['$semimo_rate', calendarDays]}]},2]},
                     no_of_absents: {$cond: {
                         if: { $lt: [{ $subtract: [calendarDays, { $sum: ['$whalf_days', '$holiday'] }] }, 0] },
                         then: 0,
@@ -608,12 +624,16 @@ module.exports = {
                     designation: { $first: '$designation' },
                     salary: { $first: '$salary' },
                     whalf_days: { $first: '$whalf_days' },
+                    total_days: {$first: '$total_days'},
                     no_of_undertime: { $first: '$no_of_undertime' },
                     no_of_absents: {$first: '$no_of_absents'},
                     date: {$first: '$date'},
                     holiday: { $first: '$holiday' },
+                    holiday_additional: {$first: '$holiday_additional'},
                     holiday_deduction: {$first: '$holiday_deduction'},
+                    holiday_rate_deduction: {$first: '$holiday_rate_deduction'},
                     gross_salary: {$first: '$semimo_rate'},
+                    semimo_salary: {$first: '$semimo_rate'},
                     hasab_deduction: {$first: '$hasab_deduction'},
                     ut_deduction: {$first: '$ut_deduction'},
                 }},
@@ -634,7 +654,40 @@ module.exports = {
                         in: {$round:[{$subtract: ['$$gross_salary', '$$tax_deduction']}, 2]}
                     }}
                 }},
-                            
+                {$group:{
+                    _id: '$_id',
+                    emp_code: { $first: '$emp_code' },
+                    name: { $first: '$name' },
+                    designation: { $first: '$designation' },
+                    salary: { $first: '$salary' },
+                    semimo_salary: {$first: '$semimo_salary'},
+                    attendance:{$mergeObjects:{
+                        calendar_days: calendarDays,
+                        total_days: '$total_days',
+                        whalf_days: '$whalf_days' ,
+                        no_of_undertime:  '$no_of_undertime',
+                        no_of_absents: '$no_of_absents',
+                        holiday:'$holiday' ,
+                    }},
+                    earnings:{$mergeObjects:{
+                        semimo_salary: '$semimo_salary',
+                        holiday_additional: '$holiday_additional'
+                    }},
+                    deduction:{$mergeObjects:{
+                        holiday_deduction: '$holiday_deduction',
+                        holiday_rate_deduction: '$holiday_rate_deduction',
+                        hasab_deduction: '$hasab_deduction',
+                        tax_deduction: '$tax_deduction',
+                        ut_deduction: '$ut_deduction'
+                    }},
+                    salaries:{$mergeObjects:{
+                        gross_salary: '$gross_salary',
+                        net_salary:'$net_amount_due'
+                    }}
+                }},
+                // {$unwind: '$attendance'},
+                // {$unwind: '$deuction'},
+                // {$unwind: '$salary'},
                 {$sort: { emp_code: 1 }}]
             try {
                 const result = await employees.aggregate(pipeline)

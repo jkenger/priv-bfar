@@ -98,7 +98,141 @@
                                 <th>Status</th>
                                 <th>Actions</th>
                             </tr>
-                            
+                            <tr>
+                                <td>01</td>
+                                <td>Programmer</td>
+                                <td>15000.00</td>
+                                <td>11</td>
+                                <td>15000.00</td>
+                                <td>2</td>
+                                <td>32</td>
+                                <td>15000.00</td>
+                                <td>asdasd</td>
+                                <td>Status</td>
+                                <td><button class="button table-btn" id="view-details">view details</button></td>
+                            </tr>
+                            <tr class="sub-detail" id="sub-detail" >
+                                <td colspan="11" class="payroll-details">
+                                    <div class="container">
+                                        <div class="header">
+                                            <div class="left">
+                                                <i class="fa-solid fa-circle-info"></i> <label for="details"> Payroll Details</label>
+                                            </div>
+                                            <div class="right">
+                                               <a href="#"><i class="fa-solid fa-download"></i></a>
+                                            </div>
+                                        </div>
+                                        <div class="main">
+                                            <div class="header">
+                                                <div>
+                                                    <label for="head-id">Employee ID</label>
+                                                    <label for="id">1011</label>
+                                                </div>
+                                                <div>
+                                                    <label for="head-name">Employee Name</label>
+                                                    <label for="name">Ken Gervacio</label>
+                                                </div>
+                                                <div>
+                                                    <label for="head-designation">Designation</label>
+                                                    <label for="designation">Programmer</label>
+                                                </div>
+                                            </div>
+                                            <div class="tables">
+                                                <div class="table">
+                                                    <table>
+                                                        <tr>
+                                                            <th>Gross Pay</th>
+                                                            <th></th>
+                                                            <th>Amount</th>
+                                                        </tr>
+                                                        <tr class="details">
+                                                            <td>Monthly Salary</td>
+                                                            <td></td>
+                                                            <td>P   15000.00</td>
+                                                        </tr>
+                                                        <tr class="details sub-detail">
+                                                            <td>Calendar Days</td>
+                                                            <td>11 days</td>
+                                                            <td>P7500.00</td>
+                                                        </tr>
+                                                        <tr class="details sub-detail">
+                                                            <td>Total Days</td>
+                                                            <td>11 days</td>
+                                                            <td></td>
+                                                        </tr>
+                                                        <tr class="details sub-detail sub">
+                                                            <td>Holidays</td>
+                                                            <td>- 0 days</td>
+                                                            <td></td>
+                                                        </tr>
+                                                        <tr class="details sub-detail">
+                                                            <td>No. of Days</td>
+                                                            <td>8 days</td>
+                                                            <td></td>
+                                                        </tr>
+                                                        <tr class="details sub-detail sub">
+                                                            <td>Absents</td>
+                                                            <td>0 days</td>
+                                                            <td>- P0.00</td>
+                                                        </tr>
+                                                        
+                                                        <tr class="details sub-detail sub">
+                                                            <td>Undertime</td>
+                                                            <td>32 mins</td>
+                                                            <td>- P45.44</td>
+                                                        </tr>
+                                                        <tr class="details sub-detail">
+                                                            <td></td>
+                                                            <td class="total">Total Gross Pay</td>
+                                                            <td>P7454.56</td>
+                                                        </tr>
+                                                    </table>
+                                                </div>
+                                                <div class="table">
+                                                    <table>
+                                                        <tr>
+                                                            <th>Net Pay</th>
+                                                            <th></th>
+                                                            <th>Amount</th>
+                                                        </tr>
+                                                        <tr class="details">
+                                                            <td>Gross Salary</td>
+                                                            <td></td>
+                                                            <td>P   7454.56</td>
+                                                        </tr>
+                                                        <tr class="details sub-detail">
+                                                            <td>Tax</td>
+                                                            <td></td>   
+                                                            <td></td>
+                                                        </tr>
+                                                        <tr class="details sub-detail">
+                                                            <td></td>
+                                                            <td>2%</td>
+                                                            <td>- P0.00</td>
+                                                        </tr>
+                                                        <tr class="details sub-detail">
+                                                            <td></td>
+                                                            <td>5%</td>
+                                                            <td>- P0.00</td>
+                                                        </tr>
+                                                        <tr class="details sub-detail">
+                                                            <td></td>
+                                                            <td>10%</td>
+                                                            <td>- P0.00</td>
+                                                        </tr>
+                                                        <tr class="details sub-detail">
+                                                            <td></td>
+                                                            <td class="total">Total Net Pay</td>
+                                                            <td>P7454.56</td>
+                                                        </tr>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                            
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
                         </table>
                     </div>
                     <form novalidate role="search">
@@ -145,6 +279,16 @@
                             // const data = await res.json()
                             // console.log(data)
 
+                        })
+                        const btnViewDetails = document.querySelector('#view-details')
+                        const subDetailRow = document.querySelector('#sub-detail')
+                        btnViewDetails.addEventListener('click', (e)=>{
+                            console.log('details clicked')
+                            if(subDetailRow.style.display === 'none'){
+                                subDetailRow.style.display = "";
+                            }else{
+                                subDetailRow.style.display = "none";
+                            }
                         })
 
                     </script>

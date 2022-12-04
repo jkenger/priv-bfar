@@ -37,13 +37,156 @@
                                 <td><%=user.name%></td>
                                 <td><%=user.designation%></td>
                                 <td><%=user.salary%></td>
-                                <td><%=user.whalf_days%></td>
-                                <td><%=user.gross_salary%></td>
-                                <td><%=user.no_of_absents%></td>
-                                <td><%=user.no_of_undertime%></td>
-                                <td><%=user.net_amount_due%></td>
+                                <td><%=user.attendance.whalf_days%></td>
+                                <td><%=user.salaries.gross_salary%></td>
+                                <td><%=user.attendance.no_of_absents%></td>
+                                <td><%=user.attendance.no_of_undertime%></td>
+                                <td><%=user.salaries.net_salary%></td>
                                 <td>0</td>
-                                <td><button class="button table-btn">calculate</button></td>
+                                <td><button class="button table-btn" id="view-details">view details</button></td>
+                            </tr>
+                            <tr class="sub-detail" id="sub-detail" style="display:none">
+                                <td colspan="11" class="payroll-details">
+                                    <div class="container">
+                                        <div class="header">
+                                            <div class="left">
+                                                <i class="fa-solid fa-circle-info"></i> <label for="details"> Payroll Details</label>
+                                            </div>
+                                            <div class="right">
+                                               <a href="#"><i class="fa-solid fa-download"></i></a>
+                                            </div>
+                                        </div>
+                                        <div class="main">
+                                            <div class="header">
+                                                <div>
+                                                    <label for="head-id">Employee ID</label>
+                                                    <label for="id"><%=user.emp_code%></label>
+                                                </div>
+                                                <div>
+                                                    <label for="head-name">Employee Name</label>
+                                                    <label for="name"><%=user.name%></label>
+                                                </div>
+                                                <div>
+                                                    <label for="head-designation">Designation</label>
+                                                    <label for="designation"><%=user.designation%></label>
+                                                </div>
+                                            </div>
+                                            <div class="tables">
+                                                <div class="table">
+                                                    <table>
+                                                        <tr>
+                                                            <th>Gross Pay</th>
+                                                            <th></th>
+                                                            <th>Amount</th>
+                                                        </tr>
+                                                        <tr class="details">
+                                                            <td>Monthly Salary</td>
+                                                            <td></td>
+                                                            <td>P<%=user.salary%> </td>
+                                                        </tr>
+                                                        <tr class="details">
+                                                            <td>Calendar Days</td>
+                                                            <td><%=user.attendance.calendar_days%> days</td>
+                                                            <td></td>
+                                                        </tr>
+                                                        <tr class="details sub-detail ">
+                                                            <td>Initial Days Earned</td>
+                                                            <td><%=user.attendance.total_days%> days</td>
+                                                            <td></td>
+                                                        </tr>
+                                                        <tr class="details sub-detail">
+                                                            <td>Earnings</td>
+                                                            <td></td>
+                                                            <td>P<%=user.semimo_salary%> </td>
+                                                        </tr>
+                                                        <tr class="details sub-detail sub">
+                                                            <td>Semi-monthly Salary</td>
+                                                            <td></td>
+                                                            <td>+ P<%=user.earnings.semimo_salary%> </td>
+                                                        </tr>
+                                                        <tr class="details sub-detail sub">
+                                                            <td>Holiday additionals</td>
+                                                            <td></td>
+                                                            <td>+ P<%=user.earnings.holiday_additional%> </td>
+                                                        </tr>
+                                                        <tr class="details sub-detail">
+                                                            <td>Deductions</td>
+                                                            <td></td>
+                                                            <td></td>
+                                                        </tr>
+
+                                                        <tr class="details sub-detail sub">
+                                                            <td>Absents</td>
+                                                            <td><%=user.attendance.no_of_absents%> days</td>
+                                                            <td>- P<%=user.deduction.hasab_deduction%></td>
+                                                        </tr>
+                    
+                                                        <tr class="details sub-detail sub">
+                                                            <td>Holidays deduction</td>
+                                                            <td><%=user.deduction.holiday_deduction%> days</td>
+                                                            <td>- P<%=user.deduction.holiday_rate_deduction%> days</td>
+                                                        </tr>
+                                                        <tr class="details sub-detail sub">
+                                                            <td>Undertime</td>
+                                                            <td><%=user.attendance.no_of_undertime%> mins</td>
+                                                            <td>- P<%=user.deduction.ut_deduction%></td>
+                                                        </tr>
+                                                        <tr class="details sub-detail">
+                                                            <td>Days Earned (incl. holidays)</td>
+                                                            <td><%=user.attendance.whalf_days%> days</td>
+                                                            <td></td>
+                                                        </tr>
+                                                        <tr class="details sub-detail">
+                                                            <td></td>
+                                                            <td class="total">Gross Amount Earned</td>
+                                                            <td>P<%=user.salaries.gross_salary%></td>
+                                                        </tr>
+                                                    </table>
+                                                </div>
+                                                <div class="table">
+                                                    <table>
+                                                        <tr>
+                                                            <th>Net Pay</th>
+                                                            <th></th>
+                                                            <th>Amount</th>
+                                                        </tr>
+                                                        <tr class="details">
+                                                            <td>Gross Salary</td>
+                                                            <td></td>
+                                                            <td>P<%=user.salaries.gross_salary%></td>
+                                                        </tr>
+                                                        <tr class="details sub-detail">
+                                                            <td>Tax</td>
+                                                            <td></td>   
+                                                            <td></td>
+                                                        </tr>
+                                                        <tr class="details sub-detail">
+                                                            <td></td>
+                                                            <td>2%</td>
+                                                            <td>- P<%=user.deduction.tax_deduction%></td>
+                                                        </tr>
+                                                        <tr class="details sub-detail">
+                                                            <td></td>
+                                                            <td>5%</td>
+                                                            <td>- P0.00</td>
+                                                        </tr>
+                                                        <tr class="details sub-detail">
+                                                            <td></td>
+                                                            <td>10%</td>
+                                                            <td>- P0.00</td>
+                                                        </tr>
+                                                        <tr class="details sub-detail">
+                                                            <td></td>
+                                                            <td class="total">Net Amount Due</td>
+                                                            <td>P<%=user.salaries.net_salary%></td>
+                                                        </tr>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                            
+                                        </div>
+                                    </div>
+                                </td>
                             </tr>
                         <%}); %>
                     <% }else{%> 
@@ -84,8 +227,8 @@
                 btnSubmit.addEventListener('click', async (e)=>{
                     // fromDate = inputFromDate.value
                     // toDate = inputToDate.value
-                    fromDate = '2022-07-15'
-                    toDate = '2022-07-30'
+                    fromDate = '2022-11-15'
+                    toDate = '2022-11-30'
                     location.href=`/admin/payroll?from=${fromDate}&to=${toDate}`
                     // console.log(fromDate, toDate)
                     // console.log(fromDate)
@@ -97,6 +240,18 @@
                     // const data = await res.json()
                     // console.log(data)
                     
+                })
+                const btnViewDetails = document.querySelectorAll('#view-details')
+                const subDetailRow = document.querySelectorAll('#sub-detail')
+
+                btnViewDetails.forEach((btnDetail,index)=>{
+                    btnDetail.addEventListener('click', (e)=>{
+                        if(subDetailRow[index].style.display !== 'none'){
+                            subDetailRow[index].style.display = "none";
+                        }else{
+                            subDetailRow[index].style.display = "";
+                        }
+                    })
                 })
                 
             </script>

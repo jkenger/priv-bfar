@@ -66,6 +66,12 @@ route.post('/api/employees',  admin.addEmployee)
 route.patch('/api/employees/:id',  admin.updateEmployee)
 route.delete('/api/employees/:id',  admin.deleteEmployee)
 
+// deductions
+route.get('/api/deductions', admin.readDeductions)
+route.post('/api/deductions', admin.addDeduction)
+route.delete('/api/deductions', admin.deleteDeduction)
+route.patch('/api/deductions', admin.editDeduction)
+
     // travel orders and official businesses must be retrieve from the admin client,
     // after the client submitted the date and name of the person that was to be excused in that day,
     // the system must create an attendance that write the current order# in am pm
