@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 const validator = require('validator')
-const Attendance = require('../Model/attendance')
+const Attendance = require('./attendance')
 
 const TravelPassSchema = mongoose.Schema({
     emp_code:{

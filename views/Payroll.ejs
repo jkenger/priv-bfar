@@ -176,6 +176,18 @@
                                                             <td>- P0.00</td>
                                                         </tr>
                                                         <tr class="details sub-detail">
+                                                            <td>Contributions</td>
+                                                            <td></td>   
+                                                            <td></td>
+                                                        </tr>
+                                                        <% user.other_deductions.deductions.forEach(deduction=>{ %>
+                                                            <tr class="details sub-detail sub">
+                                                            <td><%=deduction.name%></td>
+                                                            <td></td>
+                                                            <td>- P<%=deduction.amount%></td>
+                                                            </tr>
+                                                        <%})%> 
+                                                        <tr class="details sub-detail">
                                                             <td></td>
                                                             <td class="total">Net Amount Due</td>
                                                             <td>P<%=user.salaries.net_salary%></td>

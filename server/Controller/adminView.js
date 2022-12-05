@@ -50,6 +50,16 @@ module.exports = {
             }
     },
 
+    // deductions
+    deductionView: async(req, res) =>{
+      try{
+        const data = await fetchData('admin/api/deductions')
+        res.status(200).render('deduction', {data, moment: moment})
+      } catch(err){
+        res.status(500).send(err)
+      } 
+    },
+
     recordView: async (req, res) => {
         try {
             const data = await fetchData('admin/api/records')

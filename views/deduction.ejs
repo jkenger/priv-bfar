@@ -1,0 +1,134 @@
+<%-include('partials/Header')%>
+    <%-include('partials/Nav') %>
+        <%-include('partials/Aside')%>
+        <main>
+            <div class="container dashboard">
+                <div class="employees">
+                    <div class="employee-query components box-shadow">
+                        <h1>Deductions</h1>
+                        <div class="employee-query-search">
+                            <form novalidate role="search">
+                                <button>
+                                    <i class="fa-solid fa-magnifying-glass"></i>
+                                </button>
+                                <input type="text" placeholder="Type your query here and press enter">
+                            </form>
+                        </div>
+                    </div>
+                    <div class="event-container">
+                        <div class="event-container-layout">
+                            <div class="employee-container components box-shadow">
+                                <div class="add">
+                                    <form class="submit">
+                                        <div class="section">
+                                            <div>
+                                                <div class="label-ico">
+                                                    <label for="fullname">Name</label> <i class="fa-regular fa-circle-question"></i>
+                                                </div>
+                                                <input type="text" placeholder="e.g SSS" name="name" class="box-shadow" id='fname'>
+                                                <label for="error" class="fname-error error"></label>
+                                            </div>
+                                            <div>
+                                                <div class="label-ico">
+                                                    <label for="fullname"> Amount</label> <i class="fa-regular fa-circle-question"></i>
+                                                </div>
+                                                <input type="number" placeholder="Deducution rate" name="amount" class="box-shadow" id='deduction-input'>
+                                                <label for="error" class="deduction-error error"></label>
+                                            </div>
+                                            </div>
+                                            <script>
+                                                let form = document.querySelector('.submit')
+                                                const fnameErr = document.querySelector('.fname-error')
+                                                const deductionErr = document.querySelector('.deduction-error')
+
+                                                const idInput = document.querySelector('#fname')
+                                                const deductionInput = document.querySelector('#deductioniinput')
+
+                                                form.addEventListener('submit', async (e) => {
+                                                    e.preventDefault();
+                                                    const doc = {
+                                                        
+                                                        name : form.name.value,
+                                                        amount : form.amount.value,
+                                                    }
+                                                    console.log('client 1:', doc)
+                                                    const res = await fetch('http://localhost:3000/admin/api/deductions',{
+                                                        headers:{'Content-Type': 'application/json'},
+                                                        body: JSON.stringify(doc),
+                                                        method: 'POST'
+                                                    })
+
+                                                    const data = await res.json()
+                                                    
+                                                    if(data) console.log('response:', data)
+                                                    if(data.err) {
+                                                        fnameErr.textContent = data.err.name
+                                                        preDateErr.textContent = data.err.preDate
+                                                        dateErr.textContent = data.err.date
+                                                    }
+                                                })
+
+                                                // const viewBtns = document.querySelectorAll('.button')
+                                                // const editBtn = document.querySelector('.button-edit')
+                                                // // const id = viewBtn.dataset.id
+                                                // for(let i = 0; i < viewBtns.length; i++){
+                                                //     viewBtns[i].addEventListener('click', (e)=>{
+                                                //         const id = viewBtns[i].dataset.id
+                                                //         location.assign(`http://localhost:3000/admin/employees/view/${id}`)
+                                                //     })
+                                                // }
+                                            
+                                                // viewBtn.addEventListener('click', (e)=>{
+                                                //     location.assign(`http://localhost:3000/admin/employees/view/${id}`)
+                                                // })
+                                                
+                                            </script>
+                                        </div>
+                                        <button class="button-submit add-emp-btn">Save</button>
+                                    </form>
+                                </div>
+                            
+                        </div>
+                        
+                        <div class="event-container-layout">
+                            <div class="employee-container components box-shadow" style="width:auto">
+                                <table class="employee-table">
+                                    <tr>
+                                        <th style="width: 30%">Name</th>
+                                        <th style="width: 30%">Amount</th>
+                                        <th style="width: 30%">Actions</th>
+                                    </tr>
+                                    <% Object.values(data).forEach(event => { %> 
+                                    <tr>
+                                        <td><%=event.name%></td>
+                                        <td><%=event.amount%></td>
+                                        <td>
+                                            <button class="button table-btn">edit</button>
+                                            <button class="button-delete table-btn">delete</button>
+                                        </td>
+                                    </tr>
+                                    <%}); %>
+                                </table>
+                                <script> 
+                                    // const viewBtns = document.querySelectorAll('.button')
+                                    // const editBtn = document.querySelector('.button-edit')
+                                    // // const id = viewBtn.dataset.id
+                                    // for(let i = 0; i < viewBtns.length; i++){
+                                    //     viewBtns[i].addEventListener('click', (e)=>{
+                                    //         const id = viewBtns[i].dataset.id
+                                    //         location.assign(`http://localhost:3000/admin/employees/view/${id}`)
+                                    //     })
+                                    // }
+                                
+                                    // viewBtn.addEventListener('click', (e)=>{
+                                    //     location.assign(`http://localhost:3000/admin/employees/view/${id}`)
+                                    // })
+
+                                </script>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+<%-include('partials/Footer')%>

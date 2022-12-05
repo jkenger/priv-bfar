@@ -3,16 +3,17 @@ const { getFormattedDate } = require('./services/date')
 const employees = require('../Model/employee')
 const attendances = require('../Model/attendance')
 const Holiday = require('../Model/holiday')
-const TravelPass = require('../Model/Travelpass')
+const TravelPass = require('../Model/travelPass')
 const Deductions = require('../Model/deductions')
 const { query } = require('express')
 const moment = require('moment')
 const { createIndexes } = require('../Model/employee')
 
 module.exports = {
-    // TODO: ACCOUNTS MUST BE CREATED BY THE ADMIN.
-        // must be included when creating new employee.
-    
+    // TODO: 
+        //ACCOUNTS MUST BE CREATED BY THE ADMIN.
+            // must be included when creating new employee.
+        // CREATE FRONTEND FOR DEDUCTIONS.
 
 
     // get total employee count
@@ -374,11 +375,8 @@ module.exports = {
             console.log(fromDate)
             console.log(toDate)
 
-            // variables that must be retrive from the client
-            const holiDate = new Date('2022-09-06') // from user
-            const holiDateBefore = new Date('2022-09-05') // from user
-           const holidays = await Holiday.find().sort({date: 1})
-
+            // fetch all available holidays this week
+            const holidays = await Holiday.find().sort({date: 1})
             let holidayDates = []
             holidays.forEach(holiday=>{
                 let date = new Date(holiday.date)
@@ -390,8 +388,13 @@ module.exports = {
                     })
                 }
             })
-
             console.log(holidayDates)
+
+            // fetch all deductions
+            // store in array
+            // deduct in every employees
+            // display in payslip report
+            const deductions = await Deductions.find().sort({createdAt: 1})
 
             const calendarDays = 11 // from user
 
@@ -637,23 +640,45 @@ module.exports = {
                     hasab_deduction: {$first: '$hasab_deduction'},
                     ut_deduction: {$first: '$ut_deduction'},
                 }},
+
                 {$addFields: {
+                    // gross salary deductions
                     gross_salary: { $round: [{ $subtract: ['$gross_salary', { $sum: ['$hasab_deduction', '$ut_deduction'] }] }, 2] },
-                        // (gross salary - 10417) *.02 // 2% Tax
+                    
+                    // initiate net salary deductions
+                    // (gross salary - 10417) *.02 // 2% Tax
                     tax_deduction: {$multiply: [{$subtract: ['$gross_salary', 10417]}, tax]},
-                        // gross salary - tax deduction
-                    net_amount_due: {$let:{
-                        vars: {
-                            gross_salary: { $round: [{ $subtract: ['$gross_salary', { $sum: ['$hasab_deduction', '$ut_deduction'] }] }, 2] },
-                            tax_deduction: { $cond: {
-                                if: {$lt: [{$round: [{ $multiply: [{$round: [{$subtract: ['$gross_salary', 10417.00]},2]}, tax] }, 2]}, 0]},
-                                then: 0,
-                            else: {$round: [{ $multiply: [{$round: [{$subtract: ['$gross_salary', 10417.00]},2]}, tax] }, 2]}
-                            }}
-                        },
-                        in: {$round:[{$subtract: ['$$gross_salary', '$$tax_deduction']}, 2]}
-                    }}
+                    other_deductions: deductions
                 }},
+                {$unwind: '$other_deductions'},
+                {$group:{
+                    _id: '$_id',
+                    emp_code: {$first: '$emp_code'},
+                    name:{$first:'$name'},
+                    designation: { $first: '$designation' },
+                    salary: { $first: '$salary' },
+                    whalf_days: { $first: '$whalf_days' },
+                    total_days: {$first: '$total_days'},
+                    no_of_undertime: { $first: '$no_of_undertime' },
+                    no_of_absents: {$first: '$no_of_absents'},
+                    date: {$first: '$date'},
+                    holiday: { $first: '$holiday' },
+                    holiday_additional: {$first: '$holiday_additional'},
+                    holiday_deduction: {$first: '$holiday_deduction'},
+                    holiday_rate_deduction: {$first: '$holiday_rate_deduction'},
+                    gross_salary: {$first: '$gross_salary'},
+                    semimo_salary: {$first: '$gross_salary'},
+                    hasab_deduction: {$first: '$hasab_deduction'},
+                    ut_deduction: {$first: '$ut_deduction'},
+                    tax_deduction: {$first: '$tax_deduction'},
+                    total_other_deductions: {$sum: '$other_deductions.amount'}
+                }},
+                {$addFields: {
+                    // gross salary - tax deduction, other deductions
+                    other_deductions: deductions,
+                    net_amount_due: {$round:[{$subtract: [{$subtract: ['$gross_salary', '$tax_deduction']}, '$total_other_deductions']}, 2]}
+                }},
+                
                 {$group:{
                     _id: '$_id',
                     emp_code: { $first: '$emp_code' },
@@ -679,6 +704,10 @@ module.exports = {
                         hasab_deduction: '$hasab_deduction',
                         tax_deduction: '$tax_deduction',
                         ut_deduction: '$ut_deduction'
+                    }},
+                    other_deductions:{$mergeObjects:{
+                        deductions: '$other_deductions',
+                        deductions_total: '$total_other_deductions'
                     }},
                     salaries:{$mergeObjects:{
                         gross_salary: '$gross_salary',
