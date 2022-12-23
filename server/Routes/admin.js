@@ -72,7 +72,7 @@ route.delete('/api/employees/:id',  admin.deleteEmployee)
 // deductions
 route.get('/api/deductions', admin.readDeductions)
 route.post('/api/deductions', admin.addDeduction)
-route.delete('/api/deductions', admin.deleteDeduction)
+route.delete('/api/deductions/:id', admin.deleteDeduction)
 route.patch('/api/deductions', admin.editDeduction)
 
     // travel orders and official businesses must be retrieve from the admin client,
@@ -81,9 +81,10 @@ route.patch('/api/deductions', admin.editDeduction)
 
 // events | holidays and travel orders api
 route.get('/api/events/holiday', admin.readHoliday)
-route.get('/api/events/travelpass', admin.readTravelPass)
 route.post('/api/events/holiday', admin.addHoliday)
 route.delete('/api/events/holiday/:id', admin.deleteHoliday)
+
+route.get('/api/events/travelpass', admin.readTravelPass)
 route.post('/api/events/travelpass', admin.addTravelPass)
 route.delete('/api/events/travelpass/:id', admin.deleteTravelPass)
 

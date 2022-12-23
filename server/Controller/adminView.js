@@ -54,7 +54,10 @@ module.exports = {
     deductionView: async(req, res) =>{
       try{
         const data = await fetchData('admin/api/deductions')
-        res.status(200).render('deduction', {data, moment: moment})
+        res.status(200).render('deduction', {
+            data, 
+            moment: moment
+        })
       } catch(err){
         res.status(500).send(err)
       } 
@@ -63,7 +66,10 @@ module.exports = {
     recordView: async (req, res) => {
         try {
             const data = await fetchData('admin/api/records')
-            res.status(200).render('timeRecords', { data, moment: moment })
+            res.status(200).render('timeRecords', { 
+                data,
+                moment: moment 
+            })
         } catch (err) {
             res.status(500).send(err) 
             }
@@ -74,12 +80,16 @@ module.exports = {
             // Get the dates then retrieve all the data based from the given dates
             let fromDate = new Date().toISOString()
             let toDate = new Date().toISOString()
-
+            
             if(!req.query.from || !req.query.to) fromDate = new Date().toISOString(), toDate = new Date().toISOString()
             else fromDate = new Date(req.query.from).toISOString(), toDate = new Date(req.query.to + 'T23:59:59.999Z').toISOString()
-
+            console.log('from:', fromDate, 'toDate', toDate)
             const data = await fetchData(`admin/api/payrolls?from=${fromDate}&to=${toDate}`)
-            res.status(200).render('payroll', { data, url: req.url })
+            res.status(200).render('payroll', { 
+                data, 
+                url: req.url, 
+                query: {from: req.query.from, to: req.query.to} 
+            })
 
         } catch (err) { 
             res.status(500).send(err) 

@@ -32,7 +32,7 @@
                                                 <div class="label-ico">
                                                     <label for="fullname"> Amount</label> <i class="fa-regular fa-circle-question"></i>
                                                 </div>
-                                                <input type="number" placeholder="Deducution rate" name="amount" class="box-shadow" id='deduction-input'>
+                                                <input type="number" step=".01" placeholder="Deducution rate" name="amount" class="box-shadow" id='deduction-input'>
                                                 <label for="error" class="deduction-error error"></label>
                                             </div>
                                             </div>
@@ -104,7 +104,7 @@
                                         <td><%=event.amount%></td>
                                         <td>
                                             <button class="button table-btn">edit</button>
-                                            <button class="button-delete table-btn">delete</button>
+                                            <button class="button-delete table-btn" data-id="<%=event._id%>">delete</button>
                                         </td>
                                     </tr>
                                     <%}); %>
@@ -123,7 +123,21 @@
                                     // viewBtn.addEventListener('click', (e)=>{
                                     //     location.assign(`http://localhost:3000/admin/employees/view/${id}`)
                                     // })
+                                    const deleteBtn = document.querySelectorAll('.button-delete')
 
+                                    for(let i = 0; i < deleteBtn.length; i++){
+                                        deleteBtn[i].addEventListener('click', async (e)=>{
+                                            const id = deleteBtn[i].dataset.id
+                                            console.log(id)
+                                            const res = await fetch(`http://localhost:3000/admin/api/deductions/${id}`, {
+                                                headers: { 'Content-Type': 'application/json' },
+                                                method: 'DELETE'
+                                            })
+                                            const data = await res.json()
+                                            console.log(data)
+                                        })
+                                    }
+            
                                 </script>
                             </div>
                         </div>

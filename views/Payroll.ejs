@@ -97,10 +97,10 @@
                                                         <tr class="details sub-detail">
                                                             <td>Earnings</td>
                                                             <td></td>
-                                                            <td>P<%=user.semimo_salary%> </td>
+                                                            <td></td>
                                                         </tr>
                                                         <tr class="details sub-detail sub">
-                                                            <td>Semi-monthly Salary</td>
+                                                            <td>Basic pay</td>
                                                             <td></td>
                                                             <td>+ P<%=user.earnings.semimo_salary%> </td>
                                                         </tr>
@@ -210,13 +210,14 @@
             </div>
             <form novalidate role="search">
                 <label for="birthday">From:</label>
-                <input type="date" id="fromdate" name="fromdate">
+                <input type="date" id="fromdate" name="fromdate" value="<%=query.from%>">
                 <label for="birthday">To:</label>
-                <input type="date" id="todate" name="todate" >
+                <input type="date" id="todate" name="todate" value="<%=query.to%>">
             </form>
             <button class="button-submit find">Find</button>
             <script>
 
+                
                 //  FORMAT DATE TO MM/DD/YYYY
                 const splitDate = (date)=>{
                     const splitDate = date.split('-')
@@ -230,17 +231,14 @@
                 const inputFromDate = document.querySelector('#fromdate')
                 const inputToDate = document.querySelector('#todate')
 
-                // SET DEFAULT DATE TODAY
-                inputFromDate.valueAsDate = new Date()
-                inputToDate.valueAsDate = new Date()
 
                 // GET ELEMENT OF FIND BUTTON, INITIATE WHEN CLICKED
                 const btnSubmit = document.querySelector('.find')
                 btnSubmit.addEventListener('click', async (e)=>{
-                    // fromDate = inputFromDate.value
-                    // toDate = inputToDate.value
-                    fromDate = '2022-11-15'
-                    toDate = '2022-11-30'
+                    fromDate = inputFromDate.value
+                    toDate = inputToDate.value
+                    // fromDate = '2022-11-15'
+                    // toDate = '2022-11-30'
                     location.href=`/admin/payroll?from=${fromDate}&to=${toDate}`
                     // console.log(fromDate, toDate)
                     // console.log(fromDate)
