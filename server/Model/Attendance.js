@@ -343,7 +343,7 @@ EMP_TIME_RECORD.statics.getTotalData = async function(){
                 time_out: '$pm_time_out',
             },
             message: 1,
-            isHalf: 1,
+            isLate: 1,
             totals:{
                 present: {$cond:
                     // IF TIME INS AND OUT IS NOT NULL PR MESSAGE IS NOT EQUAL TO 'OFFICE', 
@@ -375,8 +375,8 @@ EMP_TIME_RECORD.statics.getTotalData = async function(){
                     else: {$sum: 1}
                     }
                 },
-                is_half: {$cond: {
-                    if: {$eq: ['$isHalf', true]},
+                lates: {$cond: {
+                    if: {$eq: ['$isLate', true]},
                     then: {$sum: 1},
                     else: {$sum: 0}
                 }}
@@ -384,20 +384,12 @@ EMP_TIME_RECORD.statics.getTotalData = async function(){
             
         }},
         
-        // {$group:{
-        //     _id: 'emp_code',
-        //     total_present: {$cond:
-        //         {if: {$and: [
-        //                 {$ne:['$am.time_in', '']},
-        //                 {$ne:['$am.time_out', '']},
-        //                 {$ne:['$pm.time_in', '']},
-        //                 {$ne:['$pm.time_in', '']},
-        //             ]},
-        //             then: {$sum: 1},
-        //             else: {$sum: 0}
-        //         }
-        //     }
-        // }}
+        {$group:{
+            _id: 1,
+            presents: {$sum: '$totals.present'},
+            absents: {$sum: '$totals.absent'},
+            lates: {$sum: '$totals.lates'}
+        }}
     ]
     const result = await this.aggregate(pipeline)
     return result
