@@ -2,6 +2,7 @@ const e = require('express')
 const mongoose = require('mongoose')
 const validator = require('validator')
 const moment = require('moment')
+const Employees = require('./employee')
 
 
 const EMP_TIME_RECORD = mongoose.Schema({
@@ -62,14 +63,14 @@ const EMP_TIME_RECORD = mongoose.Schema({
     }
 })
 // TABLE AND EMPLOYEE ID IS REQUIRED
-EMP_TIME_RECORD.statics.am_attendance = async function (emp_code, _id, time_type) {
+EMP_TIME_RECORD.statics.timeIn = async function (emp_code, _id, time_type) {
 
     // VARIABLES--------------------------------------------------------
 
     // OFFICE ISO DATE AND TIME
     const officeISODate = new Date().toISOString().split('T')[0]; // current date || yyyy-mm-dd
     console.log(officeISODate)
-    const testISODate = '2022-11-18'; // current date for tioday|| yyyy-mm-dd (ie 2022-09-27)
+    const testISODate = '2022-12-28'; // current date for tioday|| yyyy-mm-dd (ie 2022-09-27)
     console.log(officeISODate)
 
     // 8 AM TIME IN
@@ -126,9 +127,11 @@ EMP_TIME_RECORD.statics.am_attendance = async function (emp_code, _id, time_type
             // IF STATUS RETURNED 0, CREATE NEW DOCUMENT
             // NOTE: date should be formatted to local date.
             if (!status.length) {
+                const employee = await Employees.findOne({emp_code: emp_code}).select('name')
                 const result = await this.create({
                     emp_code: emp_code,
                     emp_id: _id,
+                    name: employee.name,
                     date: currentLocalISODate,
                     date_string: currentDateString,
                     am_office_in: db_ISO_AM_START,
@@ -270,6 +273,7 @@ EMP_TIME_RECORD.statics.am_attendance = async function (emp_code, _id, time_type
             if (status.length === 1) {
                 // QUERY
                 let filter, update;
+                // IF AM TIME IN AND OUT IS NULL AND PM TIME IN
                 if(!status[0].am_time_in && !status[0].am_time_out) filter = { emp_code: emp_code, date_string: currentDateString }, update = { pm_time_out: currentISODate, isHalf: true };
                 else filter = { emp_code: emp_code, date_string: currentDateString }, update = { pm_time_out: currentISODate, isHalf: false };
                 // FIND AND UPDATE
@@ -286,6 +290,119 @@ EMP_TIME_RECORD.statics.am_attendance = async function (emp_code, _id, time_type
     }
     // TIME-OUT ENDS HERE------------------------------------------------------------
 }
+
+EMP_TIME_RECORD.pre('save', async function(){
+    console.log(this)
+    if((!this.am_time_in && !this.am_time_out) || (!this.pm_time_in && !this.pm_time_out)){
+        this.isHalf = false;
+    }else{
+        this.isHalf = true;
+    }
+})
+
+// GET ALL ATTENDANCE INFORMATION
+EMP_TIME_RECORD.statics.getAttendanceData = async function(){
+    const result = await this.find({})
+    return result
+}
+
+EMP_TIME_RECORD.statics.getSelectedAttendanceData = async function(){
+    const pipeline = [
+        {$match: {}},
+        {$project: {
+            emp_code: 1,
+            name: 1,
+            am: {
+                am_time_in: '$am_time_in',
+                am_time_out: '$am_time_out',
+            },
+            pm: {
+                pm_time_in: '$pm_time_in',
+                pm_time_out: '$pm_time_out',
+            },
+            message: 1
+        }},        
+    ]
+    const result = await this.aggregate(pipeline)
+    return result
+}
+
+// GET TOTAL DATAS
+EMP_TIME_RECORD.statics.getTotalData = async function(){
+    const pipeline = [
+        {$match: {}},
+        {$project: {
+            emp_code: 1,
+            name: 1,
+            am: {
+                time_in: '$am_time_in',
+                time_out: '$am_time_out',
+            },
+            pm: {
+                time_in: '$pm_time_in',
+                time_out: '$pm_time_out',
+            },
+            message: 1,
+            isHalf: 1,
+            totals:{
+                present: {$cond:
+                    // IF TIME INS AND OUT IS NOT NULL PR MESSAGE IS NOT EQUAL TO 'OFFICE', 
+                    {if: {$or:[
+                        {$and: [
+                            {$ne:['$am_time_in', null]},
+                            {$ne:['$am_time_out', null]},
+                            {$ne:['$pm_time_in', null]},
+                            {$ne:['$pm_time_out', null]},
+                        ]}, 
+                        {$ne:['$message', 'Office']}
+                        ]},
+                    then: {$sum: 1},
+                    else: {$sum: 0}
+                    }
+                },
+                absent:{$cond:
+                    // IF TIME INS AND OUT IS NOT NULL PR MESSAGE IS NOT EQUAL TO 'OFFICE', 
+                    {if: {$or:[
+                        {$and: [
+                            {$ne:['$am_time_in', null]},
+                            {$ne:['$am_time_out', null]},
+                            {$ne:['$pm_time_in', null]},
+                            {$ne:['$pm_time_out', null]},
+                        ]}, 
+                        {$ne:['$message', 'Office']}
+                        ]},
+                    then: {$sum: 0},
+                    else: {$sum: 1}
+                    }
+                },
+                is_half: {$cond: {
+                    if: {$eq: ['$isHalf', true]},
+                    then: {$sum: 1},
+                    else: {$sum: 0}
+                }}
+            }
+            
+        }},
+        
+        // {$group:{
+        //     _id: 'emp_code',
+        //     total_present: {$cond:
+        //         {if: {$and: [
+        //                 {$ne:['$am.time_in', '']},
+        //                 {$ne:['$am.time_out', '']},
+        //                 {$ne:['$pm.time_in', '']},
+        //                 {$ne:['$pm.time_in', '']},
+        //             ]},
+        //             then: {$sum: 1},
+        //             else: {$sum: 0}
+        //         }
+        //     }
+        // }}
+    ]
+    const result = await this.aggregate(pipeline)
+    return result
+}
+
 const EmpAttendance = mongoose.model('attendances', EMP_TIME_RECORD)
 
 module.exports = EmpAttendance;

@@ -91,15 +91,17 @@ route.delete('/api/events/travelpass/:id', admin.deleteTravelPass)
     // 
 
 // record api
-route.get('/api/records', admin.readRecords)
+route.get('/api/records', admin.readAttendance)
 
 // payroll api
 route.get('/api/payrolls', admin.readPayrolls)
+
 
 // holiday and travel orders api
 
 // tests
 route.delete('/api/testdelete', admin.testdelete)
+route.patch('/api/updateName', admin.updateAttendance)
 
 
 

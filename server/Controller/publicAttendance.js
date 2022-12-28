@@ -34,7 +34,7 @@ module.exports = {
                 if (result) {
                     // ASSIGN EMPLOYEE TABLE ID
                     const _id = result._id
-                    const attendance = await attendances.am_attendance(result.emp_code, _id, time_type) // pass emp code, emp table id
+                    const attendance = await attendances.timeIn(result.emp_code, _id, time_type) // pass emp code, emp table id
                     if (attendance) { res.status(200).send({ log_in: attendance }); }
                 }else {
                     // THROW AN ERROR, IF ID DOES NOT EXIST
