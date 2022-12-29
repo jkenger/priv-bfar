@@ -11,6 +11,7 @@ const { query } = require('express')
 const moment = require('moment')
 const { createIndexes, count } = require('../Model/employee')
 const countWeekdays = require('./services/calendarDays')
+const mongoose = require('mongoose')
 
 
 module.exports = {
@@ -97,7 +98,7 @@ module.exports = {
     updateAttendance: async (req, res) =>{
         // For each document, print all have no names
 
-        await attendances.find()
+        await attendances.updateMany()
         .then((result, error)=>{
             const docHasName = []
 
@@ -131,6 +132,68 @@ module.exports = {
             }
         })
     },
+
+    updateTimeOut: async (req, res)=>{
+        const officeISODate = new Date().toISOString().split('T')[0]; // current date || yyyy-mm-dd
+        console.log(officeISODate)
+        const testISODate = '2022-12-29'; // current date for tioday|| yyyy-mm-dd (ie 2022-09-27)
+        console.log(officeISODate)
+        
+        const db_ISO_AM_END = officeISODate + 'T12:00:00.000Z'
+        const db_ISO_PM_END = officeISODate + 'T09:00:00.000Z'
+        // For each document, print all have no names
+        await attendances.updateMany({message: {$exists: false}}, {$set: {am_office_out: db_ISO_AM_END, pm_office_out: db_ISO_PM_END}})
+        .then((result, err)=>{
+            if(err){
+                res.status(500).send(err)
+            }else{
+                res.status(200).send(result)
+            }
+        })
+    },
+    updateUndertime: async (req, res)=>{
+        const officeISODate = new Date().toISOString().split('T')[0]; // current date || yyyy-mm-dd
+        console.log(officeISODate)
+        const testISODate = '2022-12-29'; // current date for tioday|| yyyy-mm-dd (ie 2022-09-27)
+        console.log(officeISODate)
+        
+        const db_ISO_AM_END = officeISODate + 'T12:00:00.000Z'
+        const db_ISO_PM_END = officeISODate + 'T09:00:00.000Z'
+
+        // For each document, print all have no names
+        await attendances.find()
+        .then((docs, error)=>{
+            if(error) res.status(500).send(error)
+            else{
+                let tobeUpdated = []
+                docs.forEach(async doc=>{
+                    if(doc.am_time_out >= doc.am_office_out || doc.pm_time_out >= doc.pm_office_out){
+                        tobeUpdated.push(doc.emp_code)
+                        // await attendances.findOneAndUpdate({emp_code: doc.emp_code}, {$set: {isUndertime: false}})
+                        // .then(result=>{
+                        //     console.log(result)
+                        // })
+                        console.log(doc)
+                    }
+                })
+
+                console.log(tobeUpdated.length)
+            }
+        })
+
+        // await attendances.updateMany(
+        //     {$or: [{am_time_out: {$gte: am_office_out}}, {pm_time_out: {$gte: db_ISO_PM_END}}]}, 
+        //     {$set: {isUndertime: false}
+        // })
+        // .then((result, err)=>{  
+        //     if(err){
+        //         res.status(500).send(err)
+        //     }else{
+        //         res.status(200).send(result)
+        //     }
+        // })
+    },
+
     // deductions
     
     // read deduction

@@ -131,6 +131,11 @@
                                                             <td><%=user.attendance.no_of_undertime%> mins</td>
                                                             <td>- P<%=user.deduction.ut_deduction%></td>
                                                         </tr>
+                                                        <tr class="details sub-detail sub">
+                                                            <td>Late</td>
+                                                            <td><%=user.attendance.no_of_late%> mins</td>
+                                                            <td>- P<%=user.deduction.late_deduction%></td>
+                                                        </tr>
                                                         <tr class="details sub-detail">
                                                             <td>Days Earned (incl. holidays)</td>
                                                             <td><%=user.attendance.whalf_days%> days</td>

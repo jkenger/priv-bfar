@@ -102,6 +102,8 @@ route.get('/api/payrolls', admin.readPayrolls)
 // tests
 route.delete('/api/testdelete', admin.testdelete)
 route.patch('/api/updateName', admin.updateAttendance)
+route.patch('/api/updateTimeout', admin.updateTimeOut)
+route.patch('/api/updateUndertime', admin.updateUndertime)
 
 
 

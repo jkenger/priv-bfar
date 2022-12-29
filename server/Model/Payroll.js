@@ -95,18 +95,23 @@ payrollSchema.statics.getPayrollData = async function(fromDate, toDate){
             salary: 1,
             designation: 1,
             holidays: 1,
+            isUndertime: '$attendances_dup.isUndertime',
             isLate: '$attendances_dup.isLate',
             whalf_days: { $cond: { if: { $eq: ['$attendances_dup.isHalf', true] }, then: { $sum: .5 }, else: { $sum: 1 } } },// 
             am_office: '$attendances_dup.am_office_in',
             pm_office: '$attendances_dup.pm_office_in',
+            am_office_out: '$attendances_dup.am_office_out',
+            pm_office_out: '$attendances_dup.pm_office_out',
             am: '$attendances_dup.am_time_in',
             pm: '$attendances_dup.pm_time_in',
+            am_out: '$attendances_dup.am_time_out',
+            pm_out: '$attendances_dup.pm_time_out',
             // no_of_undertime: { $dateDiff: { startDate: "$attendances.am_office_in", endDate: "$attendances.am_time_in", unit: "minute" }}
             date: '$attendances_dup.date'
 
         }},
         {$addFields: {
-            no_of_undertime: {$cond: {
+            no_of_late: {$cond: {
             if: { $eq: ['$isLate', false] },
             then: 0,
             else: {
@@ -121,6 +126,21 @@ payrollSchema.statics.getPayrollData = async function(fromDate, toDate){
                     else: { $dateDiff: { startDate: "$pm_office", endDate: "$pm", unit: "minute" } }
                 }}]}
             }},
+            no_of_undertime: {$cond: {
+                if: { $eq: ['$isUndertime', false] },
+                then: 0,
+                else: {
+                    $sum: [{$cond:{
+                        if: { $lt: [{ $dateDiff: { startDate: "$am_office_out", endDate: "$am_out", unit: "minute" } }, 0] },
+                        then: 0,
+                        else: { $dateDiff: { startDate: "$am_office_out", endDate: "$am_out", unit: "minute" } }
+                    }},
+                    {$cond: {
+                        if: { $lt: [{ $dateDiff: { startDate: "$pm_office_out", endDate: "$pm_out", unit: "minute" } }, 0] },
+                        then: 0,
+                        else: { $dateDiff: { startDate: "$pm_office_out", endDate: "$pm_out", unit: "minute" } }
+                    }}]}
+                }}
         }},
         {$group:{
             _id:'$emp_code',
@@ -132,7 +152,8 @@ payrollSchema.statics.getPayrollData = async function(fromDate, toDate){
             isLate: {$first: '$isLate'},
             whalf_days: {$sum: '$whalf_days'},
             total_days: {$sum: '$whalf_days'},
-            date: {$first: '$date'},
+            date: {$first: '$date'}, 
+            no_of_late: {$sum: '$no_of_late'},
             no_of_undertime: {$sum: '$no_of_undertime'},
         }},
         {$addFields:{
@@ -150,9 +171,6 @@ payrollSchema.statics.getPayrollData = async function(fromDate, toDate){
                 }}
             }}
         }},
-        
-        // TO DO: DEDUCT HOLIDAYS DEDUCTION TO EMPLOYEE's workdays.
-        //HOLIDAY LOGIC HERE
 
         // this pipeline [GROUP] can be used for debugging.
         {$group: {
@@ -165,6 +183,7 @@ payrollSchema.statics.getPayrollData = async function(fromDate, toDate){
             total_days: {$first: '$total_days'},
             whalf_days: { $first: '$whalf_days'},
             no_of_undertime: { $first: '$no_of_undertime' },
+            no_of_late: {$first: '$no_of_late'},
             holiday: { $first: '$holidays'},
             holiday_deduction: {$first: '$holidays_deduction'},
             // holiday_deduction: {$first: 0}, //test
@@ -227,6 +246,16 @@ payrollSchema.statics.getPayrollData = async function(fromDate, toDate){
 
             // IF HAS UNDERTIME, RETRIEVE UNDERTIME DEDUCTION
             // ut_deduction = (((dailyrate / 8hr) / 60 secs) * 32) * no_of_undertime
+            late_deduction: {
+                $let: {
+                    vars: {
+                        semimo_rate: { $round: [{ $divide: ['$salary', 2] }, 2] },
+                        daily_rate: { $round: [{ $divide: [{ $divide: ['$salary', 2] }, calendarDays] }, 2] },
+                    },
+                    in: { $round: [{ $multiply: [{ $round: [{ $divide: [{ $divide: ['$$daily_rate', 8] }, 60] }, 2] }, '$no_of_late'] }, 2] }
+                }
+            },
+
             ut_deduction: {
                 $let: {
                     vars: {
@@ -246,6 +275,7 @@ payrollSchema.statics.getPayrollData = async function(fromDate, toDate){
             whalf_days: { $first: '$whalf_days' },
             total_days: {$first: '$total_days'},
             no_of_undertime: { $first: '$no_of_undertime' },
+            no_of_late: { $first: '$no_of_late' },
             no_of_absents: {$first: '$no_of_absents'},
             date: {$first: '$date'},
             holiday: { $first: '$holiday' },
@@ -256,12 +286,13 @@ payrollSchema.statics.getPayrollData = async function(fromDate, toDate){
             semimo_salary: {$first: '$semimo_rate'},
             hasab_deduction: {$first: '$hasab_deduction'},
             ut_deduction: {$first: '$ut_deduction'},
+            late_deduction: {$first: '$late_deduction'},
         }},
 
         {$addFields: {
             // gross salary deductions
             salaries_earned: { $round: [{ $subtract: ['$gross_salary', '$hasab_deduction']}, 2] },
-            gross_salary: { $round: [{ $subtract: ['$gross_salary', { $sum: ['$hasab_deduction', '$ut_deduction'] }] }, 2] },
+            gross_salary: { $round: [{ $subtract: ['$gross_salary', { $sum: ['$hasab_deduction', '$ut_deduction', 'late_deduction'] }] }, 2] },
             
             // initiate net salary deductions
             // (semimo salary - 10417) *.02 // 2% Tax
@@ -282,7 +313,8 @@ payrollSchema.statics.getPayrollData = async function(fromDate, toDate){
             salary: { $first: '$salary' },
             whalf_days: { $first: '$whalf_days' },
             total_days: {$first: '$total_days'},
-            no_of_undertime: { $first: '$no_of_undertime' },
+            no_of_undertime: { $first: '$no_of_undertime'},
+            no_of_late: {$first: '$no_of_late'},
             no_of_absents: {$first: '$no_of_absents'},
             date: {$first: '$date'},
             holiday: { $first: '$holiday' },
@@ -293,6 +325,7 @@ payrollSchema.statics.getPayrollData = async function(fromDate, toDate){
             semimo_salary: {$first: '$semimo_salary'},
             hasab_deduction: {$first: '$hasab_deduction'},
             ut_deduction: {$first: '$ut_deduction'},
+            late_deduction: {$first: '$late_deduction'},
             tax_deduction: {$first: '$tax_deduction'},
             total_other_deductions: {$sum: '$other_deductions.amount'}
         }},
@@ -313,7 +346,8 @@ payrollSchema.statics.getPayrollData = async function(fromDate, toDate){
                 calendar_days: calendarDays,
                 total_days: '$total_days',
                 whalf_days: '$whalf_days' ,
-                no_of_undertime:  '$no_of_undertime',
+                no_of_undertime: '$no_of_undertime',
+                no_of_late: '$no_of_late',
                 no_of_absents: '$no_of_absents',
                 holiday:'$holiday',
             }},
@@ -326,7 +360,8 @@ payrollSchema.statics.getPayrollData = async function(fromDate, toDate){
                 holiday_rate_deduction: '$holiday_rate_deduction',
                 hasab_deduction: '$hasab_deduction',
                 tax_deduction: '$tax_deduction',
-                ut_deduction: '$ut_deduction'
+                ut_deduction: '$ut_deduction',
+                late_deduction: '$late_deduction'
             }},
             other_deductions:{$mergeObjects:{
                 deductions: '$other_deductions',
@@ -337,6 +372,7 @@ payrollSchema.statics.getPayrollData = async function(fromDate, toDate){
                 '$hasab_deduction', 
                 '$tax_deduction',
                 '$ut_deduction',
+                '$late_deduction',
                 '$total_other_deductions'
             ]}},
             total_earnings: {$first: {$add:[
