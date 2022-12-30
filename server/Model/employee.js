@@ -42,6 +42,12 @@ const EmpSchema = mongoose.Schema({
     },
     isDeleted: {
         type: Boolean,
+    },
+    employeeType: {
+        type: String
+    },
+    employeeProject: {
+        type: String
     }
 })
 
@@ -49,6 +55,52 @@ EmpSchema.pre('updateOne', function(next) {
     this.options.runValidators = true;
     next();
   });
+EmpSchema.statics.getProjectedEmployees = async function(){
+    const result = await this.find({}, {
+        emp_code: 1, 
+        name: 1, 
+        position: 1, 
+        employeeProject: 1, 
+        employeeType: 1
+    })
+    return result
+}
+EmpSchema.statics.getTotalData = async function(){
+    pipeline = [
+        {$match: {}},
+        {$project: {
+            emp_code: 1, 
+            name: 1, 
+            position: 1, 
+            employeeProject: 1, 
+            employeeType: 1
+        }},
+        {$group: {
+            _id: '$emp_code',
+            totalEmployees: {$sum: 1},
+            employeeType: {$mergeObjects:{
+                contractual: {$cond:{
+                    if: {$eq: ['$employeeType', 'Contractual']},
+                    then: 1,
+                    else: 0
+                }},
+                permanent: {$cond: {
+                    if: {$eq: ['$employeeType', 'Permanent']},
+                    then: 1,
+                    else: 0
+                }}
+            }}
+        }},
+        {$group:{
+            _id: null,
+            totalEmployees: {$sum: 1},
+            contractual: {$sum: '$employeeType.contractual'},
+            permanent: {$sum: '$employeeType.permanent'}
+        }}
+    ]
+    const result = await this.aggregate(pipeline)
+    return result
+}
 
 const Employee = mongoose.model('employees', EmpSchema)
 

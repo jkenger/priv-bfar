@@ -29,9 +29,16 @@ module.exports = {
     },
     // employee controllers
     readEmployees: async (req, res) => {
-        try {
+        try {   
             const result = await employees.find()
             if (!result) res.status(500).send({err: 'Failure to find any data'})
+            const projected = await employees.getProjectedEmployees()
+            console.log(projected)
+            await employees.getTotalData()
+            .then((result, error)=>{
+                if(error) console.log(error)
+                else console.log(result)
+            })
             res.status(200).send({ result })
 
         } catch (e) { res.status(500).send(e) }
@@ -88,7 +95,7 @@ module.exports = {
         } catch (e) { res.status(500).send(e) }
     },
 
-    // test/ delete all attendances
+    // test/
     testdelete: async (req, res) => {
         try {
             const result = await attendances.deleteMany({am_time_in: 'T.O'})
