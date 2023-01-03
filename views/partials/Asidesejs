@@ -1,0 +1,75 @@
+<div class="container">
+    <aside class="container-aside">
+        <div class="container-aside-list">
+            <label for="employee">Dashboard</label>
+            <div class="container-aside-list-dropdown  ">
+                <a href="/admin/">
+                    <i class="fa-solid fa-chart-bar"></i>
+                    <label for="">Dashboard</label>
+                </a>
+            </div>
+        </div>
+        <div class="container-aside-list">
+            <label for="employee">Employee</label>
+            <div class="container-aside-list-dropdown  ">
+                <a href="/admin/employees">
+                    <i class="fa-solid fa-user"></i>
+                    <label for="">Employees</label>
+                </a>
+            </div>
+        </div>
+        <div class="container-aside-list">
+            <label for="employee">Payroll</label>
+            <div class="container-aside-list-dropdown ">
+                <a href="/admin/payroll">
+                    <i class="fa-solid fa-receipt"></i>
+                    <label for="">Payment</label>
+                </a>
+            </div>
+        </div>
+        <div class="container-aside-list">
+            <label for="payroll">Attendance</label>
+            <div class="container-aside-list-dropdown">
+                <a href="/admin/records">
+                    <i class="fa-solid fa-calendar-check"></i>
+                    <label for="">Records</label>
+                </a>
+            </div>
+        </div>
+        <div class="container-aside-list">
+            <label for="payroll">Holiday and Travel Order</label>
+            <div class="container-aside-list-dropdown">
+                <a href="/admin/holidays">
+                    <i class="fa-solid fa-calendar-check"></i>
+                    <label for="">Holiday</label>
+                </a>
+            </div>
+            <div class="container-aside-list-dropdown">
+                <a href="/admin/travelpass">
+                    <i class="fa-solid fa-calendar-check"></i>
+                    <label for="">Travel Pass</label>
+                </a>
+            </div>
+        </div>
+        <div class="container-aside-list">
+            <label for="payroll">Deductions</label>
+            <div class="container-aside-list-dropdown">
+                <a href="/admin/deductions">
+                    <i class="fa-solid fa-calendar-check"></i>
+                    <label for="">Deductions</label>
+                </a>
+            </div>
+        </div>
+        <div class="container-aside-list">
+            <label for="payroll">Settings</label>
+            <div class="container-aside-list-dropdown">
+                <a href="#">
+                    <i class="fa-solid fa-sliders"></i>
+                    <label for="">Accounts</label>
+                </a>
+            </div>
+        </div>
+    </aside>
+
+
+

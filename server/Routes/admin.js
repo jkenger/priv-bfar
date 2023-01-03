@@ -20,7 +20,7 @@ route.post('/login', adminAuth.login_post)
 
 // all
 route.get('*', checkUser)
-route.get('/', checkToken, checkRoles, adminView.homeView)
+route.get('/', checkToken, checkRoles, adminView.dashboardView)
 
 // employee endpoints
 route.get('/employees',checkToken, checkRoles, adminView.readEmployeesView)
@@ -35,7 +35,7 @@ route.get('/deductions', checkToken, checkRoles, adminView.deductionView)
 route.get('/payroll', checkToken, checkRoles, adminView.payrollView)
 
 // record endpoints 
-route.get('/records', checkToken, checkRoles, adminView.recordView)
+route.get('/attendance', checkToken, checkRoles, adminView.attendanceView)
 
 // holidays and travel orders endpoint
 route.get('/holidays', checkToken, checkRoles, adminView.holidayView)

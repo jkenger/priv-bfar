@@ -5,10 +5,13 @@ const moment = require('moment')
 
 module.exports = {
     // RENDERER
-    homeView: async (req, res) => {
+    dashboardView: async (req, res) => {
         try {
             const datas = await fetchData('admin/api/employees_count')
-            res.status(200).render('home', { datas })
+            res.status(200).render('dashboard', { 
+                datas,
+                url: req.url
+            })
         } catch (err) {
              res.status(500).send(err) 
             }
@@ -16,8 +19,11 @@ module.exports = {
 
     readEmployeesView: async (req, res) => {
         try {
-            const datas = await fetchData('admin/api/employees')
-            res.status(200).render('employees', { datas })
+            const data = await fetchData('admin/api/employees')
+            res.status(200).render('employees', { 
+                data,
+                url: req.url
+            })
         } catch (err) {
             res.status(500).send(err) 
             }
@@ -54,8 +60,9 @@ module.exports = {
     deductionView: async(req, res) =>{
       try{
         const data = await fetchData('admin/api/deductions')
-        res.status(200).render('deduction', {
+        res.status(200).render('deductions', {
             data, 
+            url: req.url,
             moment: moment
         })
       } catch(err){
@@ -63,12 +70,20 @@ module.exports = {
       } 
     },
 
-    recordView: async (req, res) => {
+    attendanceView: async (req, res) => {
         try {
-            const data = await fetchData('admin/api/records')
-            res.status(200).render('timeRecords', { 
+            let fromDate = new Date().toISOString()
+            let toDate = new Date().toISOString()
+            
+            if(!req.query.from || !req.query.to) fromDate = new Date('01-01-1977').toISOString(), toDate = new Date().toISOString()
+            else fromDate = new Date(req.query.from).toISOString(), toDate = new Date(req.query.to + 'T23:59:59.999Z').toISOString()
+            const data = await fetchData(`admin/api/records?from=${fromDate}&to=${toDate}`)
+            if(!req.query.from || !req.query.to) { fromDate = ''; toDate = ''} else {fromDate = req.query.from; toDate = req.query.to}
+            res.status(200).render('attendance', { 
                 data,
-                moment: moment 
+                url: req.url,
+                moment: moment,
+                query: {from: fromDate, to: fromDate}
             })
         } catch (err) {
             res.status(500).send(err) 
@@ -83,12 +98,13 @@ module.exports = {
             
             if(!req.query.from || !req.query.to) fromDate = new Date().toISOString(), toDate = new Date().toISOString()
             else fromDate = new Date(req.query.from).toISOString(), toDate = new Date(req.query.to + 'T23:59:59.999Z').toISOString()
-            console.log('from:', fromDate, 'toDate', toDate)
             const data = await fetchData(`admin/api/payrolls?from=${fromDate}&to=${toDate}`)
+            if(!req.query.from || !req.query.to) { fromDate = ''; toDate = ''} else {fromDate = req.query.from; toDate = req.query.to}
+            console.log(fromDate, toDate)
             res.status(200).render('payroll', { 
                 data, 
                 url: req.url, 
-                query: {from: req.query.from, to: req.query.to} 
+                query: {from: fromDate, to: fromDate} 
             })
 
         } catch (err) { 
@@ -98,7 +114,7 @@ module.exports = {
     holidayView: async (req, res) => {
         try{
             const data = await fetchData('admin/api/events/holiday')
-            res.status(200).render('holiday', {
+            res.status(200).render('holidays', {
                 data, 
                 url: req.url, 
                 moment: moment

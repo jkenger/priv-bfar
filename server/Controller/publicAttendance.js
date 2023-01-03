@@ -34,8 +34,9 @@ module.exports = {
                 if (result) {
                     // ASSIGN EMPLOYEE TABLE ID
                     const _id = result._id
+                    const employee = await employees.find({emp_code})
                     const attendance = await attendances.timeIn(result.emp_code, _id, time_type) // pass emp code, emp table id
-                    if (attendance) { res.status(200).send({ log_in: attendance }); }
+                    if (attendance) { res.status(200).send({ log_in: attendance, employee: employee }); }
                 }else {
                     // THROW AN ERROR, IF ID DOES NOT EXIST
                     if (!emp_code) { throw Error(`Please enter valid employee code!`) }
@@ -56,7 +57,7 @@ module.exports = {
     monitorTime : async (req, res) => {
         try {
             // const data = await fetchData('time_monito')
-            res.status(200).render('timeMonitoring', {
+            res.status(200).render('timeAttendance', {
                 url: req.url,
                 currentDate: new Date().toLocaleDateString(),
                 currentTime: new Date().toLocaleTimeString()

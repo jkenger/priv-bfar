@@ -1,276 +1,141 @@
 <%-include('partials/Header')%>
-    <%-include('partials/Nav') %>
-        <%-include('partials/Aside')%>
-<main>
-    <div class="container dashboard">
-        <div class="employees">
-            <div class="employee-query components box-shadow">
-                <h1>Payroll Accounts</h1>
-                <div class="employee-query-search">
-                    <form novalidate role="search">
-                        <button>
-                            <i class="fa-solid fa-magnifying-glass"></i>
-                        </button>
-                        <input type="text" placeholder="Type your query here and press enter">
-                    </form>
-                </div>
+<link rel="stylesheet" href="/styles/dataTable.css">
+<main class="d-flex flex-nowrap" style=" height: 100vh; overflow: hidden; align-self: center;">
+
+    <%-include('partials/Aside')%> 
+<div class="d-flex flex-column flex-fill" style="border-left: 1px solid #dddddd; padding: 1.5em 2em 1.5em 2em">
+    <div class="d-flex justify-content-between"> 
+            <div class="d-flex justify-content-center align-items-center rounded-1"> 
+              <a href="#" class="nav-link" style="padding-right: 10px !important;">
+                  Home 
+              </a>
+              <p style="padding-right: 10px !important; margin: 0;"> > </p>
+              <a href="#" class="nav-link ">
+                  <b> Payroll </b>
+              </a>
             </div>
-            <div class="employee-container components box-shadow">
-                <table class="employee-table">
-                    <tr>
-                        <th>Employee Code</th>
-                        <th>Name</th>
-                        <th>Designation</th>
-                        <th>Monthly Rate</th>
-                        <th>Days</th>
-                        <th>Gross Amount Earned</th>
-                        <th>Absentee(s)</th>
-                        <th>Undertime</th>
-                        <th>Net Amount Due</th>
-                        <th>Status</th>
-                        <th>Actions</th>
-                    </tr>
-                    <%if(data.result.length){%>
-                        <% Object.values(data.result).forEach(user =>{%> 
-                            <tr>
-                                <td><%=user.emp_code%></td>
-                                <td><%=user.name%></td>
-                                <td><%=user.designation%></td>
-                                <td><%=user.salary%></td>
-                                <td><%=user.attendance.whalf_days%></td>
-                                <td><%=user.salaries.gross_salary%></td>
-                                <td><%=user.attendance.no_of_absents%></td>
-                                <td><%=user.attendance.no_of_undertime%></td>
-                                <td><%=user.salaries.net_salary%></td>
-                                <td>0</td>
-                                <td><button class="button table-btn" id="view-details">view details</button></td>
-                            </tr>
-                            <tr class="sub-detail" id="sub-detail" style="display:none">
-                                <td colspan="11" class="payroll-details">
-                                    <div class="container">
-                                        <div class="header">
-                                            <div class="left">
-                                                <i class="fa-solid fa-circle-info"></i> <label for="details"> Payroll Details</label>
-                                            </div>
-                                            <div class="right">
-                                               <a href="#"><i class="fa-solid fa-download"></i></a>
-                                            </div>
-                                        </div>
-                                        <div class="main">
-                                            <div class="header">
-                                                <div>
-                                                    <label for="head-id">Employee ID</label>
-                                                    <label for="id"><%=user.emp_code%></label>
-                                                </div>
-                                                <div>
-                                                    <label for="head-name">Employee Name</label>
-                                                    <label for="name"><%=user.name%></label>
-                                                </div>
-                                                <div>
-                                                    <label for="head-designation">Designation</label>
-                                                    <label for="designation"><%=user.designation%></label>
-                                                </div>
-                                            </div>
-                                            <div class="tables">
-                                                <div class="table">
-                                                    <table>
-                                                        <tr>
-                                                            <th>Gross Pay</th>
-                                                            <th></th>
-                                                            <th>Amount</th>
-                                                        </tr>
-                                                        <tr class="details">
-                                                            <td>Monthly Salary</td>
-                                                            <td></td>
-                                                            <td>P<%=user.salary%> </td>
-                                                        </tr>
-                                                        <tr class="details">
-                                                            <td>Calendar Days</td>
-                                                            <td><%=user.attendance.calendar_days%> days</td>
-                                                            <td></td>
-                                                        </tr>
-                                                        <tr class="details sub-detail ">
-                                                            <td>Initial Days Earned</td>
-                                                            <td><%=user.attendance.total_days%> days</td>
-                                                            <td></td>
-                                                        </tr>
-                                                        <tr class="details sub-detail">
-                                                            <td>Earnings</td>
-                                                            <td></td>
-                                                            <td></td>
-                                                        </tr>
-                                                        <tr class="details sub-detail sub">
-                                                            <td>Basic pay</td>
-                                                            <td></td>
-                                                            <td>+ P<%=user.earnings.semimo_salary%> </td>
-                                                        </tr>
-                                                        <tr class="details sub-detail sub">
-                                                            <td>Holiday additionals</td>
-                                                            <td></td>
-                                                            <td>+ P<%=user.earnings.holiday_additional%> </td>
-                                                        </tr>
-                                                        <tr class="details sub-detail">
-                                                            <td>Deductions</td>
-                                                            <td></td>
-                                                            <td></td>
-                                                        </tr>
-
-                                                        <tr class="details sub-detail sub">
-                                                            <td>Absents</td>
-                                                            <td><%=user.attendance.no_of_absents%> days</td>
-                                                            <td>- P<%=user.deduction.hasab_deduction%></td>
-                                                        </tr>
-                    
-                                                        <tr class="details sub-detail sub">
-                                                            <td>Holidays deduction</td>
-                                                            <td><%=user.deduction.holiday_deduction%> days</td>
-                                                            <td>- P<%=user.deduction.holiday_rate_deduction%> days</td>
-                                                        </tr>
-                                                        <tr class="details sub-detail sub">
-                                                            <td>Undertime</td>
-                                                            <td><%=user.attendance.no_of_undertime%> mins</td>
-                                                            <td>- P<%=user.deduction.ut_deduction%></td>
-                                                        </tr>
-                                                        <tr class="details sub-detail sub">
-                                                            <td>Late</td>
-                                                            <td><%=user.attendance.no_of_late%> mins</td>
-                                                            <td>- P<%=user.deduction.late_deduction%></td>
-                                                        </tr>
-                                                        <tr class="details sub-detail">
-                                                            <td>Days Earned (incl. holidays)</td>
-                                                            <td><%=user.attendance.whalf_days%> days</td>
-                                                            <td></td>
-                                                        </tr>
-                                                        <tr class="details sub-detail">
-                                                            <td></td>
-                                                            <td class="total">Gross Amount Earned</td>
-                                                            <td>P<%=user.salaries.gross_salary%></td>
-                                                        </tr>
-                                                    </table>
-                                                </div>
-                                                <div class="table">
-                                                    <table>
-                                                        <tr>
-                                                            <th>Net Pay</th>
-                                                            <th></th>
-                                                            <th>Amount</th>
-                                                        </tr>
-                                                        <tr class="details">
-                                                            <td>Gross Salary</td>
-                                                            <td></td>
-                                                            <td>P<%=user.salaries.gross_salary%></td>
-                                                        </tr>
-                                                        <tr class="details sub-detail">
-                                                            <td>Tax</td>
-                                                            <td></td>   
-                                                            <td></td>
-                                                        </tr>
-                                                        <tr class="details sub-detail">
-                                                            <td></td>
-                                                            <td>2%</td>
-                                                            <td>- P<%=user.deduction.tax_deduction%></td>
-                                                        </tr>
-                                                        <tr class="details sub-detail">
-                                                            <td></td>
-                                                            <td>5%</td>
-                                                            <td>- P0.00</td>
-                                                        </tr>
-                                                        <tr class="details sub-detail">
-                                                            <td></td>
-                                                            <td>10%</td>
-                                                            <td>- P0.00</td>
-                                                        </tr>
-                                                        <tr class="details sub-detail">
-                                                            <td>Contributions</td>
-                                                            <td></td>   
-                                                            <td></td>
-                                                        </tr>
-                                                        <% user.other_deductions.deductions.forEach(deduction=>{ %>
-                                                            <tr class="details sub-detail sub">
-                                                            <td><%=deduction.name%></td>
-                                                            <td></td>
-                                                            <td>- P<%=deduction.amount%></td>
-                                                            </tr>
-                                                        <%})%> 
-                                                        <tr class="details sub-detail">
-                                                            <td></td>
-                                                            <td class="total">Net Amount Due</td>
-                                                            <td>P<%=user.salaries.net_salary%></td>
-                                                        </tr>
-                                                    </table>
-                                                </div>
-                                            </div>
-                                            
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-                        <%}); %>
-                    <% }else{%> 
-                        <tr> 
-                            <td colspan="11">NO DATA</td>
-                        </tr>
-                    <% }%> 
-                </table>
+            <div class="d-flex justify-content-around rounded-1" style="background: #F5F5F5; border: solid #dddddd 1px; width: 15%; padding: 5px;"> 
+                  <div class="d-flex flex-column justify-content-center align-items-center">
+                    <p style="margin: 0 !important;"><b>Aug 15 2022</b></p>
+                    <p style="margin: 0 !important;"><b>11:29 AM</b></p>
+                  </div>
+                  <div class="d-flex flex-column justify-content-center align-items-center">
+                    <p style="margin: 0 !important;"><b>Friday</b></p>
+                    <p><b></b></p>
+                  </div>
             </div>
-            <form novalidate role="search">
-                <label for="birthday">From:</label>
-                <input type="date" id="fromdate" name="fromdate" value="<%=query.from%>">
-                <label for="birthday">To:</label>
-                <input type="date" id="todate" name="todate" value="<%=query.to%>">
-            </form>
-            <button class="button-submit find">Find</button>
-            <script>
-
-                
-                //  FORMAT DATE TO MM/DD/YYYY
-                const splitDate = (date)=>{
-                    const splitDate = date.split('-')
-                    const month = splitDate[2]
-                    const day = splitDate[1]
-                    const year = splitDate[0]
-                    const newDate = `${month}/${day}/${year}`
-                    return newDate
-                }
-                //  GET CALENDER ELEMENTS
-                const inputFromDate = document.querySelector('#fromdate')
-                const inputToDate = document.querySelector('#todate')
-
-
-                // GET ELEMENT OF FIND BUTTON, INITIATE WHEN CLICKED
-                const btnSubmit = document.querySelector('.find')
-                btnSubmit.addEventListener('click', async (e)=>{
-                    fromDate = inputFromDate.value
-                    toDate = inputToDate.value
-                    // fromDate = '2022-11-15'
-                    // toDate = '2022-11-30'
-                    location.href=`/admin/payroll?from=${fromDate}&to=${toDate}`
-                    // console.log(fromDate, toDate)
-                    // console.log(fromDate)
-                    // console.log(toDate)
-                    // const res = await fetch(`/admin/payroll_get?from=${fromDate}&to=${toDate}`, {
-                    //     headers: {'Content-Type': 'application/json'},
-                    //     method:'get'
-                    // })
-                    // const data = await res.json()
-                    // console.log(data)
-                    
-                })
-                const btnViewDetails = document.querySelectorAll('#view-details')
-                const subDetailRow = document.querySelectorAll('#sub-detail')
-
-                btnViewDetails.forEach((btnDetail,index)=>{
-                    btnDetail.addEventListener('click', (e)=>{
-                        if(subDetailRow[index].style.display !== 'none'){
-                            subDetailRow[index].style.display = "none";
-                        }else{
-                            subDetailRow[index].style.display = "";
-                        }
-                    })
-                })
-                
-            </script>
-        </div>
     </div>
+
+    <div class="d-flex gap-4" style="padding-top: 25px !important;"> 
+      <div class="d-flex justify-content-between flex-fill rounded-1" style="background: #F5F5F5; border: solid #dddddd 1px; padding: 15px;">
+           <div class="d-flex flex-column justify-content-around">
+              <p>Earnings</p>
+              <p style="font-size:1.5rem;"><b>P<%=(!data.data[0]) ? 0 : data.data[0].total_earnings%></b></p>
+           </div>
+           <div class="d-flex">
+              <p></p>
+              <p class="mt-auto p-2 bd-highlight">Totals</p>
+           </div>
+      </div>
+      <div class="d-flex justify-content-between flex-fill rounded-1" style="background: #F5F5F5; border: solid #dddddd 1px; padding: 15px;">
+           <div class="d-flex flex-column justify-content-around">
+              <p>Deduction</p>
+              <p style="font-size:1.5rem;"><b>P<%=(!data.data[0]) ? 0 : data.data[0].total_deductions%></b></p>
+           </div>
+           <div class="d-flex">
+              <p></p>
+              <p class="mt-auto p-2 bd-highlight">Totals</p>
+           </div>
+      </div>
+    </div>
+    <div class="d-flex filterContainer rounded-1 gap-3">
+        <form action="">
+            <div class="input-group">
+                <div class="input-group-prepend">
+                  <div class="input-group-text  rounded-1 d-flex gap-2">
+                  <input type="radio" name="datefil" value="alltime" aria-label="Radio button for following text input"> <label>label</label>
+                  <input type="radio" name="datefil" value="today" aria-label="Radio button for following text input"> Today
+                  <input type="radio" name="datefil" value="15d"data-odaria-label="Radio button for following text input"> 15D
+                  <input type="radio" name="datefil" value="30d"data-odaria-label="Radio button for following text input"> 30D
+                  </div>
+                </div>
+              </div>
+            <input type="date" name="from" value="<%=query.from%>" id="" class="rounded-1">
+            <input type="date" name="to" value="<%=query.to%>" id="" class="rounded-1"    >
+            
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+
+    <div class="d-flex overflow-auto  table-container" style="margin-top: 25px !important; width: auto"> 
+    
+        <table id="mainTable" class="table border-top border-bottom" style="width: 100%;">
+            <thead>
+                <tr>
+                    <th rowspan="2">EmployeeID</th>
+                    <th rowspan="2">Employee</th>
+                    <th rowspan="2">Position</th>
+                    <th rowspan="2">PRC</th>
+                    <th rowspan="2">Monthly Rate</th>
+                    <th rowspan="2">no. of days</th>
+                    <th rowspan="2">Gross Amount Earned</th>
+                    <th colspan="3">Tax</th>
+                    <th colspan="3">Contributions</th>
+                    <th rowspan="2">Net Amount Due</th>
+                    <th rowspan="2">Signature of Recipient</th>
+                </tr>
+                <tr>
+                    <th>2%</th>
+                    <th>5%</th>
+                    <th>10%</th>
+                    <th>SSS</th>
+                    <th>PAGIBIG</th>
+                    <th>PHILHEALTH</th>
+                    
+                </tr>
+            </thead>
+            <tbody>
+                <% Object.values(data.result).forEach(user =>{%> 
+                    <tr>
+                        <td><%=user.emp_code%></td>
+                        <td><%=user.name%></td>
+                        <td><%=user.designation%></td>
+                        <td></td>
+                        <td><%=user.salary%></td>
+                        <td><%=user.attendance.whalf_days%></td>
+                        <td><%=user.salaries.gross_salary%></td>
+                        <td><%=user.deduction.tax_deduction%></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td><%=user.salaries.net_salary%></td>
+                        <td></td>  
+                    </tr>
+                    <%}); %>
+                    
+            </tbody>
+            <tfoot>
+            </tfoot>
+        </table>
+    </div>
+</div>
+
+
+
 </main>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js" integrity="sha384-mQ93GR66B00ZXjt0YO5KlohRA5SY2XofN4zfuZxLkoj1gXtW8ANNCe9d5Y3eG5eD" crossorigin="anonymous"></script>
+
+<script>
+$(document).ready(function () {
+$('#mainTable').DataTable();
+});
+</script>
+
 <%-include('partials/Footer')%>

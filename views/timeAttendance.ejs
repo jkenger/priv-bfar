@@ -1,0 +1,53 @@
+<%-include('partials/Header')%>
+
+<link rel="stylesheet" href="/styles/timeAttendance.css">
+<div class="wrapper">
+    <main>
+        <form action="javascript:void(0)">
+        <div class="container">
+            <div class="timeButton">
+                <div class="timeInEl bg-box-secondary-color selected" data-id="timein">Time In</div>
+                <div class="timeOutEl bg-box-secondary-color " data-id="timeout">Time Out</div>
+            </div>
+        </div>
+    
+        <div class="timeDate">
+            <label for="" class = "time"><%=currentTime%></label>
+            <label for="" ><%=currentDate%></label>
+        </div>
+    
+        <div class="container main">
+            <div class="imgContainer">
+                <div class="imgSubContainer">
+                    <img src="/img/coralbacknew1.png" class="img">
+                </div>
+            </div>
+            <div class="infoContainer">
+                
+                <div class="name">
+                    <label for="" class="labelName">BFAR EMS</label>
+                </div>
+                <div class="id">
+                    <label for="" class="labelId">BFAR EMS</label>
+                </div>
+                
+            </div> 
+        </div>
+        <div class="container idInput">
+            <div class="inputId">
+                <input class="inputElId" type="text" name="empid" id="" placeholder="Enter your ID" onblur="this.focus()" autofocus autocomplete="off">
+            </div>
+            <button type="submit" class="subBtn">Punch</button>
+            <div class="message" >
+                <label for="" class="labelMessage">BFAR EMS</label> 
+            </div>
+            <label for="" class="timeType"></label>
+        </div>
+        </form>
+        
+    </main>
+    <script src="/assets/onscan.min.js"></script>
+    <script src="/scripts/timeAttendance.js"></script>
+    
+</div>
+<%-include('partials/Footer')%>

@@ -2,6 +2,9 @@ const mongoose = require('mongoose')
 const validator = require('validator')
 
 const EmpSchema = mongoose.Schema({
+    image_url: {
+        type: String
+    },
     name: {
         type: String,
         required: [true, "Name is required"]

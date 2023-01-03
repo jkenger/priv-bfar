@@ -1,0 +1,276 @@
+<%-include('partials/Header')%>
+    <%-include('partials/Nav') %>
+        <%-include('partials/Aside')%>
+<main>
+    <div class="container dashboard">
+        <div class="employees">
+            <div class="employee-query components box-shadow">
+                <h1>Payroll Accounts</h1>
+                <div class="employee-query-search">
+                    <form novalidate role="search">
+                        <button>
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </button>
+                        <input type="text" placeholder="Type your query here and press enter">
+                    </form>
+                </div>
+            </div>
+            <div class="employee-container components box-shadow">
+                <table class="employee-table">
+                    <tr>
+                        <th>Employee Code</th>
+                        <th>Name</th>
+                        <th>Designation</th>
+                        <th>Monthly Rate</th>
+                        <th>Days</th>
+                        <th>Gross Amount Earned</th>
+                        <th>Absentee(s)</th>
+                        <th>Undertime</th>
+                        <th>Net Amount Due</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                    <%if(data.result.length){%>
+                        <% Object.values(data.result).forEach(user =>{%> 
+                            <tr>
+                                <td><%=user.emp_code%></td>
+                                <td><%=user.name%></td>
+                                <td><%=user.designation%></td>
+                                <td><%=user.salary%></td>
+                                <td><%=user.attendance.whalf_days%></td>
+                                <td><%=user.salaries.gross_salary%></td>
+                                <td><%=user.attendance.no_of_absents%></td>
+                                <td><%=user.attendance.no_of_undertime%></td>
+                                <td><%=user.salaries.net_salary%></td>
+                                <td>0</td>
+                                <td><button class="button table-btn" id="view-details">view details</button></td>
+                            </tr>
+                            <tr class="sub-detail" id="sub-detail" style="display:none">
+                                <td colspan="11" class="payroll-details">
+                                    <div class="container">
+                                        <div class="header">
+                                            <div class="left">
+                                                <i class="fa-solid fa-circle-info"></i> <label for="details"> Payroll Details</label>
+                                            </div>
+                                            <div class="right">
+                                               <a href="#"><i class="fa-solid fa-download"></i></a>
+                                            </div>
+                                        </div>
+                                        <div class="main">
+                                            <div class="header">
+                                                <div>
+                                                    <label for="head-id">Employee ID</label>
+                                                    <label for="id"><%=user.emp_code%></label>
+                                                </div>
+                                                <div>
+                                                    <label for="head-name">Employee Name</label>
+                                                    <label for="name"><%=user.name%></label>
+                                                </div>
+                                                <div>
+                                                    <label for="head-designation">Designation</label>
+                                                    <label for="designation"><%=user.designation%></label>
+                                                </div>
+                                            </div>
+                                            <div class="tables">
+                                                <div class="table">
+                                                    <table>
+                                                        <tr>
+                                                            <th>Gross Pay</th>
+                                                            <th></th>
+                                                            <th>Amount</th>
+                                                        </tr>
+                                                        <tr class="details">
+                                                            <td>Monthly Salary</td>
+                                                            <td></td>
+                                                            <td>P<%=user.salary%> </td>
+                                                        </tr>
+                                                        <tr class="details">
+                                                            <td>Calendar Days</td>
+                                                            <td><%=user.attendance.calendar_days%> days</td>
+                                                            <td></td>
+                                                        </tr>
+                                                        <tr class="details sub-detail ">
+                                                            <td>Initial Days Earned</td>
+                                                            <td><%=user.attendance.total_days%> days</td>
+                                                            <td></td>
+                                                        </tr>
+                                                        <tr class="details sub-detail">
+                                                            <td>Earnings</td>
+                                                            <td></td>
+                                                            <td></td>
+                                                        </tr>
+                                                        <tr class="details sub-detail sub">
+                                                            <td>Basic pay</td>
+                                                            <td></td>
+                                                            <td>+ P<%=user.earnings.semimo_salary%> </td>
+                                                        </tr>
+                                                        <tr class="details sub-detail sub">
+                                                            <td>Holiday additionals</td>
+                                                            <td></td>
+                                                            <td>+ P<%=user.earnings.holiday_additional%> </td>
+                                                        </tr>
+                                                        <tr class="details sub-detail">
+                                                            <td>Deductions</td>
+                                                            <td></td>
+                                                            <td></td>
+                                                        </tr>
+
+                                                        <tr class="details sub-detail sub">
+                                                            <td>Absents</td>
+                                                            <td><%=user.attendance.no_of_absents%> days</td>
+                                                            <td>- P<%=user.deduction.hasab_deduction%></td>
+                                                        </tr>
+                    
+                                                        <tr class="details sub-detail sub">
+                                                            <td>Holidays deduction</td>
+                                                            <td><%=user.deduction.holiday_deduction%> days</td>
+                                                            <td>- P<%=user.deduction.holiday_rate_deduction%> days</td>
+                                                        </tr>
+                                                        <tr class="details sub-detail sub">
+                                                            <td>Undertime</td>
+                                                            <td><%=user.attendance.no_of_undertime%> mins</td>
+                                                            <td>- P<%=user.deduction.ut_deduction%></td>
+                                                        </tr>
+                                                        <tr class="details sub-detail sub">
+                                                            <td>Late</td>
+                                                            <td><%=user.attendance.no_of_late%> mins</td>
+                                                            <td>- P<%=user.deduction.late_deduction%></td>
+                                                        </tr>
+                                                        <tr class="details sub-detail">
+                                                            <td>Days Earned (incl. holidays)</td>
+                                                            <td><%=user.attendance.whalf_days%> days</td>
+                                                            <td></td>
+                                                        </tr>
+                                                        <tr class="details sub-detail">
+                                                            <td></td>
+                                                            <td class="total">Gross Amount Earned</td>
+                                                            <td>P<%=user.salaries.gross_salary%></td>
+                                                        </tr>
+                                                    </table>
+                                                </div>
+                                                <div class="table">
+                                                    <table>
+                                                        <tr>
+                                                            <th>Net Pay</th>
+                                                            <th></th>
+                                                            <th>Amount</th>
+                                                        </tr>
+                                                        <tr class="details">
+                                                            <td>Gross Salary</td>
+                                                            <td></td>
+                                                            <td>P<%=user.salaries.gross_salary%></td>
+                                                        </tr>
+                                                        <tr class="details sub-detail">
+                                                            <td>Tax</td>
+                                                            <td></td>   
+                                                            <td></td>
+                                                        </tr>
+                                                        <tr class="details sub-detail">
+                                                            <td></td>
+                                                            <td>2%</td>
+                                                            <td>- P<%=user.deduction.tax_deduction%></td>
+                                                        </tr>
+                                                        <tr class="details sub-detail">
+                                                            <td></td>
+                                                            <td>5%</td>
+                                                            <td>- P0.00</td>
+                                                        </tr>
+                                                        <tr class="details sub-detail">
+                                                            <td></td>
+                                                            <td>10%</td>
+                                                            <td>- P0.00</td>
+                                                        </tr>
+                                                        <tr class="details sub-detail">
+                                                            <td>Contributions</td>
+                                                            <td></td>   
+                                                            <td></td>
+                                                        </tr>
+                                                        <% user.other_deductions.deductions.forEach(deduction=>{ %>
+                                                            <tr class="details sub-detail sub">
+                                                            <td><%=deduction.name%></td>
+                                                            <td></td>
+                                                            <td>- P<%=deduction.amount%></td>
+                                                            </tr>
+                                                        <%})%> 
+                                                        <tr class="details sub-detail">
+                                                            <td></td>
+                                                            <td class="total">Net Amount Due</td>
+                                                            <td>P<%=user.salaries.net_salary%></td>
+                                                        </tr>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                            
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        <%}); %>
+                    <% }else{%> 
+                        <tr> 
+                            <td colspan="11">NO DATA</td>
+                        </tr>
+                    <% }%> 
+                </table>
+            </div>
+            <form novalidate role="search">
+                <label for="birthday">From:</label>
+                <input type="date" id="fromdate" name="from" value="<%=query.from%>">
+                <label for="birthday">To:</label>
+                <input type="date" id="todate" name="to" value="<%=query.to%>">
+            </form>
+            <button class="button-submit find">Find</button>
+            <script>
+
+                
+                //  FORMAT DATE TO MM/DD/YYYY
+                const splitDate = (date)=>{
+                    const splitDate = date.split('-')
+                    const month = splitDate[2]
+                    const day = splitDate[1]
+                    const year = splitDate[0]
+                    const newDate = `${month}/${day}/${year}`
+                    return newDate
+                }
+                //  GET CALENDER ELEMENTS
+                const inputFromDate = document.querySelector('#fromdate')
+                const inputToDate = document.querySelector('#todate')
+
+
+                // GET ELEMENT OF FIND BUTTON, INITIATE WHEN CLICKED
+                const btnSubmit = document.querySelector('.find')
+                btnSubmit.addEventListener('click', async (e)=>{
+                    fromDate = inputFromDate.value
+                    toDate = inputToDate.value
+                    // fromDate = '2022-11-15'
+                    // toDate = '2022-11-30'
+                    location.href=`/admin/payroll?from=${fromDate}&to=${toDate}`
+                    // console.log(fromDate, toDate)
+                    // console.log(fromDate)
+                    // console.log(toDate)
+                    // const res = await fetch(`/admin/payroll_get?from=${fromDate}&to=${toDate}`, {
+                    //     headers: {'Content-Type': 'application/json'},
+                    //     method:'get'
+                    // })
+                    // const data = await res.json()
+                    // console.log(data)
+                    
+                })
+                const btnViewDetails = document.querySelectorAll('#view-details')
+                const subDetailRow = document.querySelectorAll('#sub-detail')
+
+                btnViewDetails.forEach((btnDetail,index)=>{
+                    btnDetail.addEventListener('click', (e)=>{
+                        if(subDetailRow[index].style.display !== 'none'){
+                            subDetailRow[index].style.display = "none";
+                        }else{
+                            subDetailRow[index].style.display = "";
+                        }
+                    })
+                })
+                
+            </script>
+        </div>
+    </div>
+</main>
+<%-include('partials/Footer')%>

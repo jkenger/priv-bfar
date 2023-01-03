@@ -80,7 +80,7 @@ EMP_TIME_RECORD.statics.timeIn = async function (emp_code, _id, time_type) {
     // OFFICE ISO DATE AND TIME
     const officeISODate = new Date().toISOString().split('T')[0]; // current date || yyyy-mm-dd
     console.log(officeISODate)
-    const testISODate = '2022-12-29'; // current date for tioday|| yyyy-mm-dd (ie 2022-09-27)
+    const testISODate = '2022-01-03'; // current date for tioday|| yyyy-mm-dd (ie 2022-09-27)
     console.log(officeISODate)
     
     const db_ISO_AM_END = officeISODate + 'T12:00:00.000Z'
@@ -124,10 +124,6 @@ EMP_TIME_RECORD.statics.timeIn = async function (emp_code, _id, time_type) {
     
     // TIME-IN STARTS HERE ----------------------------------------------
     if (time_type === 'timein') {
-        
-        if(currentLocalISODate > OFFICE_ISO_PM_END){
-            throw Error('Office hour ended')
-        }
 
         //  AM TIME FRAME
         if (currentLocalISODate < OFFICE_ISO_AM_END) {
@@ -180,6 +176,7 @@ EMP_TIME_RECORD.statics.timeIn = async function (emp_code, _id, time_type) {
             console.log('AFTER 12 PM')
 
             // FIND RECORD WHERE AM TIME-IN IS EMPTY
+            const employee = await Employees.findOne({emp_code: emp_code}).select('name')
             const status = await this.find(
                 { emp_code: emp_code, date_string: currentDateString }
             )
@@ -188,6 +185,7 @@ EMP_TIME_RECORD.statics.timeIn = async function (emp_code, _id, time_type) {
                 const result = await this.create({
                     emp_code: emp_code,
                     emp_id: _id,
+                    name: employee.name,
                     date: db_ISO_AM_START,
                     date_string: currentDateString,
                     am_office_in: db_ISO_AM_START,
@@ -316,24 +314,26 @@ EMP_TIME_RECORD.pre('save', async function(){
 })
 
 // GET ALL ATTENDANCE INFORMATION
-EMP_TIME_RECORD.statics.getAttendanceData = async function(){
+EMP_TIME_RECORD.statics.getAttendanceData = async function(f){
     const result = await this.find({})
     return result
 }
 
-EMP_TIME_RECORD.statics.getSelectedAttendanceData = async function(){
+EMP_TIME_RECORD.statics.getProjectedAttendanceData = async function(fromDate, toDate){
+    const filter = {date: {$gte: fromDate, $lte: toDate}}
     const pipeline = [
-        {$match: {}},
+        {$match: filter},
         {$project: {
             emp_code: 1,
             name: 1,
+            date:1,
             am: {
-                am_time_in: '$am_time_in',
-                am_time_out: '$am_time_out',
+                time_in: '$am_time_in',
+                time_out: '$am_time_out',
             },
             pm: {
-                pm_time_in: '$pm_time_in',
-                pm_time_out: '$pm_time_out',
+                time_in: '$pm_time_in',
+                time_out: '$pm_time_out',
             },
             message: 1
         }},        
@@ -363,11 +363,13 @@ EMP_TIME_RECORD.statics.getTotalData = async function(){
                 present: {$cond:
                     // IF TIME INS AND OUT IS NOT NULL PR MESSAGE IS NOT EQUAL TO 'OFFICE', 
                     {if: {$or:[
-                        {$and: [
+                        {$or: [{$and:[
                             {$ne:['$am_time_in', null]},
-                            {$ne:['$am_time_out', null]},
-                            {$ne:['$pm_time_in', null]},
-                            {$ne:['$pm_time_out', null]},
+                            {$ne:['$am_time_out', null]}]},
+                            {$and:[
+                                {$ne:['$pm_time_in', null]},
+                                {$ne:['$pm_time_out', null]}
+                            ]}
                         ]}, 
                         {$ne:['$message', 'Office']}
                         ]},
@@ -394,6 +396,11 @@ EMP_TIME_RECORD.statics.getTotalData = async function(){
                     if: {$eq: ['$isLate', true]},
                     then: {$sum: 1},
                     else: {$sum: 0}
+                }},
+                undertime: {$cond: {
+                    if: {$eq: ['$isUndertime', true]},
+                    then: {$sum: 1},
+                    else: {$sum: 0}
                 }}
             }
             
@@ -403,7 +410,8 @@ EMP_TIME_RECORD.statics.getTotalData = async function(){
             _id: null,
             presents: {$sum: '$totals.present'},
             absents: {$sum: '$totals.absent'},
-            lates: {$sum: '$totals.lates'}
+            lates: {$sum: '$totals.lates'},
+            undertime: {$sum: '$totals.undertime'}
         }}
     ]
     const result = await this.aggregate(pipeline)

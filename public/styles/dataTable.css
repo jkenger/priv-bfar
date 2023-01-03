@@ -1,0 +1,96 @@
+@import url('https://fonts.googleapis.com/css?family=Barlow&display=swap');
+
+    body{
+        font-size: 14px;
+    }
+    .active{
+        border-radius: 0 !important;
+        background: #67668A !important;
+        color: white !important;
+    }
+    .dataTables_wrapper{
+        font-family: 'Barlow', sans-serif;
+        background-color: #F8F8F8;
+    }
+    .dataTables_wrapper .dataTables_paginate .paginate_button.current{
+      background: #67668A !important;
+      color: white !important;
+    }
+    .dataTables_wrapper .dataTables_paginate .paginate_button:hover{
+      background: #67668A !important;
+      color: white !important;
+    }
+    .dataTables_wrapper .dataTables_paginate .paginate_button.disabled:hover, .dataTables_wrapper .dataTables_paginate .paginate_button.disabled:active{
+      background: none !important;
+      color: #67668A !important;
+    }
+    tbody, td, tfoot, th, thead, tr {
+        border: 0;
+    }
+    table.dataTable{
+        border-collapse: collapse;
+    }
+    table.dataTable thead th{
+        vertical-align: middle;
+        
+    }
+    table.dataTable thead tr th{
+        border-right: 1px solid #dddddd;
+        border-bottom: 1px solid #dddddd;
+        background-color: #FFFEFE;
+    }
+    
+    table.dataTable thead th, table.dataTable thead td {text-align: center;}
+    table.dataTable thead th, table.dataTable thead td {
+        border:0;
+    }   
+    table.dataTable thead th, table.dataTable thead td {
+        
+        height: 5px;
+    }   
+    table.dataTable.no-footer {
+        border-bottom: 1px solid #dddddd;
+    }
+    table.dataTable tbody td {
+        vertical-align: middle;
+        border: 1px solid #dddddd;
+        background-color: #FFFEFE;
+        word-wrap: break-word;         /* All browsers since IE 5.5+ */
+        overflow-wrap: break-word;
+        
+    }
+    table.dataTable tbody td:first-child {
+        border-left: 0;
+    }
+    table.dataTable tbody td:last-child {
+        border-right: 0;
+    }
+    
+    th:first-child {
+      border-left: 1px solid #dddddd;
+    }
+    #mainTable_wrapper{
+        padding: 1em 0;
+        border: 1px solid #dddddd;
+        border-radius: 0.25rem;
+        width: 100%;
+    }
+    #mainTable_length, #mainTable_info{
+        margin-left: 15px;
+    }
+    #mainTable_filter, #mainTable_paginate{
+        margin-right: 15px;
+    }
+
+    #mainTable_legth, #mainTable_filter{
+        margin-bottom: 15px;
+    }
+
+    #mainTable_info, #mainTable_paginate{
+        margin-top: 15px;
+    }
+
+    .table-striped>tbody>tr:nth-of-type(odd)>* {
+    --bs-table-accent-bg: #FFFEFE;
+    color: var(--bs-table-striped-color);
+    }

@@ -1,68 +1,112 @@
 <%-include('partials/Header')%>
-    <%-include('partials/Nav') %>
-        <%-include('partials/Aside')%>
+<link rel="stylesheet" href="/styles/dataTable.css">
+<main class="d-flex flex-nowrap" style=" height: 100vh; overflow: hidden; align-self: center;">
 
-            <main>
-                <div class="container dashboard">
-                    <div class="employees">
-                        <div class="employee-query components box-shadow">
-                            <h1>Employee</h1>
-                            <div class="employee-query-search">
-                                <form novalidate role="search">
-                                    <button>
-                                        <i class="fa-solid fa-magnifying-glass"></i>
-                                    </button>
-                                    <input type="text" placeholder="Type your query here and press enter">
-                                </form>
-                            </div>
-                        </div>
-                        <a href="/admin/employees/add" class="edit">Add Employee</a>
-                        <div class="employee-container components box-shadow">
-                            
-                            <table class="employee-table">
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Employee Code</th>
-                                    <th>Name</th>
-                                    <th>Age</th>
-                                    <th>Email</th>
-                                    <th>Contact</th>
-                                    <th>Position</th>
-                                    <th>Actions</th>
-                                </tr>
-                                <% Object.values(datas.result).forEach(user => { %> 
-                                    <tr>
-                                        <td><%=user._id%></td>
-                                        <td><%=user.emp_code%></td>
-                                        <td><%=user.name%></td>
-                                        <td><%=user.age%></td>
-                                        <td><%=user.email%></td>
-                                        <td><%=user.contact%></td>
-                                        <td><%=user.position%></td>
-                                        <td>
-                                            <button class="button" data-id='<%=user._id%>'>view details</button>
-                                        </td>
-                                    </tr>
-                                <%}); %>
-                            </table>
-                            <script>
-                                const viewBtns = document.querySelectorAll('.button')
-                                const editBtn = document.querySelector('.button-edit')
-                                // const id = viewBtn.dataset.id
-                                for(let i = 0; i < viewBtns.length; i++){
-                                    viewBtns[i].addEventListener('click', (e)=>{
-                                        const id = viewBtns[i].dataset.id
-                                        location.assign(`http://localhost:3000/admin/employees/view/${id}`)
-                                    })
-                                }
-                               
-                                // viewBtn.addEventListener('click', (e)=>{
-                                //     location.assign(`http://localhost:3000/admin/employees/view/${id}`)
-                                // })
+    <%-include('partials/Aside')%> 
+<div class="d-flex flex-column flex-fill" style="border-left: 1px solid #dddddd; padding: 1.5em 2em 1.5em 2em">
+    <div class="d-flex justify-content-between"> 
+            <div class="d-flex justify-content-center align-items-center rounded-1"> 
+              <a href="#" class="nav-link" style="padding-right: 10px !important;">
+                  Home 
+              </a>
+              <p style="padding-right: 10px !important; margin: 0;"> > </p>
+              <a href="#" class="nav-link ">
+                  <b> Employees </b>
+              </a>
+            </div>
+            <div class="d-flex justify-content-around rounded-1" style="background: #F5F5F5; border: solid #dddddd 1px; width: 15%; padding: 5px;"> 
+                  <div class="d-flex flex-column justify-content-center align-items-center">
+                    <p style="margin: 0 !important;"><b>Aug 15 2022</b></p>
+                    <p style="margin: 0 !important;"><b>11:29 AM</b></p>
+                  </div>
+                  <div class="d-flex flex-column justify-content-center align-items-center">
+                    <p style="margin: 0 !important;"><b>Friday</b></p>
+                    <p><b></b></p>
+                  </div>
+            </div>
+    </div>
 
-                            </script>
-                        </div>
-                    </div>
-                </div>
-            </main>
-            <%-include('partials/Footer')%>
+    <div class="d-flex gap-4" style="padding-top: 25px !important;"> 
+        <div class="d-flex justify-content-between flex-fill rounded-1" style="background: #F5F5F5; border: solid #dddddd 1px; padding: 15px;">
+             <div class="d-flex flex-column justify-content-around">
+                <p >Employees</p>
+                <p style="font-size:1.5rem;"><b><%=(!data.data[0]) ? 0 : data.data[0].totalEmployees%></b></p>
+             </div>
+             <div class="d-flex">
+                <p></p>
+                <p class="mt-auto p-2 bd-highlight">Totals</p>
+             </div>
+        </div>
+        <div class="d-flex justify-content-between flex-fill rounded-1" style="background: #F5F5F5; border: solid #dddddd 1px; padding: 15px;">
+             <div class="d-flex flex-column justify-content-around">
+                <p>Permanent</p>
+                <p style="font-size:1.5rem;"><b><%=(!data.data[0]) ? 0 : data.data[0].permanent%></b></p>
+             </div>
+             <div class="d-flex">
+                <p></p>
+                <p class="mt-auto p-2 bd-highlight">Totals</p>
+             </div>
+        </div>
+        <div class="d-flex justify-content-between flex-fill rounded-1" style="background: #F5F5F5; border: solid #dddddd 1px; padding: 15px;">
+            <div class="d-flex flex-column justify-content-around">
+               <p>Contractual/Job Orders</p>
+               <p style="font-size:1.5rem;"><b><%=data.data[0].contractual%></b></p>
+            </div>
+            <div class="d-flex">
+               <p></p>
+               <p class="mt-auto p-2 bd-highlight">Totals</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="d-flex overflow-auto  table-container" style="margin-top: 25px !important; width: auto"> 
+    
+    <table id="mainTable" class="table border-top border-bottom" style="width: 100%;">
+    <thead>
+        <tr>
+            <th>Employee ID</th>
+            <th>Employee</th>
+            <th>Project</th>
+            <th>Designation</th>
+            <th>Type</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        <% Object.values(data.result).forEach(user =>{%> 
+            <tr>
+                <td><%=user.emp_code%></td>
+                <td><%=user.name%></td>
+                <td><%=user.employeeProject%></td>
+                <td><%=user.position%></td>
+                <td><%=user.employeeType%></td>
+                <td>
+                    <a href="#"> View Details </a>
+                </td>
+            </tr>
+        <%}); %>
+    </tbody>
+    <tfoot>
+    </tfoot>
+</table>
+</div>
+    
+</div>
+
+
+
+</main>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js" integrity="sha384-mQ93GR66B00ZXjt0YO5KlohRA5SY2XofN4zfuZxLkoj1gXtW8ANNCe9d5Y3eG5eD" crossorigin="anonymous"></script>
+
+<script>
+$(document).ready(function () {
+$('#mainTable').DataTable();
+});
+</script>
+
+<%-include('partials/Footer')%>

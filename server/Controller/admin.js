@@ -30,16 +30,10 @@ module.exports = {
     // employee controllers
     readEmployees: async (req, res) => {
         try {   
-            const result = await employees.find()
-            if (!result) res.status(500).send({err: 'Failure to find any data'})
             const projected = await employees.getProjectedEmployees()
-            console.log(projected)
-            await employees.getTotalData()
-            .then((result, error)=>{
-                if(error) console.log(error)
-                else console.log(result)
-            })
-            res.status(200).send({ result })
+            const employeeData = await employees.getTotalData()
+            res.status(200).send({ result: projected,  data: employeeData})
+            console.log(employeeData)
 
         } catch (e) { res.status(500).send(e) }
     },
@@ -470,13 +464,13 @@ module.exports = {
     // get all attendance
     readAttendance: async (req, res) => {
         try {
-           
-            const records = await attendances.getAttendanceData()
+            const fromDate = new Date(req.query.from)
+            const toDate = new Date(req.query.to)
+            const projectedData = await attendances.getProjectedAttendanceData(fromDate, toDate)
             const totalData = await attendances.getTotalData()
-            console.log(totalData)
             // const selectedRecords = await attendances.getSelectedAttendanceData()
             // console.log(selectedRecords)
-            res.status(200).send({ records })
+            res.status(200).send({ result: projectedData, data: totalData})
 
         } catch (e) { res.status(500).send(e) }
     },
@@ -486,17 +480,13 @@ module.exports = {
     // get payroll transaction
     readPayrolls: async (req, res) => {
         if (req.query) {
-
-            // NEEDED TO BE FIXED: FROMDATE FROM PHASE CALENDAR CHANGES EVEN WITHOUT A TRIGGER
-            // const fromDate = new Date(`${(req.query.from.includes('T')) ? req.query.from : req.query.from + 'T00:00:00.000+00:00'}`)
             try{
                 const fromDate = new Date(req.query.from)
                 const toDate = new Date(req.query.to)
-
-                const result = await Payroll.getPayrollData(fromDate, toDate)
-                if (!result) res.status(500).send({err: 'Invalid request'})
-                 console.log(result)
-                res.status(200).send({result})
+                console.log(fromDate, toDate)
+                const projectedData = await Payroll.getPayrollData(fromDate, toDate)
+                const attendanceData = await Payroll.getTotalData(fromDate, toDate)
+                res.status(200).send({result: projectedData, data: attendanceData})
             } catch (e) {
                 res.status(500).send(e)
                 console.log(e)

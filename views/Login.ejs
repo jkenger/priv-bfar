@@ -1,75 +1,40 @@
 <%-include('partials/Header')%>
-<div class="container-auth">
-    <div class='head-banner'>
-        <img class="head-banner-bfar-bg" src='/img/coralbacknew1.png'/>
-        <img class="head-banner-bfar-text" src='/img/text.png'/>
-        <img class="head-banner-bfar-logo" src='/img/bfar-logo.png' />
-    </div>
-    <div class='main-auth'>
-        <div class='auth-title'>
-            <h1>Login</h1>
-            <label for="subtitle">Welcome back! Please login to continue</label>
-        </div>
-        <div class='auth-form'>
-            <form>
-                <div class="email">
-                    <label For="email" >Email Address</label>
-                    <input type='text' name="email"></input>
-                    <label for="error" class="email error" ></label>
-                </div>
-                <div class="password">
-                    <label for="password">Password</label>
-                    <input type='password' name="password"></input>
-                    <label for="error" class="password error" ></label>
-                </div>
-                <button class="button-submit" onclick="submitFunc('login')">Login</button>
-                <a href="#"> Forget Password? </Link>
-            </form>
-        </div>
-    </div>
-</div>
-<script>
-    const containerAside = document.querySelector('.container-aside')
-
-if(containerAside.children.length < 12){
-    containerAside.style.overflow = "hidden";
-}
-
-function submitFunc(url)
-{
-    const form = document.querySelector('form')
-    const emailErr = document.querySelector('label.email.error')
-    const passErr = document.querySelector('label.password.error')
+<style>
+    .btn-primary{ background: #67668A;}
+    input {text-align:center; }
+    .form-control, .btn {border-radius: 0px;font-size: 14px; border-left: 0px; border-right: 0px;}
     
-    form.addEventListener('submit', async (e)=>{
-        e.preventDefault();
-        new Notification("New Notification!")
-        const email = form.email.value
-        const password = form.password.value
-        
-        try{
-            const res = await fetch(`/admin/login`, {
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({email, password}),
-                method: 'POST'
-            })
-            const data = await res.json()
-            console.log(data)
-            if(data.err){
-                emailErr.textContent = data.err.email
-                passErr.textContent = data.err.password
-            }
+    .btn{ padding: 15px 0px 15px 0px;  border-color: #67668A;}
+    .btn-primary:hover{ background: #424158;}
+    .btn-primary:active{ background: #424158;}
+</style>
+<div class="d-flex p-2 justify-content-center align-items-center" style="height: 100vh;">
+    
+    <div class="container-sm " style="max-width: 500px; background: #F5F5F5; border: solid #efeff3 1px;padding: 60px 0px 60px 0px;">
 
-            if(data.user){
-                location.assign('/admin')
-            }
+        <form class="d-flex justify-content-center flex-column "> 
+
+            <img src="/img/bfar-logo.png" class="img-fluid mx-auto" alt="..." style="max-width: 40%;">
+            <h1 class="text-center" style="margin-bottom: 2em;">BFAR Management System</h1>
+
+            <div class="mb-0">
+                <input type="text" class="form-control" name='email' id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Email or Username">
+                <p class="text-center text-danger email-error error"></p>
+            </div>
             
-        }catch(err){
-            console.log(err)
-        }
-    
-    })
-}
-    
-</script>
+            <div class="mb-0 mb-3">
+                <input type="password" class="form-control" name='password' id="exampleInputPassword1" placeholder="Password">
+                <p class="text-center text-danger password-error error"></p>
+            </div>
+
+            <button type="submit" class="btn btn-primary">SIGN IN</button>
+        </form>
+
+
+    </div>
+
+</div>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js" integrity="sha384-mQ93GR66B00ZXjt0YO5KlohRA5SY2XofN4zfuZxLkoj1gXtW8ANNCe9d5Y3eG5eD" crossorigin="anonymous"></script>
+<script src="/scripts/login.js"></script>
 <%-include('partials/Footer')%>
