@@ -86,10 +86,10 @@
             <div class="input-group">
                 <div class="input-group-prepend">
                   <div class="input-group-text  rounded-1 d-flex gap-2">
-                  <input type="radio" name="datefil" value="alltime" aria-label="Radio button for following text input"> All time
+                  <input type="radio" name="datefil" value="alltime" aria-label="Radio button for following text input" checked> All time
                   <input type="radio" name="datefil" value="today" aria-label="Radio button for following text input"> Today
-                  <input type="radio" name="datefil" value="15d"data-odaria-label="Radio button for following text input"> 15D
-                  <input type="radio" name="datefil" value="30d"data-odaria-label="Radio button for following text input"> 30D
+                  <input type="radio" name="datefil" value="15d"aria-label="Radio button for following text input"> 15D
+                  <input type="radio" name="datefil" value="30d"aria-label="Radio button for following text input"> 30D
                   </div>
                 </div>
               </div>
@@ -109,6 +109,7 @@
                     <th rowspan="2">Date</th>
                     <th colspan="2">AM</th>
                     <th colspan="2">PM</th>
+                    <th rowspan="2">Status</th>
                 </tr>
                 <tr>
                     <th>Time In</th>
@@ -127,6 +128,20 @@
                         <td><%=(!attendance.am.time_out)? '--:--:--' : moment(attendance.am.time_out).format('LTS')%></td>
                         <td><%=(!attendance.pm.time_in)? '--:--:--' : moment(attendance.pm.time_in).format('LTS')%></td>
                         <td><%=(!attendance.pm.time_out)? '--:--:--' : moment(attendance.pm.time_out).format('LTS')%></td>
+                        <td>
+                            <div class="statusContainer">
+                                <%if(attendance.status.isLate  === true){%>
+                                    <div class="status">late</div>
+                                <%}%>
+                                <%if(attendance.status.isHalf  === true){%>
+                                    <div class="status">half</div>
+                                <%}%>
+                                <%if(attendance.status.isUndertime === true){%>
+                                    <div class="status">undertime</div>
+                                <%}%>
+                            </div>
+                            
+                        </td>
                     </tr>
                     <%}); %>
             </tbody>

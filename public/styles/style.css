@@ -20,7 +20,9 @@ body{
 .nav-link:hover{
     color:#424158;
 }
-
+table{
+    border-collapse: collapse;
+}
 h1{
     font-size: 18px;
 }
@@ -89,8 +91,24 @@ p{
 .filterContainer .input-group-text{
     background-color: #FFFEFE;
     border: 1px solid #dddddd;
-    padding: .25em .5em;
+    padding: .5em .5em;
     color:#656488;
+    font-size: .8rem;
+}
+
+.statusContainer{
+    display: flex;
+    width: auto;
+    gap: .25em;
+    flex-wrap: wrap;
+}
+.status{
+    background-color: #F8F8F8;
+    border: 1px solid #DDDDDD;
+    color: #cf222e;
+    padding: 0 .5em;
+    border-radius: 10px;
+    cursor:default;
 }
 
 
