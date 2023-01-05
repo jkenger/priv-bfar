@@ -126,21 +126,13 @@ Attendance.post('findOneAndUpdate', async function(){
         }
     }
     
-
-    // if(doc.pm_time_out !== null || doc.am_time_out !== null){
-    //     if(doc.pm_time_out < doc.pm_office_out || doc.am_time_out < doc.am_time_out){
-    //         doc.isUndertime = true
-    //     }else{
-    //         doc.isUndertime = false
-    //     }
-    // }
-    // //set half
-    // if((!doc.am_time_in && !doc.am_time_out) || !doc.pm_time_in && !doc.pm_time_out){
-    //     doc.isHalf = true
-    // }else{
-    //     doc.isHalf = false
-    // }
-    // doc.save()
+    // set late
+    if(doc.am_time_in > doc.am_office_in || doc.pm_time_in > doc.pm_office_in){
+        await this.model.updateOne(this.getQuery(), {$set: {isLate: true}});
+    }else{
+        
+        await this.model.updateOne(this.getQuery(), {$set: {isLate: false}});
+    }
 })
 // TABLE AND EMPLOYEE ID IS REQUIRED
 Attendance.statics.timeIn = async function (emp_code, _id, time_type) {  
@@ -180,6 +172,9 @@ Attendance.statics.timeIn = async function (emp_code, _id, time_type) {
                 pm_office_out: db_ISO_PM_END,
             })
             return result
+        }
+        if(doc && (doc.am_time_out && doc.pm_time_out)){
+            throw Error(`You have already logged at ${doc.am_time_in} and ${doc.pm_time_out} this day.`)
         }
         //check if document logged for am or pm
         if(doc.am_time_in && moment(currentISODate).isBefore(doc.am_office_out)){
@@ -311,7 +306,8 @@ Attendance.statics.getProjectedAttendanceData = async function(fromDate, toDate)
                 isHalf: '$isHalf'
             },
             message: 1
-        }},        
+        }},
+        {$sort: {date: -1}}
     ]
     const result = await this.aggregate(pipeline)
     return result

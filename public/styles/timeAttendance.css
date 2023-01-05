@@ -115,7 +115,7 @@ div.timeDate{
 
 .container .imgContainer .imgSubContainer{
     /* background-color: #FFFEFE; */
-    background-color: rgba(255, 254, 254, .5);
+    background-color: rgba(255, 254, 254, 1);
     border: 1px solid #DDDDDD;  
     width: 150px;
     height: 150px;
@@ -128,7 +128,7 @@ div.timeDate{
 }
 
 .container .infoContainer{
-    background-color: rgba(255, 254, 254, .5);
+    background-color: rgba(255, 254, 254, 1);
     border-top: 1px solid #DDDDDD;
     border-bottom: 1px solid #DDDDDD;
     padding: 2em 0 2em 0;

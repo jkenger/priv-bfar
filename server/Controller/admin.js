@@ -8,7 +8,6 @@ const TravelPass = require('../Model/travelPass')
 const Employees = require('./../Model/employee')
 const Deductions = require('../Model/deductions')
 const { query } = require('express')
-const moment = require('moment')
 const { createIndexes, count } = require('../Model/employee')
 const countWeekdays = require('./services/calendarDays')
 const mongoose = require('mongoose')
@@ -41,10 +40,10 @@ module.exports = {
         try {
             const id = req.params.id
             if (!id) res.status(500).send({err: 'Failutre to process the given id'})
-
-            const result = await employees.findById(id)
+            const result = await employees.findOne({emp_code: id})
+            if(result) res.status(200).send(result)
             if (!result) res.status(500).send({err: 'Failure to find any document by the id'})
-            res.status(200).send({ result })
+           
         } catch (e) { res.status(500).send(e) }
 
     },
@@ -240,44 +239,41 @@ module.exports = {
     // events || holiday and traver orders
     addHoliday: async(req, res) =>{
         try{
-            const {name, predate, date} = req.body
+            const {name, predate, date, description} = req.body
             const formattedDate = getFormattedDate()
             var from = new Date(predate)
             var to = new Date(date)
             var currentDate = new Date(formattedDate)
-            console.log(from, to)
-            const schema = {
-                name: name,
-                preDate: predate,
-                date: date
-            }
-            const result = await Holiday.create(schema)
-            if(!result){
-                res.status(500).send('failure to create data.')
-            }
-            res.status(200).send(result)
-            // if(from < currentDate) {
-            //     const error = errorHandler({message: 'Given date must be equal or ahead of the current date'})
-            //     res.status(500).send({err: error })
-            // }
 
-            // if(to < from){
-            //     const error = errorHandler({message: 'Holiday must be ahead of prerequisite date'})
-            //     res.status(500).send({ err: error })
-            // }
+            if(!name || !date || !predate){
+                const error = errorHandler({message: 'Input must not be empty'})
+                res.status(500).send({err: error })
+                console.log(error)
+            }
 
-            // if(from >= currentDate && to >= from){
-            //     const schema = {
-            //         name: name,
-            //         preDate: predate,
-            //         date: date
-            //     }
-            //     const result = await Holiday.create(schema)
-            //     if(!result){
-            //         res.status(500).send('failure to create data.')
-            //     }
-            //     res.status(200).send(result)
-            // }
+            if(from < currentDate) {
+                const error = errorHandler({message: 'Given date must be equal or ahead of the current date'})
+                res.status(500).send({err: error })
+            }
+
+            if(to < from){
+                const error = errorHandler({message: 'Holiday must be ahead of prerequisite date'})
+                res.status(500).send({ err: error })
+            }
+
+            if(from >= currentDate && to >= from){
+                const schema = {
+                        name: name,
+                        preDate: predate,
+                        date: date,
+                        description: description
+                }
+                const result = await Holiday.create(schema)
+                if(!result){
+                    res.status(500).send('failure to create data.')
+                }
+                res.status(200).send(result)
+            }
             
         }catch(e){
             const error = errorHandler(e)
@@ -302,8 +298,9 @@ module.exports = {
     
     readHoliday: async(req, res) =>{
         try{
-            const result = await Holiday.find()
-            res.status(200).send(result)
+            const projectedData = await Holiday.find()
+            res.status(200).send({result: projectedData})
+            console.log(projectedData) 
         }catch(e){
             const error = errorHandler(e)
             res.status(500).send({ err: error })
@@ -324,105 +321,10 @@ module.exports = {
     addTravelPass: async (req, res) => {
         try {
             // PROBLEM
-            const { emp_code, name, fromDate, toDate } = req.body
-            
-            const formattedDate = getFormattedDate()
-            var from = new Date(fromDate)
-            var to = new Date(toDate)
-            var currentDate = new Date(formattedDate)
-            var docs = []
-            console.log('travel', fromDate, toDate)
-
-            const attendance = await attendances.findOne({
-                emp_code: emp_code,
-                $and: [{date: {$gte: from}}, {date: {$lte: to}}],
-                am_time_in: { $ne: '' }
-            })
-            console.log(attendance)
-            // IF STATUS RETURNED 0, CREATE NEW DOCUMENT
-            // NOTE: date should be formatted to local date.
-            if (!attendance) {   
-                console.log('ATTENDANCE')
-                employees.findOne({emp_code: emp_code})
-                .then(async (employee, err)=>{
-                    if(err){
-                        res.status(500).send({err: "System can't find employee with this id"})
-                    }else if(!fromDate || !toDate) {
-                        const error = errorHandler({message: 'Dates are required'})
-                        res.status(500).send({ err: error })
-                    }else  if(from < currentDate) {
-                        const error = errorHandler({message: 'Given date must be equal or ahead of the current date'})
-                        res.status(500).send({err: error})
-                    }else if(to < from){
-                        const error = errorHandler({message: 'Date must be ahead of prerequisite date'})
-                        res.status(500).send({ err: error })
-                    }else{
-                        TravelPass.find({emp_code: emp_code, date_added: ({$gte:moment(from).startOf('isoweek').toDate()} || {$lte:moment(to).startOf('isoweek').toDate()})})
-                            .then(documents =>{
-                                let existingDoc = []
-                                console.log('date: ', documents)
-                                console.log('from-to', moment(from).startOf('isoweek').toDate(), moment(to).endOf('isoweek').toDate())
-                                for(let i = 0; i < documents.length; i++){
-                                    if(documents[i].from_date >= from || to <= documents[i].to_date){
-                                        existingDoc.push(documents[i])
-                                    }
-                                }
-                                console.log('valid Documents:', existingDoc)
-                                if(existingDoc.length){
-                                    const error = errorHandler({message: 'Selected date were already given'})
-                                    res.status(500).send({ err: error })
-                                }
-                                if(!existingDoc.length){
-                                    TravelPass.insertMany({
-                                        emp_code: employee.emp_code,
-                                        emp_id: employee._id,
-                                        name: employee.name,
-                                        from_date: from,
-                                        to_date:to,
-                                        date_added: from
-                                    })
-                                        .then(async (pass, err)=>{
-                                            console.log('pass:', pass)
-                                            if(err){
-                                                res.status(500).send({err: 'Failed creating travel pass'})
-                                            }
-                                            if(pass){
-                                                //loop for every day
-                                                for (var day = from; day <= to; day.setDate(day.getDate() + 1)) {
-                                                    
-                                                    var newDay = new Date(day.setDate(day.getDate()))
-                                                    docs.push({
-                                                        emp_code: employee.emp_code,
-                                                        emp_id: employee._id,
-                                                        name: employee.name,
-                                                        date: newDay,
-                                                        date_string: newDay.toLocaleDateString(),
-                                                        isHalf: 'false',
-                                                        message: 'T.O',
-                                                    })
-                                                }
-                                                // [done] NOTE: attendance document not inserting as subdocument from the travel order
-                                                // TO DO: attendances must be deleted from the originally collection when a user deleted a travel order record.
-                                                attendances.insertMany(docs)
-                                                .then(result=>{
-                                                    TravelPass.findOneAndUpdate(
-                                                        {_id: pass[0]._id},
-                                                        {$push: {attendances: result}}
-                                                    )
-                                                    .then(result=>{
-                                                        res.status(200).send(result)
-                                                    })
-                                                })
-                                                    
-                                                
-
-                                            }
-                                        })
-                                }
-                            })
-                    }
-                })
-            } else{ res.status(500).send({err: 'Failed to process event creation. Employee might already attended between the selected date'})}
+            const { emp_code, name, fromDate, toDate, project } = req.body
+            console.log(project)
+            const result = await TravelPass.addPass(emp_code, name, fromDate, toDate, project)
+            console.log('result', result)
         } catch (e) { res.status(500).send(e) }
     },
     deleteTravelPass: async(req, res)=>{
@@ -486,6 +388,8 @@ module.exports = {
                 console.log(fromDate, toDate)
                 const projectedData = await Payroll.getPayrollData(fromDate, toDate)
                 const attendanceData = await Payroll.getTotalData(fromDate, toDate)
+                // console.log(projectedData)
+                console.log(attendanceData)
                 res.status(200).send({result: projectedData, data: attendanceData})
             } catch (e) {
                 res.status(500).send(e)

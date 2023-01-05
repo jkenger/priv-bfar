@@ -94,19 +94,19 @@
                 </div>
               </div>
             <input type="date" name="from" value="<%=query.from%>" id="" class="rounded-1">
-            <input type="date" name="to" value="<%=query.to%>" id="" class="rounded-1"    >
+            <input type="date" name="to" value="<%=query.to%>" id="" class="rounded-1">
             
             <button type="submit" class="btn btn-primary">Submit</button>
         </form>
     </div>
-    <div class="d-flex overflow-auto  table-container" style="margin-top: 25px !important; width: auto"> 
+    <div class="d-flex overflow-auto  table-container" style="margin-top: 25px !important; min-width:1200px;"> 
     
         <table id="mainTable" class="table border-top border-bottom" style="width: 100%;">
             <thead>
                 <tr>
                     <th rowspan="2">Employee ID</th>
                     <th rowspan="2">Employee</th>
-                    <th rowspan="2">Date</th>
+                    <th rowspan="2" data-sort='YYYYMMDD'>Date</th>
                     <th colspan="2">AM</th>
                     <th colspan="2">PM</th>
                     <th rowspan="2">Status</th>
@@ -130,13 +130,13 @@
                         <td><%=(!attendance.pm.time_out)? '--:--:--' : moment(attendance.pm.time_out).format('LTS')%></td>
                         <td>
                             <div class="statusContainer">
-                                <%if(attendance.status.isLate  === true){%>
+                                <%if(attendance.status.isLate){%>
                                     <div class="status">late</div>
                                 <%}%>
-                                <%if(attendance.status.isHalf  === true){%>
+                                <%if(attendance.status.isHalf){%>
                                     <div class="status">half</div>
                                 <%}%>
-                                <%if(attendance.status.isUndertime === true){%>
+                                <%if(attendance.status.isUndertime){%>
                                     <div class="status">undertime</div>
                                 <%}%>
                             </div>
@@ -161,15 +161,8 @@
     })
 </script>
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
-<script type="text/javascript" src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js" integrity="sha384-mQ93GR66B00ZXjt0YO5KlohRA5SY2XofN4zfuZxLkoj1gXtW8ANNCe9d5Y3eG5eD" crossorigin="anonymous"></script>
 
-<script>
-$(document).ready(function () {
-$('#mainTable').DataTable();
-});
-</script>
+
 
 <%-include('partials/Footer')%>
+<script type="text/javascript" src="/script/scripts.js"></script>

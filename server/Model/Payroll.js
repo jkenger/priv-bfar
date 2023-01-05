@@ -186,9 +186,9 @@ payrollSchema.statics.getPayrollData = async function(fromDate, toDate){
             holiday: { $first: '$holidays'},
             holiday_deduction: {$first: '$holidays_deduction'},
             // holiday_deduction: {$first: 0}, //test
-            whalf_days: {$first: 11}, // test
+            // whalf_days: {$first: 11}, // test
             // holiday: { $first: 0}, //test
-            no_of_undertime: {$first: 32} // test
+            // no_of_undertime: {$first: 32} // test
         }},
         {$addFields:{
             semimo_rate: { $divide: ['$salary', 2] },
@@ -291,7 +291,7 @@ payrollSchema.statics.getPayrollData = async function(fromDate, toDate){
         {$addFields: {
             // gross salary deductions
             salaries_earned: { $round: [{ $subtract: ['$gross_salary', '$hasab_deduction']}, 2] },
-            gross_salary: { $round: [{ $subtract: ['$gross_salary', { $sum: ['$hasab_deduction', '$ut_deduction', 'late_deduction'] }] }, 2] },
+            gross_salary: { $round: [{ $subtract: ['$gross_salary', { $sum: ['$hasab_deduction', '$ut_deduction', '$late_deduction'] }] }, 2] },
             
             // initiate net salary deductions
             // (semimo salary - 10417) *.02 // 2% Tax
@@ -301,7 +301,11 @@ payrollSchema.statics.getPayrollData = async function(fromDate, toDate){
                 else: {$multiply: [{$subtract: ['$semimo_salary', 10417]}, tax]}
                 }
             },
-            other_deductions: deductions
+            other_deductions: {$cond: {
+                if: {$lte: [deductions.length, 0]},
+                then: 0,
+                else: deductions
+            }},
         }},
         {$unwind: '$other_deductions'},
         {$group:{
@@ -330,7 +334,11 @@ payrollSchema.statics.getPayrollData = async function(fromDate, toDate){
         }},
         {$addFields: {
             // gross salary - tax deduction, other deductions
-            other_deductions: deductions,
+            other_deductions: {$cond: {
+                if: {$lte: [deductions.length, 0]},
+                then: 0,
+                else: deductions
+            }},
             net_amount_due: {$round:[{$subtract: [{$subtract: ['$gross_salary', '$tax_deduction']}, '$total_other_deductions']}, 2]}
         }},
         
@@ -386,7 +394,7 @@ payrollSchema.statics.getPayrollData = async function(fromDate, toDate){
         // // {$unwind: '$attendance'},
         // // {$unwind: '$deuction'},
         // // {$unwind: '$salary'},
-        {$sort: { emp_code: 1 }}]
+    ]
     const result = await employees.aggregate(pipeline)
     return result 
 }
@@ -396,6 +404,7 @@ payrollSchema.statics.getTotalData = async function(fromDate, toDate){
 
     const deductions = await Deductions.find().sort({createdAt: 1})
     const calendarDays = await countWeekdays(fromDate, toDate)
+    console.log(calendarDays)
     const tax = 0.02
 
     const pipeline = [
@@ -548,9 +557,9 @@ payrollSchema.statics.getTotalData = async function(fromDate, toDate){
             holiday: { $first: '$holidays'},
             holiday_deduction: {$first: '$holidays_deduction'},
             // holiday_deduction: {$first: 0}, //test
-            whalf_days: {$first: 11}, // test
-            // holiday: { $first: 0}, //test
-            no_of_undertime: {$first: 32} // test
+            // whalf_days: {$first: 11}, // test
+            // // holiday: { $first: 0}, //test
+            // no_of_undertime: {$first: 32} // test
         }},
         {$addFields:{
             semimo_rate: { $divide: ['$salary', 2] },
@@ -653,7 +662,7 @@ payrollSchema.statics.getTotalData = async function(fromDate, toDate){
         {$addFields: {
             // gross salary deductions
             salaries_earned: { $round: [{ $subtract: ['$gross_salary', '$hasab_deduction']}, 2] },
-            gross_salary: { $round: [{ $subtract: ['$gross_salary', { $sum: ['$hasab_deduction', '$ut_deduction', 'late_deduction'] }] }, 2] },
+            gross_salary: { $round: [{ $subtract: ['$gross_salary', { $sum: ['$hasab_deduction', '$ut_deduction', '$late_deduction'] }] }, 2] },
             
             // initiate net salary deductions
             // (semimo salary - 10417) *.02 // 2% Tax
@@ -663,7 +672,11 @@ payrollSchema.statics.getTotalData = async function(fromDate, toDate){
                 else: {$multiply: [{$subtract: ['$semimo_salary', 10417]}, tax]}
                 }
             },
-            other_deductions: deductions
+            other_deductions: {$cond: {
+                if: {$lte: [deductions.length, 0]},
+                then: 0,
+                else: deductions
+            }},
         }},
         {$unwind: '$other_deductions'},
         {$group:{
@@ -692,12 +705,20 @@ payrollSchema.statics.getTotalData = async function(fromDate, toDate){
         }},
         {$addFields: {
             // gross salary - tax deduction, other deductions
-            other_deductions: deductions,
+            other_deductions: {$cond: {
+                if: {$lte: [deductions.length, 0]},
+                then: 0,
+                else: deductions
+            }},
             net_amount_due: {$round:[{$subtract: [{$subtract: ['$gross_salary', '$tax_deduction']}, '$total_other_deductions']}, 2]}
         }},
         
         {$group:{
             _id: '$emp_code',
+            total_morate:{$first: '$salary'},
+            total_semimorate: {$first: '$semimo_salary'},
+            total_grosspay: {$first: '$gross_salary'},
+            total_netpay: {$first: '$net_amount_due'},
             total_deductions: {$first:{$add: [
                 '$holiday_rate_deduction', 
                 '$hasab_deduction', 
@@ -705,21 +726,17 @@ payrollSchema.statics.getTotalData = async function(fromDate, toDate){
                 '$ut_deduction',
                 '$late_deduction',
                 '$total_other_deductions'
-            ]}},
-            total_earnings: {$first: {$add:[
-                '$semimo_salary',
-                '$holiday_additional'
-            ]}},
+            ]}}
         }},
         {$group:{
             _id: null,
+            total_morate:{$sum: '$total_morate'},
+            total_semimorate: {$sum: '$total_semimorate'},
+            total_grosspay: {$sum: '$total_grosspay'},
+            total_netpay: {$sum: '$total_netpay'},
             total_deductions: {$sum: '$total_deductions'},
-            total_earnings: {$sum: '$total_earnings'},
         }},
-        // // {$unwind: '$attendance'},
-        // // {$unwind: '$deuction'},
-        // // {$unwind: '$salary'},
-        {$sort: { emp_code: 1 }}]
+    ]
     const result = await employees.aggregate(pipeline)
     return result 
 }

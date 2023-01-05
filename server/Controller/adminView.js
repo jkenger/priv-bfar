@@ -83,7 +83,7 @@ module.exports = {
                 data,
                 url: req.url,
                 moment: moment,
-                query: {from: fromDate, to: fromDate}
+                query: {from: fromDate, to: toDate  }
             })
         } catch (err) {
             res.status(500).send(err) 
@@ -95,7 +95,7 @@ module.exports = {
             // Get the dates then retrieve all the data based from the given dates
             let fromDate = new Date().toISOString()
             let toDate = new Date().toISOString()
-            
+                
             if(!req.query.from || !req.query.to) fromDate = new Date().toISOString(), toDate = new Date().toISOString()
             else fromDate = new Date(req.query.from).toISOString(), toDate = new Date(req.query.to + 'T23:59:59.999Z').toISOString()
             const data = await fetchData(`admin/api/payrolls?from=${fromDate}&to=${toDate}`)
@@ -104,7 +104,7 @@ module.exports = {
             res.status(200).render('payroll', { 
                 data, 
                 url: req.url, 
-                query: {from: fromDate, to: fromDate} 
+                query: {from: fromDate, to: toDate} 
             })
 
         } catch (err) { 

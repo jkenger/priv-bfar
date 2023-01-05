@@ -98,6 +98,13 @@ const errorHandler = (err) => {
         return holidayErr
     }
 
+    if(err.message === 'Input must not be empty'){
+        holidayErr.preDate = err.message
+        holidayErr.date = err.message
+        holidayErr.name = err.message
+        return holidayErr
+    }
+
     if(err.message.includes('Please enter valid employee code!')){
         error.email = err.message
         return error

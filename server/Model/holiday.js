@@ -6,6 +6,9 @@ const Schema = mongoose.Schema({
         type: String,
         required: [true, 'Name is required']
     },
+    description:{
+        type: String
+    },
     preDate: {
         type: String,
         required: [true, 'Date is required']
@@ -14,7 +17,7 @@ const Schema = mongoose.Schema({
         type: String,
         required: [true, 'Date is required']
     }
-})
+}, {timestamps:true})
 
 Schema.statics.getHolidayDates = async function(fromDate, toDate){
     const from = fromDate
