@@ -10,47 +10,47 @@
     
     <ul class="nav nav-pills flex-column mb-auto" style="">
       <li>
-        <a href="/admin/" class="nav-link">
-          Dashboard
+        <a href="/admin/" class="nav-link <%=(url==='/')?'active':''%> ">
+          Dashboard 
         </a>
       </li>
       <li>
-        <a href="/admin/employees" class="nav-link">
+        <a href="/admin/employees" class="nav-link <%=(url==='/employees')?'active':''%>">
           Employees
         </a>
       </li>
       <li>
-        <a href="/admin/attendance" class="nav-link">
+        <a href="/admin/attendance" class="nav-link <%=(url==='/attendance')?'active':''%>">
           Attendace Report
         </a>
       </li>
       <li class="nav-item">
-        <a href="/admin/payroll" class="nav-link active" aria-current="page">
+        <a href="/admin/payroll" class="nav-link <%=(url==='/payroll')?'active':''%>" aria-current="page">
           Payroll Report
         </a>
       </li>
       <li>
-        <a href="/admin/holidays" class="nav-link">
+        <a href="/admin/holidays" class="nav-link <%=(url==='/holidays')?'active':''%>">
           Holidays
         </a>
       </li>
       <li>
-        <a href="/admin/travelpass" class="nav-link">
+        <a href="/admin/travelpass" class="nav-link <%=(url==='/travelpass')?'active':''%>">
           Travel Pass
         </a>
       </li>
       <li>
-        <a href="/admin/deductions" class="nav-link">
+        <a href="/admin/deductions" class="nav-link <%=(url==='/deductions')?'active':''%>">
           Deductions
         </a>
       </li>
       <li>
-        <a href="/admin/employees" class="nav-link">
+        <a href="/admin/contributions" class="nav-link <%=(url==='/contributions')?'active':''%>">
           Contributions
         </a>
       </li>
       <li>
-        <a href="/admin/leave" class="nav-link">
+        <a href="/admin/leave" class="nav-link <%=(url==='/leave')?'active':''%>">
           Leave
         </a>
       </li>
