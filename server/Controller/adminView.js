@@ -113,7 +113,7 @@ module.exports = {
     },
     holidayView: async (req, res) => {
         try{
-            const data = await fetchData('admin/api/events/holiday')
+            const data = await fetchData('admin/api/events/holidays')
             res.status(200).render('holidays', {
                 data, 
                 url: req.url, 

@@ -76,7 +76,7 @@ TravelPassSchema.statics.addPass = async function(emp_code, name, fromDate, toDa
                                 console.log('date: ', documents)
                                 console.log('from-to', moment(from).startOf('isoweek').toDate(), moment(to).endOf('isoweek').toDate())
                                 for(let i = 0; i < documents.length; i++){
-                                    if(documents[i].from_date >= from || to <= documents[i].to_date){
+                                    if(documents[i].from_date > from || to < documents[i].to_date){
                                         existingDoc.push(documents[i])
                                     }
                                 }

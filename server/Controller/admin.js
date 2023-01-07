@@ -198,10 +198,14 @@ module.exports = {
     
     // read deduction
     readDeductions: async(req, res)=>{
-        Deductions.find().sort({createdAt: 1})
-            .then(result=>{
-                res.status(200).send(result)
-            })
+        try{
+            const projectedData = await Deductions.find()
+            res.status(200).send({result: projectedData})   
+        }catch(e){
+            const error = errorHandler(e)
+            res.status(500).send({ err: error })
+        }
+       
     },
     // add deduction
     addDeduction: async(req, res)=>{
@@ -311,8 +315,8 @@ module.exports = {
     // travel pass
     readTravelPass: async(req, res) =>{
         try{
-            const result = await TravelPass.find()
-            res.status(200).send(result)
+            const projectedData = await TravelPass.find()
+            res.status(200).send({result: projectedData})
         }catch(e){
             const error = errorHandler(e)
             res.status(500).send({ err: error })
@@ -387,10 +391,9 @@ module.exports = {
                 const toDate = new Date(req.query.to)
                 console.log(fromDate, toDate)
                 const projectedData = await Payroll.getPayrollData(fromDate, toDate)
-                const attendanceData = await Payroll.getTotalData(fromDate, toDate)
+                const totalData = await Payroll.getTotalData(fromDate, toDate)
                 // console.log(projectedData)
-                console.log(attendanceData)
-                res.status(200).send({result: projectedData, data: attendanceData})
+                res.status(200).send({result: projectedData, data: totalData})
             } catch (e) {
                 res.status(500).send(e)
                 console.log(e)

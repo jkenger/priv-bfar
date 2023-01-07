@@ -80,9 +80,9 @@ route.patch('/api/deductions', admin.editDeduction)
     // the system must create an attendance that write the current order# in am pm
 
 // events | holidays and travel orders api
-route.get('/api/events/holiday', admin.readHoliday)
-route.post('/api/events/holiday', admin.addHoliday)
-route.delete('/api/events/holiday/:id', admin.deleteHoliday)
+route.get('/api/events/holidays', admin.readHoliday)
+route.post('/api/events/holidays', admin.addHoliday)
+route.delete('/api/events/holidays/:id', admin.deleteHoliday)
 
 route.get('/api/events/travelpass', admin.readTravelPass)
 route.post('/api/events/travelpass', admin.addTravelPass)
