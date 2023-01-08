@@ -26,8 +26,14 @@ const errorHandler = (err) => {
         preDate: '',
         date: ''
     }
+    const travelPassErr = {
+        id: '',
+        name: '',
+        fromdate: '',
+        todate: ''
+    }
     
-
+    //LOGIN
     if (err.message === 'Invalid email') {
         error.email = err.message
         return error
@@ -47,11 +53,11 @@ const errorHandler = (err) => {
         error.email = err.message
         return error
     }
-    if(err.message.includes('You have already logged in for')){
+    if(err.message.includes('You have already time')){
         error.email = err.message
         return error
     }
-    if(err.message.includes('You have already logged out for')){
+    if(err.message.includes('This ID have not')){
         error.email = err.message
         return error
     }
@@ -104,11 +110,25 @@ const errorHandler = (err) => {
         holidayErr.name = err.message
         return holidayErr
     }
+    if(err.message.includes('Invalid id')){
+        travelPassErr.id = err.message
+        return travelPassErr
+    }
+    if(err.message.includes('Invalid name')){
+        travelPassErr.name = err.message
+        return travelPassErr
+    }
+    if(err.message.includes('Cast to date failed')){
+        travelPassErr.fromdate = 'Invalid date'
+        travelPassErr.todate = 'Invalid date'
+        return travelPassErr
+    }
 
     if(err.message.includes('Please enter valid employee code!')){
         error.email = err.message
         return error
     }
+    
     if (err.message.includes('users validation failed')) {
         Object.values(err.errors).forEach(properties => {
             error[properties.path] = properties.message

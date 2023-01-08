@@ -38,49 +38,69 @@ const TravelPassSchema = mongoose.Schema({
     },
     attendances: [Attendance.schema]
 })
+
+//checks if document is valid
+function executeIfDateRangeWithin(fromDate, toDate, databaseFromDate, databaseToDate) {
+    // Check if the entire date range falls within the database date range
+    if (fromDate >= databaseFromDate && toDate <= databaseToDate) {
+        console.log('from to witihin')
+      return true
+    }
+  
+    // Check if either the fromDate or toDate falls within the database date range
+    else if (fromDate >= databaseFromDate && fromDate <= databaseToDate) {
+        console.log('from witihin')
+        if (toDate > databaseToDate) {
+            return true
+          } else {
+            return false
+          }
+    } else if (toDate >= databaseFromDate && toDate <= databaseToDate) {
+        console.log('to witihin')
+        if (fromDate < databaseFromDate) {
+            return true
+          } else {
+            return false
+          }
+    }
+}
+
 TravelPassSchema.statics.addPass = async function(emp_code, name, fromDate, toDate, project){
             const formattedDate = getFormattedDate()
             var from = new Date(fromDate)
             var to = new Date(toDate)
             var currentDate = new Date(formattedDate)
             var docs = []
-            console.log('travel', fromDate, toDate)
-
+            
             const attendance = await Attendance.findOne({
                 emp_code: emp_code,
                 $and: [{date: {$gte: from}}, {date: {$lte: to}}],
                 am_time_in: { $ne: '' }
             })
-            console.log(attendance)
             // IF STATUS RETURNED 0, CREATE NEW DOCUMENT
             // NOTE: date should be formatted to local date.
             if (!attendance) {   
                 console.log('ATTENDANCE')
                 Employees.findOne({emp_code: emp_code})
                 .then(async (employee, err)=>{
-                    if(err){
-                        return "System can't find employee with this id"
+                    if(!emp_code){
+                        throw Error("NoIDError") 
                     }else if(!fromDate || !toDate) {
-                        const error = errorHandler({message: 'Dates are required'})
-                        return error 
+                        throw Error('Dates are required')
                     }else  if(from < currentDate) {
-                        const error = errorHandler({message: 'Given date must be equal or ahead of the current date'})
-                        return error
+                        throw Error('Given date must be equal or ahead of the current date')
                     }else if(to < from){
-                        const error = errorHandler({message: 'Date must be ahead of prerequisite date'})
-                        return error
+                        throw Error('Date must be ahead of prerequisite date')
                     }else{
                         TravelPass.find({emp_code: emp_code, date_added: ({$gte:moment(from).startOf('isoweek').toDate()} || {$lte:moment(to).startOf('isoweek').toDate()})})
                             .then(documents =>{
                                 let existingDoc = []
-                                console.log('date: ', documents)
-                                console.log('from-to', moment(from).startOf('isoweek').toDate(), moment(to).endOf('isoweek').toDate())
                                 for(let i = 0; i < documents.length; i++){
-                                    if(documents[i].from_date > from || to < documents[i].to_date){
+                                    if(executeIfDateRangeWithin(from, to, documents[i].from_date, documents[i].to_date)){
                                         existingDoc.push(documents[i])
                                     }
                                 }
-                                console.log('valid Documents:', existingDoc)
+                                console.log('existing Documents:', existingDoc)
                                 if(existingDoc.length){
                                     const error = errorHandler({message: 'Selected date were already given'})
                                     return error

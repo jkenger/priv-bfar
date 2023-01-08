@@ -39,8 +39,9 @@ app.use('/', publicRoute)
 
 // ROUTES || Not Found URLS
 app.use('*', (req, res)=>{
-    res.send('404 NOT FOUND')
+    res.render('404')
 })
+
 
 
 // Template Engine

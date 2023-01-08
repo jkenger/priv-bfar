@@ -6,6 +6,7 @@ const fetch = require('node-fetch')
 module.exports = {
     
     attendance_post : async (req, res) => {
+        
         function getTime()  {
             var d = new Date();
             return d.getTime();
@@ -25,6 +26,7 @@ module.exports = {
             res.status(500).send('The system cannot process your attendance.')
         } else {
             try {
+               
                 const { emp_code, time_type, input_type } = req.body
                 // FIND
                 // const condition = (input_type === 'rfid') ? { rfid: emp_code } : { emp_code: emp_code }

@@ -21,7 +21,8 @@ const modal = (type, id)=>{
     
     if(type==='delete'){
         const path = ((window.location.pathname).split('/')).at(-1)
-        const api = 'http://localhost:3000/admin/api/events/' + path
+        const api = (path === 'deductions' || path === 'employees') ?
+        'http://localhost:3000/admin/api/' + path:'http://localhost:3000/admin/api/events/' + path
         const target = 'http://localhost:3000/admin/' + path
         const url = api
         console.log(url)
@@ -48,7 +49,7 @@ const modal = (type, id)=>{
 
 const deleteData = async(id, url, target)=>{
     const _url = url + '/' + id
-    const _target = 'http://localhost:3000/admin/' + target
+    const _target = target
     console.log(_url)
     const doc = await fetch(_url, {
         headers: { 'Content-Type': 'application/json' },

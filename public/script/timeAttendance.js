@@ -75,7 +75,7 @@ form.addEventListener('submit', async (e) => {
         const data = await res.json()
         console.log("DATA", data);
         if (data.err) {
-            lblMessage.textContent = data.err.email + ". Failed!"
+            lblMessage.textContent = data.err.email + " Failed!"
         }
         if (data.log_in && time_type === 'timein') {
             // Welcome <Strong>Ken Gervacio!</Strong> <br> Time in at <span class="font-success"> 10:26:30 AM</span>. Success! 

@@ -22,8 +22,8 @@ module.exports = {
     employees_count_get: async (req, res) => {
         try {
             const result = await employees.find().count()
-            if (!result) res.status(500).send({err: 'Failure to find any data'})
-            res.status(200).send({ result })
+            if (!result.length) res.status(500).send({err: 'Failure to find any data'})
+            else res.status(200).send({ result })
         } catch (e) { res.status(500).send(e) }
     },
     // employee controllers
@@ -31,8 +31,9 @@ module.exports = {
         try {   
             const projected = await employees.getProjectedEmployees()
             const employeeData = await employees.getTotalData()
-            res.status(200).send({ result: projected,  data: employeeData})
             console.log(employeeData)
+            console.log(projected)
+            res.status(200).send({ result: projected,  data: employeeData})
 
         } catch (e) { res.status(500).send(e) }
     },
@@ -315,7 +316,7 @@ module.exports = {
     // travel pass
     readTravelPass: async(req, res) =>{
         try{
-            const projectedData = await TravelPass.find()
+            const projectedData = await TravelPass.find().sort({from_date: 1})
             res.status(200).send({result: projectedData})
         }catch(e){
             const error = errorHandler(e)
@@ -328,8 +329,11 @@ module.exports = {
             const { emp_code, name, fromDate, toDate, project } = req.body
             console.log(project)
             const result = await TravelPass.addPass(emp_code, name, fromDate, toDate, project)
-            console.log('result', result)
-        } catch (e) { res.status(500).send(e) }
+            res.status(200).send({result: result})
+        } catch (e) { 
+            const error = errorHandler(e)
+            res.status(500).send({err:error}) 
+        }
     },
     deleteTravelPass: async(req, res)=>{
         try{
@@ -392,7 +396,7 @@ module.exports = {
                 console.log(fromDate, toDate)
                 const projectedData = await Payroll.getPayrollData(fromDate, toDate)
                 const totalData = await Payroll.getTotalData(fromDate, toDate)
-                // console.log(projectedData)
+                console.log(projectedData)
                 res.status(200).send({result: projectedData, data: totalData})
             } catch (e) {
                 res.status(500).send(e)

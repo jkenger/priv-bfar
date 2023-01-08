@@ -99,7 +99,7 @@
                     
                     <div class="mb-0">
                         <input  type="text" class="form-control" name='name' placeholder="Employee Name *" id='empName'>
-                        <p class="text-center text-danger description-error error"></p>
+                        <p class="text-center text-danger name-error error"></p>
                     </div>
                     <select class="custom-select" name="project" id="projectSelect">
                         <option >Project Type</option>
@@ -143,9 +143,9 @@
         });
     });
     const idErr = document.querySelector('p.id-error')
-    const fnameErr = document.querySelector('p.fname-error')
-    const preDateErr = document.querySelector('p.from-error')
-    const dateErr = document.querySelector('p.to-error')
+    const namerr = document.querySelector('p.name-error')
+    const fromErr = document.querySelector('p.from-error')
+    const toErr = document.querySelector('p.to-error')
 
     const idInput = document.querySelector('#idNo')
     const fNameInput = document.querySelector('#empName')
@@ -198,10 +198,10 @@
             }
             if(data.err) {
                 console.log(data.err)
-                // idErr.textContent = data.err.emp_code
-                // fnameErr.textContent = data.err.name
-                // preDateErr.textContent = data.err.preDate
-                // dateErr.textContent = data.err.date
+                idErr.textContent = data.err.id
+                namerr.textContent = data.err.name
+                fromErr.textContent = data.err.fromdate
+                toErr.textContent = data.err.todate
             }
             // const name = form.name.value
             // const description = form.description.value

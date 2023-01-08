@@ -35,6 +35,7 @@ module.exports = {
         if (!req.body) { res.status(500).send('Failed processing registration') }
 
         try {
+            console.log(req.body)
             const { email, password, role } = req.body
             const user = await users.create({ email, password, role })
 

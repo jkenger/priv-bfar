@@ -158,6 +158,7 @@ Attendance.statics.timeIn = async function (emp_code, _id, time_type) {
         const employee = await Employees.findOne({emp_code: emp_code}).select('name')
         const filter = {emp_code: emp_code, date_string: currentDateString}
         const doc = await EmpAttendance.findOne(filter);
+        console.log(doc)
         // if no document this day, create one
         if(!doc){
             const result = await this.create({
@@ -174,14 +175,18 @@ Attendance.statics.timeIn = async function (emp_code, _id, time_type) {
             return result
         }
         if(doc && (doc.am_time_out && doc.pm_time_out)){
-            throw Error(`You have already logged at ${doc.am_time_in} and ${doc.pm_time_out} this day.`)
+            throw Error(`You have already time in at ${doc.am_time_in} and ${doc.pm_time_out} this day.`)
+        }
+        if(doc && (doc.message === 'T.O' || doc.message === 'O.B')){
+            console.log('asdsds')
+            throw Error(`You have already time in as O.B for ${moment(currentISODate).format('LL')}.`)
         }
         //check if document logged for am or pm
         if(doc.am_time_in && moment(currentISODate).isBefore(doc.am_office_out)){
-            throw Error('You have already time in at', doc.am_time_in)
+            throw Error(`You have already time in at ${moment(doc.am_time_in).format('LTS')}.`)
         }
         if(doc.pm_time_in && moment(currentISODate).isAfter(doc.am_office_out)){
-            throw Error('You have already time in at', doc.pm_time_in)
+            throw Error(`You have already time in at ${moment(doc.pm_time_in).format('LTS')}.`)
         }
         
         if(doc.am_time_in && !doc.pm_time_in && moment(currentISODate).isAfter(doc.am_office_out)){
@@ -256,6 +261,13 @@ Attendance.statics.timeIn = async function (emp_code, _id, time_type) {
     }
     if (time_type === 'timeout') {
         const doc = await this.findOne({emp_code: emp_code, date_string: currentDateString})
+        if(doc === null){
+            throw Error('This ID have not timed in yet.')
+        }
+        if(doc && (doc.message === 'T.O' || doc.message === 'O.B')){
+            console.log('asdsds')
+            throw Error(`You have already time out as O.B for ${moment(currentISODate).format('LL')}.`)
+        }
         // if before 1pm and am time out do not exist, update am  time out
         if(moment(currentISODate).isBefore(doc.pm_office_in) && doc.am_time_in && !doc.am_time_out){
             const result = await this.findOneAndUpdate({emp_code: doc.emp_code, date_string: doc.date_string}, {am_time_out: currentISODate})
@@ -266,10 +278,10 @@ Attendance.statics.timeIn = async function (emp_code, _id, time_type) {
             return result
         }
         if(doc.am_time_out && moment(currentISODate).isBefore(doc.pm_office_in)){
-            throw Error('sYou have already time out at', doc.am_time_out)
+            throw Error(`sYou have already time out at ${moment(doc.am_time_out).format('LTS')}.`)
         }
         if(doc.pm_time_out && moment(currentISODate).isAfter(doc.am_office_out)){
-            throw Error('You have already time out at', doc.pm_time_out)
+            throw Error(`You have already time out at ${moment(doc.pm_time_out).format('LTS')}.`)
         }
         
         
