@@ -76,8 +76,8 @@
                             <td><%=moment(pass.from_date).format('LL')%></td>
                             <td><%=moment(pass.to_date).format('LL')%></td>
                             <td>
-                                <a id='aEdit'href="#" data-toggle="modal" data-target="#modal" onclick="modal('edit', '<%=pass._id%>')"> Edit </a>
-                                <a id='aDelete' href="#" data-toggle="modal" data-target="#modal"  onclick="modal('delete', '<%=pass._id%>')"> Delete </a>
+                                <a id='aEdit'href="#" data-toggle="modal" data-target="#modal" onclick="editModal('<%=pass._id%>', `<%=include('partials/bodies/Travelpass-body', {pass})%>`)"> Edit </a>
+                                <a id='aDelete' href="#" data-toggle="modal" data-target="#modal"  onclick="deleteModal('<%=pass._id%>')"> Delete </a>
                             </td>
                         </tr>
                     <%}); %>

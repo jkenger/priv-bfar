@@ -82,7 +82,7 @@ form.addEventListener('submit', async (e) => {
             lblMessage.innerHTML = `Hello <Strong>${data.employee[0].name}!</Strong> <br> Time in at <span class="font-success"> ${date.toLocaleTimeString()}</span>. Success!`
             nameLabelEl.textContent = data.employee[0].name
             idLabelEl.textContent = data.employee[0].emp_code
-            imgEl.src = '/img/sample.jpg'
+            imgEl.src = '/img/pfp2.jpg'
             // setTimeout(()=>{
             //     location.href = '/';
             // }, 2000)
@@ -91,7 +91,7 @@ form.addEventListener('submit', async (e) => {
             lblMessage.innerHTML = `Hello <Strong>${data.employee[0 ].name}!</Strong> Time out at <span class="font-success"> ${date.toLocaleTimeString()}</span>. Success!`
             nameLabelEl.textContent = data.employee[0].name
             idLabelEl.textContent = data.employee[0].emp_code
-            imgEl.src = '/img/sample.jpg'
+            imgEl.src = '/img/pfp2.jpg'
             // setTimeout(()=>{
             //     location.href = '/';
             // }, 2000)

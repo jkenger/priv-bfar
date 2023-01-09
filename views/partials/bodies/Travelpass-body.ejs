@@ -1,0 +1,54 @@
+<style>
+    .form-control{
+        width: 100%;
+        border-radius: 0;
+    }
+    select{
+        padding: .375em .6em;
+        margin: 0;
+        border-right: 0;
+        border-left: 0;
+        border-top: 1px solid #DDDDDD;
+        border-bottom: 1px solid #DDDDDD;
+    }
+    input, select, textarea{
+        outline-color: #656488;
+    }
+    select:selection{
+        border: 1px solid #656488;
+    }
+    label{
+        padding-left: .75em;
+        padding-bottom: .25em;
+    }
+</style>
+    <div class="mb-0 d-flex flex-column">
+        <label for="id">Enter your ID:</label>
+        <input  type="text" class="form-control" name='id' placeholder="Employee ID *" id='idNo' value="<%=pass.emp_code%>">
+        <p class="text-center text-danger id-error error"></p>
+    </div>
+
+    <div class="mb-0">
+        <label for="id">Enter your name:</label>
+        <input  type="text" class="form-control" name='name' placeholder="Employee Name *" id='empName' value="<%=pass.name%>">
+        <p class="text-center text-danger name-error error"></p>
+    </div>
+    <div class="mb-0 d-flex flex-column">
+        <label for="id">Pass Type:</label>
+        <select class="custom-select" name="project" id="projectSelect">
+            <option >Project Type</option>
+            <option value="Project One"<%=(pass.project === 'Project One') ? 'selected' : ''%>>Project One</option>
+            <option value="Project Two"<%=(pass.project === 'Project Two') ? 'selected' : ''%>>Project Two</option>
+        </select>
+    </div>
+    
+    <div class="mb-0">
+        <label for="id">From Date:</label>
+        <input  type="date" name="fromDate" value="<%=moment(pass.from_date).format("yyyy-MM-DD")%>" id="" class="sideContainerDate">
+        <p class="text-center text-danger from-error error"></p>
+    </div>
+    <div class="mb-0">
+        <label for="id">To Date:</label>
+        <input  type="date" name="toDate" value="<%=moment(pass.to_date).format("yyyy-MM-DD")%>" id="" class=" sideContainerDate">
+        <p class="text-center text-danger to-error error"></p>
+    </div>

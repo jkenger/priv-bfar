@@ -149,6 +149,7 @@ Attendance.statics.timeIn = async function (emp_code, _id, time_type) {
     
     // isodate
     const currentISODate = new Date()
+    // const currentISODate = '2022-01-09'
 
     // datestring
     const currentDateString = new Date().toLocaleDateString()
