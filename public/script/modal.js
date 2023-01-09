@@ -5,41 +5,50 @@ const mainButton = document.querySelector('#mainButton')
 const modalBodyDiv = document.querySelector('.modal-body')
 
 modalBodyDiv.innerHTML = ''
-const editModal = (name, html)=>{
+
+const path = ((window.location.pathname).split('/')).at(-1)
+const api = (path === 'deductions' || path === 'employees') ?
+'http://localhost:3000/admin/api/' + path:'http://localhost:3000/admin/api/events/' + path
+const target = 'http://localhost:3000/admin/' + path
+
+const editModal = (id, name, html)=>{
     modalBodyDiv.innerHTML = html
     modalTitle.textContent = `Edit ${name}`
     mainButton.textContent = 'Save Changes'
-
-
-    const inputs = document.querySelectorAll('.inputModals')
-    for(let i = 0; i < inputs.length; i++){
-        inputs[i].addEventListener('change', (e)=>{
-            mainButton.disabled = false
-        })
-    }
-
-
-  
-}
-const deleteModal = (id)=>{
-    // let url = ''
-    // if(type==='empAddNew'){
-    //     modalTitle.textContent = 'Add Employee'
-    // }
     
-    // if(type==='edit'){
-        //     modalTitle.textContent = `Edit ${_id}`
-        
-        // }
-        
+    modalForm.addEventListener('submit', (e)=>{
+        e.preventDefault()
+        const name = modalForm.name.value
+        const description = modalForm.description.value
+        const preDate = modalForm.predate.value
+        const date = modalForm.date.value
+        editData(id, {name, description, preDate, date}, api, target)
+    })
+}
+
+const editData = async (id, {name, description, preDate, date}, url, target) =>{
+    console.log(name, description, preDate, date)
+    const _url = url + '/' + id
+    const _target = target
+    console.log( _url)
+    console.log( _target)
+    const doc = await fetch(_url, {
+        headers: { 'Content-Type': 'application/json' },
+        body:JSON.stringify({
+            name,
+            description,
+            preDate,
+            date
+        }),
+        method: 'PATCH'
+    })
+    const data = await doc.json()
+    console.log(data)
+}
+
+const deleteModal = (id)=>{
     const label = document.createElement('label')
     const _id = id
-    const path = ((window.location.pathname).split('/')).at(-1)
-    const api = (path === 'deductions' || path === 'employees') ?
-    'http://localhost:3000/admin/api/' + path:'http://localhost:3000/admin/api/events/' + path
-    const target = 'http://localhost:3000/admin/' + path
-    const url = api
-    console.log(url)
     
     // set data
     //title

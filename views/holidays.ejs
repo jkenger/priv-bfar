@@ -75,7 +75,7 @@
                             <td><%=moment(holiday.preDate).format('LL')%></td>
                             <td><%=moment(holiday.date).format('LL')%></td>
                             <td>
-                                <a id="aEdit" href="#" data-toggle="modal" data-target="#modal" onclick="editModal('<%=holiday.name%>', `<%=include('partials/bodies/Holidays-editbody', {holiday})%>`)"> Edit </a>
+                                <a id="aEdit" href="#" data-toggle="modal" data-target="#modal" onclick="editModal('<%=holiday._id%>','<%=holiday.name%>', `<%=include('partials/bodies/Holidays-editbody', {holiday})%>`)"> Edit </a>
                                 <a id="aDelete" href="#" data-toggle="modal" data-target="#modal" onclick="deleteModal('<%=holiday._id%>')"> Delete </a>
                             </td>
                         </tr>

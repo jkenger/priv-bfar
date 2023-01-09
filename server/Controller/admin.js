@@ -300,13 +300,46 @@ module.exports = {
 
     editHoliday: async(req, res) =>{
         try{
-            const {id, name, description, preDate, date} = req.body
-            const doc = await Holiday.findById(id)
-            Object.keys(req.body).forEach(properties=>{
-                if(doc[properties] === req.body[properties]){
-                    
+            const id = req.params.id
+            const {name, description, preDate, date} = req.body
+            
+            const formattedDate = getFormattedDate()
+            const from = new Date(preDate)
+            const to = new Date(date)
+            const currentDate = new Date(formattedDate)
+
+            if(!name || !date || !preDate){
+                const error = errorHandler({message: 'Input must not be empty'})
+                res.status(500).send({err: error })
+                console.log(error)
+            }
+
+            if(from < currentDate) {
+                const error = errorHandler({message: 'Given date must be equal or ahead of the current date'})
+                res.status(500).send({err: error })
+            }
+
+            if(to < from){
+                const error = errorHandler({message: 'Holiday must be ahead of prerequisite date'})
+                res.status(500).send({ err: error })
+            }
+
+            if(from >= currentDate && to >= from){
+                const doc = await Holiday.findByIdAndUpdate(id, {
+                    name,
+                    description,
+                    preDate,
+                    date
+                })
+                if(!doc){
+                    res.status(500).send('failure to create data.')
                 }
-            })
+                res.status(200).send({result: doc})
+            }
+            
+            
+           
+            // res.status(200).send(req.body)
             // const projectedData = await Holiday.find()
             // res.status(200).send({result: projectedData})
             // console.log(projectedData) 
