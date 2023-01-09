@@ -1,0 +1,50 @@
+    <style>
+        .form-control{
+            width: 100%;
+            border-radius: 0;
+        }
+        select{
+            padding: .375em .6em;
+            margin: 0;
+            border-right: 0;
+            border-left: 0;
+            border-top: 1px solid #DDDDDD;
+            border-bottom: 1px solid #DDDDDD;
+        }
+        input, select, textarea{
+            outline-color: #656488;
+        }
+        select:selection{
+            border: 1px solid #656488;
+        }
+        label{
+            padding-left: .75em;
+            padding-bottom: .25em;
+        }
+    </style>
+    <div class="mb-0">
+        <label for="id">ID:</label>
+        <input disabled required type="text" class="form-control" name='id' placeholder="Holiday Name" value="<%=holiday._id%>">
+        <p class="text-center text-danger fname-error error"></p>
+    </div>
+    <div class="mb-0">
+        <label for="id">Holiday name:</label>
+        <input required type="text" class="form-control inputModal" name='name' placeholder="Holiday Name" value="<%=holiday.name%>">
+        <p class="text-center text-danger fname-error error"></p>
+    </div>
+    <div class="mb-0 d-flex flex-column">
+        <label for="id">Description:</label>
+        <textarea class="form-control inputModal" name='description' placeholder="Description"><%=holiday.description%></textarea>
+        <p class="text-center text-danger description-error error"></p>
+    </div>
+    
+    <div class="mb-0">
+        <label for="id">Pre-requisite Date:</label>
+        <input required type="date" placeholder="Pre-requisite date" name="predate" id="" class="sideContainerDate inputModal" value="<%=moment(holiday.preDate).format('YYYY-MM-DD')%>">
+        <p class="text-center text-danger from-error error"></p>
+    </div>
+    <div class="mb-0">
+        <label for="id">Requisite Date: </label>
+        <input required type="date" placeholder="Requisite date" name="date" id="" class=" sideContainerDate inputModal" value="<%=moment(holiday.date).format('YYYY-MM-DD')%>">
+        <p class="text-center text-danger to-error error"></p>
+    </div>

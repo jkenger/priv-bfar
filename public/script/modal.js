@@ -5,12 +5,22 @@ const mainButton = document.querySelector('#mainButton')
 const modalBodyDiv = document.querySelector('.modal-body')
 
 modalBodyDiv.innerHTML = ''
-
-const editModal = (id, html)=>{
+const editModal = (name, html)=>{
     modalBodyDiv.innerHTML = html
-    modalTitle.textContent = 'Edit Employee'
-}
+    modalTitle.textContent = `Edit ${name}`
+    mainButton.textContent = 'Save Changes'
 
+
+    const inputs = document.querySelectorAll('.inputModals')
+    for(let i = 0; i < inputs.length; i++){
+        inputs[i].addEventListener('change', (e)=>{
+            mainButton.disabled = false
+        })
+    }
+
+
+  
+}
 const deleteModal = (id)=>{
     // let url = ''
     // if(type==='empAddNew'){

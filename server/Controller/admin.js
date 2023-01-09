@@ -285,6 +285,37 @@ module.exports = {
             res.status(500).send({ err: error })
         }
     },
+
+    readHoliday: async(req, res) =>{
+        try{
+            const projectedData = await Holiday.find()
+            res.status(200).send({result: projectedData})
+            console.log(projectedData) 
+        }catch(e){
+            const error = errorHandler(e)
+            res.status(500).send({ err: error })
+        }
+        
+    },
+
+    editHoliday: async(req, res) =>{
+        try{
+            const {id, name, description, preDate, date} = req.body
+            const doc = await Holiday.findById(id)
+            Object.keys(req.body).forEach(properties=>{
+                if(doc[properties] === req.body[properties]){
+                    
+                }
+            })
+            // const projectedData = await Holiday.find()
+            // res.status(200).send({result: projectedData})
+            // console.log(projectedData) 
+        }catch(e){
+            const error = errorHandler(e)
+            res.status(500).send({ err: error })
+        }
+    },
+
     deleteHoliday: async(req, res)=>{
         try{
             const id = req.params.id
@@ -301,17 +332,6 @@ module.exports = {
         }
     },
     
-    readHoliday: async(req, res) =>{
-        try{
-            const projectedData = await Holiday.find()
-            res.status(200).send({result: projectedData})
-            console.log(projectedData) 
-        }catch(e){
-            const error = errorHandler(e)
-            res.status(500).send({ err: error })
-        }
-        
-    },
 
     // travel pass
     readTravelPass: async(req, res) =>{

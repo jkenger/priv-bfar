@@ -83,6 +83,7 @@ route.patch('/api/deductions', admin.editDeduction)
 route.get('/api/events/holidays', admin.readHoliday)
 route.post('/api/events/holidays', admin.addHoliday)
 route.delete('/api/events/holidays/:id', admin.deleteHoliday)
+route.patch('/api/events/holidays', admin.editHoliday)
 
 route.get('/api/events/travelpass', admin.readTravelPass)
 route.post('/api/events/travelpass', admin.addTravelPass)
