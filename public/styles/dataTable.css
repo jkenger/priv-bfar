@@ -65,7 +65,13 @@
     table.dataTable tbody td:last-child {
         border-right: 0;
     }
-    
+    table.dataTable tbody a{
+        vertical-align: middle;
+        text-align: center;
+    }
+    table.dataTable tbody a:first-child {
+        margin-right: .5em;
+    }
     th:first-child {
       border-left: 1px solid #dddddd;
     }

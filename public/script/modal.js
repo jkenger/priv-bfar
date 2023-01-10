@@ -51,6 +51,7 @@ const editModal = (id, name, inputs, html)=>{
 
 const editData = async (id, obj, url, directLink) =>{
     const body = obj
+    console.log(body)
     const _url = url + '/' + id
     const _target = directLink
     console.log( _url)

@@ -201,6 +201,7 @@ module.exports = {
     readDeductions: async(req, res)=>{
         try{
             const projectedData = await Deductions.find()
+            console.log(projectedData)
             res.status(200).send({result: projectedData})   
         }catch(e){
             const error = errorHandler(e)
@@ -230,7 +231,9 @@ module.exports = {
     },
     // edit deduction
     editDeduction: async(req, res)=>{
-        const {id, name, amount} = req.body
+        const {name, amount} = req.body
+        const id = req.params.id
+        console.log(req.body)
         const doc = {
             name: name,
             amount: amount

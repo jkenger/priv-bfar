@@ -1,0 +1,34 @@
+<style>
+    .form-control{
+        width: 100%;
+        border-radius: 0;
+    }
+    select{
+        padding: .375em .6em;
+        margin: 0;
+        border-right: 0;
+        border-left: 0;
+        border-top: 1px solid #DDDDDD;
+        border-bottom: 1px solid #DDDDDD;
+    }
+    input, select, textarea{
+        outline-color: #656488;
+    }
+    select:selection{
+        border: 1px solid #656488;
+    }
+    label{
+        padding-left: .75em;
+        padding-bottom: .25em;
+    }
+</style>
+<div class="mb-0">
+    <label for="id">Name:</label>
+    <input required type="text" class="form-control inputModal" name='name' placeholder="Deduction Name" value="<%=deduction.name%>">
+    <p class="text-center text-danger fname-error error"></p>
+</div>
+<div class="mb-0">
+    <label for="id">Amount:</label>
+    <input required type="number" step="any" class="form-control inputModal" name='amount' placeholder="Amount" value="<%=deduction.amount%>">
+    <p class="text-center text-danger fname-error error"></p>
+</div>

@@ -70,7 +70,7 @@
                             <td><%=deduction.name%></td>
                             <td>P<%=deduction.amount%></td>
                             <td>
-                                <a id="aEdit" href="#" data-toggle="modal" data-target="#modal"  onclick="modal('edit', '<%=deduction._id%>')"> Edit </a>
+                                <a id="aEdit" href="#" data-toggle="modal" data-target="#modal"  onclick="editModal('<%=deduction._id%>','<%=deduction.name%>', 'name amount', `<%=include('partials/bodies/Deductions-editbody', {deduction})%>`)"> Edit </a>
                                 <a id="aDelete" href="#" data-toggle="modal" data-target="#modal"  onclick="deleteModal('<%=deduction._id%>')"> Delete </a>
                             </td>
                         </tr>
@@ -85,11 +85,13 @@
                 <form action="" id='asideForm'class="d-flex flex-column gap-2">
                     <h1>Add Deductions</h1>
                     <div class="mb-0">
+                        <label for="name">Name:</label>
                         <input  type="text" class="form-control" name='name' placeholder="Deduction Name *" id='deducName'>
                         <p class="text-center text-danger name-error error"></p>
                     </div>
                    
                     <div class="mb-0">
+                        <label for="amount">Amount:</label>
                         <input  type="number" step="any" name="amount" placeholder="Amount *" class="form-control">
                         <p class="text-center text-danger num-error error"></p>
                     </div>
