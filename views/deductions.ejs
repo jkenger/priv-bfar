@@ -71,7 +71,7 @@
                             <td>P<%=deduction.amount%></td>
                             <td>
                                 <a id="aEdit" href="#" data-toggle="modal" data-target="#modal"  onclick="modal('edit', '<%=deduction._id%>')"> Edit </a>
-                                <a id="aDelete" href="#" data-toggle="modal" data-target="#modal"  onclick="modal('delete', '<%=deduction._id%>')"> Delete </a>
+                                <a id="aDelete" href="#" data-toggle="modal" data-target="#modal"  onclick="deleteModal('<%=deduction._id%>')"> Delete </a>
                             </td>
                         </tr>
                     <%}); %>
@@ -90,7 +90,7 @@
                     </div>
                    
                     <div class="mb-0">
-                        <input  type="number" name="amount" placeholder="Amount *" class="form-control">
+                        <input  type="number" step="any" name="amount" placeholder="Amount *" class="form-control">
                         <p class="text-center text-danger num-error error"></p>
                     </div>
                     <button type="submit" class="btn btn-primary sideContainerButton">Add New</button>

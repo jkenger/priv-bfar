@@ -8,7 +8,7 @@ const TravelPass = require('../Model/travelPass')
 const Employees = require('./../Model/employee')
 const Deductions = require('../Model/deductions')
 const { query } = require('express')
-const { createIndexes, count } = require('../Model/employee')
+const { createIndexes, count, create } = require('../Model/employee')
 const countWeekdays = require('./services/calendarDays')
 const mongoose = require('mongoose')
 
@@ -244,13 +244,13 @@ module.exports = {
     // events || holiday and traver orders
     addHoliday: async(req, res) =>{
         try{
-            const {name, predate, date, description} = req.body
+            const {name, preDate, date, description} = req.body
             const formattedDate = getFormattedDate()
-            var from = new Date(predate)
+            var from = new Date(preDate)
             var to = new Date(date)
             var currentDate = new Date(formattedDate)
 
-            if(!name || !date || !predate){
+            if(!name || !date || !preDate){
                 const error = errorHandler({message: 'Input must not be empty'})
                 res.status(500).send({err: error })
                 console.log(error)
@@ -269,7 +269,7 @@ module.exports = {
             if(from >= currentDate && to >= from){
                 const schema = {
                         name: name,
-                        preDate: predate,
+                        preDate: preDate,
                         date: date,
                         description: description
                 }
@@ -336,8 +336,6 @@ module.exports = {
                 }
                 res.status(200).send({result: doc})
             }
-            
-            
            
             // res.status(200).send(req.body)
             // const projectedData = await Holiday.find()
@@ -388,41 +386,32 @@ module.exports = {
             res.status(500).send({err:error}) 
         }
     },
+    editTravelPass: async(req, res)=>{
+        try{
+            console.log(req.body)
+            //delete then add new travelpass
+            // const deletedPass = TravelPass.deletePass(id)
+            const { emp_code, name, fromDate, toDate, project } = req.body
+
+        
+        }catch (e) { 
+            const error = errorHandler(e)
+            res.status(500).send({err:error}) 
+        }
+    },
     deleteTravelPass: async(req, res)=>{
         try{
             const id = req.params.id
-            TravelPass.findOneAndDelete({_id: id})
-                .then((result, err)=>{
-                    const resLength = result.attendances.length
-                    const dataId = []
-                    if(result){
-                        if(resLength > 1){
-                            result.attendances.forEach(data=>{
-                                dataId.push(data._id)
-                            })
-                        }else{
-                            dataId.push(result.attendances[0]._id)
-                        }
-                        if(dataId.length){
-                            attendances.deleteMany({_id: {$in: dataId}})
-                                .then((result, err)=>{
-                                    res.status(200).send({
-                                        dataId: dataId,
-                                        datas: result   
-                                    })
-                                })
-                            
-                        }else{
-                            res.status(501).send({err:'No IDS Found.'})
-                        }
-                    }else{
-                        res.status(501).send({err:'Failed to process deletion. Try again later.'})
-                    }
-                })
+            const deleteResult = TravelPass.deletePass(id)
+            console.log(deleteResult)
+            res.status(200).send({result: deleteResult})
+            
         }catch(e){
             res.status(500).send(e)
         }
     },
+
+   
 
     // get all attendance
     readAttendance: async (req, res) => {
@@ -449,7 +438,7 @@ module.exports = {
                 console.log(fromDate, toDate)
                 const projectedData = await Payroll.getPayrollData(fromDate, toDate)
                 const totalData = await Payroll.getTotalData(fromDate, toDate)
-                console.log(projectedData)
+                console.log(totalData)
                 res.status(200).send({result: projectedData, data: totalData})
             } catch (e) {
                 res.status(500).send(e)

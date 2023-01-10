@@ -15,6 +15,7 @@ module.exports = {
     login_post: async (req, res) => {
         const email = req.body.email
         const password = req.body.password
+        const rememberme = req.body.remember
 
         if (!req.body) { res.status(500).send("Failed processing login authorization") }
 

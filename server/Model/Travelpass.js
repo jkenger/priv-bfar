@@ -157,6 +157,43 @@ TravelPassSchema.statics.addPass = async function(emp_code, name, fromDate, toDa
                 return 'Failed to process event creation. Employee might already attended between the selected date'
             }
 }
+
+TravelPassSchema.statics.editPass = async function(emp_code, name, fromDate, toDate, project){
+    Attendance.deleteMany({_id: {$in: dataId}})
+    .then((result, err)=>{
+        console.log(result) 
+    })
+    const updatedResult = TravelPass.updateOne()
+}
+
+TravelPassSchema.statics.deletePass = async function(id){
+    TravelPass.findOneAndDelete({_id: id})
+                .then((result, err)=>{
+                    const resLength = result.attendances.length
+                    const dataId = []
+                    if(result){
+                        if(resLength > 1){
+                            result.attendances.forEach(data=>{
+                                dataId.push(data._id)
+                            })
+                        }else{
+                            dataId.push(result.attendances[0]._id)
+                        }
+                        if(dataId.length){
+                            Attendance.deleteMany({_id: {$in: dataId}})
+                                .then((result, err)=>{
+                                    return result
+                                })
+                            
+                        }else{
+                            throw Error('No IDS Found.')
+                        }
+                    }else{
+                        throw Error('Failed to process deletion. Try again later.')
+                    }
+                })
+}
+
 const TravelPass = mongoose.model('Travelpass', TravelPassSchema)
 
 module.exports = TravelPass

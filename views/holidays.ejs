@@ -75,7 +75,7 @@
                             <td><%=moment(holiday.preDate).format('LL')%></td>
                             <td><%=moment(holiday.date).format('LL')%></td>
                             <td>
-                                <a id="aEdit" href="#" data-toggle="modal" data-target="#modal" onclick="editModal('<%=holiday._id%>','<%=holiday.name%>', `<%=include('partials/bodies/Holidays-editbody', {holiday})%>`)"> Edit </a>
+                                <a id="aEdit" href="#" data-toggle="modal" data-target="#modal" onclick="editModal('<%=holiday._id%>','<%=holiday.name%>', 'name description preDate date', `<%=include('partials/bodies/Holidays-editbody', {holiday})%>`)"> Edit </a>
                                 <a id="aDelete" href="#" data-toggle="modal" data-target="#modal" onclick="deleteModal('<%=holiday._id%>')"> Delete </a>
                             </td>
                         </tr>
@@ -99,7 +99,7 @@
                         <p class="text-center text-danger description-error error"></p>
                     </div>
                     <div class="mb-0">
-                        <input required type="date" placeholder="Pre-requisite date" name="predate" value="" id="" class="sideContainerDate">
+                        <input required type="date" placeholder="Pre-requisite date" name="preDate" value="" id="" class="sideContainerDate">
                         <p class="text-center text-danger from-error error"></p>
                     </div>
                     <div class="mb-0">
@@ -146,7 +146,7 @@
 
             const name = form.name.value
             const description = form.description.value
-            const predate = form.predate.value
+            const preDate = form.preDate.value
             const date = form.date.value
 
             const res = await fetch('http://localhost:3000/admin/api/events/holidays', {
@@ -154,7 +154,7 @@
                 body: JSON.stringify({
                     name,
                     description,
-                    predate,
+                    preDate,
                     date
                 }),
                 method: 'POST'

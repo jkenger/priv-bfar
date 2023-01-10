@@ -295,12 +295,12 @@ payrollSchema.statics.getPayrollData = async function(fromDate, toDate){
             
             // initiate net salary deductions
             // (semimo salary - 10417) *.02 // 2% Tax
-            tax_deduction: {$cond: {
+            tax_deduction: {$round:[{$cond: {
                 if: {$lte:[{$multiply: [{$subtract: ['$semimo_salary', 10417]}, tax]}, 0]},
                 then: 0,
                 else: {$multiply: [{$subtract: ['$semimo_salary', 10417]}, tax]}
-                }
-            },
+                },
+            },2]},
             other_deductions: {$cond: {
                 if: {$lte: [deductions.length, 0]},
                 then: 0,
@@ -735,6 +735,14 @@ payrollSchema.statics.getTotalData = async function(fromDate, toDate){
             total_grosspay: {$sum: '$total_grosspay'},
             total_netpay: {$sum: '$total_netpay'},
             total_deductions: {$sum: '$total_deductions'},
+        }},
+        {$group:{
+            _id: null,
+            total_morate:{$first: {$round:['$total_morate',2]}},
+            total_semimorate: {$first: {$round:['$total_semimorate',2]}},
+            total_grosspay: {$first: {$round:['$total_grosspay',2]}},
+            total_netpay: {$first: {$round:['$total_netpay',2]}},
+            total_deductions: {$first: {$round:['$total_deductions',2]}},
         }},
     ]
     const result = await employees.aggregate(pipeline)

@@ -88,6 +88,7 @@ route.patch('/api/events/holidays/:id', admin.editHoliday)
 route.get('/api/events/travelpass', admin.readTravelPass)
 route.post('/api/events/travelpass', admin.addTravelPass)
 route.delete('/api/events/travelpass/:id', admin.deleteTravelPass)
+route.patch('/api/events/travelpass/:id', admin.editTravelPass)
 
     // 
 
