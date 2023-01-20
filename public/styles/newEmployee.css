@@ -1,0 +1,54 @@
+form{
+   overflow: auto;
+   margin-top: 25px !important; 
+   min-width:1200px;
+}
+.empForm{
+    display: flex;
+    gap: 1em;
+    margin-bottom: 1em;
+}
+
+.cardForm{
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    border: 1px solid #dddddd;
+    background-color: #f8f8f8;
+    height: auto;
+}
+
+.cardForm__title, .cardForm__subTitle{
+    padding: 15px 15px 0 15px;
+    border-bottom: 1px solid #dddddd;
+}
+
+.cardForm .d-flex .inputDiv1__input:last-child > input{
+    border-left: 1px solid #dddddd;
+}
+
+.inputDiv1__input label{
+    padding-left:12px ;
+    padding-bottom: 5px;
+}
+.inputDiv1__input{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin-bottom: 1em;
+}
+
+.inputDiv1__input > input, .inputDiv1__input > select{
+    width: 100%;
+    border-left: 0;
+    border-right: 0;
+    border-top: 1px solid #dddddd;
+    border-bottom: 1px solid #dddddd;
+    background-color: #FFFEFE;
+    border-radius: 0;
+    padding: .375rem .75rem;
+}
+
+.inputDiv1__input > input[type='file']{
+    padding: .25em;
+}

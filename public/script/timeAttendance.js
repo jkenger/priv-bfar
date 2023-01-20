@@ -63,6 +63,7 @@ form.addEventListener('submit', async (e) => {
     const emp_code = form.empid.value
     const time_type = timeType.value
     const date = new Date()
+    console.log(emp_code)
     try {
         const res = await fetch('/attendance', {
             headers: { 'Content-Type': 'application/json' },

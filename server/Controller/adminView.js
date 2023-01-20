@@ -31,7 +31,10 @@ module.exports = {
 
     addEmployeeView: async (req, res)=>{
         try{
-            res.status(200).render('addEmployee')
+            res.status(200).render('addEmployee',{
+                url: req.url,
+                moment: moment
+            })
         }catch(err) {
             res.status(500).send(err)
             }

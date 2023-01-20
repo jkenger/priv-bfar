@@ -2,7 +2,7 @@ const e = require('express')
 const mongoose = require('mongoose')
 const validator = require('validator')
 const moment = require('moment')
-const Employees = require('./employee')
+const Employees = require('./employeee')
 const { findOneAndUpdate } = require('./employee')
 const { startOfDay } = require('date-fns')
 const setTime = require('./../Controller/services/setTime')
@@ -156,7 +156,9 @@ Attendance.statics.timeIn = async function (emp_code, _id, time_type) {
 
     // TIME-IN STARTS HERE ----------------------------------------------
     if (time_type === 'timein') {
-        const employee = await Employees.findOne({emp_code: emp_code}).select('name')
+        console.log(emp_code)
+        const employee = await Employees.findOne({'employee_details.designation.id': emp_code}).select('personal_information.name')
+        console.log(employee)
         const filter = {emp_code: emp_code, date_string: currentDateString}
         const doc = await EmpAttendance.findOne(filter);
         console.log(doc)
@@ -165,7 +167,7 @@ Attendance.statics.timeIn = async function (emp_code, _id, time_type) {
             const result = await this.create({
                 emp_code: emp_code,
                 emp_id: _id,
-                name: employee.name,    
+                name: employee.personal_information.name,    
                 date: currentISODate,
                 date_string: currentDateString,
                 am_office_in: db_ISO_AM_START,

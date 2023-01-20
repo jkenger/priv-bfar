@@ -1,4 +1,4 @@
-const employees = require('../Model/employee')
+const employees = require('../Model/employeee')
 const attendances = require('../Model/attendance')
 const { errorHandler, fetchData } = require('./services/services')
 const fetch = require('node-fetch')
@@ -30,14 +30,13 @@ module.exports = {
                 const { emp_code, time_type, input_type } = req.body
                 // FIND
                 // const condition = (input_type === 'rfid') ? { rfid: emp_code } : { emp_code: emp_code }
-                const condition = {$or: [{rfid: emp_code}, {emp_code: emp_code}]}
+                const condition = {$or: [{'employee_details.designation.rfid': emp_code}, {'employee_details.designation.id': emp_code}]}
                 const result = await employees.findOne(condition)
-                
                 if (result) {
                     // ASSIGN EMPLOYEE TABLE ID
                     const _id = result._id
-                    const employee = await employees.find({emp_code})
-                    const attendance = await attendances.timeIn(result.emp_code, _id, time_type) // pass emp code, emp table id
+                    const employee = await employees.find({'employee_details.designation.id': emp_code})
+                    const attendance = await attendances.timeIn(result.employee_details.designation.id, _id, time_type) // pass emp code, emp table id
                     if (attendance) { res.status(200).send({ log_in: attendance, employee: employee }); }
                 }else {
                     // THROW AN ERROR, IF ID DOES NOT EXIST

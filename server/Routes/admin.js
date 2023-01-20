@@ -24,7 +24,7 @@ route.get('/', checkToken, checkRoles, adminView.dashboardView)
 
 // employee endpoints
 route.get('/employees',checkToken, checkRoles, adminView.readEmployeesView)
-route.get('/employees/add',checkToken, checkRoles, adminView.addEmployeeView)
+route.get('/employees/new',checkToken, checkRoles, adminView.addEmployeeView)
 route.get('/employees/view/:id',checkToken, checkRoles, adminView.viewEmployeeView)
 route.get('/employees/view/edit',checkToken, checkRoles, adminView.editEmployeeView)
 
