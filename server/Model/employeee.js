@@ -95,7 +95,6 @@ const employeeSchema = mongoose.Schema({
             },
             email_company:{
                 type: String,
-                unique:true,
                 lowercase: true,
                 validate: [validator.isEmail, "Enter a valid email."],
                 required: [true, "Email is required"],
@@ -135,20 +134,25 @@ employeeSchema.pre('save', async function(){
 })
 
 
-// EmpSchema.pre('updateOne', function(next) {
-//     this.options.runValidators = true;
-//     next();
-//   });
-// EmpSchema.statics.getProjectedEmployees = async function(){
-//     const result = await this.find({}, {
-//         emp_code: 1, 
-//         name: 1, 
-//         position: 1, 
-//         employeeProject: 1, 
-//         employeeType: 1
-//     })
-//     return result
-// }
+employeeSchema.pre('updateOne', function(next) {
+    this.options.runValidators = true;
+    next();
+});
+employeeSchema.statics.getProjectedEmployees = async function(){
+    let doc = []
+    const result = await this.find({}).select({
+        id: '$employee_details.designation.id',
+        name: '$personal_information.name',
+        designation: '$employee_details.designation.designation',
+        employment_type: '$employee_details.employment_information.employment_type',
+        employee_project: ''
+    })
+    console.log(result)
+    return result
+
+  
+
+}
 // EmpSchema.statics.getTotalData = async function(){
 //     pipeline = [
 //         {$match: {}},

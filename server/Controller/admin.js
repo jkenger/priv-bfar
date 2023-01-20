@@ -30,10 +30,10 @@ module.exports = {
     readEmployees: async (req, res) => {
         try {   
             const projected = await employees.getProjectedEmployees()
-            const employeeData = await employees.getTotalData()
-            console.log(employeeData)
+            // const employeeData = await employees.getTotalData()
+            // console.log(employeeData)
             console.log(projected)
-            res.status(200).send({ result: projected,  data: employeeData})
+            res.status(200).send({ result: projected})
 
         } catch (e) { res.status(500).send(e) }
     },

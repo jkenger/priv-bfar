@@ -20,6 +20,7 @@ module.exports = {
     readEmployeesView: async (req, res) => {
         try {
             const data = await fetchData('admin/api/employees')
+            console.log(data)
             res.status(200).render('employees', { 
                 data,
                 url: req.url
