@@ -2,7 +2,7 @@ const mongoose = require('mongoose')
 const Deductions = require('./deductions')
 const Holiday = require('./../Model/holiday')
 const countWeekdays = require('./../Controller/services/calendarDays')
-const employees = require('./employee')
+const employees = require('./employeee')
 
 const payrollSchema = mongoose.Schema({
     emp_code: {
@@ -39,7 +39,7 @@ payrollSchema.statics.getPayrollData = async function(fromDate, toDate){
     const pipeline = [
         {$lookup: {
             from: 'attendances',
-            localField: 'emp_code',
+            localField: 'employee_details.designation.id',
             foreignField: 'emp_code',
             as: 'attendances',
             let: { time_in: '$time_in', time_out: '$time_out'},
@@ -53,10 +53,10 @@ payrollSchema.statics.getPayrollData = async function(fromDate, toDate){
         {$unwind: '$attendances'},
         {$project: {
                 _id: '$emp_code',
-                emp_code: 1,
-                name: 1,
-                salary: 1,
-                designation: '$position',
+                emp_code: '$employee_details.designation.id',
+                name: '$personal_information.name',
+                salary: '$employee_details.salary_details.monthly_salary',
+                designation: '$employee_details.designation.designation',
                 attendances_dup: 1,
                 fromDate: fromDate,
                 toDate: toDate,

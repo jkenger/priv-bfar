@@ -149,8 +149,7 @@ Attendance.statics.timeIn = async function (emp_code, _id, time_type) {
     
     // isodate
     const currentISODate = new Date()
-    // const currentISODate = '2022-01-09'
-
+    setTime(currentISODate, 7, 0, 0)
     // datestring
     const currentDateString = new Date().toLocaleDateString()
 
@@ -197,70 +196,6 @@ Attendance.statics.timeIn = async function (emp_code, _id, time_type) {
             const result = await EmpAttendance.findOneAndUpdate(filter, {pm_time_in: currentISODate})
             return result
         }
-        
-        
-        // IF LAT
-        // 12 PM STARTS HERE
-        // if (currentLocalISODate > OFFICE_ISO_AM_END) {
-        //     console.log(currentLocalISODate > OFFICE_ISO_AM_END, currentLocalISODate, OFFICE_ISO_AM_END)
-        //     console.log('AFTER 12 PM')
-
-        //     // FIND RECORD WHERE AM TIME-IN IS EMPTY
-        //     const employee = await Employees.findOne({emp_code: emp_code}).select('name')
-        //     const status = await this.find(
-        //         { emp_code: emp_code, date_string: currentDateString }
-        //     )
-        //     // IF STATUS RETURNED 0, CREATE NEW DOCUMENT
-        //     if (!status.length) {
-        //         const result = await this.create({
-        //             emp_code: emp_code,
-        //             emp_id: _id,
-        //             name: employee.name,
-        //             date: db_ISO_AM_START,
-        //             date_string: currentDateString,
-        //             am_office_in: db_ISO_AM_START,
-        //             am_office_out: db_ISO_AM_END, 
-        //             am_time_in: '',
-        //             am_time_out: '',
-        //             pm_office_in: db_ISO_PM_START,
-        //             pm_office_out: db_ISO_PM_END, 
-        //             pm_time_in: currentISODate,
-        //             pm_time_out: '',
-        //             offset: new Date().getTimezoneOffset(),
-        //             isLate: false
-        //         })
-        //         // IF LATE
-        //         if(currentLocalISODate > OFFICE_ISO_OFF_PM_START){
-        //             console.log(currentLocalISODate > OFFICE_ISO_OFF_PM_START, currentLocalISODate, OFFICE_ISO_OFF_PM_START)
-        //             console.log('PM IS LATE: **LATE**')
-        //             await this.findOneAndUpdate({ 
-        //                 emp_code: emp_code,
-        //                 date_string: currentDateString},
-        //                 {isLate: true})
-        //         }
-        //         return result
-
-        //         // IF STATUS RETURNED 1, UPDATE EXISTING
-        //     } else {
-        //         const status = await this.find({ emp_code: emp_code, date_string: currentDateString })
-                
-        //         const result = await this.findOneAndUpdate(
-        //             {emp_code: emp_code, date_string: currentDateString,
-        //              am_time_in: { $ne: '' }, pm_time_in: ''},
-        //             // UPDATE PM TIME-IN AND AM TIME-OUT // DO NOT OVERWRITE AM TIME OUT IF EXIST
-        //             (status[0].am_time_out)
-        //             ? { pm_time_in: currentISODate,  pm_time_out: ''}
-        //             : {am_time_out: currentISODate, pm_time_in: currentISODate, pm_time_out: '' }
-        //         )
-
-                
-
-        //         // THROW AN ERROR 
-        //         if (!result) { throw Error('You have already logged in for afternoon shifts') }
-        //         return result
-        //     }
-
-        // }
     }
     if (time_type === 'timeout') {
         const doc = await this.findOne({emp_code: emp_code, date_string: currentDateString})

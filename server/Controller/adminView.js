@@ -82,6 +82,7 @@ module.exports = {
             if(!req.query.from || !req.query.to) fromDate = new Date('01-01-1977').toISOString(), toDate = new Date().toISOString()
             else fromDate = new Date(req.query.from).toISOString(), toDate = new Date(req.query.to + 'T23:59:59.999Z').toISOString()
             const data = await fetchData(`admin/api/records?from=${fromDate}&to=${toDate}`)
+            console.log(data)
             if(!req.query.from || !req.query.to) { fromDate = ''; toDate = ''} else {fromDate = req.query.from; toDate = req.query.to}
             res.status(200).render('attendance', { 
                 data,

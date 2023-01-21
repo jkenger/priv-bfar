@@ -50,7 +50,6 @@ const employeeSchema = mongoose.Schema({
         },
         age:{
             type: Number,
-            unique:true,
             required: [true, "Age is required"]
         },
         natl_id:{
@@ -90,7 +89,6 @@ const employeeSchema = mongoose.Schema({
             },
             rfid:{
                 type: String,
-                unique:true,
                 required: [true, "RFID is required"]
             },
             email_company:{

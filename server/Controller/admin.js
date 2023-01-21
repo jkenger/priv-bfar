@@ -58,6 +58,7 @@ module.exports = {
             res.status(200).send({ result })
         } catch (e) {
             const error = errorHandler(e)
+            console.log(e)
             res.status(500).send({ err: error })
         }
     },
