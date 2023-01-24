@@ -162,7 +162,7 @@
                 console.log(data)
                 if(data){
                     idErr.textContent = data.err
-                    fNameInput.value = data.name
+                    fNameInput.value = data.personal_information.name
                 }
                 if(data.err){
                     idErr.textContent = data.err

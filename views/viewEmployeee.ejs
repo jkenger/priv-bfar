@@ -1,0 +1,192 @@
+<%-include('partials/Header')%>
+    <%-include('partials/Nav') %>
+        <%-include('partials/Aside')%>
+
+            <main>
+                <div class="container dashboard">
+                    <div class="employees">
+                        <div class="employee-query components box-shadow">
+                            <h1> <a href="/admin/employees">Employees</a> / Profile</h1>
+                            <div class="employee-query-search">
+                                <form novalidate role="search">
+                                    <button>
+                                        <i class="fa-solid fa-magnifying-glass"></i>
+                                    </button>
+                                    <input type="text" placeholder="Type your query here and press enter">
+                                </form>
+                            </div>
+                        </div>
+                        <div class="employee-container box-shadow components">
+                            <div class="head">
+                                <div class="title">
+                                    <%=data.result.name%>'s profile
+                                </div>
+                                <div class="actions">
+                                    <Button class="button" id="edit">Edit</Button>
+                                    <Button class="button-delete" id="delete"
+                                        data-id="<%=data.result._id%> ">Delete</Button>
+                                </div>
+                            </div>
+
+                            <div class="add">
+                                <form class="submit">
+                                    <div class="section">
+                                        <div>
+                                            <label for="fullname">Full Name *</label>
+                                            <input value='<%=data.result.name%>' type="text" placeholder="Full Name"
+                                                name="name" class="view-input box-shadow" id="name">
+                                            <label for="error" class="fname-error error"></label>
+                                        </div>
+                                        <div>
+                                            <label for="employeecode">ID No. (Employee Code) *</label>
+                                            <input value='<%=data.result.emp_code%>' type="text" placeholder="ID No."
+                                                name="emp_code" class="view-input box-shadow" id="id_no">
+                                            <label for="error" class="id-error error"></label>
+                                        </div>
+                                        <div>
+                                            <label for="rfid">RFID (optional)</label>
+                                            <input value='<%=data.result.rfid%>' type="text" placeholder="RFID"
+                                                name="rfid" class="view-input box-shadow" id="rfid">
+                                            <label for="error" class="rfid-error error"></label>
+                                        </div>
+                                        <div>
+                                            <label for="age">Age *</label>
+                                            <input value='<%=data.result.age%>' type="text" placeholder="Age" name="age"
+                                                class="view-input box-shadow" id="age">
+                                            <label for="error" class="age-error error"></label>
+                                        </div>
+                                        <div>
+                                            <label for="email">Email *</label>
+                                            <input value='<%=data.result.email%>' type="text" placeholder="Email"
+                                                name="email" class="view-input box-shadow" id="email">
+                                            <label for="error" class="email-error error"></label>
+                                        </div>
+                                        <div>
+                                            <label for="contact">Contact *</label>
+                                            <input value='<%=data.result.contact%>' type="text" placeholder="Contact"
+                                                name="contact" class="view-input box-shadow" id="contact">
+                                            <label for="error" class="contact-error error"></label>
+                                        </div>
+                                        <div>
+                                            <label for="position">Position *</label>
+                                            <input value='<%=data.result.position%>' type="text" placeholder="Position"
+                                                name="position" class="view-input box-shadow" id="position">
+                                            <label for="error" class="position-error error"></label>
+                                        </div>
+                                        <div>
+                                            <label for="salary">Salary *</label>
+                                            <input value='<%=data.result.salary%>' type="text" placeholder="Salary"
+                                                name="salary" class="view-input box-shadow" id="salary">
+                                            <label for="error" class="salary-error error"></label>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <button class="button-submit add-emp-btn btn-disable" id="update"
+                                            data-id="<%=data.result._id%>">Save this employee</button>
+                                    </div>
+                            </div>
+                            </form>
+
+                        </div>
+
+                    </div>
+                </div>
+                </div>
+            </main>
+            <script>
+                let form = document.querySelector('.submit')
+                const deleteBtn = document.querySelector('#delete')
+                const editBtn = document.querySelector('#edit')
+                const updateBtn = document.querySelector('#update')
+
+                const fnameErr = document.querySelector('.fname-error')
+                const idErr = document.querySelector('.id-error')
+                const rfidErr = document.querySelector('.rfid-error')
+                const ageErr = document.querySelector('.age-error')
+                const emailErr = document.querySelector('.email-error')
+                const contactErr = document.querySelector('.contact-error')
+                const positionErr = document.querySelector('.position-error')
+                const salaryErr = document.querySelector('.salary-error')
+
+                const fnamEl = document.querySelector('#name')
+                const idEl = document.querySelector('#id_no')
+                const rfidEl = document.querySelector('#rfid')
+                const ageEl = document.querySelector('#age')
+                const emailEl = document.querySelector('#email')
+                const contactEl = document.querySelector('#contact')
+                const posEl = document.querySelector('#position')
+                const salaryEl = document.querySelector('#salary')
+
+                window.addEventListener('DOMContentLoaded', (event) => {
+
+                    // edit function
+                    editBtn.addEventListener('click', (e) => {
+                        console.log('ASDASDAS')
+                        updateBtn.classList.remove('btn-disable')
+                        const viewInputs = document.querySelectorAll('input.view-input')
+                        for (let i = 0; i < viewInputs.length; i++) {
+                            viewInputs[i].readOnly = false
+                            viewInputs[i].classList.remove('disabled')
+                        }
+                    })
+                    // get inputs
+                    const viewInputs = document.querySelectorAll('input.view-input')
+                    for (let i = 0; i < viewInputs.length; i++) {
+                        viewInputs[i].readOnly = true
+                        viewInputs[i].classList.add('disabled')
+                    }
+                    // update
+                    updateBtn.addEventListener('click', async (e) => {
+                        e.preventDefault();
+                        const doc = {
+                            name: form.name.value,
+                            emp_code: form.emp_code.value,
+                            rfid: form.rfid.value,
+                            age: form.age.value,
+                            email: form.email.value,
+                            contact: form.contact.value,
+                            position: form.position.value,
+                            salary: form.salary.value
+                        }
+                        const id = updateBtn.dataset.id
+                        console.log(`http://localhost:3000/admin/api/employees/${id}`)
+                        console.log(id)
+
+                        const res = await fetch(`http://localhost:3000/admin/api/employees/${id}`, {
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify(doc),
+                            method: 'PATCH'
+                        })
+                        const data = await res.json()
+
+                        if (data.result) console.log(data.result)
+                        console.log(data)
+                        if (data.err) {
+                            fnameErr.textContent = data.err.name
+                            idErr.textContent = data.err.emp_code
+                            rfidErr.textContent = data.err.rfid
+                            ageErr.textContent = data.err.age
+                            emailErr.textContent = data.err.email
+                            contactErr.textContent = data.err.contact
+                            positionErr.textContent = data.err.position
+                            salaryErr.textContent = data.err.salary
+                        }
+                        console.log(data)
+                    })
+                    // delete function
+                    deleteBtn.addEventListener('click', async (e) => {
+                        const id = deleteBtn.dataset.id
+                        console.log(id)
+                        const res = await fetch(`http://localhost:3000/admin/api/employees/${id}`, {
+                            headers: { 'Content-Type': 'application/json' },
+                            method: 'DELETE'
+                        })
+                        const data = await res.json()
+                        console.log(data)
+                        // Note: this page should have a popup for result and redirect to employee page
+                    })
+                })
+
+
+            </script>
+            <%-include('partials/Footer')%>

@@ -48,6 +48,9 @@ const employeeSchema = mongoose.Schema({
             validate: [validator.isMobilePhone, 'Enter a valid phone number. Contact must start with 0 (ex. 09123456879)'],
             minLength: [10, 'Contact number must not be less than 10 chars']
         },
+        contact_personal:{
+            type: String,
+        },
         age:{
             type: Number,
             required: [true, "Age is required"]
@@ -77,6 +80,9 @@ const employeeSchema = mongoose.Schema({
             company_location:{
                 type: String,
                 required: [true, "Company location is required"]
+            },
+            company_address:{
+                type: String,
             },
             designation:{
                 type: String,

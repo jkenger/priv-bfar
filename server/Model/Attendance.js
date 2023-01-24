@@ -149,18 +149,15 @@ Attendance.statics.timeIn = async function (emp_code, _id, time_type) {
     
     // isodate
     const currentISODate = new Date()
-    setTime(currentISODate, 7, 0, 0)
     // datestring
     const currentDateString = new Date().toLocaleDateString()
 
     // TIME-IN STARTS HERE ----------------------------------------------
     if (time_type === 'timein') {
-        console.log(emp_code)
         const employee = await Employees.findOne({'employee_details.designation.id': emp_code}).select('personal_information.name')
-        console.log(employee)
         const filter = {emp_code: emp_code, date_string: currentDateString}
         const doc = await EmpAttendance.findOne(filter);
-        console.log(doc)
+        console.log('asdsds', doc)
         // if no document this day, create one
         if(!doc){
             const result = await this.create({
@@ -180,11 +177,12 @@ Attendance.statics.timeIn = async function (emp_code, _id, time_type) {
             throw Error(`You have already time in at ${doc.am_time_in} and ${doc.pm_time_out} this day.`)
         }
         if(doc && (doc.message === 'T.O' || doc.message === 'O.B')){
-            console.log('asdsds')
+           
             throw Error(`You have already time in as O.B for ${moment(currentISODate).format('LL')}.`)
         }
         //check if document logged for am or pm
         if(doc.am_time_in && moment(currentISODate).isBefore(doc.am_office_out)){
+            console.log('asssdoc')
             throw Error(`You have already time in at ${moment(doc.am_time_in).format('LTS')}.`)
         }
         if(doc.pm_time_in && moment(currentISODate).isAfter(doc.am_office_out)){

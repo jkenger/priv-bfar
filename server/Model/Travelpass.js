@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 const validator = require('validator')
 const Attendance = require('./attendance')
-const Employees = require('./employee')
+const Employees = require('./employeee')
 const moment = require('moment')
 const { errorHandler, fetchData } = require('./../Controller/services/services')
 const { getFormattedDate } = require('./../Controller/services/date')
@@ -81,7 +81,7 @@ TravelPassSchema.statics.addPass = async function(emp_code, name, fromDate, toDa
             // NOTE: date should be formatted to local date.
             if (!attendance) {   
                 console.log('ATTENDANCE')
-                Employees.findOne({emp_code: emp_code})
+                Employees.findOne({'employee_details.designation.id': emp_code})
                 .then(async (employee, err)=>{
                     if(!emp_code){
                         throw Error("NoIDError") 
@@ -107,9 +107,9 @@ TravelPassSchema.statics.addPass = async function(emp_code, name, fromDate, toDa
                                 }
                                 if(!existingDoc.length){
                                     TravelPass.insertMany({
-                                        emp_code: employee.emp_code,
+                                        emp_code: employee.employee_details.designation.id,
                                         emp_id: employee._id,
-                                        name: employee.name,
+                                        name: employee.personal_information.name,
                                         from_date: from,
                                         to_date:to,
                                         project: project,
@@ -126,9 +126,9 @@ TravelPassSchema.statics.addPass = async function(emp_code, name, fromDate, toDa
                                                 
                                                 var newDay = new Date(day.setDate(day.getDate()))
                                                 docs.push({
-                                                    emp_code: employee.emp_code,
+                                                    emp_code: employee.employee_details.designation.id,
                                                     emp_id: employee._id,
-                                                    name: employee.name,
+                                                    name: employee.personal_information.name,
                                                     date: newDay,
                                                     date_string: newDay.toLocaleDateString(),
                                                     isHalf: 'false',

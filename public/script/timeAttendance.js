@@ -74,24 +74,23 @@ form.addEventListener('submit', async (e) => {
             method: 'POST'
         })
         const data = await res.json()
-        console.log("DATA", data);
         if (data.err) {
             lblMessage.textContent = data.err.email + " Failed!"
         }
         if (data.log_in && time_type === 'timein') {
             // Welcome <Strong>Ken Gervacio!</Strong> <br> Time in at <span class="font-success"> 10:26:30 AM</span>. Success! 
-            lblMessage.innerHTML = `Hello <Strong>${data.employee[0].name}!</Strong> <br> Time in at <span class="font-success"> ${date.toLocaleTimeString()}</span>. Success!`
-            nameLabelEl.textContent = data.employee[0].name
-            idLabelEl.textContent = data.employee[0].emp_code
+            lblMessage.innerHTML = `Hello <Strong>${data.employee[0].personal_information.name}!</Strong> <br> Time in at <span class="font-success"> ${date.toLocaleTimeString()}</span>. Success!`
+            nameLabelEl.textContent = data.employee[0].personal_information.name
+            idLabelEl.textContent = data.employee[0].employee_details.designation.id
             imgEl.src = '/img/pfp2.jpg'
             // setTimeout(()=>{
             //     location.href = '/';
             // }, 2000)
         }
         if (data.log_in && time_type === 'timeout') {
-            lblMessage.innerHTML = `Hello <Strong>${data.employee[0 ].name}!</Strong> Time out at <span class="font-success"> ${date.toLocaleTimeString()}</span>. Success!`
-            nameLabelEl.textContent = data.employee[0].name
-            idLabelEl.textContent = data.employee[0].emp_code
+            lblMessage.innerHTML = `Hello <Strong>${data.employee[0].personal_information.name}!</Strong> Time out at <span class="font-success"> ${date.toLocaleTimeString()}</span>. Success!`
+            nameLabelEl.textContent = data.employee[0].personal_information.name
+            idLabelEl.textContent = data.employee[0].employee_details.designation.id
             imgEl.src = '/img/pfp2.jpg'
             // setTimeout(()=>{
             //     location.href = '/';
