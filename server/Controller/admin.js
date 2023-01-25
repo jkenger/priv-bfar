@@ -41,9 +41,10 @@ module.exports = {
         try {
             const id = req.params.id
             if (!id) res.status(500).send({err: 'Failutre to process the given id'})
-            const result = await employees.findOne({emp_code: id})
-            if(result) res.status(200).send(result)
-            if (!result) res.status(500).send({err: 'Failure to find any document by the id'})
+            const projected = await employees.findOne({_id: id})
+            console.log(projected)
+            if(projected) res.status(200).send({result: projected})
+            if (!projected) res.status(500).send({err: 'Failure to find any document by the id'})
            
         } catch (e) { res.status(500).send(e) }
 

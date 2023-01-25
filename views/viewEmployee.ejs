@@ -33,24 +33,24 @@
             <div class="info-left__sub">
                 <div class="info__head">
                     <img src="/img/pfp2.jpg" alt="#">
-                    <h1>Ken GErvacio</h1>
+                    <h1><%=data.result.personal_information.name%></h1>
                 </div>
                 <div class="info__main">
                     <div class="main__subdiv">
                         <div>Email</div>
-                        <div>johnkgervacio@gmail.com</div>
+                        <div><%=data.result.personal_information.email_personal%></div>
                     </div>
                     <div class="main__subdiv">
                         <div>Mobile No.</div>
-                        <div>09123456789</div>
+                        <div><%=data.result.personal_information.contact_personal%></div>
                     </div>
                     <div class="main__subdiv">
                         <div>Employee ID</div>
-                        <div>233222</div>
+                        <div><%=data.result.employee_details.designation.id%></div>
                     </div>
                     <div class="main__subdiv">
                         <div>RFID</div>
-                        <div>23232</div>
+                        <div><%=data.result.employee_details.designation.rfid%></div>
                     </div>
                 </div>
             </div>
@@ -64,39 +64,39 @@
                 <div class="info__main">
                     <div class="main__subdiv">
                         <div>Civil Status</div>
-                        <div for="content">Single</div>
+                        <div for="content"><%=data.result.personal_information.civstatus%></div>
                     </div>
                     <div class="main__subdiv">
                         <div for="age">Age</div>
-                        <div for="content">21</div>
+                        <div for="content"><%=data.result.personal_information.age%></div>
                     </div>
                     <div class="main__subdiv">
                         <div for="height">Height</div>
-                        <div for="content">167</div>
+                        <div for="content"><%=data.result.personal_information.height%></div>
                     </div>
                     <div class="main__subdiv">
                         <div for="weight">Weight</div>
-                        <div for="content">61</div>
+                        <div for="content"><%=data.result.personal_information.weight%></div>
                     </div>
                     <div class="main__subdiv">
                         <div for="gender"> Gender</div>
-                        <div for="content">Male</div>
+                        <div for="content"><%=data.result.personal_information.gender%></div>
                     </div>
                     <div class="main__subdiv">
                         <div for="dateofbirth">Date of Birth</div>
-                        <div for="content">Single</div>
+                        <div for="content"><%=moment(data.result.personal_information.date_of_birth).format('LL')%></div>
                     </div>
                     <div class="main__subdiv">
                         <div for="placeofbirth">Place of Birth</div>
-                        <div for="content">Single</div>
+                        <div for="content"><%=data.result.personal_information.place_of_birth%></div>
                     </div>
                     <div class="main__subdiv">
                         <div for="homeadd">Home Address</div>
-                        <div for="content">BRGY TANDO</div>
+                        <div for="content"></div>
                     </div>
                     <div class="main__subdiv">
                         <div for="natlid">National ID</div>
-                        <div for="content">203232</div>
+                        <div for="content"><%=data.result.personal_information.natl_id%></div>
                     </div>
                     <div class="main__subheader">
                         <div class="subheader__container">
@@ -105,23 +105,23 @@
                     </div>
                     <div class="main__subdiv">
                         <div for="company">Company</div>
-                        <div for="content">BFAR</div>
+                        <div for="content"><%=data.result.employee_details.designation.company%>, <%=data.result.employee_details.designation.company_location%></div>
                     </div>
                     <div class="main__subdiv">
                         <div for="designation">Designation</div>
-                        <div for="content">FULL STACK</div>
+                        <div for="content"><%=data.result.employee_details.designation.designation%></div>
                     </div>
                     <div class="main__subdiv">
                         <div for="employment_type">Employment Type</div>
-                        <div for="content">Permanent</div>
+                        <div for="content"><%=data.result.employee_details.employment_information.employment_type%></div>
                     </div>
                     <div class="main__subdiv">
                         <div for="employment_status">Employment Status</div>
-                        <div for="content">Active</div>
+                        <div for="content"><%=data.result.employee_details.employment_information.employment_status%></div>
                     </div>
                     <div class="main__subdiv">
                         <div for="date_started">Date Started</div>
-                        <div for="content">10/11/2023</div>
+                        <div for="content"><%=moment(data.result.employee_details.employment_information.date_hired).format('LL')%></div>
                     </div>
                     <div class="main__subheader">
                         <div class="subheader__container">
@@ -130,7 +130,7 @@
                     </div>
                     <div class="main__subdiv">
                         <div for="salary">Monthly Salary</div>
-                        <div for="content">PHP 20,000</div>
+                        <div for="content">PHP <%=data.result.employee_details.salary_details.monthly_salary%></div>
                     </div>
                 </div>
             </div>
