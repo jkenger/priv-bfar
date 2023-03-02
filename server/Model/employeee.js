@@ -140,6 +140,7 @@ employeeSchema.pre('save', async function(){
 
 employeeSchema.pre('updateOne', function(next) {
     this.options.runValidators = true;
+    this.personal_information.name = this.personal_information.fname + ' ' + this.personal_information.mname + ' ' + this.personal_information.lname
     next();
 });
 employeeSchema.statics.getProjectedEmployees = async function(){
