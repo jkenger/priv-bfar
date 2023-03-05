@@ -37,7 +37,12 @@
                     <div class="cardForm__title mb-3">
                         <h1>Personal Information</h3>
                     </div>
-
+                    <div class="cardForm__inputDiv">
+                        <div class="inputDiv1__input">
+                            <label for="id"> _id</label>
+                            <input type="text" name="_id" placeholder="_id" value="<%=data.result._id%>" disabled>
+                        </div>
+                    </div>
                     <div class="cardForm__inputDiv d-flex">
                         <div class="inputDiv1__input">
                             <label for="fname"> First Name</label>
@@ -126,7 +131,6 @@
                             <label for="image"> Upload Profile Photo</label>
                             <input type="file" name="image" placeholder="Upload Image">
                         </div>
-        
                     </div>
                 </div>
                 
@@ -224,8 +228,8 @@
 <%-include('partials/Footer')%>
 
 
-<!-- <script>
-    let form = document.querySelector('.submit')
+<script>
+    let form = document.querySelector('.empFormEl')
     const fnameErr = document.querySelector('.fname-error')
     const idErr = document.querySelector('.id-error')
     const rfidErr = document.querySelector('.rfid-error')
@@ -238,37 +242,66 @@
         console.log('ASDASFAS')
         e.preventDefault();
         const doc = {
-            name : form.name.value,
-            emp_code : form.emp_code.value,
-            rfid : form.rfid.value,
-            age : form.age.value,
-            email : form.email.value,
-            contact : form.contact.value,
-            position : form.position.value,
-            salary : form.salary.value
+            personal_information: {
+            fname: form.fname.value,
+            mname: form.mname.value,
+            lname: form.lname.value,
+            gender: form.gender.value,
+            civstatus: form.civstatus.value,
+            name: '',
+            height: form.height.value,
+            weight: form.weight.value,
+            email_personal: form.email_personal.value,
+            contact_personal: form.contact_personal.value,
+            home_address: form.home_address.value,
+            age: form.age.value,
+            natl_id: form.natl_id.value,
+            date_of_birth: form.date_of_birth.value,
+            place_of_birth: form.place_of_birth.value,
+            avatar: ''
+            },
+            employee_details: {
+                designation: {
+                    company: form.company.value,
+                    company_location: form.company_location.value,
+                    designation: form.designation.value,
+                    id: form.empcode.value,
+                    rfid: form.rfid.value,
+                    email_company: form.email_company.value,
+                    leave_group: form.leavegroup.value
+                },
+                employment_information: {
+                    employment_type: form.employment_type.value,
+                    employment_status: form.employment_status.value,
+                    date_hired: form.date_hired.value
+                },
+                salary_details: {
+                    monthly_salary: form.monthly_salary.value
+                }
+            }
         }
 
         console.log(doc)
-        const res = await fetch('http://localhost:3000/admin/api/employees',{
+        const res = await fetch(`http://localhost:3000/admin/api/employees/${form._id.value}`,{
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(doc),
-            method: 'POST'
+            method: 'PATCH'
         })
         const data = await res.json()
 
         if(data.result) console.log(data.result)
-        console.log(data)
-        if(data.err) {
-            fnameErr.textContent = data.err.name
-            idErr.textContent = data.err.emp_code
-            rfidErr.textContent = data.err.rfid
-            ageErr.textContent = data.err.age
-            emailErr.textContent = data.err.email
-            contactErr.textContent = data.err.contact
-            positionErr.textContent = data.err.position
-            salaryErr.textContent = data.err.salary
-        }
+        // console.log(data)
+        // if(data.err) {
+        //     fnameErr.textContent = data.err.name
+        //     idErr.textContent = data.err.emp_code
+        //     rfidErr.textContent = data.err.rfid
+        //     ageErr.textContent = data.err.age
+        //     emailErr.textContent = data.err.email
+        //     contactErr.textContent = data.err.contact
+        //     positionErr.textContent = data.err.position
+        //     salaryErr.textContent = data.err.salary
+        // }
         
-        console.log(data)
+        // console.log(data)
     })
-</script> -->
+</script>

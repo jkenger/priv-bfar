@@ -69,11 +69,12 @@ module.exports = {
             const update = req.body
             if (!req.body) { throw Error('Invalid input') }
             if (!id) res.status(500).send({err: 'Failure to process the given id'})
+            
+            //update name
             update.personal_information.name = update.personal_information.fname + ' ' + update.personal_information.mname + ' ' + update.personal_information.lname
-            console.log(update)
-            const result = await employees.findOneAndUpdate({ _id: id }, { 
-                $set: update, 
-                })
+            
+            //set update
+            const result = await employees.findOneAndUpdate({ _id: id }, {$set: update,})
             if (!result) res.status(500).send({err: 'Failure to update the employee'})
             res.status(200).send(result)
         } catch (e) {
