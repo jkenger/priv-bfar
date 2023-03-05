@@ -42,7 +42,6 @@ module.exports = {
             const id = req.params.id
             if (!id) res.status(500).send({err: 'Failutre to process the given id'})
             const projected = await employees.findOne({_id: id})
-            console.log(projected)
             if(projected) res.status(200).send({result: projected})
             if (!projected) res.status(500).send({err: 'Failure to find any document by the id'})
            
@@ -69,15 +68,17 @@ module.exports = {
             const id = req.params.id
             const update = req.body
             if (!req.body) { throw Error('Invalid input') }
-
             if (!id) res.status(500).send({err: 'Failure to process the given id'})
-
-            const result = await employees.updateOne({ _id: id }, { $set: update })
+            update.personal_information.name = update.personal_information.fname + ' ' + update.personal_information.mname + ' ' + update.personal_information.lname
+            console.log(update)
+            const result = await employees.findOneAndUpdate({ _id: id }, { 
+                $set: update, 
+                })
             if (!result) res.status(500).send({err: 'Failure to update the employee'})
             res.status(200).send(result)
         } catch (e) {
             const error = errorHandler(e)
-            res.status(500).send({ err: error })
+            res.status(500).send({ err: error})
         }
     },
     deleteEmployee: async (req, res) => {

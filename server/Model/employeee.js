@@ -48,7 +48,7 @@ const employeeSchema = mongoose.Schema({
             validate: [validator.isMobilePhone, 'Enter a valid phone number. Contact must start with 0 (ex. 09123456879)'],
             minLength: [10, 'Contact number must not be less than 10 chars']
         },
-        contact_personal:{
+        home_address:{
             type: String,
         },
         age:{
@@ -129,6 +129,7 @@ const employeeSchema = mongoose.Schema({
     }
 })
 
+// set full name when fname, mname, lname is set
 employeeSchema.pre('save', async function(){
     console.log('pre save')
     console.log(this.personal_information.fname + ' ' + this.personal_information.mname + ' ' + this.personal_information.lname)
@@ -138,11 +139,17 @@ employeeSchema.pre('save', async function(){
 })
 
 
-employeeSchema.pre('updateOne', function(next) {
+employeeSchema.pre('updateOne', async function(next) {
     this.options.runValidators = true;
-    this.personal_information.name = this.personal_information.fname + ' ' + this.personal_information.mname + ' ' + this.personal_information.lname
     next();
 });
+
+// update full name, when fname, mname, lname is updated
+// employeeSchema.pre('findOneAndUpdate', async function() {
+//     this.personal_information.name = this.personal_information.fname + ' ' + this.personal_information.mname + ' ' + this.personal_information.lname
+// });
+
+//display specific fi
 employeeSchema.statics.getProjectedEmployees = async function(){
     let doc = []
     const result = await this.find({}).select({

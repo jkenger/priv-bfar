@@ -26,7 +26,7 @@ route.get('/', checkToken, checkRoles, adminView.dashboardView)
 route.get('/employees',checkToken, checkRoles, adminView.readEmployeesView)
 route.get('/employees/new',checkToken, checkRoles, adminView.addEmployeeView)
 route.get('/employees/view/:id',checkToken, checkRoles, adminView.viewEmployeeView)
-route.get('/employees/view/edit',checkToken, checkRoles, adminView.editEmployeeView)
+route.get('/employees/edit/:id',checkToken, checkRoles, adminView.editEmployeeView)
 
 // deduction endpoints
 route.get('/deductions', checkToken, checkRoles, adminView.deductionView)
