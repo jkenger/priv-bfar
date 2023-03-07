@@ -1,0 +1,157 @@
+<%-include('partials/Header')%>
+<link rel="stylesheet" href="/styles/dataTable.css">
+<main class="d-flex flex-nowrap" style=" height: 100vh; align-self: center;">
+<style>
+    .form-control, .btn {font-size: 14px; border-left: 0px; border-right: 0px;}
+</style>
+    <%-include('partials/Aside')%> 
+<div class="d-flex flex-column flex-fill" style="border-left: 1px solid #dddddd; padding: 1.5em 2em 1.5em 2em">
+    <div class="d-flex justify-content-between"> 
+            <div class="d-flex justify-content-center align-items-center rounded-1"> 
+              <a href="#" class="nav-link" style="padding-right: 10px !important;">
+                  Home 
+              </a>
+              <p style="padding-right: 10px !important; margin: 0;"> > </p>
+              <a href="#" class="nav-link ">
+                  <b> Holidays </b>
+              </a>
+            </div>
+            <div class="d-flex justify-content-around rounded-1" style="background: #F5F5F5; border: solid #dddddd 1px; width: 15%; padding: 5px;"> 
+                  <div class="d-flex flex-column justify-content-center align-items-center">
+                    <p style="margin: 0 !important;"><b>Aug 15 2022</b></p>
+                    <p style="margin: 0 !important;"><b>11:29 AM</b></p>
+                  </div>
+                  <div class="d-flex flex-column justify-content-center align-items-center">
+                    <p style="margin: 0 !important;"><b>Friday</b></p>
+                    <p><b></b></p>
+                  </div>
+            </div>
+    </div>
+
+    <div class="d-flex gap-4 mr-4" style="padding-top: 25px !important;"> 
+      <div class="d-flex justify-content-between flex-fill rounded-1" style="background: #F5F5F5; border: solid #dddddd 1px; padding: 15px;">
+           <div class="d-flex flex-column justify-content-around">
+              <p>Total Leave</p>
+              <p style="font-size:1.5rem;"><b>30</b></p>
+           </div>
+           <div class="d-flex">
+              <p></p>
+              <p class="mt-auto p-2 bd-highlight">Totals</p>
+           </div>
+      </div>
+      <div class="d-flex justify-content-between flex-fill rounded-1" style="background: #F5F5F5; border: solid #dddddd 1px; padding: 15px;">
+           <div class="d-flex flex-column justify-content-around">
+              <p>Upcoming Leave</p>
+              <p style="font-size:1.5rem;"><b>30</b></p>
+           </div>
+           <div class="d-flex">
+              <p></p>
+              <p class="mt-auto p-2 bd-highlight">Totals</p>
+           </div>
+      </div>
+    </div>
+
+    <!-- modal -->
+    <%-include('partials/Modal') %> 
+    <div class="d-flex overflow-auto gap-4 justify-content-between" style="margin-top: 25px !important; min-width:1200px">
+
+        <div class="overflow-auto  table-container" style="width:100%;  "> 
+        
+            <table id="mainTable" class="table border-top border-bottom" style="width: 100%;">
+                <thead>
+                    <tr>
+                        <th>Leave Type</th>
+                        <th>Description</th>
+                        <th>Created</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                   
+                </tbody>
+                <tfoot>
+                </tfoot>
+            </table>
+        </div>
+        <div class="sideContainer rounded-1">
+            <div class="overflow-auto" > 
+                <form action="" id="asideForm" class="d-flex flex-column gap-2">
+                    <h1>Add Leave Type</h1>
+                    <div class="mb-0">
+                        <input required type="text" class="form-control" name='leave' placeholder="Leave Type">
+                        <p class="text-center text-danger fname-error error"></p>
+                    </div>
+                    
+                    <div class="mb-0">
+                        <textarea class="form-control" name='description' placeholder="Description"></textarea>
+                        <p class="text-center text-danger description-error error"></p>
+                    </div>
+                    <button type="submit" class="btn btn-primary sideContainerButton">Add New</button>
+                </form>
+            </div>
+        </div>
+        
+    </div>
+    
+</div>
+
+
+
+</main>
+
+<%-include('partials/Footer')%>
+<script>
+    $(document).ready(function () {
+    
+    $('#mainTable').DataTable({
+        "columnDefs": [
+         //date-fields
+         {
+            "orderable": true,
+            "targets": [2, 3],
+            "type": 'date'
+         },
+         {"className": "dt-center", "targets": "_all"}
+        ]
+        });
+    });
+
+    const form = document.querySelector('form#asideForm')
+    form.addEventListener('submit', async (e)=>{
+        e.preventDefault()
+        try{
+            const fnameErr = document.querySelector('p.fname-error')
+            const preDateErr = document.querySelector('p.from-error')
+            const dateErr = document.querySelector('p.to-error')
+
+            const name = form.name.value
+            const description = form.description.value
+            const preDate = form.preDate.value
+            const date = form.date.value
+
+            const res = await fetch('http://localhost:3000/admin/api/events/holidays', {
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    name,
+                    description,
+                    preDate,
+                    date
+                }),
+                method: 'POST'
+            })
+            const data = await res.json()
+            console.log('asdas', data)
+            if(data.err) {
+                fnameErr.textContent = data.err.name
+                preDateErr.textContent = data.err.preDate
+                dateErr.textContent = data.err.date
+            }
+
+            if(data){
+                
+            }
+        }catch(e){
+            console.log('fe[holidays]:', e)
+        }
+    })
+</script>

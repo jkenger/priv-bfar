@@ -39,8 +39,10 @@ route.get('/attendance', checkToken, checkRoles, adminView.attendanceView)
 
 // holidays and travel orders endpoint
 route.get('/holidays', checkToken, checkRoles, adminView.holidayView)
-route.get('/holidays/add', checkToken, checkRoles, adminView.addHolidayView)
 route.get('/travelpass', checkToken, checkRoles, adminView.travelPassView)
+
+// leave endpoint
+route.get('/leave', checkToken, checkRoles, adminView.leaveView)
 
 // // all
 // route.get('*', )
@@ -90,7 +92,8 @@ route.post('/api/events/travelpass', admin.addTravelPass)
 route.delete('/api/events/travelpass/:id', admin.deleteTravelPass)
 route.patch('/api/events/travelpass/:id', admin.editTravelPass)
 
-    // 
+//leave
+// route.get('/api/leave', admin.readLeave)
 
 // record api
 route.get('/api/records', admin.readAttendance)

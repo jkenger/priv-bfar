@@ -1,3 +1,4 @@
+
 <div class="d-flex flex-column flex-shrink-0 p-3" style="width: 280px; padding: 0 !important;">
     <a href="#" class="d-flex flex-column align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none" style="padding: 30px">
         <div class="d-flex flex-row justify-content-center">
@@ -14,6 +15,7 @@
           Dashboard 
         </a>
       </li>
+      <hr>
       <li>
         <a href="/admin/employees" class="nav-link <%=(url.includes('/employees'))?'active':''%>">
           Employees
@@ -29,6 +31,7 @@
           Payroll Report
         </a>
       </li>
+      <hr>
       <li>
         <a href="/admin/holidays" class="nav-link <%=(url.includes('/holidays'))?'active':''%>">
           Holidays
@@ -39,6 +42,7 @@
           Travel Pass
         </a>
       </li>
+      <hr>
       <li>
         <a href="/admin/deductions" class="nav-link <%=(url.includes('/deductions'))?'active':''%>">
           Deductions
@@ -50,8 +54,14 @@
         </a>
       </li>
       <li>
+        <hr>
         <a href="/admin/leave" class="nav-link <%=(url.includes('/leave'))?'active':''%>">
-          Leave
+          Leave Types
+        </a>
+      </li>
+      <li>
+        <a href="/admin/manageLeave" class="nav-link <%=(url.includes('/manageleave'))?'active':''%>">
+          Manage Leave
         </a>
       </li>
     </ul>
@@ -75,3 +85,9 @@
         </div>
     </div>
   </div>
+
+  <style>
+    hr{
+      margin:.25em;
+    }
+  </style>
