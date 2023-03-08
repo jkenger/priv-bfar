@@ -142,6 +142,16 @@ input, .form-control, input:focus, .form-control:focus{
     cursor:default;
 }
 
+.pending{
+    color: #1e90ff;
+}
+.approved{
+    color: #2ed573;
+}
+.declined{
+    color: #ff4757;
+}
+
 .sideContainer{
     background-color: #F8F8F8;
     border: 1px solid #DDDDDD;

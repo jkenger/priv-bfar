@@ -43,6 +43,7 @@ route.get('/travelpass', checkToken, checkRoles, adminView.travelPassView)
 
 // leave endpoint
 route.get('/leave', checkToken, checkRoles, adminView.leaveView)
+route.get('/manageLeave/all', checkToken, checkRoles, adminView.allLeaveView)
 
 // // all
 // route.get('*', )

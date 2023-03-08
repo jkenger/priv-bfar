@@ -164,5 +164,18 @@ module.exports = {
         }catch(err){
             res.status(500).send(err)
         }
+    },
+    allLeaveView: async (req, res) =>    {
+        try{
+            const data = await fetchData('admin/api/events/travelpass')
+            res.status(200).render('allLeave', {
+                data, 
+                url: req.url, 
+                moment: moment
+            })
+            console.log(data)
+        }catch(err){
+            res.status(500).send(err)
+        }
     }
 }

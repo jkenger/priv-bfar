@@ -17,52 +17,92 @@
       </li>
       <hr>
       <li>
-        <a href="/admin/employees" class="nav-link <%=(url.includes('/employees'))?'active':''%>">
+        <a href="/admin/employees" class="nav-link <%=(url.toLowerCase().includes('/employees'))?'active':''%>">
           Employees
         </a>
       </li>
       <li>
-        <a href="/admin/attendance" class="nav-link <%=(url.includes('/attendance'))?'active':''%>">
+        <a href="/admin/attendance" class="nav-link <%=(url.toLowerCase().includes('/attendance'))?'active':''%>">
           Attendance Report
         </a>
       </li>
       <li class="nav-item">
-        <a href="/admin/payroll" class="nav-link <%=(url.includes('/payroll'))?'active':''%>" aria-current="page">
+        <a href="/admin/payroll" class="nav-link <%=(url.toLowerCase().includes('/payroll'))?'active':''%>" aria-current="page">
           Payroll Report
         </a>
       </li>
       <hr>
       <li>
-        <a href="/admin/holidays" class="nav-link <%=(url.includes('/holidays'))?'active':''%>">
+        <a href="/admin/holidays" class="nav-link <%=(url.toLowerCase().includes('/holidays'))?'active':''%>">
           Holidays
         </a>
       </li>
       <li>
-        <a href="/admin/travelpass" class="nav-link <%=(url.includes('/travelpass'))?'active':''%>">
+        <a href="/admin/travelpass" class="nav-link <%=(url.toLowerCase().includes('/travelpass'))?'active':''%>">
           Travel Pass
         </a>
       </li>
       <hr>
       <li>
-        <a href="/admin/deductions" class="nav-link <%=(url.includes('/deductions'))?'active':''%>">
+        <a href="/admin/deductions" class="nav-link <%=(url.toLowerCase().includes('/deductions'))?'active':''%>">
           Deductions
         </a>
       </li>
       <li>
-        <a href="/admin/contributions" class="nav-link <%=(url.includes('/contributions'))?'active':''%>">
+        <a href="/admin/contributions" class="nav-link <%=(url.toLowerCase().includes('/contributions'))?'active':''%>">
           Contributions
         </a>
       </li>
       <li>
         <hr>
-        <a href="/admin/leave" class="nav-link <%=(url.includes('/leave'))?'active':''%>">
+        <a href="/admin/leave" class="nav-link <%=(url.toLowerCase().includes('/leave'))?'active':''%>">
           Leave Types
         </a>
       </li>
-      <li>
-        <a href="/admin/manageLeave" class="nav-link <%=(url.includes('/manageleave'))?'active':''%>">
-          Manage Leave
-        </a>
+      <li class="nav-item dropdown position-static">
+        <a class="nav-link dropdown-toggle <%=(url.toLowerCase().includes('/manageleave'))?'active':''%>" href="#" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Manage Leave</a>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+          <a class="dropdown-item" href="/admin/manageleave/all">All Leave</a>
+          <a class="dropdown-item" href="#">Pending</a>
+          <a class="dropdown-item" href="#">Approved</a>
+          <a class="dropdown-item" href="#">Rejected</a>
+        </div>
+        <style>
+        .nav-link{
+          color: #67668A;
+        }
+        .nav-pills, .nav{
+          --bs-nav-pills-link-active-bg: #67668A;
+          --bs-nav-link-color: #67668A;
+        }
+        .nav-link:focus, .nav-link:hover {
+          color: #67668A; 
+        }
+        .nav-pills .nav-link.active, .nav-pills .show>.nav-link {
+          color: #ffefee;
+          background-color: #67668A;
+          border: 0;
+          border-radius: 0;
+        }
+        .dropdown-menu{
+          border:0;
+          border-radius: 0;
+          padding: 0;
+          --bs-dropdown-link-active-bg: #67668A;
+        }
+        .dropdown-item {
+          padding: 0.25rem 1.5rem !important;
+          font-size: .85rem;
+          font-family: inherit;
+          font-weight: inherit;
+          border: 0;
+        }
+
+        .dropdown.position-static .dropdown-menu {
+          position: static !important;
+          transform: none !important;
+        }
+        </style>
       </li>
     </ul>
     <div class="d-flex flex-row" style="padding: 15px 5px 15px 5px; border-top: 1px solid #dddddd;" >
