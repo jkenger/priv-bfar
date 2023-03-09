@@ -11,61 +11,28 @@
     
     <ul class="nav nav-pills flex-column mb-auto" style="">
       <li>
-        <a href="/admin/" class="nav-link <%=(url==='/')?'active':''%> ">
-          Dashboard 
+        <a href="/employee/" class="nav-link <%=(url.toLowerCase().includes('/employee'))?'active':''%> ">
+          Dashboard
         </a>
       </li>
       <hr>
       <li>
-        <a href="/admin/employees" class="nav-link <%=(url.toLowerCase().includes('/employees'))?'active':''%>">
-          Employees
+        <a href="/employee/attendances" class="nav-link <%=(url.toLowerCase().includes('/attendance'))?'active':''%> ">
+          Attendances
         </a>
       </li>
       <li>
-        <a href="/admin/attendance" class="nav-link <%=(url.toLowerCase().includes('/attendance'))?'active':''%>">
-          Attendance Report
-        </a>
-      </li>
-      <li class="nav-item">
-        <a href="/admin/payroll" class="nav-link <%=(url.toLowerCase().includes('/payroll'))?'active':''%>" aria-current="page">
-          Payroll Report
-        </a>
-      </li>
-      <hr>
-      <li>
-        <a href="/admin/holidays" class="nav-link <%=(url.toLowerCase().includes('/holidays'))?'active':''%>">
-          Holidays
-        </a>
-      </li>
-      <li>
-        <a href="/admin/travelpass" class="nav-link <%=(url.toLowerCase().includes('/travelpass'))?'active':''%>">
-          Travel Pass
-        </a>
-      </li>
-      <hr>
-      <li>
-        <a href="/admin/deductions" class="nav-link <%=(url.toLowerCase().includes('/deductions'))?'active':''%>">
-          Deductions
-        </a>
-      </li>
-      <li>
-        <a href="/admin/contributions" class="nav-link <%=(url.toLowerCase().includes('/contributions'))?'active':''%>">
-          Contributions
-        </a>
-      </li>
-      <li>
-        <hr>
-        <a href="/admin/leave" class="nav-link <%=(url.toLowerCase().includes('/leave'))?'active':''%>">
-          Leave Types
+        <a href="/employee/payroll" class="nav-link <%=(url.toLowerCase().includes('/payroll'))?'active':''%> ">
+          Payroll
         </a>
       </li>
       <li class="nav-item dropdown position-static">
-        <a class="nav-link dropdown-toggle <%=(url.toLowerCase().includes('/manageleave'))?'active':''%>" href="#" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Manage Leave</a>
+        <a class="nav-link dropdown-toggle <%=(url.toLowerCase().includes('/manageleave'))?'active':''%>" href="#" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Leave</a>
         <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-          <a class="dropdown-item" href="/admin/manageleave/all">All Leave</a>
-          <a class="dropdown-item" href="#">Pending</a>
-          <a class="dropdown-item" href="#">Approved</a>
-          <a class="dropdown-item" href="#">Rejected</a>
+          <a class="dropdown-item" href="/admin/manageleave/all">Request for Leave</a>
+          <a class="dropdown-item" href="#">All Leave</a>
+          <a class="dropdown-item" href="#">Approved Leaves</a>
+          <a class="dropdown-item" href="#">Rehected Leaves</a>
         </div>
         <style>
         .nav-link{
@@ -96,7 +63,7 @@
           font-family: inherit;
           font-weight: inherit;
           border: 0;
-          color:#67668A;
+          color: #67668A;
         }
 
         .dropdown.position-static .dropdown-menu {
@@ -105,6 +72,7 @@
         }
         </style>
       </li>
+      
     </ul>
     <div class="d-flex flex-row" style="padding: 15px 5px 15px 5px; border-top: 1px solid #dddddd;" >
         <div class="d-flex flex-row" style="margin:5px;">
@@ -112,9 +80,9 @@
         </div> 
             <div class="d-flex flex-column justify-content-center" >
                 <a href="#" class="nav-link">
-                    <u>sampleadmin@bfar.com</u>
+                    <u>sampleEmployee@bfar.com</u>
                 </a>
-                <p>Admin</p>
+                <p>Employee</p>
             <div class="d-flex flex-row" >
                 <a href="#" class="nav-link" style="padding-right: 10px !important;">
                     <u> Account </u>

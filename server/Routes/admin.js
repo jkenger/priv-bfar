@@ -11,7 +11,7 @@ const { id } = require('date-fns/locale')
 // authentication endpoints
 route.get('/login', adminAuthView.login)
 route.get('/register', adminAuthView.register)
-route.get('/logout', adminAuthView.logout) 
+route.get('/logout', adminAuthView.logout)
 
 // authentication api
 route.post('/register', adminAuth.register_post)

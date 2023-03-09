@@ -1,0 +1,52 @@
+<%-include('partials/Header')%>
+<style>
+    .btn-primary{ background: #67668A;}
+    input {text-align:center; }
+    .form-control, .btn {border-radius: 0px;font-size: 14px; border-left: 0px; border-right: 0px;}
+    
+    .btn{ padding: 15px 0px 15px 0px;  border-color: #67668A; height: 50px;}
+    .btn-primary:hover{ background: #424158;}
+    .btn-primary:active{ background: #424158;}
+</style>
+<div class="d-flex p-2 justify-content-center align-items-center" style="height: 100vh;">
+    
+    <div class="container-sm " style="max-width: 500px; background: #F5F5F5; border: solid #efeff3 1px;padding: 60px 0px 60px 0px;">
+
+        <form class="d-flex justify-content-center flex-column "> 
+
+            <img src="/img/bfar-logo.png" class="img-fluid mx-auto" alt="..." style="max-width: 40%;">
+            <h1 class="text-center" style="margin-bottom: 2em;">BFAR Management System Portal Login</h1>
+
+            <div class="mb-0 mb-3">
+                <input type="text" class="form-control" name='email' id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Email or Username">
+                <p class="text-center text-danger email-error error"></p>
+            </div>
+            
+            <div class="mb-0 mb-3">
+                <input type="password" class="form-control" name='password' id="exampleInputPassword1" placeholder="Password">
+                <p class="text-center text-danger password-error error"></p>
+            </div>
+            <div class="d-flex align-items-center gap-1 mb-3 mx-2 justify-content-between">
+                <div class="d-flex gap-1">
+                    <div class="d-flex align-items-center">
+                        <input id="remember" aria-describedby="remember" type="checkbox" class="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-primary-600 dark:ring-offset-gray-800" data-v-26652ec2="">
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <label for='remember'class="">Remember me</label>
+                    </div>
+                </div>
+                
+                <div class="d-flex justifiy-content-end w-max">
+                    <a href="#">Forgot Password?</a>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary">SIGN IN</button>
+        </form>
+
+
+    </div>
+
+</div>
+
+<%-include('partials/Footer')%>
+<script src="/scripts/login.js"></script>

@@ -6,6 +6,7 @@ const cookieParser = require('cookie-parser')
 const ejs = require('ejs')
 const cors = require('cors')
 const adminRoute = require('./server/Routes/admin')
+const employeeRoute = require('./server/Routes/employee');
 const publicRoute = require('./server/Routes/public')
 var path = require('path')
 require('dotenv').config()
@@ -35,6 +36,7 @@ mongoose.connect(process.env.DB_URI)
 
 // ROUTES
 app.use('/admin', adminRoute)
+app.use('/employee', employeeRoute)
 app.use('/', publicRoute)
 
 // ROUTES || Not Found URLS
