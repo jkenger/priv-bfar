@@ -16,6 +16,7 @@ const desLabelEl = document.querySelector('.labelDesignation')
 
 const timeEl = document.querySelector('.timeButton').children
 const timeType = document.querySelector('.timeType')
+const inputType = document.querySelector('.inputType')
 
 // refresh when current time reaches specified time
 setInterval(() => {
@@ -48,6 +49,7 @@ onScan.attachTo(document, {
         console.log(sCode, ' ', iQty)
 
         idInput.value = sCode // replace the id textbox value to scanned id
+        inputType.value = 'rfid'
         btnEl.click()
     }
 });
@@ -62,14 +64,16 @@ form.addEventListener('submit', async (e) => {
     console.log(timeType.value)
     const emp_code = form.empid.value
     const time_type = timeType.value
+    const input_type = inputType.value
     const date = new Date()
-    console.log(emp_code)
+    console.log(input_type)
     try {
         const res = await fetch('/attendance', {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
                 emp_code,
-                time_type
+                time_type,
+                input_type
             }),
             method: 'POST'
         })
@@ -77,12 +81,13 @@ form.addEventListener('submit', async (e) => {
         if (data.err) {
             lblMessage.textContent = data.err.email + " Failed!"
         }
+        console.log(data)
         if (data.log_in && time_type === 'timein') {
             // Welcome <Strong>Ken Gervacio!</Strong> <br> Time in at <span class="font-success"> 10:26:30 AM</span>. Success! 
             lblMessage.innerHTML = `Hello <Strong>${data.employee[0].personal_information.name}!</Strong> <br> Time in at <span class="font-success"> ${date.toLocaleTimeString()}</span>. Success!`
             nameLabelEl.textContent = data.employee[0].personal_information.name
             idLabelEl.textContent = data.employee[0].employee_details.designation.id
-            imgEl.src = '/img/pfp2.jpg'
+            imgEl.src = '/img/sampleimg.jpg'
             // setTimeout(()=>{
             //     location.href = '/';
             // }, 2000)
@@ -91,7 +96,7 @@ form.addEventListener('submit', async (e) => {
             lblMessage.innerHTML = `Hello <Strong>${data.employee[0].personal_information.name}!</Strong> Time out at <span class="font-success"> ${date.toLocaleTimeString()}</span>. Success!`
             nameLabelEl.textContent = data.employee[0].personal_information.name
             idLabelEl.textContent = data.employee[0].employee_details.designation.id
-            imgEl.src = '/img/pfp2.jpg'
+            imgEl.src = '/img/sampleimg.jpg'
             // setTimeout(()=>{
             //     location.href = '/';
             // }, 2000)
