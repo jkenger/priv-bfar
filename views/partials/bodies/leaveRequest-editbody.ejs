@@ -1,0 +1,47 @@
+<style>
+    .form-control{
+        width: 100%;
+        border-radius: 0;
+    }
+    select{
+        padding: .375em .6em;
+        margin: 0;
+        border-right: 0;
+        border-left: 0;
+        border-top: 1px solid #DDDDDD;
+        border-bottom: 1px solid #DDDDDD;
+    }
+    input, select, textarea{
+        outline-color: #656488;
+    }
+    select:selection{
+        border: 1px solid #656488;
+    }
+    label{
+        padding-left: .75em;
+        padding-bottom: .25em;
+    }
+</style>
+<div class="mb-0">
+    <label for="id">Leave Type:</label>
+    <input required type="text" class="form-control inputModal" name='leavetype' placeholder="Leave Type" value="">
+    <p class="text-center text-danger leave-error error"></p>
+</div>
+
+<div class="mb-0">
+    <label for="id">Leave From:</label>
+    <input required type="date" step="any" class="form-control inputModal" name='from' placeholder="From" value="">
+    <p class="text-center text-danger fname-error error"></p>
+
+</div>
+<div class="mb-0">
+    <label for="id">Leave To:</label>
+    <input required type="date" step="any" class="form-control inputModal" name='to' placeholder="Until" value="">
+    <p class="text-center text-danger fname-error error"></p>
+</div>
+
+<div class="mb-0">
+    <label for="id">Reason:</label>
+    <textarea required class="form-control inputModal" name='reason' placeholder="Reason" value=""></textarea>
+    <p class="text-center text-danger fname-error error"></p>
+</div>

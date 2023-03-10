@@ -11,4 +11,10 @@ route.get('/login', employeeAuthView.login)
 
 route.get('/', employeeView.homeView)
 
+// leave routes
+// route.get('/leave', employeeView.leaveStatusView)
+route.get('/leave', employeeView.employeeLeaveView)
+// route.get('/leave/leavehistory', employeeView.leaveHistoryView)
+
+
 module.exports = route

@@ -1,8 +1,11 @@
 <%-include('partials/Header')%>
 <link rel="stylesheet" href="/styles/dataTable.css">
+<style>
+ 
+</style>
 <main class="d-flex flex-nowrap" style=" height: 100vh; overflow: hidden; align-self: center;">
 
-    <%-include('partials/Aside')%> 
+    <%-include('partials/employeeAside')%> 
 <div class="d-flex flex-column flex-fill" style="border-left: 1px solid #dddddd; padding: 1.5em 2em 1.5em 2em">
     <div class="d-flex justify-content-between"> 
             <div class="d-flex justify-content-center align-items-center rounded-1"> 
@@ -24,7 +27,7 @@
                     <p><b></b></p>
                   </div>
             </div>
-    </div>  
+    </div>
 
     <div class="d-flex gap-4" style="padding-top: 25px !important;"> 
       <div class="d-flex justify-content-between flex-fill rounded-1" style="background: #F5F5F5; border: solid #dddddd 1px; padding: 15px;">
@@ -81,20 +84,27 @@
     <div class="d-flex filterContainer rounded-1 gap-3">
         <form action="">
             <div class="input-group">
-                <div class="input-group-prepend">
-                  <div class="input-group-text  rounded-1 d-flex gap-2">
-                  <input type="radio" name="datefil" value="alltime" aria-label="Radio button for following text input" checked> <label>label</label>
-                  <input type="radio" name="datefil" value="today" aria-label="Radio button for following text input"> Today
-                  <input type="radio" name="datefil" value="15d"data-odaria-label="Radio button for following text input"> 15D
-                  <input type="radio" name="datefil" value="30d"data-odaria-label="Radio button for following text input"> 30D
-                  </div>
+              <div class="input-group-prepend">
+                <div class="input-group-text  rounded-1 d-flex gap-2">
+                <input type="radio" name="datefil" value="alltime" aria-label="Radio button for following text input" checked> <label>label</label>
+                <input type="radio" name="datefil" value="today" aria-label="Radio button for following text input"> Today
+                <input type="radio" name="datefil" value="15d"data-odaria-label="Radio button for following text input"> 15D
+                <input type="radio" name="datefil" value="30d"data-odaria-label="Radio button for following text input"> 30D
                 </div>
               </div>
-            <input type="date" name="from" value="" id="" class="rounded-1">
-            <input type="date" name="to" value="" id="" class="rounded-1"    >
-            
-            <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+          <input type="date" name="from" value="" id="" class="rounded-1">
+          <input type="date" name="to" value="" id="" class="rounded-1">
+          
+          <button type="submit" class="btn btn-primary">Submit</button>
+       
+          
+          
         </form>
+    </div>
+    <%-include('partials/Modal') %> 
+    <div class="d-flex filterContainer rounded-1 gap-3 justify-content-center">
+        <a id="btnAdd" href="#" data-toggle="modal" data-target="#modal"  onclick="editModal('21312321321','kenwu', 'name amount', `<%=include('partials/bodies/leaveRequest-editbody')%>`)" class="btn btn-primary">Request for Leave</a>
     </div>
 
     <div class="d-flex overflow-auto  table-container" style="margin-top: 25px !important; min-width:1200px;"> 

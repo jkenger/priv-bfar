@@ -38,7 +38,7 @@ const editModal = (id, name, inputs, html)=>{
         if(modalForm.dataset.formType === 'editForm'){
             e.preventDefault()
             let inputObj = {}
-            // get key vvalues of each inputs and assign it to a variable named values
+            // get key vvalues of each inputs and assign it to a variable given values
             arrKeys.forEach((arr, index)=>{
                 inputObj[arrKeys[index]] = modalForm[arr].value
             })

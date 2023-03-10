@@ -98,6 +98,10 @@ input, .form-control, input:focus, .form-control:focus{
 .form-control:focus{
     box-shadow: 0 0 0 0.2rem rgba(101, 100, 136, .25);
 }
+
+/* modal body */
+.form-control, .btn {font-size: 14px; border-left: 0px; border-right: 0px;}
+
 .filterContainer{
     background-color: #F8F8F8;
     border: 1px solid #DDDDDD;
@@ -212,7 +216,7 @@ button.sideContainerButton:hover{
     background-color: #424158;
 }
 
-input[type='date']{
+.filterContainer input[type='date']{
     padding: .4em .5em;
     border: 1px solid #DDDDDD;
     width: 200px;

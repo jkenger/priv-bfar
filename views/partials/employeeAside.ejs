@@ -5,7 +5,7 @@
             <img src="/img/bfar-logo.png" class="img-fluid" alt="..." style="max-width: 40%;">
             <img src="/img/niftc.png" class="img-fluid" alt="..." style="max-width: 40%;">
         </div>
-            <p class="text-center fs-5" style="font-size: 18px !important; color: #67668A; ">BFAR Management System</p>
+            <p class="text-center fs-5" style="font-size: 18px !important; color: #67668A; ">BFAR Management System Employee Portal</p>
         
     </a>
     
@@ -27,12 +27,11 @@
         </a>
       </li>
       <li class="nav-item dropdown position-static">
-        <a class="nav-link dropdown-toggle <%=(url.toLowerCase().includes('/manageleave'))?'active':''%>" href="#" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Leave</a>
+        <a class="nav-link dropdown-toggle <%=(url.toLowerCase().includes('/leave'))?'active':''%>" href="#" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Leave</a>
         <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-          <a class="dropdown-item" href="/admin/manageleave/all">Request for Leave</a>
-          <a class="dropdown-item" href="#">All Leave</a>
-          <a class="dropdown-item" href="#">Approved Leaves</a>
-          <a class="dropdown-item" href="#">Rehected Leaves</a>
+          <a class="dropdown-item" href="/employee/leave">Leaves</a>
+          <a class="dropdown-item" href="#">Leave Status</a>
+          <a class="dropdown-item" href="#">Leave History</a>
         </div>
         <style>
         .nav-link{

@@ -13,8 +13,8 @@ module.exports = {
                 url: req.url
             })
         } catch (err) {
-             res.status(500).send(err) 
-            }
+            res.status(500).send(err) 
+        }
     },
 
     readEmployeesView: async (req, res) => {
