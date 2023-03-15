@@ -22,26 +22,32 @@
         padding-bottom: .25em;
     }
 </style>
+<input required type="text" step="any" class="form-control inputModal" name='doc_id' placeholder="From" value="63cb6f0423cd4215c1ee0e6b" hidden>
+<input required type="text" step="any" class="form-control inputModal" name='emp_id' placeholder="From" value="11" hidden>
+<input required type="text" step="any" class="form-control inputModal" name='name' placeholder="From" value="Burok Hunda Mendoza" hidden>
 <div class="mb-0">
     <label for="id">Leave Type:</label>
-    <input required type="text" class="form-control inputModal" name='leavetype' placeholder="Leave Type" value="">
+    <select class="custom-select" name="leave_type" id="empTypeSelect">
+        <option value="casual">Casual Leave</option>
+        <option value="vacation">Vacation Leave</option>
+    </select>
     <p class="text-center text-danger leave-error error"></p>
 </div>
 
 <div class="mb-0">
     <label for="id">Leave From:</label>
-    <input required type="date" step="any" class="form-control inputModal" name='from' placeholder="From" value="">
+    <input required type="date" step="any" class="form-control inputModal" name='start_date' placeholder="From" value="">
     <p class="text-center text-danger fname-error error"></p>
 
 </div>
 <div class="mb-0">
     <label for="id">Leave To:</label>
-    <input required type="date" step="any" class="form-control inputModal" name='to' placeholder="Until" value="">
+    <input required type="date" step="any" class="form-control inputModal" name='end_date' placeholder="Until" value="">
     <p class="text-center text-danger fname-error error"></p>
 </div>
 
 <div class="mb-0">
     <label for="id">Reason:</label>
-    <textarea required class="form-control inputModal" name='reason' placeholder="Reason" value=""></textarea>
+    <textarea required class="form-control inputModal" name='leave_reason' placeholder="Reason" value=""></textarea>
     <p class="text-center text-danger fname-error error"></p>
 </div>

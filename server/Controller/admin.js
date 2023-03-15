@@ -5,10 +5,10 @@ const attendances = require('../Model/attendance')
 const Holiday = require('../Model/holiday')
 const Payroll = require('../Model/payroll')
 const TravelPass = require('../Model/travelPass')
-const Employees = require('./../Model/employee')
+const Employees = require('./../Model/employeee')
 const Deductions = require('../Model/deductions')
+const LeaveRequests = require('../Model/leaveRequests')
 const { query } = require('express')
-const { createIndexes, count, create } = require('../Model/employee')
 const countWeekdays = require('./services/calendarDays')
 const mongoose = require('mongoose')
 
@@ -452,7 +452,13 @@ module.exports = {
                 console.log(e)
             }
         }
-    }
+    },
+
+    //get all leave requests
+    readLeaveRequests: async (req, res) => {
+        const result = await LeaveRequests.find({}).sort({date: -1}).populate('doc_id')
+        res.status(200).send({result: result})
+    },
     
 }
 

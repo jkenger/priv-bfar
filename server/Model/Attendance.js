@@ -3,7 +3,6 @@ const mongoose = require('mongoose')
 const validator = require('validator')
 const moment = require('moment')
 const Employees = require('./employeee')
-const { findOneAndUpdate } = require('./employee')
 const { startOfDay } = require('date-fns')
 const setTime = require('./../Controller/services/setTime')
 
@@ -156,8 +155,7 @@ Attendance.statics.timeIn = async function (emp_code, _id, time_type) {
     if (time_type === 'timein') {
         const employee = await Employees.findOne({'employee_details.designation.id': emp_code}).select('personal_information.name')
         const filter = {emp_code: emp_code, date_string: currentDateString}
-        const doc = await EmpAttendance.findOne(filter);
-        console.log('asdsds', doc)
+        const doc = await EmpAttendance.findOne(filter) 
         // if no document this day, create one
         if(!doc){
             const result = await this.create({

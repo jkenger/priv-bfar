@@ -152,7 +152,7 @@ module.exports = {
             res.status(500).send(err)
         }
     },
-    leaveView: async (req, res) => {
+    leaveTypesView: async (req, res) => {
         try{
             const data = await fetchData('admin/api/events/travelpass')
             res.status(200).render('leaveTypes', {
@@ -167,7 +167,7 @@ module.exports = {
     },
     allLeaveView: async (req, res) =>    {
         try{
-            const data = await fetchData('admin/api/events/travelpass')
+            const data = await fetchData('admin/api/leave')
             res.status(200).render('allLeave', {
                 data, 
                 url: req.url, 

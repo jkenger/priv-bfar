@@ -110,17 +110,15 @@
                 </tr>
             </thead>
             <tbody>
-               <tr>
-                    <td>10</td>
-                    <td>kenwu</td>
-                    <td>Casual Leave</td>
-                    <td>januray 2023</td>
-                    <td>
-                        <span class='status pending'>pending</span>
-                        <span class='status declined'>declined</span>
-                        <span class='status approved'>approved</span>
-                    </td>
-               </tr>
+              <% Object.values(data.result).forEach(leaveRequest =>{%> 
+                <tr>
+                    <td><%=leaveRequest.emp_id%></td>
+                    <td><%=leaveRequest.name%></td>
+                    <td><%=leaveRequest.leave_type%></td>
+                    <td><%=moment(leaveRequest.date_requested).format('LL')%></td>
+                    <td><%=leaveRequest.status%></td>
+                </tr>
+                <%}); %>
                <style>
                    
                </style>

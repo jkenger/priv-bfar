@@ -28,6 +28,10 @@ route.get('/employees/new',checkToken, checkRoles, adminView.addEmployeeView)
 route.get('/employees/view/:id',checkToken, checkRoles, adminView.viewEmployeeView)
 route.get('/employees/edit/:id',checkToken, checkRoles, adminView.editEmployeeView)
 
+//leave endpoints
+route.get('/manageLeave/all', checkToken, checkRoles, adminView.allLeaveView)
+route.get('/leavetypes', checkToken, checkRoles, adminView.leaveTypesView)
+
 // deduction endpoints
 route.get('/deductions', checkToken, checkRoles, adminView.deductionView)
 
@@ -42,8 +46,6 @@ route.get('/holidays', checkToken, checkRoles, adminView.holidayView)
 route.get('/travelpass', checkToken, checkRoles, adminView.travelPassView)
 
 // leave endpoint
-route.get('/leave', checkToken, checkRoles, adminView.leaveView)
-route.get('/manageLeave/all', checkToken, checkRoles, adminView.allLeaveView)
 
 // // all
 // route.get('*', )
@@ -103,7 +105,8 @@ route.get('/api/records', admin.readAttendance)
 route.get('/api/payrolls', admin.readPayrolls)
 
 
-// holiday and travel orders api
+// leave api
+route.get('/api/leave', admin.readLeaveRequests)
 
 // tests
 route.delete('/api/testdelete', admin.testdelete)

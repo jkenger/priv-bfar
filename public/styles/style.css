@@ -47,6 +47,10 @@ p.error{
     background-color: #FFFEFE;
 }
 
+#modalForm select{
+    width: 100%;
+}
+
 input, .form-control, input:focus, .form-control:focus{
     outline-color: #656488;
     color: #656488;
