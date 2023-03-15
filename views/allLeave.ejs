@@ -107,6 +107,7 @@
                     <th>Leave type</th>
                     <th>Applied On</th>
                     <th>Current Status</th>
+                    <th>Action</th>
                 </tr>
             </thead>
             <tbody>
@@ -116,13 +117,50 @@
                     <td><%=leaveRequest.name%></td>
                     <td><%=leaveRequest.leave_type%></td>
                     <td><%=moment(leaveRequest.date_requested).format('LL')%></td>
-                    <td><%=leaveRequest.status%></td>
+                    <td>
+                      <%if(leaveRequest.status.toLowerCase() === 'pending'){ %>
+                          <span class="status pending">pending</span>
+                      <%}else if (leaveRequest.status.toLowerCase() === 'approved'){%>
+                          <span class="status approved">approved</span>
+                      <%}else if(leaveRequest.status.toLowerCase() === 'declined'){%>
+                        <span class="status declined">declined</span>
+                      <%}%>
+                    </td>
+                    <td>
+                      <%if(leaveRequest.status.toLowerCase() === 'pending'){%>
+                        <a onclick="updateRequest('<%=leaveRequest._id%>', 'approve')" href="#" class="table-link approve">Approve</a>
+                        <a onclick="updateRequest('<%=leaveRequest._id%>', 'decline')"href="#" class="table-link reject">Decline</a>
+                      <%}else{%>
+                        
+                      <%}%>
+                    </td>
                 </tr>
                 <%}); %>
                <style>
                    
                </style>
-            </tbody>
+                <script>
+                  const updateRequest = async (_id, _action)=>{
+                    const id = _id
+                    console.log('first acc', _action)
+                    const action = _action
+                    console.log(action)
+                    const data = await fetch(`http://localhost:3000/admin/api/leave`, {
+                      method: 'PATCH',
+                      headers: {
+                        'Content-Type': 'application/json'
+                      },
+                      body: JSON.stringify({
+                        id,
+                        action
+                      })
+                    })
+                    const result = await data.json()
+                    console.log(result)
+                  }
+                </script>  
+          
+          </tbody>
             <tfoot>
             </tfoot>
         </table>

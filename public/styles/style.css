@@ -65,6 +65,38 @@ input, .form-control, input:focus, .form-control:focus{
     border: 1px solid #424158;
 }
 
+.btn-table{
+    border-radius: 2px;
+    padding: .25em .5em;
+}
+a.approve{
+    color: #2da44e;
+}
+a.reject{
+    color:#cf222e;
+}
+.btn-approve{
+    background-color: #70a1ff;
+    color: #FFFEFE;
+    border: 1px solid #70a1ff;
+}
+.btn-approve:hover{
+    background-color: #1e90ff;
+    border: 1px solid #1e90ff;
+    color: #FFFEFE;
+}
+.btn-reject{
+    background-color: #ff6b81;
+    color: #FFFEFE;
+    border: 1px solid #ff6b81;
+}
+.btn-reject:hover{
+    background-color: #ff4757;
+    border: 1px solid #ff4757;
+    color: #FFFEFE;
+}
+
+
 
 .container{
     background-color: #F8F8F8;

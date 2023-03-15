@@ -107,6 +107,7 @@ route.get('/api/payrolls', admin.readPayrolls)
 
 // leave api
 route.get('/api/leave', admin.readLeaveRequests)
+route.patch('/api/leave', admin.updateLeaveRequest)
 
 // tests
 route.delete('/api/testdelete', admin.testdelete)

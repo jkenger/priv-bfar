@@ -11,6 +11,7 @@ const LeaveRequests = require('../Model/leaveRequests')
 const { query } = require('express')
 const countWeekdays = require('./services/calendarDays')
 const mongoose = require('mongoose')
+const { findOneAndUpdate } = require('../Model/employeee')
 
 
 module.exports = {
@@ -456,9 +457,22 @@ module.exports = {
 
     //get all leave requests
     readLeaveRequests: async (req, res) => {
-        const result = await LeaveRequests.find({}).sort({date: -1}).populate('doc_id')
+        const result = await LeaveRequests.find({}).sort({date: 1}).populate('doc_id')
         res.status(200).send({result: result})
     },
+
+    updateLeaveRequest: async (req, res) => {
+        const {id, action} = req.body
+        console.log(id)
+        console.log(action)
+        var result = {}
+        if(action === 'approve')
+            result = await LeaveRequests.findOneAndUpdate({_id: id}, {$set: {status: 'Approved'}})
+        else if(action === 'decline')   
+            result = await LeaveRequests.findOneAndUpdate({_id: id}, {$set:{status:'Declined'}})
+
+        res.status(200).send({result: result})
+    }
     
 }
 
