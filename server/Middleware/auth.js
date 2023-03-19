@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken')
-const UserSchema = require('../Model/user')
+const User = require('../Model/user')
+const EmployeeUser = require('../Model/employeeUser')
 
 // VERIFY TOKEN to access the home page
 const checkToken = (req, res, next) => {
@@ -36,7 +37,7 @@ const checkRoles = (req, res, next)=>{
                     next()
                 }else{
                     // DEFAULT ATM, REDIRECT TO USER ACCESS IF AVAIALABLE
-                    res.redirect('/time_monitoring') 
+                    res.redirect('/employee/')
                 }
                 
             }
@@ -48,9 +49,36 @@ const checkRoles = (req, res, next)=>{
     }
 }
 
+const checkEmployeeRole = (req, res, next)=>{
+    const token = req.cookies['token']
+    const role = req.cookies['isAdmin']
+    if (token) {
+        jwt.verify(token, '02fh1000movah', (err, decordedToken) => {
+            if (err) {
+                res.cookie('token', '')
+                res.redirect('/employee/login')
+            } else {
+                if(role === 'employee'){
+                    console.log('/auth.checkRoles :', decordedToken)
+                    next()
+                }else{
+                    // DEFAULT ATM, REDIRECT TO USER ACCESS IF AVAIALABLE
+                    res.redirect('/admin/')
+                }
+                
+            }
+
+        })
+    } else {
+        console.log('Token not found')
+        res.redirect('/employee/login')
+    }
+}
+
 // CHECK USER if authenticated, give access.
 const checkUser = (req, res, next) => {
     const token = req.cookies['token']
+    const role = req.cookies['isAdmin']
     if (token) {
         jwt.verify(token, '02fh1000movah', async (err, decordedToken) => {
             if (err) {
@@ -58,7 +86,13 @@ const checkUser = (req, res, next) => {
                 res.locals.user = null
                 next()
             }else{
-                const data = await UserSchema.findById(decordedToken.id)
+                var data = {}
+                if(role === 'admin'){
+                    data = await User.findById(decordedToken.id)
+                }
+                else if(role === 'employee'){
+                    data = await EmployeeUser.findById(decordedToken.id)
+                }
                 res.locals.user = data
                 console.log('/auth.checkUser:', res.locals.user)
                 next()
@@ -70,4 +104,4 @@ const checkUser = (req, res, next) => {
     }
 }
 
-module.exports = { checkToken, checkUser, checkRoles }
+module.exports = { checkToken, checkUser, checkRoles, checkEmployeeRole }

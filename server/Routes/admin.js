@@ -19,7 +19,7 @@ route.post('/login', adminAuth.login_post)
 
 
 // all
-route.get('*', checkUser)
+route.get('*', checkUser)   
 route.get('/', checkToken, checkRoles, adminView.dashboardView)
 
 // employee endpoints
@@ -108,6 +108,9 @@ route.get('/api/payrolls', admin.readPayrolls)
 // leave api
 route.get('/api/leave', admin.readLeaveRequests)
 route.patch('/api/leave', admin.updateLeaveRequest)
+
+route.post('/api/leavetypes', admin.addLeaveType)
+route.get('/api/leavetypes', admin.readLeaveTypes)
 
 // tests
 route.delete('/api/testdelete', admin.testdelete)

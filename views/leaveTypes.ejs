@@ -67,7 +67,17 @@
                     </tr>
                 </thead>
                 <tbody>
-                   
+                    <% Object.values(data.result).forEach(leaveType =>{%> 
+                        <tr>
+                            <td><%=leaveType.leave_type%></td>
+                            <td><%=leaveType.description%></td>
+                            <td><%=moment(leaveType.createdAt).format('LL')%></td>
+                            <td>
+                                <a id="aEdit" href="#" data-toggle="modal" data-target="#modal"  onclick="editModal('<%=leaveType._id%>','<%=leaveType.name%>', 'leave_type description', `<%=include('partials/bodies/leaveType-editbody', {leaveType})%>`)"> Edit </a>
+                                <a id="aDelete" href="#" data-toggle="modal" data-target="#modal"  onclick="deleteModal('<%=leaveType._id%>')"> Delete </a>
+                            </td>
+                        </tr>
+                    <%}); %>
                 </tbody>
                 <tfoot>
                 </tfoot>
@@ -78,8 +88,8 @@
                 <form action="" id="asideForm" class="d-flex flex-column gap-2">
                     <h1>Add Leave Type</h1>
                     <div class="mb-0">
-                        <input required type="text" class="form-control" name='leave' placeholder="Leave Type">
-                        <p class="text-center text-danger fname-error error"></p>
+                        <input required type="text" class="form-control" name='leave_type' placeholder="Leave Type">
+                        <p class="text-center text-danger leavetype-error error"></p>
                     </div>
                     
                     <div class="mb-0">
@@ -120,22 +130,17 @@
     form.addEventListener('submit', async (e)=>{
         e.preventDefault()
         try{
-            const fnameErr = document.querySelector('p.fname-error')
-            const preDateErr = document.querySelector('p.from-error')
-            const dateErr = document.querySelector('p.to-error')
+            const fnameErr = document.querySelector('p.leavetype-error')
+            const preDateErr = document.querySelector('p.description-error')
 
-            const name = form.name.value
+            const leave_type = form.leave_type.value
             const description = form.description.value
-            const preDate = form.preDate.value
-            const date = form.date.value
 
-            const res = await fetch('http://localhost:3000/admin/api/events/holidays', {
+            const res = await fetch('http://localhost:3000/admin/api/leavetypes', {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    name,
-                    description,
-                    preDate,
-                    date
+                    leave_type,
+                    description
                 }),
                 method: 'POST'
             })
@@ -144,11 +149,10 @@
             if(data.err) {
                 fnameErr.textContent = data.err.name
                 preDateErr.textContent = data.err.preDate
-                dateErr.textContent = data.err.date
             }
 
             if(data){
-                
+                console.log(data)
             }
         }catch(e){
             console.log('fe[holidays]:', e)

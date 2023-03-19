@@ -2,11 +2,17 @@ module.exports = {
 
     login:(req, res) => {
         if (req.cookies['token']) {
-            res.status(200).redirect('/login')
+            res.status(200).redirect('/employee')
         } else {
             res.status(200).render('employeeLogin')
         }
     },
+
+    logout : (req, res) => {
+        res.cookie('token', '')
+        res.cookie('isAdmin', '')
+        res.redirect('/employee/login') 
+    }
     // register : (req, res) => {
     //     if (req.cookies['token']) {
     //         res.status(200).redirect('/register')

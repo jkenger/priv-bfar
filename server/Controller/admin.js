@@ -8,6 +8,7 @@ const TravelPass = require('../Model/travelPass')
 const Employees = require('./../Model/employeee')
 const Deductions = require('../Model/deductions')
 const LeaveRequests = require('../Model/leaveRequests')
+const LeaveTypes = require('../Model/leaveTypes')
 const { query } = require('express')
 const countWeekdays = require('./services/calendarDays')
 const mongoose = require('mongoose')
@@ -461,6 +462,7 @@ module.exports = {
         res.status(200).send({result: result})
     },
 
+    //approve or decline leave request
     updateLeaveRequest: async (req, res) => {
         const {id, action} = req.body
         console.log(id)
@@ -472,6 +474,18 @@ module.exports = {
             result = await LeaveRequests.findOneAndUpdate({_id: id}, {$set:{status:'Declined'}})
 
         res.status(200).send({result: result})
+    },
+
+    //read leave types
+    readLeaveTypes: async(req, res)=>{
+        const result = await LeaveTypes.find({})
+        res.status(200).send({result: result})
+    },
+    // add leave types
+    addLeaveType: async (req, res) => {
+        const body = req.body
+        const result = await LeaveTypes.create(body)
+        res.status(200).send(result)
     }
     
 }

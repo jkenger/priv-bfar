@@ -2,7 +2,7 @@ module.exports = {
 
     login:(req, res) => {
         if (req.cookies['token']) {
-            res.status(200).redirect('/login')
+            res.status(200).redirect('/admin')
         } else {
             res.status(200).render('login')
         }

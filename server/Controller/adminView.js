@@ -154,7 +154,7 @@ module.exports = {
     },
     leaveTypesView: async (req, res) => {
         try{
-            const data = await fetchData('admin/api/events/travelpass')
+            const data = await fetchData('admin/api/leavetypes')
             res.status(200).render('leaveTypes', {
                 data, 
                 url: req.url, 

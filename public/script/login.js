@@ -2,7 +2,8 @@ const submitBtnEl = document.querySelector('.button-submit')
 const form = document.querySelector('form')
 const emailErr = document.querySelector('p.email-error.error')
 const passErr = document.querySelector('p.password-error.error')
-
+const employee = document.querySelector('#employee')
+const admin = document.querySelector('#admin')
 // const containerAside = document.querySelector('.container-aside')
 // if(containerAside.children.length < 12){
 //     containerAside.style.overflow = "hidden";
@@ -10,15 +11,13 @@ const passErr = document.querySelector('p.password-error.error')
 
 form.addEventListener('submit', async(e)=>{
     e.preventDefault();
-    new Notification("New Notification!")
     const email = form.email.value
     const password = form.password.value
-    console.log(email)
-    console.log(password)
+    const action = (employee) ? 'employee' : (admin) ? 'admin' : ''
     try{
-        const res = await fetch(`/admin/login`, {
+        const res = await fetch(`/${action}/login`, {
             headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({email, password}),
+            body: JSON.stringify({email, password, action}),    
             method: 'POST'
         })
         const data = await res.json()
@@ -29,7 +28,10 @@ form.addEventListener('submit', async(e)=>{
         }
     
         if(data.user){
-            location.assign('/admin')
+            if(action === 'employee')
+                location.assign('/employee')
+            else
+                location.assign('/admin')
         }
         
     }catch(err){
