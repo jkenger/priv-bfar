@@ -476,6 +476,7 @@ module.exports = {
         res.status(200).send({result: result})
     },
 
+
     //read leave types
     readLeaveTypes: async(req, res)=>{
         const result = await LeaveTypes.find({})
@@ -486,7 +487,16 @@ module.exports = {
         const body = req.body
         const result = await LeaveTypes.create(body)
         res.status(200).send(result)
+    },
+    updateLeaveType: async (req, res) => {
+        const body = req.body
+        const result = await LeaveTypes.findOneAndUpdate({_id: body.id}, {$set: {leave_type: body.leave_type, description: body.description}})
+        res.status(200).send(result)
+    },
+    deleteLeaveType: async(req, res)=>{
+        const {id} = req.body
+        const result = await LeaveTypes.findOneAndDelete({_id: id})
+        res.status(200).send(result)
     }
-    
 }
 
