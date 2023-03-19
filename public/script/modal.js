@@ -59,9 +59,9 @@ const postData = async (obj, url, directLink) => {
 
 const editModal = (id, name, inputs, html)=>{
     const api = 
-    (path === 'deductions' || path === 'employees')?
-    'http://localhost:3000/admin/api/' + path:
-    'http://localhost:3000/admin/api/events/' + path
+    (path === 'holidays' || path === 'travelpass')?
+    'http://localhost:3000/admin/api/events/' + path:
+    'http://localhost:3000/admin/api/' + path
 
     const directLink = 'http://localhost:3000/admin/' + path
     // assign modalForm identification so the browser won't be confused 
@@ -100,6 +100,7 @@ const editData = async (id, obj, url, directLink) =>{
     const body = obj
     const _url = url + '/' + id
     const _target = directLink
+    console.log(_url)
     const doc = await fetch(_url, {
         headers: { 'Content-Type': 'application/json' },
         body:JSON.stringify(body),
@@ -113,6 +114,13 @@ const deleteModal = (id)=>{
     // assign modalForm identification so the browser won't be confused 
     // when a submit is triggered
 
+    const api = 
+    (path === 'holidays' || path === 'travelpass')?
+    'http://localhost:3000/admin/api/events/' + path:
+    'http://localhost:3000/admin/api/' + path
+
+    const directLink = 'http://localhost:3000/admin/' + path
+    
     //clear and assign a type
     modalForm.dataset.formType = ''
     modalForm.dataset.formType = 'deleteForm'

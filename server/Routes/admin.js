@@ -112,8 +112,8 @@ route.patch('/api/leave', admin.updateLeaveRequest)
 //leave types
 route.post('/api/leavetypes', admin.addLeaveType)
 route.get('/api/leavetypes', admin.readLeaveTypes)
-route.patch('/api/leavetypes', admin.updateLeaveType)
-route.delete('/api/leavetypes', admin.deleteLeaveType)
+route.patch('/api/leavetypes/:id', admin.updateLeaveType)
+route.delete('/api/leavetypes/:id', admin.deleteLeaveType)
 
 // tests
 route.delete('/api/testdelete', admin.testdelete)

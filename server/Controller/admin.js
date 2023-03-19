@@ -489,12 +489,13 @@ module.exports = {
         res.status(200).send(result)
     },
     updateLeaveType: async (req, res) => {
+        const id = req.params.id
         const body = req.body
-        const result = await LeaveTypes.findOneAndUpdate({_id: body.id}, {$set: {leave_type: body.leave_type, description: body.description}})
+        const result = await LeaveTypes.findOneAndUpdate({_id: id}, {$set: {leave_type: body.leave_type, description: body.description}})
         res.status(200).send(result)
     },
     deleteLeaveType: async(req, res)=>{
-        const {id} = req.body
+        const id = req.params.id
         const result = await LeaveTypes.findOneAndDelete({_id: id})
         res.status(200).send(result)
     }
