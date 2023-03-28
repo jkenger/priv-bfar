@@ -1,18 +1,27 @@
 const { errorHandler, fetchData } = require('./services/services')
 const { getFormattedDate } = require('./services/date')
-const employees = require('../Model/employeee')
+const Employees = require('../Model/employeee')
 const attendances = require('../Model/attendance')
 const Holiday = require('../Model/holiday')
 const Payroll = require('../Model/payroll')
 const TravelPass = require('../Model/travelPass')
-const Employees = require('./../Model/employeee')
 const Deductions = require('../Model/deductions')
 const LeaveRequests = require('../Model/leaveRequests')
 const LeaveTypes = require('../Model/leaveTypes')
+const Accounts = require('../Model/employeeUser')
+const EmployeeAccounts = require('../Model/employeeUser')
+const AdminAccounts = require('../Model/user')
 const { query } = require('express')
 const countWeekdays = require('./services/calendarDays')
 const mongoose = require('mongoose')
 const { findOneAndUpdate } = require('../Model/employeee')
+const cookie = require('cookie-parser')
+const jwt = require('jsonwebtoken')
+
+const maxAge = 3 * 24 * 60 * 60; // 3 Days
+const createToken = (id) => {
+    return jwt.sign({ id }, '02fh1000movah', { expiresIn: maxAge })
+}
 
 
 module.exports = {
@@ -23,7 +32,7 @@ module.exports = {
     // get total employee count
     employees_count_get: async (req, res) => {
         try {
-            const result = await employees.find().count()
+            const result = await Employees.find().count()
             if (!result.length) res.status(500).send({err: 'Failure to find any data'})
             else res.status(200).send({ result })
         } catch (e) { res.status(500).send(e) }
@@ -31,7 +40,7 @@ module.exports = {
     // employee controllers
     readEmployees: async (req, res) => {
         try {   
-            const projected = await employees.getProjectedEmployees()
+            const projected = await Employees.getProjectedEmployees()
             // const employeeData = await employees.getTotalData()
             // console.log(employeeData)
             console.log(projected)
@@ -43,7 +52,7 @@ module.exports = {
         try {
             const id = req.params.id
             if (!id) res.status(500).send({err: 'Failutre to process the given id'})
-            const projected = await employees.findOne({_id: id})
+            const projected = await Employees.findOne({_id: id})
             if(projected) res.status(200).send({result: projected})
             if (!projected) res.status(500).send({err: 'Failure to find any document by the id'})
            
@@ -54,7 +63,7 @@ module.exports = {
         try {
             const doc = req.body
             console.log(doc)
-            const result = await employees.create(doc)
+            const result = await Employees.create(doc)
 
             if (!result) res.status(500).send({err: 'Failure to process creation'})
             res.status(200).send({ result })
@@ -76,7 +85,7 @@ module.exports = {
             update.personal_information.name = update.personal_information.fname + ' ' + update.personal_information.mname + ' ' + update.personal_information.lname
             
             //set update
-            const result = await employees.findOneAndUpdate({ _id: id }, {$set: update,})
+            const result = await Employees.findOneAndUpdate({ _id: id }, {$set: update,})
             if (!result) res.status(500).send({err: 'Failure to update the employee'})
             res.status(200).send(result)
         } catch (e) {
@@ -89,7 +98,7 @@ module.exports = {
         try {
             const id = req.params.id
             if (!id) res.status(500).send({err: 'Failure to process the given id'})
-            const result = await employees.findOneAndDelete({ _id: id })
+            const result = await Employees.findOneAndDelete({ _id: id })
             if (!result) res.status(500).send({err: 'Failure to delete employee'})
             res.status(200).send(result)
         } catch (e) { res.status(500).send(e) }
@@ -447,7 +456,7 @@ module.exports = {
                 console.log(fromDate, toDate)
                 const projectedData = await Payroll.getPayrollData(fromDate, toDate)
                 const totalData = await Payroll.getTotalData(fromDate, toDate)
-                console.log(totalData)
+                console.log(projectedData)
                 res.status(200).send({result: projectedData, data: totalData})
             } catch (e) {
                 res.status(500).send(e)
@@ -458,7 +467,7 @@ module.exports = {
 
     //get all leave requests
     readLeaveRequests: async (req, res) => {
-        const result = await LeaveRequests.find({}).sort({date: 1}).populate('doc_id')
+        const result = await LeaveRequests.find({}).sort({date: -1}).populate('doc_id')
         res.status(200).send({result: result})
     },
 
@@ -477,12 +486,11 @@ module.exports = {
     },
 
 
-    //read leave types
+    //leave types
     readLeaveTypes: async(req, res)=>{
         const result = await LeaveTypes.find({})
         res.status(200).send({result: result})
     },
-    // add leave types
     addLeaveType: async (req, res) => {
         const body = req.body
         const result = await LeaveTypes.create(body)
@@ -498,6 +506,59 @@ module.exports = {
         const id = req.params.id
         const result = await LeaveTypes.findOneAndDelete({_id: id})
         res.status(200).send(result)
-    }
+    },
+
+    //add, read, update, delete accounts
+    
+    readAccounts: async(req, res)=>{
+        const result = await Accounts.find({})
+        res.status(200).send({result: result})
+    },
+
+    readAccount: async(req, res)=>{
+        const id = req.params.id
+        const result = await Accounts.find({_id: id})
+        res.status(200).send({result: result})
+    },
+    // REGISTER POST
+    createAccount: async (req, res) => {
+        if (!req.body) { res.status(500).send('Failed processing registration') }
+
+        try {
+            console.log(req.body)
+            const { id, email, password, role } = req.body
+            console.log(id, email, password, role)
+            var user = {}
+            if(role==='admin') user = await AdminAccounts.create({ email, password, role, emp_code: id })
+            else if(role==='employee') user = await EmployeeAccounts.create({ email, password, role, emp_code: id })
+            const employeeResult = await Employees.findOneAndUpdate({'employee_details.designation.id': id}, {'employee_details.account_details.portal_account': user._id})
+            console.log(employeeResult)
+            
+            res.status(200).send({ user: user })
+        } catch (err) {
+            const error = errorHandler(err)
+            res.status(500).send({ err: error })
+        }
+    },
+    // deleteAccount: async (req, res) => {
+    //     try{
+    //         const id = req.params.id
+    //         console.log('id,', id)
+    //         const user = (await users.findById(id) || await employeeUsers.findById(id))
+    //         const userResult = (await users.findByIdAndDelete(id) || await employeeUsers.findByIdAndDelete(id))
+    //         console.log(userResult)
+    //         const result = await Employees.findOneAndUpdate({emp_code: userResult.emp_code}, {'employee_details.account_details.portal_account': null})
+    //         res.status(200).send({result: result})
+    //     }catch(err){
+    //         const error = errorHandler(err)
+    //         res.status(500).send({ err: error })
+    //     }
+    // },
+    updateAccount: async (req, res) => {
+        const id = req.params.id
+        const body = req.body 
+        const result = await Accounts.findOneAndUpdate({_id: id}, {$set: {account_name: body.account_name, account_number: body.account_number, bank_name: body.bank_name, branch_name: body.branch_name, ifsc_code: body.ifsc_code}})
+        res.status(200).send(result)
+    },
 }
 

@@ -125,6 +125,14 @@ const employeeSchema = mongoose.Schema({
                 type: Number,
                 required: [true, "Monthly salary is required"]
             }
+        },
+        account_details:{
+            portal_account:{
+                //type id reference to employeeUser
+                type: mongoose.Types.ObjectId,
+                ref: ('EmployeeUsers' || 'Users'),
+                default: null,
+            }
         }
     }
 })

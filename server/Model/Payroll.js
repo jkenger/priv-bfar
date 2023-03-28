@@ -33,7 +33,9 @@ payrollSchema.statics.getPayrollData = async function(fromDate, toDate){
     const holidayDates = await Holiday.getHolidayDates(fromDate, toDate);
 
     const deductions = await Deductions.find().sort({createdAt: 1})
-    const calendarDays = await countWeekdays(fromDate, toDate)
+    // if 0 make it 1, so it does not produce any error.
+    const calendarDays = (await countWeekdays(fromDate, toDate)) ? 0 : 1
+    console.log(calendarDays)
     const tax = 0.02
 
     const pipeline = [

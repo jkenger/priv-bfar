@@ -1,3 +1,6 @@
+const { errorHandler, fetchData } = require('./services/services')
+const moment = require('moment')
+
 module.exports = {
 
     homeView:async (req, res) => {
@@ -13,8 +16,11 @@ module.exports = {
 
     employeeLeaveView: async (req, res) => {
         try{
+            const data = await fetchData('admin/api/leavetypes')
             res.status(200).render('employeeLeave',{
-                url: req.url
+                data: data,
+                url: req.url,
+                moment: moment()
             })
         }catch(err){
             res.status(500).send(err)

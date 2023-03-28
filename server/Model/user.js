@@ -21,6 +21,10 @@ const UserSchema = mongoose.Schema({
         type: String,
         lowercase: true,
         default: "Admin"
+    },
+    emp_code:{
+        type: String,
+        required: [true, "Employee code is required"]
     }
 })
 

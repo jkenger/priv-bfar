@@ -10,20 +10,23 @@ const path = ((window.location.pathname).split('/')).at(-1)
 
 
 // submit modal
-const submitModal = (id, name, inputs, html)=>{
-    const api = 'http://localhost:3000/employee/api/leave'
+const submitModal = (id, name, inputs, html, _api, _directLink)=>{
+    const api = "http://" + _api
+    //http://localhost:3000/employee/api/leave
+    console.log(api)
 
-    const directLink = 'http://localhost:3000/employee/leave'
+    const directLink = "http://" + _directLink
+    //'http://localhost:3000/employee/leave'
+    console.log(directLink)
 
     modalForm.dataset.formType = ''
     modalForm.dataset.formType = 'submitForm'
 
     modalBodyDiv.innerHTML = html
-    modalTitle.textContent = `Request for Leave`
-    mainButton.textContent = 'Request'
+    modalTitle.textContent = `Add Account`
+    mainButton.textContent = 'Create'
     //split the inputs needed to be submitted
     const arrKeys = inputs.split(' ')
-
     //if modal type is edit, execute
     
     console.log('submit')
@@ -45,7 +48,7 @@ const submitModal = (id, name, inputs, html)=>{
 const postData = async (obj, url, directLink) => {
     const body = obj
     const _url = url
-
+    
     const _target = directLink
     const doc = await fetch(_url, {
         headers: { 'Content-Type': 'application/json' },

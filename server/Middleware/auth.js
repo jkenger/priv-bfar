@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken')
 const User = require('../Model/user')
 const EmployeeUser = require('../Model/employeeUser')
+const Employee = require('../Model/employeee')
 
 // VERIFY TOKEN to access the home page
 const checkToken = (req, res, next) => {
@@ -94,7 +95,10 @@ const checkUser = (req, res, next) => {
                     data = await EmployeeUser.findById(decordedToken.id)
                 }
                 res.locals.user = data
+                const result = await Employee.findOne({'employee_details.designation.id': res.locals.user.emp_code})
+                res.locals.employee = result
                 console.log('/auth.checkUser:', res.locals.user)
+                console.log('/auth.checkUser.employeeDate:', res.locals.employee)
                 next()
             }
         })

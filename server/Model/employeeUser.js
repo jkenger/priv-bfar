@@ -20,7 +20,11 @@ const UserSchema = mongoose.Schema({
     role: {
         type: String,
         lowercase: true,
-        default: "Admin"
+        default: "employee"
+    },
+    emp_code:{
+        type: String,
+        required: [true, "Employee code is required"],
     }
 })
 

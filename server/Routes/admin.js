@@ -11,12 +11,11 @@ const { id } = require('date-fns/locale')
 // authentication endpoints
 route.get('/login', adminAuthView.login)
 route.get('/register', adminAuthView.register)
+
 route.get('/logout', adminAuthView.logout)
 
 // authentication api
-route.post('/register', adminAuth.register_post)
 route.post('/login', adminAuth.login_post)
-
 
 // all
 route.get('*', checkUser)   
@@ -114,6 +113,19 @@ route.post('/api/leavetypes', admin.addLeaveType)
 route.get('/api/leavetypes', admin.readLeaveTypes)
 route.patch('/api/leavetypes/:id', admin.updateLeaveType)
 route.delete('/api/leavetypes/:id', admin.deleteLeaveType)
+
+//create account    
+
+
+//accounts
+
+// accounts
+route.get('/api/accounts', admin.readAccounts)
+route.get('/api/account/:id', admin.readAccount)
+route.post('/api/account', admin.createAccount)
+// route.delete('/account/:id', checkToken, checkRoles, admin.deleteAccount)
+
+
 
 // tests
 route.delete('/api/testdelete', admin.testdelete)

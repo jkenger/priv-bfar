@@ -1,4 +1,5 @@
 const users = require('../Model/employeeUser')
+const Employee = require('../Model/employeee')
 const { errorHandler, fetchData } = require('./services/services')
 const cookie = require('cookie-parser')
 const jwt = require('jsonwebtoken')
@@ -28,5 +29,6 @@ module.exports = {
             res.status(500).send({err: error})
         }
 
-    },
+    }
+
 }

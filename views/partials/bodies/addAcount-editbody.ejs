@@ -1,0 +1,52 @@
+<style>
+    .form-control{
+        width: 100%;
+        border-radius: 0;
+    }
+    select{
+        padding: .375em .6em;
+        margin: 0;
+        border-right: 0;
+        border-left: 0;
+        border-top: 1px solid #DDDDDD;
+        border-bottom: 1px solid #DDDDDD;
+    }
+    input, select, textarea{
+        outline-color: #656488;
+    }
+    select:selection{
+        border: 1px solid #656488;
+    }
+    label{
+        padding-left: .75em;
+        padding-bottom: .25em;
+    }
+</style>
+<input required type="text" step="any" class="form-control inputModal" name='id' placeholder="From" value="<%=data.result.employee_details.designation.id%>" hidden>
+<input required type="text" step="any" class="form-control inputModal" name='name' placeholder="From" value="Burok Hunda Mendoza" hidden>
+<div class="mb-0">
+    <label for="id">Email:</label>
+    <input required type="email"class="form-control inputModal" name='email' placeholder="Email" value="<%=data.result.personal_information.email_personal%>" disabled>
+    <p class="text-center text-danger leave-error error"></p>
+</div>
+
+<div class="mb-0">
+    <label for="id">Password:</label>
+    <input required type="password" class="form-control inputModal" name='password' placeholder="Password" value="">
+    <p class="text-center text-danger fname-error error"></p>
+
+</div>
+<div class="mb-0">
+    <label for="id">Confirm Password:</label>
+    <input required type="password" class="form-control inputModal" name='confirm' placeholder="Confirm Password" value="">
+    <p class="text-center text-danger fname-error error"></p>
+</div>
+
+<div class="mb-0">
+    <label for="id">Role:</label>
+    <select class="custom-select" name="role" id="empTypeSelect">
+        <option value="admin">Admin</option>
+        <option value="employee">Employee</option>
+    </select>    
+    <p class="text-center text-danger fname-error error"></p>
+</div>

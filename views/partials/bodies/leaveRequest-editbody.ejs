@@ -22,14 +22,16 @@
         padding-bottom: .25em;
     }
 </style>
-<input required type="text" step="any" class="form-control inputModal" name='doc_id' placeholder="From" value="63cb6f0423cd4215c1ee0e6b" hidden>
-<input required type="text" step="any" class="form-control inputModal" name='emp_id' placeholder="From" value="11" hidden>
-<input required type="text" step="any" class="form-control inputModal" name='name' placeholder="From" value="Burok Hunda Mendoza" hidden>
+<!-- needs to be changed -->
+<input required type="text" step="any" class="form-control inputModal" name='doc_id' placeholder="From" value="<%=employee._id%>" hidden>
+<input required type="text" step="any" class="form-control inputModal" name='emp_id' placeholder="From" value="<%=employee.employee_details.designation.id%>" hidden>
+<input required type="text" step="any" class="form-control inputModal" name='name' placeholder="From" value="<%=employee.personal_information.name%>" hidden>
 <div class="mb-0">
     <label for="id">Leave Type:</label>
     <select class="custom-select" name="leave_type" id="empTypeSelect">
-        <option value="casual">Casual Leave</option>
-        <option value="vacation">Vacation Leave</option>
+        <% Object.values(data.result).forEach(leave =>{%> 
+            <option value="<%=leave.leave_type%>"><%=leave.leave_type%></option>
+        <%});%>
     </select>
     <p class="text-center text-danger leave-error error"></p>
 </div>

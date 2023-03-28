@@ -116,7 +116,7 @@ module.exports = {
             else fromDate = new Date(req.query.from).toISOString(), toDate = new Date(req.query.to + 'T23:59:59.999Z').toISOString()
             const data = await fetchData(`admin/api/payrolls?from=${fromDate}&to=${toDate}`)
             if(!req.query.from || !req.query.to) { fromDate = ''; toDate = ''} else {fromDate = req.query.from; toDate = req.query.to}
-            console.log(fromDate, toDate)
+            console.log('fromn view', data)
             res.status(200).render('payroll', { 
                 data, 
                 url: req.url, 

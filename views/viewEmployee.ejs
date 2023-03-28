@@ -132,6 +132,24 @@
                         <div for="salary">Monthly Salary</div>
                         <div for="content">PHP <%=data.result.employee_details.salary_details.monthly_salary%></div>
                     </div>
+                    <div class="main__subheader">
+                        <div class="subheader__container">
+                            <label for="" class="">Accounts</label>
+                        </div>
+                    </div>
+                    <div class="main__subdiv">
+                        <div for="account">Account</div>
+                        <div for="content">
+                            <%if(!data.result.employee_details.account_details.portal_account){%>
+                                <span class="text-danger">No Portal Account</span>
+                                <br>
+                                <a id="btnAdd" href="#" data-toggle="modal" data-target="#modal"  onclick="submitModal('63cb6da923cd4215c1ee0e5e','John Kenneth Singson Gervacio', 'id email password confirm role', `<%=include('partials/bodies/addAcount-editbody')%>`, 'localhost:3000/admin/api/account', 'localhost:3000/admin/account')" class="btn btn-primary">Add Account</a>
+                            <%}else{%>
+                                
+                                <%=data.result.employee_details.account_details.portal_account%>
+                            <%}%>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
