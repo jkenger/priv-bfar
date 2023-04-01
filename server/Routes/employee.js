@@ -19,11 +19,14 @@ route.get('/', checkEmployeeRole, employeeView.homeView)
 // leave routes
 // route.get('/leave', employeeView.leaveStatusView)
 route.get('/leave', checkEmployeeRole, employeeView.employeeLeaveView)
-// route.get('/leave/leavehistory', employeeView.leaveHistoryView)
+// route.get('/leave/leavehistory', employeeView.leaveHistoryView))
+route.get('/attendance/:id', checkEmployeeRole, employeeView.attendanceView)
 
 //back end routes
 
 route.post('/api/leave', checkEmployeeRole, employee.postLeaveRequest)
+
+route.get('/api/attendance', checkEmployeeRole, employee.getAttendance)
 
 
 module.exports = route

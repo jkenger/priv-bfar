@@ -3,7 +3,7 @@ const admin = require('../Controller/admin')
 const adminAuthView = require('../Controller/adminAuthView')
 const adminAuth = require('../Controller/adminAuth')
 const adminView = require('../Controller/adminView')
-const {checkToken, checkUser, checkRoles}  = require('../Middleware/auth')
+const {bearer, checkToken, checkUser, checkRoles}  = require('../Middleware/auth')
 const { id } = require('date-fns/locale')
 
 
@@ -99,6 +99,7 @@ route.patch('/api/events/travelpass/:id', admin.editTravelPass)
 
 // record api
 route.get('/api/records', admin.readAttendance)
+route.get('/api/records/:id', admin.readAttendanceById)
 
 // payroll api
 route.get('/api/payrolls', admin.readPayrolls)

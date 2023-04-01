@@ -26,6 +26,9 @@ module.exports = {
             const token = await createToken(user._id)
             res.cookie('isAdmin', user.role, { httpOnly: true, expiresIn: maxAge * 1000 })
             res.cookie('token', token, { httpOnly: true, expiresIn: maxAge * 1000 })
+            const data = await Employee.findOne({'employee_details.account_details.portal_account': user.id})
+            const authorization = data.employee_details.designation.id
+            res.cookie('authorization', authorization, { httpOnly: true, expiresIn: maxAge * 1000 })
             res.status(200).send({ user: user })
         } catch (err) {
             const error = errorHandler(err)

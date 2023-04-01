@@ -20,7 +20,31 @@ module.exports = {
             res.status(200).render('employeeLeave',{
                 data: data,
                 url: req.url,
-                moment: moment()
+                moment: moment
+            })
+        }catch(err){
+            res.status(500).send(err)
+        }
+    },
+
+    attendanceView: async (req, res) => {
+        try{
+            const id = req.params.id
+            let fromDate = new Date().toISOString()
+            let toDate = new Date().toISOString()
+            const auth = req.cookies['authorization']
+            if(!req.query.from || !req.query.to) fromDate = new Date('01-01-1977').toISOString(), toDate = new Date().toISOString()
+            else fromDate = new Date(req.query.from).toISOString(), toDate = new Date(req.query.to + 'T23:59:59.999Z').toISOString()
+            const data = await fetchData(`admin/api/records/${id}?from=${fromDate}&to=${toDate}&auth=${auth}`)
+            if(data.message){
+                return res.status(404).render('404')
+            }
+            if(!req.query.from || !req.query.to) { fromDate = ''; toDate = ''} else {fromDate = req.query.from; toDate = req.query.to}
+            res.status(200).render('employeeAttendance',{
+                data: data, 
+                url: req.url,
+                moment: moment,
+                query: {from: fromDate, to: toDate  }
             })
         }catch(err){
             res.status(500).send(err)

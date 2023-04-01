@@ -29,5 +29,8 @@ module.exports = {
         // const find = await LeaveRequests.findOne({emp_id: emp_id}).populate('emp_id')
         // console.log(find)
         // res.status(200).send({result: find})
+    },
+    getAttendance: async (req, res) => {
+        res.status(200).send({result: 'asdads'})
     }
 }

@@ -230,8 +230,8 @@ Attendance.statics.getAttendanceData = async function(f){
     return result
 }
 
-Attendance.statics.getProjectedAttendanceData = async function(fromDate, toDate){
-    const filter = {date: {$gte: fromDate, $lte: toDate}}
+Attendance.statics.getProjectedAttendanceData = async function(fromDate, toDate, id){
+    const filter = (id)? {emp_code: id, date: {$gte: fromDate, $lte: toDate}} : {date: {$gte: fromDate, $lte: toDate}} 
     const pipeline = [
         {$match: filter},
         {$project: {

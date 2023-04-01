@@ -15,7 +15,7 @@ const { query } = require('express')
 const countWeekdays = require('./services/calendarDays')
 const mongoose = require('mongoose')
 const { findOneAndUpdate } = require('../Model/employeee')
-const cookie = require('cookie-parser')
+require('cookie-parser')
 const jwt = require('jsonwebtoken')
 
 const maxAge = 3 * 24 * 60 * 60; // 3 Days
@@ -443,6 +443,26 @@ module.exports = {
             res.status(200).send({ result: projectedData, data: totalData})
 
         } catch (e) { res.status(500).send(e) }
+    },
+    readAttendanceById: async (req, res) => {
+        try{
+            const fromDate = new Date(req.query.from)
+            const toDate = new Date(req.query.to)
+
+            const id = req.params.id
+            const authorization = req.query.auth
+            console.log(id, authorization)
+            if(id !== authorization){
+                return res.status(403).send({message: 'You are not authorized to access this information'});
+            }
+            console.log(fromDate, toDate, id)
+            const result = await attendances.getProjectedAttendanceData(fromDate, toDate, id)
+            console.log(result)
+            res.status(200).send({result: result, data: 0})
+            
+        }catch(e){
+            res.status(500).send(e)
+        }
     },
 
  

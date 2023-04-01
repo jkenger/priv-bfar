@@ -1,0 +1,168 @@
+<%-include('partials/Header')%>
+<link rel="stylesheet" href="/styles/dataTable.css">
+<style>
+    
+</style>
+
+<main class="d-flex flex-nowrap" style=" height: 100vh; overflow: hidden; align-self: center;">
+
+<%-include('partials/employeeAside')%> 
+<div class="d-flex flex-column flex-fill" style="border-left: 1px solid #dddddd; padding: 1.5em 2em 1.5em 2em">
+    <div class="d-flex justify-content-between"> 
+            <div class="d-flex justify-content-center align-items-center rounded-1"> 
+              <a href="#" class="nav-link" style="padding-right: 10px !important;">
+                  Home 
+              </a>
+              <p style="padding-right: 10px !important; margin: 0;"> > </p>
+              <a href="#" class="nav-link ">
+                  <b> Attendance </b>
+              </a>
+            </div>
+            <div class="d-flex justify-content-around rounded-1" style="background: #F5F5F5; border: solid #dddddd 1px; width: 15%; padding: 5px;"> 
+                  <div class="d-flex flex-column justify-content-center align-items-center">
+                    <p style="margin: 0 !important;"><b>Aug 15 2022</b></p>
+                    <p style="margin: 0 !important;"><b>11:29 AM</b></p>
+                  </div>
+                  <div class="d-flex flex-column justify-content-center align-items-center">
+                    <p style="margin: 0 !important;"><b>Friday</b></p>
+                    <p><b></b></p>
+                  </div>
+            </div>
+    </div>
+    <div class="d-flex gap-4" style="padding-top: 25px !important;"> 
+        <div class="d-flex justify-content-between flex-fill rounded-1" style="background: #F5F5F5; border: solid #dddddd 1px; padding: 15px;">
+             <div class="d-flex flex-column justify-content-around">
+                <p>Employees</p>
+                <p style="font-size:1.5rem;"><b><%=(!data.data[0]) ? 0 : data.data[0].presents%></b></p>
+             </div>
+             <div class="d-flex">
+                <p></p>
+                <p class="mt-auto p-2 bd-highlight">Totals</p>
+             </div>
+        </div>
+        <div class="d-flex justify-content-between flex-fill rounded-1" style="background: #F5F5F5; border: solid #dddddd 1px; padding: 15px;">
+             <div class="d-flex flex-column justify-content-around">
+                <p>Attendance</p>
+                <p style="font-size:1.5rem;"><b><%=(!data.data[0]) ? 0 : data.data[0].presents%></b></p>
+             </div>
+             <div class="d-flex">
+                <p></p>
+                <p class="mt-auto p-2 bd-highlight">Totals</p>
+             </div>
+        </div>
+        <div class="d-flex justify-content-between flex-fill rounded-1" style="background: #F5F5F5; border: solid #dddddd 1px; padding: 15px;">
+             <div class="d-flex flex-column justify-content-around">
+                <p>Absent</p>
+                <p style="font-size:1.5rem;"><b><%=(!data.data[0]) ? 0 : data.data[0].absents%></b></p>
+             </div>
+             <div class="d-flex">
+                <p></p>
+                <p class="mt-auto p-2 bd-highlight">Totals</p>
+             </div>
+        </div>
+        <div class="d-flex justify-content-between flex-fill rounded-1" style="background: #F5F5F5; border: solid #dddddd 1px; padding: 15px;">
+            <div class="d-flex flex-column justify-content-around">
+               <p>Late</p>
+               <p style="font-size:1.5rem;"><b><%=(!data.data[0]) ? 0 : data.data[0].lates%></b></p>
+            </div>
+            <div class="d-flex">
+               <p></p>
+               <p class="mt-auto p-2 bd-highlight">Totals</p>
+            </div>
+        </div>
+        <div class="d-flex justify-content-between flex-fill rounded-1" style="background: #F5F5F5; border: solid #dddddd 1px; padding: 15px;">
+            <div class="d-flex flex-column justify-content-around">
+               <p>Undertime</p>
+               <p style="font-size:1.5rem;"><b><%=(!data.data[0]) ? 0 : data.data[0].undertime%></b></p>
+            </div>
+            <div class="d-flex">
+               <p></p>
+               <p class="mt-auto p-2 bd-highlight">Totals</p>
+            </div>
+        </div>
+    </div>
+    <div class="d-flex filterContainer rounded-1 gap-3">
+        <form action="">
+            <div class="input-group">
+                <div class="input-group-prepend">
+                  <div class="input-group-text  rounded-1 d-flex gap-2">
+                  <input type="radio" name="datefil" value="alltime" aria-label="Radio button for following text input" checked> All time
+                  <input type="radio" name="datefil" value="today" aria-label="Radio button for following text input"> Today
+                  <input type="radio" name="datefil" value="15d"aria-label="Radio button for following text input"> 15D
+                  <input type="radio" name="datefil" value="30d"aria-label="Radio button for following text input"> 30D
+                  </div>
+                </div>
+              </div>
+            <input type="date" name="from" value="<%=query.from%>" id="" class="rounded-1">
+            <input type="date" name="to" value="<%=query.to%>" id="" class="rounded-1">
+            
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+    <div class="d-flex overflow-auto  table-container" style="margin-top: 25px !important; min-width:1200px;"> 
+    
+        <table id="mainTable" class="table border-top border-bottom" style="width: 100%;">
+            <thead>
+                <tr>
+                    <th rowspan="2">Employee ID</th>
+                    <th rowspan="2">Employee</th>
+                    <th rowspan="2" data-sort='YYYYMMDD'>Date</th>
+                    <th colspan="2">AM</th>
+                    <th colspan="2">PM</th>
+                    <th rowspan="2">Status</th>
+                </tr>
+                <tr>
+                    <th>Time In</th>
+                    <th>Time Out</th>
+                    <th>Time In</th>
+                    <th>Time Out</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% Object.values(data.result).forEach(attendance =>{%> 
+                    <tr>
+                        <td><%=attendance.emp_code%></td>
+                        <td><%=attendance.name%></td>
+                        <td><%=moment(attendance.date).format('LL')%></td>
+                        <td><%=(!attendance.am.time_in && attendance.message === 'Office')? '--:--:--': (attendance.message.includes('T.O') || attendance.message.includes('O.B')) ? attendance.message : moment(attendance.am.time_in).format('LTS')%></td>
+                        <td><%=(!attendance.am.time_out)? '--:--:--' : moment(attendance.am.time_out).format('LTS')%></td>
+                        <td><%=(!attendance.pm.time_in)? '--:--:--' : moment(attendance.pm.time_in).format('LTS')%></td>
+                        <td><%=(!attendance.pm.time_out)? '--:--:--' : moment(attendance.pm.time_out).format('LTS')%></td>
+                        <td>
+                            <div class="statusContainer">
+                                <%if(attendance.status.isLate){%>
+                                    <div class="status">late</div>
+                                <%}%>
+                                <%if(attendance.status.isHalf){%>
+                                    <div class="status">half</div>
+                                <%}%>
+                                <%if(attendance.status.isUndertime){%>
+                                    <div class="status">undertime</div>
+                                <%}%>
+                            </div>
+                            
+                        </td>
+                    </tr>
+                    <%}); %>
+            </tbody>
+            <tfoot>
+            </tfoot>
+        </table>
+    </div>
+</div>
+
+
+
+</main>
+<script>
+    const form = document.querySelector('form')
+    form.addEventListener('submit', (e)=>{
+        e.preventDefault
+    })
+</script>
+
+
+
+
+<%-include('partials/Footer')%>
+<script type="text/javascript" src="/script/scripts.js"></script>

@@ -18,6 +18,7 @@ module.exports = {
     logout : (req, res) => {
         res.cookie('token', '')
         res.cookie('isAdmin', '')
+        res.cookie('authorization', '')
         res.redirect('/admin/login')
     }
     
