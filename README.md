@@ -7,7 +7,7 @@ BFAR On Going System Development for Employee and Attendance Management.
 <li>Open the file in the Visual Studio Code </li>
 <li>Open the terminal and use the command <code> npm init </code>
 <li>Use the command <code> npm i or npm install </code> to install all necessary dependencies for the system.</li>
-<li>In a BFARV2-Main Folder, create .env file and include the following <br><br>
+<li>In BFARV2-Main Folder, create .env file and include the following <br><br>
 DB_URl: "mongodb url" <br> 
 PORT: "3000" <br>
 HOST: "your ip || localhost"
