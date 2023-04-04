@@ -29,13 +29,14 @@ const payrollSchema = mongoose.Schema({
     }
 })
 
-payrollSchema.statics.getPayrollData = async function(fromDate, toDate){
+payrollSchema.statics.getPayrollData = async function(fromDate, toDate, id){
     const holidayDates = await Holiday.getHolidayDates(fromDate, toDate);
+    const filter = (id)?{ $or: [{$or: [{am_time_out: { $ne: null }}, {$or: [{message: 'T.O'}, {message: 'O.B'}]}]}, { pm_time_out: { $ne: null } }], date: { $gte: fromDate, $lte: toDate}, emp_code: id}: { $or: [{$or: [{am_time_out: { $ne: null }}, {$or: [{message: 'T.O'}, {message: 'O.B'}]}]}, { pm_time_out: { $ne: null } }], date: { $gte: fromDate, $lte: toDate}}  ;
 
     const deductions = await Deductions.find().sort({createdAt: 1})
     // if 0 make it 1, so it does not produce any error.
-    const calendarDays = (await countWeekdays(fromDate, toDate)) ? 0 : 1
-    console.log(calendarDays)
+    const calendarDays = (await countWeekdays(fromDate, toDate) === 0) ? 1: await countWeekdays(fromDate, toDate)
+    console.log('calendar days', calendarDays)
     const tax = 0.02
 
     const pipeline = [
@@ -45,7 +46,7 @@ payrollSchema.statics.getPayrollData = async function(fromDate, toDate){
             foreignField: 'emp_code',
             as: 'attendances',
             let: { time_in: '$time_in', time_out: '$time_out'},
-            pipeline: [{ $match: { $or: [{$or: [{am_time_out: { $ne: null }}, {$or: [{message: 'T.O'}, {message: 'O.B'}]}]}, { pm_time_out: { $ne: null } }], date: { $gte: fromDate, $lte: toDate}},  }] // NOTE: fromdate and todate should be formatted for accurate results
+            pipeline: [{ $match: filter }] // NOTE: fromdate and todate should be formatted for accurate results
             
         }},
         {$addFields:{

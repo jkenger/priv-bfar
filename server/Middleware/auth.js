@@ -98,8 +98,6 @@ const checkUser = (req, res, next) => {
                 res.locals.user = data
                 const result = await Employee.findOne({'employee_details.designation.id': res.locals.user.emp_code})
                 res.locals.employee = result
-                // res.cookie('authorization', result.employee_details.designation.id)
-                
                 console.log('/auth.checkUser:', res.locals.user)
                 console.log('/auth.checkUser.employeeDate:', res.locals.employee)
                 next()

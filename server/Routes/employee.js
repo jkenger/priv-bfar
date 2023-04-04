@@ -21,6 +21,7 @@ route.get('/', checkEmployeeRole, employeeView.homeView)
 route.get('/leave', checkEmployeeRole, employeeView.employeeLeaveView)
 // route.get('/leave/leavehistory', employeeView.leaveHistoryView))
 route.get('/attendance/:id', checkEmployeeRole, employeeView.attendanceView)
+route.get('/payroll/:id', checkEmployeeRole, employeeView.payrollView)
 
 //back end routes
 

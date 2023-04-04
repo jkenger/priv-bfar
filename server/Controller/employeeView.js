@@ -49,6 +49,29 @@ module.exports = {
         }catch(err){
             res.status(500).send(err)
         }
+    },
+    payrollView: async (req, res) => {
+        try{
+            const id = req.params.id
+            let fromDate = new Date().toISOString()
+            let toDate = new Date().toISOString()
+            const auth = req.cookies['authorization']
+            if(!req.query.from || !req.query.to) fromDate = new Date().toISOString(), toDate = new Date().toISOString()
+            else fromDate = new Date(req.query.from).toISOString(), toDate = new Date(req.query.to + 'T23:59:59.999Z').toISOString()
+            const data = await fetchData(`admin/api/payrolls/${id}?from=${fromDate}&to=${toDate}&auth=${auth}`)
+            if(!req.query.from || !req.query.to) { fromDate = ''; toDate = ''} else {fromDate = req.query.from; toDate = req.query.to}
+            if(data.message){
+                return res.status(404).render('404')
+            }
+            console.log('fromn view', data)
+            res.status(200).render('employeePayroll', { 
+                data, 
+                url: req.url, 
+                query: {from: fromDate, to: toDate} 
+            })
+        }catch(err){
+            res.status(500).send(err)
+        }
     }
     // register : (req, res) => {
     //     if (req.cookies['token']) {

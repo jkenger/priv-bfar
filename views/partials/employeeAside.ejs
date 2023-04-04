@@ -22,7 +22,7 @@
         </a>
       </li>
       <li>
-        <a href="/employee/payroll" class="nav-link <%=(url.toLowerCase().includes('/payroll'))?'active':''%> ">
+        <a href="/employee/payroll/<%=employee.employee_details.designation.id%>" class="nav-link <%=(url.toLowerCase().includes('/payroll'))?'active':''%> ">
           Payroll
         </a>
       </li>
@@ -79,14 +79,14 @@
         </div> 
             <div class="d-flex flex-column justify-content-center" >
                 <a href="#" class="nav-link">
-                    <u>sampleEmployee@bfar.com</u>
+                    <u><%=employee.personal_information.email_personal%></u>
                 </a>
                 <p>Employee</p>
             <div class="d-flex flex-row" >
                 <a href="#" class="nav-link" style="padding-right: 10px !important;">
                     <u> Account </u>
                 </a>
-                <a href="/admin/logout" class="nav-link ">
+                <a href="/<%=user.role%>/logout" class="nav-link ">
                     <u> Log-out </u>
                 </a>
             </div>

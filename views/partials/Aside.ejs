@@ -112,14 +112,14 @@
         </div> 
             <div class="d-flex flex-column justify-content-center" >
                 <a href="#" class="nav-link">
-                    <u>sampleadmin@bfar.com</u>
+                    <u><%=user.email%></u>
                 </a>
-                <p>Admin</p>
+                <p><%=user.role%></p>
             <div class="d-flex flex-row" >
                 <a href="#" class="nav-link" style="padding-right: 10px !important;">
                     <u> Account </u>
                 </a>
-                <a href="/admin/logout" class="nav-link ">
+                <a href="/<%=user.role%>/logout" class="nav-link ">
                     <u> Log-out </u>
                 </a>
             </div>

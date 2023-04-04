@@ -99,10 +99,11 @@ route.patch('/api/events/travelpass/:id', admin.editTravelPass)
 
 // record api
 route.get('/api/records', admin.readAttendance)
-route.get('/api/records/:id', admin.readAttendanceById)
+route.get('/api/records/:id', admin.readAttendance)
 
 // payroll api
 route.get('/api/payrolls', admin.readPayrolls)
+route.get('/api/payrolls/:id', admin.readPayrolls)  
 
 
 // leave api
