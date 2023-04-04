@@ -10,5 +10,5 @@ Employee Portal: http:http://localhost:3000/employee
   username: test123@gmail.com <br>
   pass: test123
 <h2> Employee </h2>
-  username: jkg@gmail.com
+  username: jkg@gmail.com <br>
   pass: test123
