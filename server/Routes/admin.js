@@ -5,8 +5,7 @@ const adminAuth = require('../Controller/adminAuth')
 const adminView = require('../Controller/adminView')
 const {bearer, checkToken, checkUser, checkRoles}  = require('../Middleware/auth')
 const { id } = require('date-fns/locale')
-
-
+const  upload = require('../Middleware/upload')
 
 // authentication endpoints
 route.get('/login', adminAuthView.login)
@@ -63,13 +62,17 @@ route.get('/travelpass', checkToken, checkRoles, adminView.travelPassView)
 // route.get('/records',  adminView.records)
 
 // [api]
+
+//uploads
+route.post('/api/upload-image', upload.single('image'), admin.uploadImage)
+
 // dashboard
 route.get('/api/employees_count', admin.employees_count_get)
 
 // employee api
 route.get('/api/employees',  admin.readEmployees)
 route.get('/api/employees/:id',  admin.viewEmployee)
-route.post('/api/employees',  admin.addEmployee)
+route.post('/api/employees', admin.addEmployee)
 route.patch('/api/employees/:id',  admin.updateEmployee)
 route.delete('/api/employees/:id',  admin.deleteEmployee)
 

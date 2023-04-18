@@ -35,7 +35,7 @@
 
 .info__head img{
     width: 50%;
-    height: 50%;
+    height: 200px;
     border: 1px solid #dddddd;
     object-fit: cover;
 }

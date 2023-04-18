@@ -68,7 +68,12 @@ const employeeSchema = mongoose.Schema({
             required: [true, "Place of birth is required"]
         },
         avatar:{
-            type: String,
+            public_id:{
+                type: String,
+            },
+            url:{
+                type: String,
+            }
         }
     },
     employee_details:{

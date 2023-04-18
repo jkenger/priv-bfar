@@ -27,6 +27,7 @@
             </div>
     </div>
     <%-include('partials/Modal') %> 
+    <a href="javascript:;" onclick="autoFill()"> autofill</a>
     <form class="empFormEl">
         <div> 
             <div class="empForm rounded-1">
@@ -38,19 +39,19 @@
                     <div class="cardForm__inputDiv d-flex">
                         <div class="inputDiv1__input">
                             <label for="fname"> First Name</label>
-                            <input type="text" name="fname" placeholder="First Name">
+                            <input type="text" id="fname" name="fname" placeholder="First Name">
                         </div>
 
                         <div class="inputDiv1__input">
                             <label for="mname"> Middle Name</label>
-                            <input type="text" name="mname" placeholder="Middle Name">
+                            <input type="text" id="mname" name="mname" placeholder="Middle Name">
                         </div>
                     </div>
 
                     <div class="cardForm__inputDiv">
                         <div class="inputDiv1__input">
                             <label for="lname"> Last Name</label>
-                            <input type="text" name="lname" placeholder="Middle Name">
+                            <input type="text" id="lname" name="lname" placeholder="Middle Name">
                         </div>
                         <div class="inputDiv1__input">
                             <label for="gender"> Gender</label>
@@ -73,49 +74,49 @@
                     <div class="cardForm__inputDiv d-flex">
                         <div class="inputDiv1__input">
                             <label for="height"> Height(CM)</label>
-                            <input type="number" step="any" name="height" placeholder="Height">
+                            <input type="number" step="any" id="height" name="height" placeholder="Height">
                         </div>
 
                         <div class="inputDiv1__input">
                             <label for="weight"> Weight(Pounds)</label>
-                            <input type="number" step="any" name="weight" placeholder="Weight">
+                            <input type="number" step="any" id="weight" name="weight" placeholder="Weight">
                         </div>
                     </div>
                     <div class="cardForm__inputDiv d-flex">
                         <div class="inputDiv1__input">
                             <label for="email"> Email Address(Personal)</label>
-                            <input type="email" step="any" name="email_personal" placeholder="Personal Email">
+                            <input type="email" step="any" id="email_personal" name="email_personal" placeholder="Personal Email">
                         </div>
 
                         <div class="inputDiv1__input">
                             <label for="mobile"> Mobile Number</label>
-                            <input type="number" step="any" name="contact_personal" placeholder="Mobile Number">
+                            <input type="number" step="any" id="contact_personal" name="contact_personal" placeholder="Mobile Number">
                         </div>
                     </div>
                     <div class="cardForm__inputDiv d-flex">
                         <div class="inputDiv1__input">
                             <label for="homeadd"> Home Address</label>
-                            <input type="text" name="home_address" placeholder="Home Address">
+                            <input type="text" id="home_address" name="home_address" placeholder="Home Address">
                         </div>
                         <div class="inputDiv1__input">
                             <label for="age"> Age</label>
-                            <input type="number" name="age" placeholder="Age">
+                            <input type="number" id="age" name="age" placeholder="Age">
                         </div>
 
                         <div class="inputDiv1__input">
                             <label for="natlid"> National ID</label>
-                            <input type="text" name="natl_id" placeholder="National ID">
+                            <input type="text" id="natl_id" name="natl_id" placeholder="National ID">
                         </div>
                     </div>
                     <div class="cardForm__inputDiv">
                         <div class="inputDiv1__input">
                             <label for="dbirth"> Date of Birth</label>
-                            <input type="date" name="date_of_birth" placeholder="Date of Birth">
+                            <input type="date" id="date_of_birth" name="date_of_birth" placeholder="Date of Birth">
                         </div>
         
                         <div class="inputDiv1__input">
                             <label for="pbirth"> Place of Birth</label>
-                            <input type="text" name="place_of_birth" placeholder="Place of Birth">
+                            <input type="text" id="place_of_birth" name="place_of_birth" placeholder="Place of Birth">
                         </div>
                     </div>
                     <div class="cardForm__inputDiv">
@@ -137,36 +138,36 @@
                     <div class="cardForm__inputDiv">
                         <div class="inputDiv1__input">
                             <label for="company"> Company</label>
-                            <input type="text" name="company" placeholder="Company">
+                            <input type="text" id="company" name="company" placeholder="Company">
                         </div>
 
                         <div class="inputDiv1__input">
                             <label for="companyloc"> Company Location</label>
-                            <input type="text" name="company_location" placeholder="Company Location">
+                            <input type="text" id="company_location" name="company_location" placeholder="Company Location">
                         </div>
                         <div class="inputDiv1__input">
                             <label for="companyadd"> Company Address</label>
-                            <input type="text" name="company_address" placeholder="Company Address">
+                            <input type="text" id="company_address" name="company_address" placeholder="Company Address">
                         </div>
                         <div class="inputDiv1__input">
                             <label for="designation"> Job Title/Designation</label>
-                            <input type="text" name="designation" placeholder="Job Title/Designation">
+                            <input type="text" id="designation" name="designation" placeholder="Job Title/Designation">
                         </div>
                         <div class="inputDiv1__input">
                             <label for="empcode"> ID Number</label>
-                            <input type="number" name="empcode" placeholder="ID Number">
+                            <input type="number" id="empcode" name="empcode" placeholder="ID Number">
                         </div>
                         <div class="inputDiv1__input">
                             <label for="rfid"> RFID</label>
-                            <input type="number" name="rfid" placeholder="RFID">
+                            <input type="number" id="rfid" name="rfid" placeholder="RFID">
                         </div>
                         <div class="inputDiv1__input">
                             <label for="designation"> Email Address(Company)</label>
-                            <input type="text" name="email_company" placeholder="Company Email">
+                            <input type="text" id="email_company" name="email_company" placeholder="Company Email">
                         </div>
                         <div class="inputDiv1__input">
                             <label for="leavegroup"> Leave Group</label>
-                            <input type="text" name="leavegroup" placeholder="Leave Group">
+                            <input type="text" id="leavegroup" name="leavegroup" placeholder="Leave Group">
                         </div>
                         <div class="cardForm__subTitle mb-3">
                             <h1><b>Employment Information</b></h1>
@@ -187,14 +188,14 @@
                         </div>
                         <div class="inputDiv1__input">
                             <label for="dstart"> Date Started</label>
-                            <input type="date" name="date_hired" placeholder="Date Started">
+                            <input type="date" id="date_hired" name="date_hired" placeholder="Date Started">
                         </div>
                         <div class="cardForm__subTitle mb-3">
                             <h1><b>Salary</b></h1>
                         </div>
                         <div class="inputDiv1__input">
                             <label for="rfid"> Salary</label>
-                            <input type="number" steps="any" name="monthly_salary" placeholder="Monthly Rate">
+                            <input type="number" id="monthly_salary" steps="any" name="monthly_salary" placeholder="Monthly Rate">
                         </div>
                     </div>
                 </div>
@@ -219,71 +220,8 @@
 
 
 <%-include('partials/Footer')%>
-
+<script src="/scripts/addEmployee.js" type="text/javascript"></script>
 
 <script>
-    //datatable
-    $(document).ready(function () {
-    $('#mainTable').DataTable();
-    });
-
-    const form = document.querySelector('.empFormEl');
-    
-    form.addEventListener('submit', async(e) => {
-        e.preventDefault();
-        let doc = {}
-        const formData = new FormData(form);
-        const data = Object.fromEntries(formData);
-        console.log(data);
-        
-        doc = {
-            personal_information:{
-                fname: data.fname,
-                mname: data.mname,
-                lname: data.lname,
-                name: '',
-                gender: data.gender,
-                civstatus: data.civstatus,
-                height: data.height,
-                weight: data.weight,
-                email_personal: data.email_personal,
-                contact_personal: data.contact_personal,
-                age: data.age,
-                natl_id: data.natl_id,
-                date_of_birth: data.date_of_birth,
-                place_of_birth: data.place_of_birth,
-                avatar: data.image.name,
-            },
-            employee_details:{
-                designation:{
-                    company: data.company,
-                    company_location: data.company_location,
-                    designation: data.designation,
-                    id: data.empcode,
-                    rfid: data.rfid,
-                    email_company: data.email_company,
-                    leavegroup: data.leavegroup,
-                },
-                employment_information:{
-                    employment_type: data.employment_type,
-                    employment_status: data.employment_status,
-                    date_hired: data.date_hired,
-                },
-                salary_details:{
-                    monthly_salary: data.monthly_salary,
-                }
-            }
-        }
-
-        const res = await fetch('http://localhost:3000/admin/api/employees', {
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(doc),
-            method: 'POST'
-        })
-        const dbdata = await res.json()
-    
-        if (dbdata.result) console.log(dbdata.result)
-        console.log(dbdata)
-    });
-
+ 
 </script>

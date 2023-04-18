@@ -17,18 +17,38 @@ const mongoose = require('mongoose')
 const { findOneAndUpdate } = require('../Model/employeee')
 require('cookie-parser')
 const jwt = require('jsonwebtoken')
+const cloudinary = require('cloudinary').v2;
+const multer = require('multer');
 
 const maxAge = 3 * 24 * 60 * 60; // 3 Days
 const createToken = (id) => {
     return jwt.sign({ id }, '02fh1000movah', { expiresIn: maxAge })
 }
 
+// cloudinary config
+cloudinary.config({
+    cloud_name: 'dfvohochp',
+    api_key: '996853858966512',
+    api_secret: 'kG7YwOBAjqTcyE_YBGKX4Aqpih4'
+});
 
 module.exports = {
-    // TODO: 
-        //ACCOUNTS MUST BE CREATED BY THE ADMIN.
-            // must be included when creating new employee.
-        // CREATE FRONTEND FOR DEDUCTIONS.
+    // admin controllers/endpoints
+
+    //uploads
+    uploadImage: async (req, res) => {
+        try {
+            if(!req.file){
+                res.status(500).send({err: 'No file uploaded'})
+            }
+            const data = await cloudinary.uploader.upload(req.file.path, {folder: 'avatars'})
+            res.send(data)
+        }catch(e){
+            console.log(e)
+            console.error('Error uploading avatar:', e);
+            res.status(500).send('Error uploading avatar');
+        }
+    },
     // get total employee count
     employees_count_get: async (req, res) => {
         try {
@@ -51,8 +71,9 @@ module.exports = {
     viewEmployee: async (req, res) => {
         try {
             const id = req.params.id
+            console.log(id)
             if (!id) res.status(500).send({err: 'Failutre to process the given id'})
-            const projected = await Employees.findOne({_id: id})
+            const projected = await Employees.findOne({$or:[{"employee_details.designation.id": id}, {_id:id}]})
             if(projected) res.status(200).send({result: projected})
             if (!projected) res.status(500).send({err: 'Failure to find any document by the id'})
            
@@ -62,7 +83,10 @@ module.exports = {
     addEmployee: async (req, res) => {
         try {
             const doc = req.body
-            console.log(doc)
+            console.log(req.file)
+            if(req.file){
+                doc.personal_information.avatar = req.file.path
+            }
             const result = await Employees.create(doc)
 
             if (!result) res.status(500).send({err: 'Failure to process creation'})

@@ -139,24 +139,7 @@
                <style>
                    
                </style>
-                <script>
-                  const updateRequest = async (_id, _action)=>{
-                    const id = _id
-                    const action = _action
-                    const data = await fetch(`http://localhost:3000/admin/api/leave`, {
-                      method: 'PATCH',
-                      headers: {
-                        'Content-Type': 'application/json'
-                      },
-                      body: JSON.stringify({
-                        id,
-                        action
-                      })
-                    })
-                    const result = await data.json()
-                    console.log(result)
-                  }
-                </script>  
+                <script src="/scripts/allLeave.js" type="text/javascript"></script>  
           
           </tbody>
             <tfoot>
