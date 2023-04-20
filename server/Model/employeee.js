@@ -2,6 +2,14 @@ const mongoose = require('mongoose')
 const validator = require('validator')
 
 const employeeSchema = mongoose.Schema({
+    avatar:{
+        public_id:{
+            type: String,
+        },
+        url:{
+            type: String,
+        }
+    },
     personal_information:{
         fname:{
             type: String,
@@ -67,14 +75,6 @@ const employeeSchema = mongoose.Schema({
             type: String,
             required: [true, "Place of birth is required"]
         },
-        avatar:{
-            public_id:{
-                type: String,
-            },
-            url:{
-                type: String,
-            }
-        }
     },
     employee_details:{
         designation:{

@@ -12,22 +12,21 @@ form.addEventListener('submit', async (e) => {
     e.preventDefault();
     const doc = {
         personal_information: {
-        fname: form.fname.value,
-        mname: form.mname.value,
-        lname: form.lname.value,
-        gender: form.gender.value,
-        civstatus: form.civstatus.value,
-        name: '',
-        height: form.height.value,
-        weight: form.weight.value,
-        email_personal: form.email_personal.value,
-        contact_personal: form.contact_personal.value,
-        home_address: form.home_address.value,
-        age: form.age.value,
-        natl_id: form.natl_id.value,
-        date_of_birth: form.date_of_birth.value,
-        place_of_birth: form.place_of_birth.value,
-        avatar: ''
+            fname: form.fname.value,
+            mname: form.mname.value,
+            lname: form.lname.value,
+            gender: form.gender.value,
+            civstatus: form.civstatus.value,
+            name: '',
+            height: form.height.value,
+            weight: form.weight.value,
+            email_personal: form.email_personal.value,
+            contact_personal: form.contact_personal.value,
+            home_address: form.home_address.value,
+            age: form.age.value,
+            natl_id: form.natl_id.value,
+            date_of_birth: form.date_of_birth.value,
+            place_of_birth: form.place_of_birth.value,
         },
         employee_details: {
             designation: {
@@ -51,14 +50,43 @@ form.addEventListener('submit', async (e) => {
     }
 
     console.log(doc)
+    
     const res = await fetch(`/admin/api/employees/${form._id.value}`,{
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify(doc),
         method: 'PATCH'
     })
     const data = await res.json()
+    console.log(data)
+    if(!data.result){
+           console.log({err: 'Failed to create employee'})
+    }
+    if(data.result){
+        const file = document.querySelector('input[type=file]').files[0];
+        if(file){
+            let imgFormData = new FormData()
+            imgFormData.append('image', file)
+            
+            //upload image
+            const response = await fetch('/admin/api/upload-image', {
+                method: 'POST',
+                body:imgFormData
+            });
+            const imgData = await response.json();
 
-    if(data.result) console.log(data.result)
+            console.log(imgData)
+            doc.avatar.url = imgData.secure_url
+            doc.avatar.public_id = imgData.public_id
+            //update employee
+            const res = await fetch(`/admin/api/employees/${dbdata.result._id}`, {
+                headers: { 'Content-Type': 'application/json' },
+                method: 'PATCH',
+                body: JSON.stringify(doc),
+            })
+            const updatedData = await res.json()
+            console.log(updatedData)
+        }
+    }
     // console.log(data)
     // if(data.err) {
     //     fnameErr.textContent = data.err.name

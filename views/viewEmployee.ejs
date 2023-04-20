@@ -32,7 +32,12 @@
         <div class="info-left">
             <div class="info-left__sub">
                 <div class="info__head">
-                    <img src="<%=data.result.personal_information.avatar.url%>" alt="#">
+                    <img src="<%=data.result.avatar.url%>" id='viewImage'alt="#">
+                    <form id="formUploadImage"> 
+                        <input id='uploadImage' type="file" name="image" placeholder="Upload Image" onchange="PreviewImage();">
+                        <button type="submit" class="btn btn-primary">Upload</button>
+                    </form>
+                    <label for="" id="upload-status"></label>
                     <h1><%=data.result.personal_information.name%></h1>
                 </div>
                 <div class="info__main">
@@ -51,6 +56,10 @@
                     <div class="main__subdiv">
                         <div>RFID</div>
                         <div><%=data.result.employee_details.designation.rfid%></div>
+                    </div>
+                    <div class="main__subdiv">
+                        <div>_id</div>
+                        <div id="_id"><%=data.result._id%></div>
                     </div>
                 </div>
             </div>
@@ -159,5 +168,5 @@
 </main>
 
 
-
+<script src="/scripts/viewEmployee.js" type="text/javascript"></script>
 <%-include('partials/Footer')%>

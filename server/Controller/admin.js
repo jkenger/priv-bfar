@@ -42,7 +42,7 @@ module.exports = {
                 res.status(500).send({err: 'No file uploaded'})
             }
             const data = await cloudinary.uploader.upload(req.file.path, {folder: 'avatars'})
-            res.send(data)
+            res.status(200).send(data)
         }catch(e){
             console.log(e)
             console.error('Error uploading avatar:', e);
@@ -83,10 +83,6 @@ module.exports = {
     addEmployee: async (req, res) => {
         try {
             const doc = req.body
-            console.log(req.file)
-            if(req.file){
-                doc.personal_information.avatar = req.file.path
-            }
             const result = await Employees.create(doc)
 
             if (!result) res.status(500).send({err: 'Failure to process creation'})
@@ -102,17 +98,24 @@ module.exports = {
             console.log('UPDATING')
             const id = req.params.id
             const update = req.body
+            console.log(id)
             if (!req.body) { throw Error('Invalid input') }
             if (!id) res.status(500).send({err: 'Failure to process the given id'})
             
             //update name
-            update.personal_information.name = update.personal_information.fname + ' ' + update.personal_information.mname + ' ' + update.personal_information.lname
+            if(update.fname && update.lname && update.mname){
+                update.personal_information.name = update.personal_information.fname + ' ' + update.personal_information.mname + ' ' + update.personal_information.lname
+            }
             
             //set update
-            const result = await Employees.findOneAndUpdate({ _id: id }, {$set: update,})
+            const result = await Employees.updateOne({
+                 _id: id,
+                }, 
+                {$set: update})
             if (!result) res.status(500).send({err: 'Failure to update the employee'})
             res.status(200).send(result)
         } catch (e) {
+            console.log(e)
             const error = errorHandler(e)
             res.status(500).send({ err: error})
         }

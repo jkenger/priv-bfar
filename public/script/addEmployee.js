@@ -63,13 +63,13 @@
         e.preventDefault();
         let doc = {}
         const formData = new FormData(form);
-        
-        const file = document.querySelector('input[type=file]').files[0];
-        let imgFormData = new FormData()
-        imgFormData.append('image', file)
         const data = Object.fromEntries(formData);
         
         doc = {
+            avatar:{
+                public_id: '',
+                url: '',
+            },
             personal_information:{
                 fname: data.fname,
                 mname: data.mname,
@@ -85,10 +85,7 @@
                 natl_id: data.natl_id,
                 date_of_birth: data.date_of_birth,
                 place_of_birth: data.place_of_birth,
-                avatar:{
-                    public_id: '',
-                    url: '',
-                }
+                
             },
             employee_details:{
                 designation:{
@@ -117,26 +114,31 @@
             method: 'POST'
         })
         const dbdata = await res.json()
+        console.log(dbdata)
         
         if(!dbdata.result){
-            res.status(501).send({err: 'Failed to create employee'})
+            Console.log({err: 'Failed to create employee'})
         }
         if (dbdata.result) {
+               
+            const file = document.querySelector('input[type=file]').files[0];
+            let imgFormData = new FormData()
+            imgFormData.append('image', file)
+            
             //upload image
             const response = await fetch('/admin/api/upload-image', {
                 method: 'POST',
                 body:imgFormData
             });
             const imgData = await response.json();
-
-            console.log(imgData)
-            doc.personal_information.avatar.url = imgData.secure_url
-            doc.personal_information.avatar.public_id = imgData.public_id
             //update employee
             const res = await fetch(`/admin/api/employees/${dbdata.result._id}`, {
                 headers: { 'Content-Type': 'application/json' },
                 method: 'PATCH',
-                body: JSON.stringify(doc),
+                body: JSON.stringify({
+                    'avatar.public_id': imgData.public_id,
+                    'avatar.url': imgData.secure_url,
+                }),
             })
             const updatedData = await res.json()
             console.log(updatedData)
