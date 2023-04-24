@@ -22,6 +22,7 @@ app.use(cookieParser())
 // MIDDLEWARES || Public Files
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/assets', express.static(path.join(__dirname, '/node_modules/onscan.js/')))
+app.use('/assets', express.static(path.join(__dirname, '/node_modules/moment.min.js/')))
 app.use('/scripts', express.static(path.join(__dirname, '/public/script/')))
 console.log('DIRNAME', __dirname)
 

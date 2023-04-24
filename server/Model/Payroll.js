@@ -3,6 +3,7 @@ const Deductions = require('./deductions')
 const Holiday = require('./../Model/holiday')
 const countWeekdays = require('./../Controller/services/calendarDays')
 const employees = require('./employeee')
+const moment = require('moment')
 
 const payrollSchema = mongoose.Schema({
     emp_code: {
@@ -32,11 +33,11 @@ const payrollSchema = mongoose.Schema({
 payrollSchema.statics.getPayrollData = async function(fromDate, toDate, id){
     const holidayDates = await Holiday.getHolidayDates(fromDate, toDate);
     const filter = (id)?{ $or: [{$or: [{am_time_out: { $ne: null }}, {$or: [{message: 'T.O'}, {message: 'O.B'}]}]}, { pm_time_out: { $ne: null } }], date: { $gte: fromDate, $lte: toDate}, emp_code: id}: { $or: [{$or: [{am_time_out: { $ne: null }}, {$or: [{message: 'T.O'}, {message: 'O.B'}]}]}, { pm_time_out: { $ne: null } }], date: { $gte: fromDate, $lte: toDate}}  ;
-
+    console.log('PAYROLL DATA:', filter)
     const deductions = await Deductions.find().sort({createdAt: 1})
-    // if 0 make it 1, so it does not produce any error.
-    const calendarDays = (await countWeekdays(fromDate, toDate) === 0) ? 1: await countWeekdays(fromDate, toDate)
-    console.log('calendar days', calendarDays)
+    // if 0 make it 1, so it does not produce any miscalculation.
+    const calendarDays = (await countWeekdays(fromDate, toDate) < 10) ? await countWeekdays(fromDate, new Date(moment(fromDate).add(14, 'days'))): await countWeekdays(fromDate, toDate)
+
     const tax = 0.02
 
     const pipeline = [

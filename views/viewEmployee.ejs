@@ -32,7 +32,7 @@
         <div class="info-left">
             <div class="info-left__sub">
                 <div class="info__head">
-                    <img src="<%=data.result.avatar.url%>" id='viewImage'alt="#">
+                    <img src="<%=(data.result.avatar.url)?(data.result.avatar.url): '/img/no-image.png'%>" id='viewImage'alt="#">
                     <form id="formUploadImage"> 
                         <input id='uploadImage' type="file" name="image" placeholder="Upload Image" onchange="PreviewImage();">
                         <button type="submit" class="btn btn-primary">Upload</button>

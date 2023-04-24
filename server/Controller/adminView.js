@@ -118,8 +118,9 @@ module.exports = {
             console.log('fromn view', data)
             res.status(200).render('payroll', { 
                 data, 
-                url: req.url, 
-                query: {from: fromDate, to: toDate} 
+                url: req.url,
+                moment: moment,
+                query: {from: fromDate, to: toDate}
             })
 
         } catch (err) { 
