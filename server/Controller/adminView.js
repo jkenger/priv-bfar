@@ -127,6 +127,14 @@ module.exports = {
             res.status(500).send(err) 
         }
     },
+    payslipView: async(req, res)=>{
+        const data = await fetchData('admin/api/events/holidays')
+            res.status(200).render('payslip', {
+                data, 
+                url: req.url, 
+                moment: moment
+            })
+    },
     holidayView: async (req, res) => {
         try{
             const data = await fetchData('admin/api/events/holidays')

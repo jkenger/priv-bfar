@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/bca5dff172.js" crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.css">
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="./../public/styles/style.css">
+    <title>EMS</title>
+</head>  
+<body>
+    
+    <link rel="stylesheet" href="./../public/styles/payslip.css">
+    <link rel="stylesheet" href="./../public/styles/dataTable.css">
+    <div class="wrapper">
+        <main>
+            <div class="container receipt">
+                <div class="main">
+                    <div class="header">
+                        <div>
+                            <h4>Payslip</h4>
+                        </div>
+                        <div class="actions">
+                            <a href="#">Print</a>
+                            <a href="#">Back</a>
+                        </div>
+                    </div>
+                    <div class="content">
+                        <div class="pinfo">
+                            <div class="row">
+                                <div class="col">
+                                    <label for="">Employee</label>
+                                    <label for="">Sample Name Joson</label>
+                                </div>
+                                <div class="col">
+                                    <label for="">Employee</label>
+                                    <label for="">Sample Name Joson</label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <label for="">Employee</label>
+                                    <label for="">Sample Name Joson</label>
+                                </div>
+                                <div class="col">
+                                    <label for="">Employee</label>
+                                    <label for="">Sample Name Joson</label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <label for="">Employee</label>
+                                    <label for="">Sample Name Joson</label>
+                                </div>
+                                <div class="col">
+                                    <label for="">Employee</label>
+                                    <label for="">Sample Name Joson</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="d-flex overflow-auto  table-container"> 
+    
+                            <table id="mainTable" class="table border" style="width: 100%;">
+                                <thead>
+                                    <tr>
+                                        <th>
+
+                                        </th>
+                                        <th>Earnings</th>
+                                        <th>Deductions</th>
+                                    </tr>
+                                    <tr>
+                                        <td class="f-row">
+                                            <label for="">Daily Rate</label>
+                                            <label for="">P617.00</label>
+                                        </td>
+                                        <td>
+                                            <label for="">Semi-Monthly Salary</label>
+                                            <label for="">P11158.00</label>
+                                        </td>
+                                        <td>
+                                            <label for="">PAGIBIG</label>
+                                            <label for="">200.00</label>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="f-row">
+                                            <label for="">No. of Day/s Present</label>
+                                            <label for="">11 = P7,100.888</label>
+                                        </td>
+                                        <td>
+                                            
+                                        </td>
+                                        <td>
+                                            <label for="">SSS</label>
+                                            <label for="">P200.000</label>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="f-row">
+                                            <label for="">No. of Day/s Absent</label>
+                                            <label for="">0 = P0.000</label>
+                                        </td>
+                                        <td>
+                                            <label for=""></label>
+                                            <label for=""></label>
+                                        </td>
+                                        <td>
+                                            <label for="">Salary Loan</label>
+                                            <label for="">P1500</label>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="f-row">
+                                            <label for="">Undertime</label>
+                                            <label for="">0 = P0.000</label>
+                                        </td>
+                                        <td>
+                                            <label for=""></label>
+                                            <label for=""></label>
+                                        </td>
+                                        <td>
+                                            <label for=""></label>
+                                            <label for=""></label>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="f-row">
+                                            <label for="">Late</label>
+                                            <label for="">0 = P0.000</label>
+                                        </td>
+                                        <td>
+                                            <label for=""></label>
+                                            <label for=""></label>
+                                        </td>
+                                        <td>
+                                            <label for=""></label>
+                                            <label for=""></label>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="f-row">
+                                            <label for="">Holiday</label>
+                                            <label for="">1 = P617.00</label>
+                                        </td>
+                                        <td>
+                                            <label for=""></label>
+                                            <label for=""></label>
+                                        </td>
+                                        <td>
+                                            <label for=""></label>
+                                            <label for=""></label>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="f-row">
+                                            <label for="">Holiday Deduction</label>
+                                            <label for="">0 = P0.000</label>
+                                        </td>
+                                        <td>
+                                            <label for=""></label>
+                                            <label for=""></label>
+                                        </td>
+                                        <td>
+                                            <label for=""></label>
+                                            <label for=""></label>
+                                        </td>
+                                    </tr>
+                                </thead>
+                                <tr class="b-down">
+                                    <td colspan="2">
+                                        <label for="">Gross Salary</label>
+                                    </td>
+                                    <td>
+                                        <label for="">10000</label>
+                                    </td>
+                                </tr>
+                                <tr class="b-down">
+                                    <td colspan="2">
+                                        <label for="">Taxable Income</label>
+                                    </td>
+                                    <td>
+                                        <label for=""></label>
+                                        <label for=""></label>
+                                    </td>
+                                </tr>
+                                <tr class="b-down">
+                                    <td colspan="2">
+                                        <label for="">Withholding Tax</label>
+                                    </td>
+                                    <td>
+                                        <label for=""></label>
+                                        <label for=""></label>
+                                    </td>
+                                </tr>
+                                <tr class="b-down">
+                                    <td colspan="2">
+                                        <label for="">Total Deductions</label>
+                                    </td>
+                                    <td>
+                                        <label for=""></label>
+                                        <label for=""></label>
+                                    </td>
+                                </tr>
+                                <tr class="b-down">
+                                    <td colspan="2">
+                                        <label for="">Total Earnings</label>
+                                    </td>
+                                    <td>
+                                        <label for=""></label>
+                                        <label for=""></label>
+                                    </td>
+                                </tr>
+                                <tr class="b-down">
+                                    <td colspan="2">
+                                        <label for="">Net Salary</label>
+                                    </td>
+                                    <td>
+                                        <label for=""></label>
+                                        <label for=""></label>
+                                    </td>
+                                </tr>
+                                <tbody>
+                                        
+                                </tbody>
+                                <tfoot>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+            
+        </main>
+        <script src="/assets/onscan.min.js"></script>
+        <script src="/scripts/timeAttendance.js"></script>
+        
+    </div>
+
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js" integrity="sha384-mQ93GR66B00ZXjt0YO5KlohRA5SY2XofN4zfuZxLkoj1gXtW8ANNCe9d5Y3eG5eD" crossorigin="anonymous"></script>
+
+</body>
+
+</html>
+
