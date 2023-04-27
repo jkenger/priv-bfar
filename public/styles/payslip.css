@@ -10,8 +10,8 @@ main{
 h4{
     margin: 0;
 }
-
-
+.container, .container-fluid {    
+     min-width: 960px; }
 .header{
     display: flex;
     justify-content: space-between;

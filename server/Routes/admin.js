@@ -35,6 +35,7 @@ route.get('/deductions', checkToken, checkRoles, adminView.deductionView)
 
 // payroll endpoints
 route.get('/payroll', checkToken, checkRoles, adminView.payrollView)
+route.get('/payroll/report', checkToken, checkRoles, adminView.payrollReportView)
 
 //payslip
 route.get('/payslip', checkToken, checkRoles, adminView.payslipView)

@@ -118,11 +118,26 @@
         <table id="mainTable" class="table border-top border-bottom" style="width: 100%;">
             <thead>
                 <tr>
-                    <th>Employee ID</th>
-                    <th>Employee</th>
-                    <th>Gross Amount Earned</th>
-                    <th>Net Amount Due</th>
-                    <th></th>
+                    <th rowspan="2">EmployeeID</th>
+                    <th rowspan="2">Employee</th>
+                    <th rowspan="2">Position</th>
+                    <th rowspan="2">PRC</th>
+                    <th rowspan="2">Monthly Rate</th>
+                    <th rowspan="2">no. of days</th>
+                    <th rowspan="2">Gross Amount Earned</th>
+                    <th colspan="3">Tax</th>
+                    <th colspan="3">Contributions</th>
+                    <th rowspan="2">Net Amount Due</th>
+                    <th rowspan="2">Signature of Recipient</th>
+                </tr>
+                <tr>
+                    <th>2%</th>
+                    <th>5%</th>
+                    <th>10%</th>
+                    <th>SSS</th>
+                    <th>PAGIBIG</th>
+                    <th>PHILHEALTH</th>
+                    
                 </tr>
             </thead>
             <tbody>
@@ -130,12 +145,19 @@
                     <tr>
                         <td><%=user.emp_code%></td>
                         <td><%=user.name%></td>
+                        <td><%=user.designation%></td>
+                        <td></td>
+                        <td><%=user.salary%></td>
+                        <td><%=user.attendance.whalf_days%></td>
                         <td><%=user.salaries.gross_salary%></td>
+                        <td><%=user.deduction.tax_deduction%></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
                         <td><%=user.salaries.net_salary%></td>
-                        <td>
-                            <a href="#">Payslip</a>
-                            <a href="/admin/payroll/report?from=<%=query.from%>&to=<%=query.to%>">Payroll</a>
-                        </td>
+                        <td></td>  
                     </tr>
                     <%}); %>
                     

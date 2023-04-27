@@ -127,6 +127,28 @@ module.exports = {
             res.status(500).send(err) 
         }
     },
+    payrollReportView: async (req,res)=>{
+        try {
+            // Get the dates then retrieve all the data based from the given dates
+            let fromDate = new Date().toISOString()
+            let toDate = new Date().toISOString()
+                
+            if(!req.query.from || !req.query.to) fromDate = new Date().toISOString(), toDate = new Date().toISOString()
+            else fromDate = new Date(req.query.from).toISOString(), toDate = new Date(req.query.to + 'T23:59:59.999Z').toISOString()
+            const data = await fetchData(`admin/api/payrolls?from=${fromDate}&to=${toDate}`)
+            if(!req.query.from || !req.query.to) { fromDate = ''; toDate = ''} else {fromDate = req.query.from; toDate = req.query.to}
+            console.log('fromn view', data)
+            res.status(200).render('payrollReport', { 
+                data, 
+                url: req.url,
+                moment: moment,
+                query: {from: fromDate, to: toDate}
+            })
+
+        } catch (err) { 
+            res.status(500).send(err) 
+        }
+    },
     payslipView: async(req, res)=>{
         const data = await fetchData('admin/api/events/holidays')
             res.status(200).render('payslip', {
