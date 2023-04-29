@@ -510,8 +510,11 @@ module.exports = {
                 console.log(fromDate, toDate)
                 const authorization = req.query.auth
                 console.log(id, authorization)
-                if(id !== authorization){
-                    return res.status(403).send({message: 'You are not authorized to access this information'});
+
+                if(authorization !== 'admin'){
+                    if(id !== authorization){
+                        return res.status(403).send({message: 'You are not authorized to access this information'});
+                    }
                 }
                 const projectedData = await Payroll.getPayrollData(fromDate, toDate, id)
                 const totalData = await Payroll.getTotalData(fromDate, toDate)
@@ -521,22 +524,6 @@ module.exports = {
                 res.status(500).send(e)
                 console.log(e)
             }
-        }
-    },
-    readPayrollsById: async (req, res) => {
-        try{
-            const fromDate = new Date(req.query.from)
-            const toDate = new Date(req.query.to)
-
-            const id = req.params.id
-           
-            console.log(fromDate, toDate, id)
-            const result = await Payroll.getPayrollData(fromDate, toDate, id)
-            console.log(result)
-            res.status(200).send({result: result, data: 0})
-            
-        }catch(e){
-            res.status(500).send(e)
         }
     },
 

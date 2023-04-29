@@ -1,5 +1,4 @@
 const users = require('../Model/user')
-const employeeUsers = require('../Model/employeeUser')
 const Employee = require('../Model/employeee')
 const { errorHandler, fetchData } = require('./services/services')
 const cookie = require('cookie-parser')
@@ -26,6 +25,8 @@ module.exports = {
             const token = await createToken(user._id)
             res.cookie('isAdmin', user.role, { httpOnly: true, expiresIn: maxAge * 1000 })
             res.cookie('token', token, { httpOnly: true, expiresIn: maxAge * 1000 })
+            const authorization = 'admin'
+            res.cookie('authorization', authorization, { httpOnly: true, expiresIn: maxAge * 1000 })
             res.status(200).send({ user: user })
         } catch (err) {
             const error = errorHandler(err)

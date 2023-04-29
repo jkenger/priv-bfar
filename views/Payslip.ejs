@@ -19,7 +19,7 @@
                             <div class="row">
                                 <div class="col">
                                     <label for="">Employee</label>
-                                    <label for="">Sample Name Joson</label>
+                                    <label for=""><%=data.result[0].name%></label>
                                 </div>
                                 <div class="col">
                                     <label for="">Payroll Type</label>
@@ -29,11 +29,11 @@
                             <div class="row">
                                 <div class="col">
                                     <label for="">Designation</label>
-                                    <label for="">Sample Name Joson</label>
+                                    <label for=""><%=data.result[0].designation%></label>
                                 </div>
                                 <div class="col">
                                     <label for="">Payroll Month</label>
-                                    <label for="">Sample Name Joson</label>
+                                    <label for=""><%=moment(query.from).format('MMMM')%>, <%=moment(query.from).year()%></label>
                                 </div>
                             </div>
                             <div class="row">
@@ -43,7 +43,7 @@
                                 </div>
                                 <div class="col">
                                     <label for="">Basic Salary</label>
-                                    <label for="">21000</label>
+                                    <label for="">P<%=data.result[0].semimo_salary%></label>
                                 </div>  
                             </div>
                         </div>
@@ -61,15 +61,22 @@
                                     <tr>
                                         <td class="f-row">
                                             <label for="">Daily Rate</label>
-                                            <label for="">P617.00</label>
+                                            <label for="">P<%=data.result[0].attendance.daily_rate%></label>
                                         </td>
                                         <td>
                                             <label for="">Semi-Monthly Salary</label>
-                                            <label for="">P11158.00</label>
+                                            <label for="">P<%=data.result[0].semimo_salary%></label>
                                         </td>
                                         <td>
-                                            <label for="">PAGIBIG</label>
-                                            <label for="">200.00</label>
+                                            <%if(data.result[0].other_deductions.deductions.length > 1){%>
+                                                <% Object.values(data.result[0].other_deductions.deductions).forEach(deduction =>{%>
+                                                <label for=""><%=deduction.name%></label>
+                                                <label for=""><%=deduction.amount%></label>
+                                                <%}); %>
+                                            <%}else{%>
+                                                <label for=""><%=data.result[0].other_deductions.deductions.name%></label>
+                                                <label for=""><%=data.result[0].other_deductions.deductions.amount%></label>
+                                            <%}%>
                                         </td>
                                     </tr>
                                     <tr>
@@ -81,8 +88,6 @@
                                             
                                         </td>
                                         <td>
-                                            <label for="">SSS</label>
-                                            <label for="">P200.000</label>
                                         </td>
                                     </tr>
                                     <tr>

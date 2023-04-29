@@ -32,6 +32,7 @@ const payrollSchema = mongoose.Schema({
 
 payrollSchema.statics.getPayrollData = async function(fromDate, toDate, id){
     const holidayDates = await Holiday.getHolidayDates(fromDate, toDate);
+    console.log('model', id)
     const filter = (id)?{ $or: [{$or: [{am_time_out: { $ne: null }}, {$or: [{message: 'T.O'}, {message: 'O.B'}]}]}, { pm_time_out: { $ne: null } }], date: { $gte: fromDate, $lte: toDate}, emp_code: id}: { $or: [{$or: [{am_time_out: { $ne: null }}, {$or: [{message: 'T.O'}, {message: 'O.B'}]}]}, { pm_time_out: { $ne: null } }], date: { $gte: fromDate, $lte: toDate}}  ;
     console.log('PAYROLL DATA:', filter)
     const deductions = await Deductions.find().sort({createdAt: 1})
@@ -268,6 +269,8 @@ payrollSchema.statics.getPayrollData = async function(fromDate, toDate, id){
                     in: { $round: [{ $multiply: [{ $round: [{ $divide: [{ $divide: ['$$daily_rate', 8] }, 60] }, 2] }, '$no_of_undertime'] }, 2] }
                 }
             },
+            daily_rate: { $round: [{ $divide: [{ $divide: ['$salary', 2] }, calendarDays] }, 2] },
+          
         }},
         {$group: {
             _id: '$_id',
@@ -290,6 +293,7 @@ payrollSchema.statics.getPayrollData = async function(fromDate, toDate, id){
             hasab_deduction: {$first: '$hasab_deduction'},
             ut_deduction: {$first: '$ut_deduction'},
             late_deduction: {$first: '$late_deduction'},
+            daily_rate: {$first: '$daily_rate'}
         }},
 
         {$addFields: {
@@ -334,7 +338,8 @@ payrollSchema.statics.getPayrollData = async function(fromDate, toDate, id){
             ut_deduction: {$first: '$ut_deduction'},
             late_deduction: {$first: '$late_deduction'},
             tax_deduction: {$first: '$tax_deduction'},
-            total_other_deductions: {$sum: '$other_deductions.amount'}
+            total_other_deductions: {$sum: '$other_deductions.amount'},
+            daily_rate: {$first: '$daily_rate'}
         }},
         {$addFields: {
             // gross salary - tax deduction, other deductions
@@ -361,6 +366,7 @@ payrollSchema.statics.getPayrollData = async function(fromDate, toDate, id){
                 no_of_late: '$no_of_late',
                 no_of_absents: '$no_of_absents',
                 holiday:'$holiday',
+                daily_rate: '$daily_rate'
             }},
             earnings:{$mergeObjects:{
                 semimo_salary: '$semimo_salary',
