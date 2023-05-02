@@ -93,8 +93,8 @@
                   </div>
                 </div>
               </div>
-            <input type="date" name="from" value="<%=query.from%>" id="" class="rounded-1">
-            <input type="date" name="to" value="<%=query.to%>" id="" class="rounded-1">
+            <input type="date" name="from" id="from" value="<%=query.from%>" class="rounded-1">
+            <input type="date" name="to" id="to" value="<%=query.to%>" class="rounded-1">
             
             <button type="submit" class="btn btn-primary">Submit</button>
         </form>
@@ -156,3 +156,5 @@
 </main>
 <%-include('partials/Footer')%>
 <script type="text/javascript" src="/script/scripts.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
+<script type="text/javascript" src="/scripts/dateFilter.js"></script> 

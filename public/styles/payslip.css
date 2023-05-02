@@ -57,9 +57,14 @@ td,th {
     border: 1px solid #dddddd !important;
 
 }
-
-tr.b-down{
-    background-color: #FFFEFE;
+td{
+    background-color: #FFFEFE !important;
+}
+td.mid{
+    text-align: center;
+}
+td.b-down{
+    background-color: #F8F8F8 !important;
 }
 
 tr.b-down td label{
@@ -77,6 +82,14 @@ td label:nth-child(2){
 }
 td label:first-child{
     font-weight: 800;
+}
+
+td.f-row{
+    text-align: end;
+}
+
+td.f-col{
+    text-align: start;
 }
 td.f-row label:last-child{
     margin-left: 1em;

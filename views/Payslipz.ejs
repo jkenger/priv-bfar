@@ -1,10 +1,6 @@
 <%-include('partials/Header')%>
     <link rel="stylesheet" href="/styles/payslip.css">
     <link rel="stylesheet" href="/styles/dataTable.css">
-    <style>
-      
-
-    </style>
     <div class="wrapper">
         <main>
             <div class="container receipt">
@@ -54,168 +50,160 @@
                         <div class="d-flex overflow-auto  table-container"> 
     
                             <table id="mainTable" class="table border" style="width: 100%;">
-                                
-
+                                <thead>
                                     <tr>
-                                        <td class="b-down"  colspan="2">
-                                             <label for="" >Earnings</label>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="f-row">
+                                        <td class="f-row" colspan="2">
                                             <label for="">Daily Rate</label>
-                                        </td>
-                                        <td class="mid"></td> 
-                                        <td class="f-col">
                                             <label for="">P<%=data.result[0].attendance.daily_rate%></label>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td class="f-row">
+                                        <td class="f-row" colspan="2">
                                             <label for="">No. of Day/s Present</label>
+                                            <label for="">11 = P7,100.888</label>
                                         </td>
-                                        <td class="mid"><label for="">11</label> Days</td> 
-                                        <td class="f-col">
-                                            <label for="">P7,100.888</label>
+                                        
+                                    </tr>
+                                    <tr>
+                                        <td class="f-row" colspan="2">
+                                            <label for="">No. of Day/s Absent</label>
+                                            <label for="">0 = P0.000</label>
+                                        </td>
+                                        
+                                    </tr>
+                                    <tr>
+                                        <td class="f-row" colspan="2">
+                                            <label for="">Undertime</label>
+                                            <label for="">0 = P0.000</label>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td class="f-row">
+                                        <td class="f-row" colspan="2">
+                                            <label for="">Late</label>
+                                            <label for="">0 = P0.000</label>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="f-row" colspan="2">
                                             <label for="">Holiday</label>
-                                        </td>
-                                        <td class="mid"><label for="">11</label> Days</td> 
-                                        <td class="f-col">
-                                            <label for="">P617.00</label>
+                                            <label for="">1 = P617.00</label>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td class="f-row">
-                                            <label for="">Semi-Monthly Salary</label>
-                                        </td>
-                                        <td class="mid"><label for=""></td> 
-                                        <td class="f-col">
-                                            <label for="">P<%=data.result[0].semimo_salary%></label>
+                                        <td class="f-row" colspan="2">
+                                            <label for="">Holiday Deduction</label>
+                                            <label for="">0 = P0.000</label>
                                         </td>
                                     </tr>
-                                    <tr>
-                                        <td style="text-align: right;">
-                                            <label for="" style="">Gross Salary</label>
-                                        </td>
-                                        <td class="mid"></td> 
-                                        <td style="text-align: center;">
-                                            <label for="" style="">10000</label>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td style="text-align: right; background-color: #FFFEFE;">
-                                            <label for="" style="">Total Earnings</label>
-                                        </td>
-                                        <td class="mid"><label for=""></td> 
-                                        <td style="text-align: center; background-color: #FFFEFE;">
-                                            <label for="" style=""></label>
-                                        </td>
-                                    </tr>
+                                </thead>
+                                <tr class="b-down">
+                                    
+                                </tr>
+                                <tr class="b-down">
+                                    
+                                </tr>
+                                <tr class="b-down">
+                                    
+                                </tr>
+                                <tr class="b-down">
+                                    
+                                </tr>
+                                <tr class="b-down">
+                                    
+                                </tr>
+
+                                <tr>
+                                    <td class="b-down"  colspan="2"> <label for="" style="text-align: left;">Earnings</label></td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align: right;" >
+                                        <label for="">Semi-Monthly Salary</label>
+                                    </td>
+                                    <td>
+                                        <label for="">P<%=data.result[0].semimo_salary%></label>
+                                    </td>
+                                </tr>
                                 <tr >
-                                    <td class="b-down" colspan="2" style=""> 
-                                        <label for="">Deductions</label>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="f-row">
-                                        <label for="">Late</label>
-                                    </td>
-                                    <td class="mid"><label for="">60</label> Minutes</td> 
-                                    <td class="f-col">
-                                        <label for="">P0.000</label>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="f-row">
-                                        <label for="">Holiday Deduction</label>
-                                    </td>
-                                    <td class="mid"><label for="">2</label> Days</td> 
-                                    <td class="f-col">
-                                        <label for="">P0.000</label>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="f-row">
-                                        <label for="">No. of Day/s Absent</label>
-                                    </td>
-                                    <td class="mid"><label for="">2</label> Days</td> 
-                                    <td class="f-col">
-                                        <label for="">P0.000</label>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="f-row">
-                                        <label for="">Undertime</label>
-                                    </td>
-                                    <td class="mid"><label for="">30</label> Minutes</td> 
-                                    <td class="f-col">
-                                        <label for="">P0.000</label>
-                                    </td>
+                                    <td class="b-down" colspan="2"> <label for="" style="text-align: left;">Deductions</label></td>
                                 </tr>
                                 
                                         <%if(data.result[0].other_deductions.deductions.length > 1){%>
                                             <% Object.values(data.result[0].other_deductions.deductions).forEach(deduction =>{%>
-                                                <tr>
-                                                    <td class="f-row">
+                                                
+                                                    <td style="text-align: right;">
                                                         <label for=""><%=deduction.name%></label>
                                                     </td>
-                                                    <td class="mid"></td> 
-                                                    <td class="f-row">
+                                                    <td>
                                                         <label for=""><%=deduction.amount%></label>
                                                     </td>
                                                 </tr>
                                             <%}); %>
                                         <%}else{%>
                                             <tr>
-                                                <td class="f-row">
+                                                <td >
                                                     <label for=""><%=data.result[0].other_deductions.deductions.name%></label>
                                                 </td>
-                                                <td class="mid"></td> 
-                                                <td class="f-row">
+                                                <td>
                                                     <label for=""><%=data.result[0].other_deductions.deductions.amount%></label>
                                                 </td>
                                             </tr>
                                         <%}%>
-                                    
                                     <tr>
-                                        <td class="f-row">
+                                        <td colspan="2"></td>
+                                    </tr>
+                                    <tr>
+                                        <td >
+                                            <label for="">Gross Salary</label>
+                                        </td>
+                                        <td>
+                                            <label for=""></label>
+                                            <label for="">10000</label>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
                                             <label for="">Taxable Income</label>
                                         </td>
-                                        <td class="mid"></td> 
-                                        <td class="f-row">
+                                        <td>
+                                            <label for=""></label>
                                             <label for=""></label>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td class="f-row">
+                                        <td>
                                             <label for="">Withholding Tax</label>
                                         </td>
-                                        <td class="mid"></td> 
-                                        <td class="f-row">
+                                        <td>
+                                            <label for=""></label>
                                             <label for=""></label>
                                         </td>
                                         
                                     </tr>
                                     <tr>
-                                        <td class="f-row" style="background-color: #FFFEFE;">
-                                            <label for=""  >Total Deductions</label>
+                                        <td>
+                                            <label for="">Total Deductions</label>
                                         </td>
-                                        <td class="mid"></td> 
-                                        <td class="f-row" style="background-color: #FFFEFE;">
-                                            <label></label>
+                                        <td>
+                                            <label for=""></label>
+                                            <label for=""></label>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td class="f-row" style="">
-                                            <label for="" style="">Net Salary</label>
+                                        <td>
+                                            <label for="">Total Earnings</label>
                                         </td>
-                                        <td class="mid"></td> 
-                                        <td class="f-row" style="">
-                                            <label for="" style=""></label>
+                                        <td>
+                                            <label for=""></label>
+                                            <label for=""></label>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td >
+                                            <label for="">Net Salary</label>
+                                        </td>
+                                        <td>
+                                            <label for=""></label>
+                                            <label for=""></label>
                                         </td>
                                     </tr>
                                

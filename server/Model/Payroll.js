@@ -204,7 +204,7 @@ payrollSchema.statics.getPayrollData = async function(fromDate, toDate, id){
                     else: {$subtract: ['$whalf_days', '$holiday_deduction']}
                 }}, //deduct on number of holidays
                 else: '$whalf_days'
-            }},
+            }}
         }},
         {$addFields:{
             whalf_days: {

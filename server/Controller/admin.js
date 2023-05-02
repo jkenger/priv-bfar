@@ -4,6 +4,7 @@ const Employees = require('../Model/employeee')
 const attendances = require('../Model/attendance')
 const Holiday = require('../Model/holiday')
 const Payroll = require('../Model/payroll')
+const XLSX = require('xlsx')
 const TravelPass = require('../Model/travelPass')
 const Deductions = require('../Model/deductions')
 const LeaveRequests = require('../Model/leaveRequests')
@@ -510,7 +511,6 @@ module.exports = {
                 console.log(fromDate, toDate)
                 const authorization = req.query.auth
                 console.log(id, authorization)
-
                 if(authorization !== 'admin'){
                     if(id !== authorization){
                         return res.status(403).send({message: 'You are not authorized to access this information'});

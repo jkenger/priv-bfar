@@ -92,23 +92,7 @@
               </div>
             <input type="date" name="from" value="<%=query.from%>" id="from" class="rounded-1">
             <input type="date" name="to" value="<%=query.to%>" id="to" class="rounded-1"    >
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
-            <script> 
-                const from = document.querySelector('input[type="date"]#from') 
-                const to = document.querySelector('input[type="date"]#to') 
 
-               
-
-                from.addEventListener("change", function () {
-                    console.log(from.value)
-                    //add 15 more days  
-                    var newToDate = moment(from.value).add('days', 14).format('YYYY-MM-DD') ;
-
-                    console.log('change')
-                    to.value = newToDate
-                });
-
-            </script>
             <button type="submit" class="btn btn-primary">Submit</button>
         </form>
     </div>
@@ -133,8 +117,8 @@
                         <td><%=user.salaries.gross_salary%></td>
                         <td><%=user.salaries.net_salary%></td>
                         <td>
-                            <a href="#">Payslip</a>
-                            <a href="/admin/payroll/report?from=<%=query.from%>&to=<%=query.to%>">Payroll</a>
+                            <a href="/admin/payroll/<%=user.emp_code%>/payslip?from=<%=query.from%>&to=<%=query.to%>">Payslip</a>
+                            <a href="/admin/payroll/receipt?from=<%=query.from%>&to=<%=query.to%>">Payroll</a>
                         </td>
                     </tr>
                     <%}); %>
@@ -152,3 +136,5 @@
 
 <%-include('partials/Footer')%>
 <script type="text/javascript" src="/script/scripts.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
+<script type="text/javascript" src="/scripts/dateFilter.js"></script> 

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk"
+        crossorigin="anonymous">
+    <title>Convert excel to JSON Object</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.2/xlsx.full.min.js"></script>
+</head>
+
+<body>
+    <div class="conatiner mt-5">
+        <div class="row">
+            <input type="file" id="my_file_input" />
+<div id='my_file_output'></div>
+<div class="col-md-12">
+    <pre id="jsondata"></pre>
+</div>
+        </div>
+    </div>
+</body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js" integrity="sha512-pumBsjNRGGqkPzKHndZMaAG+bir374sORyzM3uulLV14lN5LyykqNk8eEeUlUkB3U0M4FApyaHraT65ihJhDpQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script>
+var oFileIn;
+
+$(function() {
+    oFileIn = document.getElementById('my_file_input');
+    if(oFileIn.addEventListener) {
+        oFileIn.addEventListener('change', filePicked, false);
+    }
+});
+
+
+function filePicked(oEvent) {
+    // Get The File From The Input
+    var oFile = oEvent.target.files[0];
+    var sFilename = oFile.name;
+    // Create A File Reader HTML5
+    var reader = new FileReader();
+
+    // Ready The Event For When A File Gets Selected
+    reader.onload = function(e) {
+        var data = e.target.result;
+        var cfb = XLS.CFB.read(data, {type: 'binary'});
+        var wb = XLS.parse_xlscfb(cfb);
+        // Loop Over Each Sheet
+        wb.SheetNames.forEach(function(sheetName) {
+            // Obtain The Current Row As CSV
+            var sCSV = XLS.utils.make_csv(wb.Sheets[sheetName]);   
+            var oJS = XLS.utils.sheet_to_row_object_array(wb.Sheets[sheetName]);   
+
+            $("#my_file_output").html(sCSV);
+            console.log(oJS)
+        });
+    };
+
+    // Tell JS To Start Reading The File.. You could delay this if desired
+    reader.readAsBinaryString(oFile);
+}
+</script>
+
+</html>
