@@ -77,7 +77,7 @@ payrollSchema.statics.getPayrollData = async function(fromDate, toDate, id){
         {$unwind:'$holiday_dates'},
         {$addFields:{
             holidays:{$cond:{
-                if: {$eq:['$holiday_dates.preDate', '$date']},
+                if: {$eq:[{$dateToString: { format: "%m/%d/%Y", date: '$holiday_dates.preDate' }}, {$dateToString: { format: "%m/%d/%Y", date: '$date'}}]},
                 then: 1,
                 else: 0
             }}
@@ -270,6 +270,7 @@ payrollSchema.statics.getPayrollData = async function(fromDate, toDate, id){
                 }
             },
             daily_rate: { $round: [{ $divide: [{ $divide: ['$salary', 2] }, calendarDays] }, 2] },
+            holiday_rate: {$round: [{$multiply: ['$holiday', { $round: [{ $divide: [{ $divide: ['$salary', 2] }, calendarDays] }, 2] }]},2]}
           
         }},
         {$group: {
@@ -293,12 +294,14 @@ payrollSchema.statics.getPayrollData = async function(fromDate, toDate, id){
             hasab_deduction: {$first: '$hasab_deduction'},
             ut_deduction: {$first: '$ut_deduction'},
             late_deduction: {$first: '$late_deduction'},
-            daily_rate: {$first: '$daily_rate'}
+            daily_rate: {$first: '$daily_rate'},
+            holiday_rate:{$first: '$holiday_rate'}
         }},
 
         {$addFields: {
             // gross salary deductions
             salaries_earned: { $round: [{ $subtract: ['$gross_salary', '$hasab_deduction']}, 2] },
+            days_present_rate:{$round: [{$subtract:['$semimo_salary','$hasab_deduction']},2]},
             gross_salary: { $round: [{ $subtract: ['$gross_salary', { $sum: ['$hasab_deduction', '$ut_deduction', '$late_deduction'] }] }, 2] },
             
             // initiate net salary deductions
@@ -339,7 +342,9 @@ payrollSchema.statics.getPayrollData = async function(fromDate, toDate, id){
             late_deduction: {$first: '$late_deduction'},
             tax_deduction: {$first: '$tax_deduction'},
             total_other_deductions: {$sum: '$other_deductions.amount'},
-            daily_rate: {$first: '$daily_rate'}
+            daily_rate: {$first: '$daily_rate'},
+            days_present_rate: {$first: '$days_present_rate'},
+            holiday_rate:{$first: '$holiday_rate'}
         }},
         {$addFields: {
             // gross salary - tax deduction, other deductions
@@ -366,7 +371,9 @@ payrollSchema.statics.getPayrollData = async function(fromDate, toDate, id){
                 no_of_late: '$no_of_late',
                 no_of_absents: '$no_of_absents',
                 holiday:'$holiday',
-                daily_rate: '$daily_rate'
+                daily_rate: '$daily_rate',
+                days_present_rate: '$days_present_rate',
+                holiday_rate:'$holiday_rate'
             }},
             earnings:{$mergeObjects:{
                 semimo_salary: '$semimo_salary',
@@ -385,11 +392,7 @@ payrollSchema.statics.getPayrollData = async function(fromDate, toDate, id){
                 deductions_total: '$total_other_deductions'
             }},
             total_deductions: {$first:{$add: [
-                '$holiday_rate_deduction', 
-                '$hasab_deduction', 
                 '$tax_deduction',
-                '$ut_deduction',
-                '$late_deduction',
                 '$total_other_deductions'
             ]}},
             total_earnings: {$first: {$add:[

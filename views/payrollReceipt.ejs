@@ -6,6 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EMS</title>
     <link rel="stylesheet" href="/styles/payrollReceipt.css">
+    <style>
+       
+    </style>
 </head>  
 <body>
     <div class="wrapper">
@@ -14,7 +17,7 @@
                 <label for="">PAYROLL</label>
             </div>
             <div class="s2">
-                <label for="">For the period November 16-30, 2022</label>
+                <label for="">For the period <%=moment(query.from).format('MMMM')%> <%=moment(query.from).date()%>-<%=(moment(query.to).format('MMMM') === moment(query.from).format('MMMM')) ? moment(query.to).date() : moment(query.to).format('MMMM') + " " +  moment(query.to).date()%> <%=moment(query.to).year()%></label>
             </div>
             <div class="s3">
                 <label for="">CARPS FINGERLING PRODUCTION AND HATCHERY DEVELOPMENT/ADMINISTRATION AND OPERATION OF NIFTC</label> 

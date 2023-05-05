@@ -58,7 +58,16 @@
 
                                     <tr>
                                         <td class="b-down"  colspan="2">
-                                             <label for="" >Earnings</label>
+                                             <label for="" >Gross Salary</label>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="f-row">
+                                            <label for="">Calendar Days</label>
+                                        </td>
+                                        <td class="mid"><label for=""><%=data.result[0].attendance.calendar_days%> Days</label></td> 
+                                        <td class="f-col">
+                                            <label for=""></label>
                                         </td>
                                     </tr>
                                     <tr>
@@ -72,118 +81,89 @@
                                     </tr>
                                     <tr>
                                         <td class="f-row">
-                                            <label for="">No. of Day/s Present</label>
+                                            <label >Semi-Monthly Salary</label>
                                         </td>
-                                        <td class="mid"><label for="">11</label> Days</td> 
+                                        <td class="mid"><label ></td> 
                                         <td class="f-col">
-                                            <label for="">P7,100.888</label>
+                                            <label class="earnings">P<%=data.result[0].semimo_salary%></label>
                                         </td>
                                     </tr>
-                                    <tr>
-                                        <td class="f-row">
-                                            <label for="">Holiday</label>
-                                        </td>
-                                        <td class="mid"><label for="">11</label> Days</td> 
-                                        <td class="f-col">
-                                            <label for="">P617.00</label>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="f-row">
-                                            <label for="">Semi-Monthly Salary</label>
-                                        </td>
-                                        <td class="mid"><label for=""></td> 
-                                        <td class="f-col">
-                                            <label for="">P<%=data.result[0].semimo_salary%></label>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td style="text-align: right;">
-                                            <label for="" style="">Gross Salary</label>
-                                        </td>
-                                        <td class="mid"></td> 
-                                        <td style="text-align: center;">
-                                            <label for="" style="">10000</label>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td style="text-align: right; background-color: #FFFEFE;">
-                                            <label for="" style="">Total Earnings</label>
-                                        </td>
-                                        <td class="mid"><label for=""></td> 
-                                        <td style="text-align: center; background-color: #FFFEFE;">
-                                            <label for="" style=""></label>
-                                        </td>
-                                    </tr>
-                                <tr >
-                                    <td class="b-down" colspan="2" style=""> 
-                                        <label for="">Deductions</label>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="f-row">
-                                        <label for="">Late</label>
-                                    </td>
-                                    <td class="mid"><label for="">60</label> Minutes</td> 
-                                    <td class="f-col">
-                                        <label for="">P0.000</label>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="f-row">
-                                        <label for="">Holiday Deduction</label>
-                                    </td>
-                                    <td class="mid"><label for="">2</label> Days</td> 
-                                    <td class="f-col">
-                                        <label for="">P0.000</label>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="f-row">
-                                        <label for="">No. of Day/s Absent</label>
-                                    </td>
-                                    <td class="mid"><label for="">2</label> Days</td> 
-                                    <td class="f-col">
-                                        <label for="">P0.000</label>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="f-row">
-                                        <label for="">Undertime</label>
-                                    </td>
-                                    <td class="mid"><label for="">30</label> Minutes</td> 
-                                    <td class="f-col">
-                                        <label for="">P0.000</label>
-                                    </td>
-                                </tr>
-                                
-                                        <%if(data.result[0].other_deductions.deductions.length > 1){%>
-                                            <% Object.values(data.result[0].other_deductions.deductions).forEach(deduction =>{%>
-                                                <tr>
-                                                    <td class="f-row">
-                                                        <label for=""><%=deduction.name%></label>
-                                                    </td>
-                                                    <td class="mid"></td> 
-                                                    <td class="f-row">
-                                                        <label for=""><%=deduction.amount%></label>
-                                                    </td>
-                                                </tr>
-                                            <%}); %>
-                                        <%}else{%>
-                                            <tr>
-                                                <td class="f-row">
-                                                    <label for=""><%=data.result[0].other_deductions.deductions.name%></label>
-                                                </td>
-                                                <td class="mid"></td> 
-                                                <td class="f-row">
-                                                    <label for=""><%=data.result[0].other_deductions.deductions.amount%></label>
-                                                </td>
-                                            </tr>
-                                        <%}%>
                                     
                                     <tr>
                                         <td class="f-row">
-                                            <label for="">Taxable Income</label>
+                                            <label>No. of Day/s Present</label>
+                                        </td>
+                                        <td class="mid"><label><%=data.result[0].attendance.whalf_days%> Days</label> </td> 
+                                        <td class="f-col">
+                                            <label class="earnings">P<%=data.result[0].attendance.days_present_rate%></label>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="f-row">
+                                            <label  >No. of Day/s Absent</label>
+                                        </td>
+                                        <td class="mid"><label ><%=data.result[0].attendance.no_of_absents%> Days</label> </td> 
+                                        <td class="f-col">
+                                            <label class="deduction">P<%=data.result[0].deduction.hasab_deduction%></label>
+                                        </td>
+                                    </tr>
+                                    
+                                    <tr>
+                                        <td class="f-row ">
+                                            <label >Late</label>
+                                        </td>
+                                        <td class="mid"><label ><%=data.result[0].attendance.no_of_late%> Minutes</label> </td> 
+                                        <td class="f-col">
+                                            <label class="deduction">P<%=data.result[0].deduction.late_deduction%></label>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="f-row">
+                                            <label>Undertime</label>
+                                        </td>
+                                        <td class="mid"><label><%=data.result[0].attendance.no_of_undertime%> Minutes</label> </td> 
+                                        <td class="f-col">
+                                            <label class="deduction">P<%=data.result[0].deduction.ut_deduction%></label>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="f-row">
+                                            <label>Holiday Deduction</label>
+                                        </td>
+                                        <td class="mid"><label><%=data.result[0].deduction.holiday_deduction%> Days</label></td> 
+                                        <td class="f-col">
+                                            <label class="deduction">P<%=data.result[0].deduction.holiday_rate_deduction%></label>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="f-row">
+                                            <label>Holiday</label>
+                                        </td>
+                                        <td class="mid"><label><%=data.result[0].attendance.holiday%> Days</label> </td> 
+                                        <td class="f-col">
+                                            <label class="earnings">P<%=data.result[0].attendance.holiday_rate%></label>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="f-row">
+                                            <label for="" style="">Gross Amount Earned</label>
+                                        </td>
+                                        <td class="mid"><label for=""></td> 
+                                        <td class="f-col">
+                                            <label class="earnings">P<%=data.result[0].salaries.gross_salary%></label>
+                                        </td>
+                                    </tr>
+                                    
+                                <tr >
+                                    <td class="b-down" colspan="2" style=""> 
+                                        <label for="">Net Income</label>
+                                    </td>
+                                </tr>
+                                
+                                      
+                                    <tr>
+                                        <td class="f-row">
+                                            <label for="">2%</label>
                                         </td>
                                         <td class="mid"></td> 
                                         <td class="f-row">
@@ -192,30 +172,51 @@
                                     </tr>
                                     <tr>
                                         <td class="f-row">
-                                            <label for="">Withholding Tax</label>
+                                            <label for="">5%</label>
                                         </td>
                                         <td class="mid"></td> 
                                         <td class="f-row">
                                             <label for=""></label>
                                         </td>
-                                        
                                     </tr>
+                                    <tr>
+                                        <td class="f-row">
+                                            <label for="">10%</label>
+                                        </td>
+                                        <td class="mid"></td> 
+                                        <td class="f-row">
+                                            <label for=""></label>
+                                        </td>
+                                    </tr>
+                                    <%if(data.result[0].other_deductions.deductions.length >= 1){%>
+                                        <% Object.values(data.result[0].other_deductions.deductions).forEach(deduction =>{%>
+                                            <tr>
+                                                <td class="f-row">
+                                                    <label for=""><%=deduction.name%></label>
+                                                </td>
+                                                <td class="mid"></td> 
+                                                <td class="f-col">
+                                                    <label class="deduction">P<%=deduction.amount%></label>
+                                                </td>
+                                            </tr>
+                                        <%}); %>
+                                    <%}%>
                                     <tr>
                                         <td class="f-row" style="background-color: #FFFEFE;">
                                             <label for=""  >Total Deductions</label>
                                         </td>
                                         <td class="mid"></td> 
-                                        <td class="f-row" style="background-color: #FFFEFE;">
-                                            <label></label>
+                                        <td class="f-col" style="background-color: #FFFEFE;">
+                                            <label class="deduction">P<%=data.result[0].total_deductions%></label>
                                         </td>
-                                    </tr>
+                                    </tr>  
                                     <tr>
                                         <td class="f-row" style="">
-                                            <label for="" style="">Net Salary</label>
+                                            <label for="" style="">Net Amount Due</label>
                                         </td>
                                         <td class="mid"></td> 
-                                        <td class="f-row" style="">
-                                            <label for="" style=""></label>
+                                        <td class="f-col" style="">
+                                            <label class="earnings">P<%=data.result[0].salaries.net_salary%></label>
                                         </td>
                                     </tr>
                                

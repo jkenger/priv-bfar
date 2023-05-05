@@ -1,4 +1,5 @@
 const { errorHandler, fetchData } = require('./services/services')
+const PayrollHistory = require('../Model/payrollHistory')
 
 const { format } = require('date-fns')
 const moment = require('moment')
@@ -102,7 +103,34 @@ module.exports = {
             })
         } catch (err) {
             res.status(500).send(err) 
+        }
+    },
+    attendanceDTRView: async(req, res)=>{
+        try {
+            const id = req.params.id
+            const auth = req.cookies['authorization']
+            console.log('view id', id)
+            let fromDate = new Date().toISOString()
+            let toDate = new Date().toISOString()
+            
+            if(!req.query.from || !req.query.to) fromDate = new Date('01-01-1977').toISOString(), toDate = new Date().toISOString()
+            else fromDate = new Date(req.query.from).toISOString(), toDate = new Date(req.query.to + 'T23:59:59.999Z').toISOString()
+            const data = await fetchData(`admin/api/records/${id}?&from=${fromDate}&to=${toDate}&auth=${auth}`)
+            console.log(data.result)
+            
+            if(!req.query.from || !req.query.to) { fromDate = ''; toDate = ''} else {fromDate = req.query.from; toDate = req.query.to}
+            if(!data.result.length){
+                return res.status(404).render('404')
             }
+            res.status(200).render('dailyTimeRecord', { 
+                data,
+                url: req.url,
+                moment: moment,
+                query: {from: fromDate, to: toDate}
+            })
+        } catch (err) {
+            res.status(500).send(err) 
+        }
     },
 
     payrollView: async (req, res) => {
@@ -159,6 +187,7 @@ module.exports = {
             if(!req.query.from || !req.query.to) fromDate = new Date().toISOString(), toDate = new Date().toISOString()
             else fromDate = new Date(req.query.from).toISOString(), toDate = new Date(req.query.to + 'T23:59:59.999Z').toISOString()
             const data = await fetchData(`admin/api/payrolls?from=${fromDate}&to=${toDate}`)
+            const savedPayroll = await PayrollHistory.create(data)
             if(!req.query.from || !req.query.to) { fromDate = ''; toDate = ''} else {fromDate = req.query.from; toDate = req.query.to}
             console.log('fromn view', data)
             res.status(200).render('payrollReceipt', { 
@@ -184,13 +213,16 @@ module.exports = {
          else fromDate = new Date(req.query.from).toISOString(), toDate = new Date(req.query.to + 'T23:59:59.999Z').toISOString()
          const data = await fetchData(`admin/api/payrolls/${id}?&from=${fromDate}&to=${toDate}&auth=${auth}`)
          if(!req.query.from || !req.query.to) { fromDate = ''; toDate = ''} else {fromDate = req.query.from; toDate = req.query.to}
+         if(!data.result.length){
+            return res.status(404).render('404')
+        }
          console.log('fromn view', data.result[0])
             res.status(200).render('payslip', {
                 data, 
                 url: req.url, 
                 moment: moment,
                 query: {from: fromDate, to: toDate}
-            })
+        })
     },
     holidayView: async (req, res) => {
         try{

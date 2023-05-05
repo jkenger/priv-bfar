@@ -94,3 +94,11 @@ td.f-col{
 td.f-row label:last-child{
     margin-left: 1em;
 }
+
+.deduction{
+    color:#cf222e !important;
+}
+
+.earnings{
+    color: #1a7f37 !important
+}

@@ -41,6 +41,7 @@ route.get('/payroll/:id/payslip', checkToken, checkRoles, adminView.payslipView)
 
 // record endpoints 
 route.get('/attendance', checkToken, checkRoles, adminView.attendanceView)
+route.get('/attendance/:id/dtr', checkToken, checkRoles, adminView.attendanceDTRView)
 
 // holidays and travel orders endpoint
 route.get('/holidays', checkToken, checkRoles, adminView.holidayView)
@@ -110,7 +111,6 @@ route.get('/api/records/:id', admin.readAttendance)
 // payroll api
 route.get('/api/payrolls', admin.readPayrolls)
 route.get('/api/payrolls/:id', admin.readPayrolls)  
-
 
 // leave api
 route.get('/api/leave', admin.readLeaveRequests)

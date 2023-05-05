@@ -4,6 +4,7 @@ const Employees = require('../Model/employeee')
 const attendances = require('../Model/attendance')
 const Holiday = require('../Model/holiday')
 const Payroll = require('../Model/payroll')
+const PayrollHistory = require('../Model/payrollHistory')
 const XLSX = require('xlsx')
 const TravelPass = require('../Model/travelPass')
 const Deductions = require('../Model/deductions')
@@ -302,17 +303,17 @@ module.exports = {
                 console.log(error)
             }
 
-            if(from < currentDate) {
-                const error = errorHandler({message: 'Given date must be equal or ahead of the current date'})
-                res.status(500).send({err: error })
-            }
+            // if(from < currentDate) {
+            //     const error = errorHandler({message: 'Given date must be equal or ahead of the current date'})
+            //     res.status(500).send({err: error })
+            // }
 
             if(to < from){
                 const error = errorHandler({message: 'Holiday must be ahead of prerequisite date'})
                 res.status(500).send({ err: error })
             }
 
-            if(from >= currentDate && to >= from){
+            if(to >= from){
                 const schema = {
                         name: name,
                         preDate: preDate,
@@ -465,10 +466,13 @@ module.exports = {
             const fromDate = new Date(req.query.from)
             const toDate = new Date(req.query.to)
             const id = req.params.id
+            console.log(fromDate, toDate)
             const authorization = req.query.auth
             console.log(id, authorization)
-            if(id !== authorization){
-                return res.status(403).send({message: 'You are not authorized to access this information'});
+            if(authorization !== 'admin'){
+                if(id !== authorization){
+                    return res.status(403).send({message: 'You are not authorized to access this information'});
+                }
             }
             const projectedData = await attendances.getProjectedAttendanceData(fromDate, toDate, id)
             const totalData = await attendances.getTotalData()
@@ -519,6 +523,7 @@ module.exports = {
                 const projectedData = await Payroll.getPayrollData(fromDate, toDate, id)
                 const totalData = await Payroll.getTotalData(fromDate, toDate)
                 console.log(projectedData)
+                
                 res.status(200).send({result: projectedData, data: totalData})
             } catch (e) {
                 res.status(500).send(e)
@@ -526,7 +531,6 @@ module.exports = {
             }
         }
     },
-
     //get all leave requests
     readLeaveRequests: async (req, res) => {
         const result = await LeaveRequests.find({}).sort({date: -1}).populate('doc_id')
