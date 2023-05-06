@@ -74,8 +74,10 @@ module.exports = {
         try {
             const id = req.params.id
             console.log(id)
-            if (!id) res.status(500).send({err: 'Failutre to process the given id'})
-            const projected = await Employees.findOne({$or:[{"employee_details.designation.id": id}, {_id:id}]})
+            if(id == 'undefined') res.status(500).send({err: 'Failutre to process the given id'})
+            var filter = {}
+            if(id.length < 24){filter = {"employee_details.designation.id": id}} else {filter = {_id:id}}
+            const projected = await Employees.findOne(filter)
             if(projected) res.status(200).send({result: projected})
             if (!projected) res.status(500).send({err: 'Failure to find any document by the id'})
            

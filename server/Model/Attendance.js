@@ -4,7 +4,7 @@ const validator = require('validator')
 const moment = require('moment')
 const Employees = require('./employeee')
 const { startOfDay } = require('date-fns')
-const setTime = require('./../Controller/services/setTime')
+const setTime = require('../Controller/services/setTime')
 
 
 const Attendance = mongoose.Schema({

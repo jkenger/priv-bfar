@@ -160,7 +160,7 @@
             if(!isNaN(id)){
                 const result = await fetch(`http://localhost:3000/admin/api/employees/${id}`)
                 const data = await result.json()
-                console.log(data.result)
+                console.log(data)
                 if(data){
                     idErr.textContent = data.err
                     fNameInput.value = data.result.personal_information.name
