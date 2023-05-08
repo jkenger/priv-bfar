@@ -33,11 +33,12 @@ const TravelPassSchema = mongoose.Schema({
         type: Date,
         required: [true, 'Date is required'],
     },
-    date_added: {
-        type: Date
-    },
-    attendances: [Attendance.schema]
-})
+    attendances: [{
+        type: mongoose.Types.ObjectId,
+        ref: ('Attendance'),
+        default: null,
+    }]
+},{timestamps: true})
 
 //checks if document is valid
 function executeIfDateRangeWithin(fromDate, toDate, databaseFromDate, databaseToDate) {
@@ -84,13 +85,13 @@ TravelPassSchema.statics.addPass = async function(emp_code, name, fromDate, toDa
                 Employees.findOne({'employee_details.designation.id': emp_code})
                 .then(async (employee, err)=>{
                     if(!emp_code){
-                        throw Error("NoIDError") 
+                        return Error("NoIDError") 
                     }else if(!fromDate || !toDate) {
-                        throw Error('Dates are required')
+                        return Error('Dates are required')
                     }else  if(from < currentDate) {
-                        throw Error('Given date must be equal or ahead of the current date')
+                        return Error('Given date must be equal or ahead of the current date')
                     }else if(to < from){
-                        throw Error('Date must be ahead of prerequisite date')
+                        return Error('Date must be ahead of prerequisite date')
                     }else{
                         TravelPass.find({emp_code: emp_code, date_added: ({$gte:moment(from).startOf('isoweek').toDate()} || {$lte:moment(to).startOf('isoweek').toDate()})})
                             .then(documents =>{
@@ -112,8 +113,7 @@ TravelPassSchema.statics.addPass = async function(emp_code, name, fromDate, toDa
                                         name: employee.personal_information.name,
                                         from_date: from,
                                         to_date:to,
-                                        project: project,
-                                        date_added: from
+                                        project: project
                                     })
                                     .then(async (pass, err)=>{
                                         console.log('pass:', pass)
@@ -139,13 +139,16 @@ TravelPassSchema.statics.addPass = async function(emp_code, name, fromDate, toDa
                                             // TO DO: attendances must be deleted from the originally collection when a user deleted a travel order record.
                                             Attendance.insertMany(docs)
                                             .then(result=>{
-                                                TravelPass.findOneAndUpdate(
-                                                    {_id: pass[0]._id},
-                                                    {$push: {attendances: result}}
-                                                )
-                                                .then(result=>{
-                                                    return result
+                                                result.forEach(element => {
+                                                    TravelPass.findOneAndUpdate(
+                                                        {_id: pass[0]._id},
+                                                        {$push: {attendances: element._id}}
+                                                    )
+                                                    .then(result=>{
+                                                        return result
+                                                    })
                                                 })
+                                               
                                             })
                                         }
                                     })
@@ -158,12 +161,77 @@ TravelPassSchema.statics.addPass = async function(emp_code, name, fromDate, toDa
             }
 }
 
-TravelPassSchema.statics.editPass = async function(emp_code, name, fromDate, toDate, project){
-    Attendance.deleteMany({_id: {$in: dataId}})
-    .then((result, err)=>{
-        console.log(result) 
-    })
-    const updatedResult = TravelPass.updateOne()
+TravelPassSchema.statics.editPass = async function(_id, emp_code, name, fromDate, toDate, project){
+    try{
+        // Find travel pass by _id
+        // update fromDate to toDate
+        // update Attendance 
+        console.log(_id, emp_code, name, fromDate, toDate, project)
+        const from = new Date(fromDate)
+        const to = new Date(toDate)
+
+        let dataId = []
+        let docs = []
+
+
+        TravelPass.findOneAndUpdate({_id: _id}, {from_date: from, to_date: to, project: project, attendances: []})
+        .then((result, err)=>{
+            result.attendances.forEach(attendance=>{
+                dataId.push(attendance._id)
+            })
+            console.log(dataId)
+            Attendance.deleteMany({_id: {$in: dataId}})
+            .then(result=>{
+                Employees.findOne({'employee_details.designation.id': emp_code})
+                .then((employee, err)=>{
+                    for (var day = from; day <= to; day.setDate(day.getDate() + 1)) {                     
+                        var newDay = new Date(day.setDate(day.getDate()))
+                        docs.push({
+                            emp_code: employee.employee_details.designation.id,
+                            emp_id: employee._id,
+                            name: employee.personal_information.name,
+                            date: newDay,
+                            date_string: newDay.toLocaleDateString(),
+                            isHalf: 'false',
+                            message: project,
+                        })
+                    }
+                    // [done] NOTE: attendance document not inserting as subdocument from the travel order
+                    // TO DO: attendances must be deleted from the originally collection when a user deleted a travel order record.
+                    Attendance.insertMany(docs)
+                    .then(result=>{
+                        let newDataId = []
+                        result.forEach(element => {
+                            newDataId.push(element._id)
+                        })
+                        TravelPass.findOneAndUpdate(
+                            {_id: _id},
+                            {$push:{attendances: newDataId}}
+                        )
+                        .then(result=>{
+                            return result
+                        })
+                    })
+                    
+                })
+            })
+        })
+        
+        console.log(dataId)
+        console.log(tp)
+        // Attendance.deleteMany({_id: {$in: dataId}})
+        // .then(async (result, err)=>{
+        //     const updatedPass = await this.addPass(emp_code, name, fromDate, toDate, project)
+        // })
+        
+        
+    }catch(e){
+        const error = errorHandler(e)
+        return error
+    }
+    
+    
+    // const updatedResult = TravelPass.updateOne()
 }
 
 TravelPassSchema.statics.deletePass = async function(id){

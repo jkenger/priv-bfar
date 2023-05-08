@@ -76,7 +76,7 @@
                             <td><%=moment(pass.from_date).format('LL')%></td>
                             <td><%=moment(pass.to_date).format('LL')%></td>
                             <td>
-                                <a id='aEdit'href="#" data-toggle="modal" data-target="#modal" onclick="editModal('<%=pass._id%>','<%=pass.name%>', 'id name fromDate toDate project', `<%=include('partials/bodies/Travelpass-editbody', {pass})%>`)"> Edit </a>
+                                <a id='aEdit'href="#" data-toggle="modal" data-target="#modal" onclick="editModal('<%=pass._id%>','<%=pass.name%>', '_id id name fromDate toDate project', `<%=include('partials/bodies/Travelpass-editbody', {pass})%>`)"> Edit </a>
                                 <a id='aDelete' href="#" data-toggle="modal" data-target="#modal"  onclick="deleteModal('<%=pass._id%>')"> Delete </a>
                             </td>
                         </tr>
@@ -160,7 +160,7 @@
             if(!isNaN(id)){
                 const result = await fetch(`http://localhost:3000/admin/api/employees/${id}`)
                 const data = await result.json()
-                console.log(data)
+                console.log(data.result)
                 if(data){
                     idErr.textContent = data.err
                     fNameInput.value = data.result.personal_information.name

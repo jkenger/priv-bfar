@@ -29,17 +29,28 @@
     
     <div class="d-flex filterContainer rounded-1 gap-3 justify-content-center">
         <a id="btnAdd" href="/admin/employees/new" class="btn btn-primary">Add New Employee</a>
+        <a id='btnAdd_payrollType' class="btn btn-primary" href="#" data-toggle="modal" data-target="#modal" onclick="addPayrollTypeModal('','','payroll_types', `<%=include('partials/bodies/passType-editbody', {payroll_type: payrollTypes, employees: data})%>`)"> Add Payroll Type </a>
     </div>
     <%-include('partials/Modal') %> 
     
     <div class="d-flex overflow-auto  table-container" style="margin-top: 25px !important; min-width:1200px"> 
-    
+        <style>
+            tr td:first-child:hover{
+                cursor: pointer;
+            }
+            tr td input[type=checkbox]{
+                margin-right: 10px;
+                background-color: #656488;
+            }
+           
+        </style>
+     
         <table id="mainTable" class="table border-top border-bottom" style="width: 100%;">
             <thead>
                 <tr>
                     <th>Employee ID</th>
                     <th>Employee</th>
-                    <th>Project</th>
+                    <th>Payroll Type</th>
                     <th>Designation</th>
                     <th>Type</th>
                     <th>Action</th>
@@ -48,9 +59,16 @@
             <tbody>
                 <%Object.values(data.result).forEach(user=>{%>
                     <tr>
-                        <td><%=user.id%></td>
+                        <td><input type="checkbox" name="id" value="<%=user.id%>"><%=user.id%></td>
                         <td><%=user.name%></td>
-                        <td><%=user.employee_project%></td>
+                        <td>
+                            <%if(user.employee_details.employment_information.payroll_type === null){%>
+                                <a href="#"> Add </a>
+                            <%}else{%>
+                                <%=user.employee_details.employment_information.payroll_type.fund_cluster%> 
+                                <a href="#"> Edit </a>
+                            <%}%>    
+                        </td>
                         <td><%=user.designation%></td>
                         <td><%=user.employment_type%></td>
                         <td>
@@ -59,6 +77,34 @@
                         </td>
                     </tr>
                 <%}); %>
+                <script>
+                    const btnAddPayrollType1 = document.querySelector('#btnAdd_payrollType')
+                    btnAddPayrollType1.style.visibility = 'hidden'
+            
+                    // if any of the checkbox is checked, btnAddPayrollType will be visible
+                    const checkboxes = document.querySelectorAll('input[type=checkbox]')
+                    checkboxes.forEach(checkbox=>{
+                        // checkbox.addEventListener('click',()=>{
+                        //     console.log('clicked')
+                        //     btnAddPayrollType.style.visibility = 'visible'
+                        // })
+                        checkbox.addEventListener('change', ()=>{
+                            let isChecked = false;
+                            checkboxes.forEach(checkbox => {
+                              if (checkbox.checked) {
+                                isChecked = true;
+                              }
+                            });
+                            
+                            // Enable or disable button based on checkbox state
+                            if (isChecked) {
+                                btnAddPayrollType1.style.visibility = 'visible'
+                            } else {
+                                btnAddPayrollType1.style.visibility = 'hidden'
+                            }
+                        })
+                    })
+                </script>
             </tbody>
             <tfoot>
             </tfoot>

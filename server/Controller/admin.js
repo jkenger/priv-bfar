@@ -5,6 +5,7 @@ const attendances = require('../Model/attendance')
 const Holiday = require('../Model/holiday')
 const Payroll = require('../Model/payroll')
 const PayrollHistory = require('../Model/payrollHistory')
+const PayrollType = require('../Model/payrollType')
 const XLSX = require('xlsx')
 const TravelPass = require('../Model/travelPass')
 const Deductions = require('../Model/deductions')
@@ -21,6 +22,7 @@ require('cookie-parser')
 const jwt = require('jsonwebtoken')
 const cloudinary = require('cloudinary').v2;
 const multer = require('multer');
+const { tr } = require('date-fns/locale')
 
 const maxAge = 3 * 24 * 60 * 60; // 3 Days
 const createToken = (id) => {
@@ -62,7 +64,20 @@ module.exports = {
     // employee controllers
     readEmployees: async (req, res) => {
         try {   
-            const projected = await Employees.getProjectedEmployees()
+            const projected = await Employees.find({})
+            .populate('employee_details.employment_information.payroll_type')
+            .select({
+                id: '$employee_details.designation.id',
+                name: '$personal_information.name',
+                designation: '$employee_details.designation.designation',
+                employment_type: '$employee_details.employment_information.employment_type',
+                payroll_type:{
+                    _id: '$employee_details.employment_information.payroll_type._id',
+                    fund_cluster: '$employee_details.employment_information.payroll_type.fund_cluster',
+                    project_name: '$employee_details.employment_information.payroll_type.project_name',
+                    program_name: '$employee_details.employment_information.payroll_type.program_name'
+                }
+            })
             // const employeeData = await employees.getTotalData()
             // console.log(employeeData)
             console.log(projected)
@@ -124,6 +139,7 @@ module.exports = {
             res.status(500).send({ err: error})
         }
     },
+   
     deleteEmployee: async (req, res) => {
         console.log('ASDASDS')
         try {
@@ -437,12 +453,11 @@ module.exports = {
     },
     editTravelPass: async(req, res)=>{
         try{
+            const { _id, id, name, fromDate, toDate, project } = req.body
             console.log(req.body)
-            //delete then add new travelpass
-            // const deletedPass = TravelPass.deletePass(id)
-            const { emp_code, name, fromDate, toDate, project } = req.body
-
-        
+            const result = await TravelPass.editPass(_id, id, name, fromDate, toDate, project)
+            console.log(result)
+            res.status(200).send({result: result})
         }catch (e) { 
             const error = errorHandler(e)
             res.status(500).send({err:error}) 
@@ -469,13 +484,6 @@ module.exports = {
             const toDate = new Date(req.query.to)
             const id = req.params.id
             console.log(fromDate, toDate)
-            const authorization = req.query.auth
-            console.log(id, authorization)
-            if(authorization !== 'admin'){
-                if(id !== authorization){
-                    return res.status(403).send({message: 'You are not authorized to access this information'});
-                }
-            }
             const projectedData = await attendances.getProjectedAttendanceData(fromDate, toDate, id)
             const totalData = await attendances.getTotalData()
             // const selectedRecords = await attendances.getSelectedAttendanceData()
@@ -484,27 +492,6 @@ module.exports = {
 
         } catch (e) { res.status(500).send(e) }
     },
-    readAttendanceById: async (req, res) => {
-        try{
-            const fromDate = new Date(req.query.from)
-            const toDate = new Date(req.query.to)
-
-            const id = req.params.id
-            const authorization = req.query.auth
-            console.log(id, authorization)
-            if(id !== authorization){
-                return res.status(403).send({message: 'You are not authorized to access this information'});
-            }
-            console.log(fromDate, toDate, id)
-            const result = await attendances.getProjectedAttendanceData(fromDate, toDate, id)
-            console.log(result)
-            res.status(200).send({result: result, data: 0})
-            
-        }catch(e){
-            res.status(500).send(e)
-        }
-    },
-
  
     
     // get payroll transaction
@@ -517,11 +504,6 @@ module.exports = {
                 console.log(fromDate, toDate)
                 const authorization = req.query.auth
                 console.log(id, authorization)
-                if(authorization !== 'admin'){
-                    if(id !== authorization){
-                        return res.status(403).send({message: 'You are not authorized to access this information'});
-                    }
-                }
                 const projectedData = await Payroll.getPayrollData(fromDate, toDate, id)
                 const totalData = await Payroll.getTotalData(fromDate, toDate)
                 console.log(projectedData)
@@ -531,6 +513,44 @@ module.exports = {
                 res.status(500).send(e)
                 console.log(e)
             }
+        }
+    },
+    readPayrollTypes: async(req, res)=>{
+        try{
+            const result = await PayrollType.find({})
+            res.status(200).send({result: result})
+        }catch(e){
+            res.status(500).send(e)
+        }
+    
+    },
+    addPayrollType: async(req, res)=>{
+        // add payroll type to the database
+        try{
+            const {fund_cluster, project_name, program_name} = req.body
+            const result = await PayrollType.create({
+                fund_cluster,
+                project_name,
+                program_name
+            })
+            res.status(200).send({result: result})
+        }catch(e){
+            res.status(500).send(e)
+        }
+    },
+    addEmployeePayrollType: async(req, res)=>{
+        try{
+            const ids = req.body.employeeId
+            const pids = req.body.payrollGroupId
+            console.log(ids)
+            if (!req.body) { throw Error('Invalid input') }
+            if (!ids) res.status(500).send({err: 'Failure to process the given id'})
+            const result = await Employees.updateMany({'employee_details.designation.id': {$in: ids}}, {$set:{'employee_details.employment_information.payroll_type': pids}})
+            res.status(200).send(result)
+        }catch(e){
+            console.log(e)
+            const error = errorHandler(e)
+            res.status(500).send({ err: error})
         }
     },
     //get all leave requests

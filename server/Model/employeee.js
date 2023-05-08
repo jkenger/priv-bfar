@@ -121,6 +121,11 @@ const employeeSchema = mongoose.Schema({
                 type: String,
                 required: [true, "Employment status is required"]
             },
+            payroll_type:{
+                type: mongoose.Types.ObjectId,
+                ref: 'PayrollTypes',
+                default: null,
+            },
             date_hired:{
                 type: Date,
             }
@@ -165,18 +170,22 @@ employeeSchema.pre('updateOne', async function(next) {
 //display specific fi
 employeeSchema.statics.getProjectedEmployees = async function(){
     let doc = []
-    const result = await this.find({}).select({
+    this.find({})
+    .populate('employee_details.employment_information.payroll_type')
+    .select({
         id: '$employee_details.designation.id',
         name: '$personal_information.name',
         designation: '$employee_details.designation.designation',
         employment_type: '$employee_details.employment_information.employment_type',
-        employee_project: ''
+        payroll_type:{
+            _id: '$employee_details.employment_information.payroll_type._id',
+            fund_cluster: '$employee_details.employment_information.payroll_type.fund_cluster',
+            project_name: '$employee_details.employment_information.payroll_type.project_name',
+            program_name: '$employee_details.employment_information.payroll_type.program_name'
+        }
     })
     console.log(result)
     return result
-
-  
-
 }
 // EmpSchema.statics.getTotalData = async function(){
 //     pipeline = [

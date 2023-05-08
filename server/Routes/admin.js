@@ -3,7 +3,7 @@ const admin = require('../Controller/admin')
 const adminAuthView = require('../Controller/adminAuthView')
 const adminAuth = require('../Controller/adminAuth')
 const adminView = require('../Controller/adminView')
-const {bearer, checkToken, checkUser, checkRoles}  = require('../Middleware/auth')
+const {bearer, checkToken, checkUser, checkRoles, checkApiAuth}  = require('../Middleware/auth')
 const { id } = require('date-fns/locale')
 const  upload = require('../Middleware/upload')
 
@@ -38,6 +38,7 @@ route.get('/payroll', checkToken, checkRoles, adminView.payrollView)
 route.get('/payroll/report', checkToken, checkRoles, adminView.payrollReportView)
 route.get('/payroll/receipt', checkToken, checkRoles, adminView.payrollReceiptView)
 route.get('/payroll/:id/payslip', checkToken, checkRoles, adminView.payslipView)
+route.get('/payroll/types', checkToken, checkRoles, adminView.payrollTypesView)
 
 // record endpoints 
 route.get('/attendance', checkToken, checkRoles, adminView.attendanceView)
@@ -78,6 +79,9 @@ route.get('/api/employees',  admin.readEmployees)
 route.get('/api/employees/:id',  admin.viewEmployee)
 route.post('/api/employees', admin.addEmployee)
 route.patch('/api/employees/:id',  admin.updateEmployee)
+
+// route.patch('/api/employees/:id/payrollType', admin.updateManyPayrollType)
+
 route.delete('/api/employees/:id',  admin.deleteEmployee)
 
 // deductions
@@ -106,11 +110,17 @@ route.patch('/api/events/travelpass/:id', admin.editTravelPass)
 
 // record api
 route.get('/api/records', admin.readAttendance)
-route.get('/api/records/:id', admin.readAttendance)
+route.get('/api/records/:id', checkApiAuth, admin.readAttendance)
 
 // payroll api
 route.get('/api/payrolls', admin.readPayrolls)
-route.get('/api/payrolls/:id', admin.readPayrolls)  
+route.get('/api/payrolls/:id', checkApiAuth, admin.readPayrolls)  
+
+route.get('/api/payrolltypes', admin.readPayrollTypes)
+route.post('/api/payrolltype', admin.addPayrollType)
+//update many employees
+route.patch('/api/addtopayrolltype', admin.addEmployeePayrollType)
+
 
 // leave api
 route.get('/api/leave', admin.readLeaveRequests)

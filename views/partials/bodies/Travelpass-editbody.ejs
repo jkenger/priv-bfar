@@ -22,8 +22,13 @@
         padding-bottom: .25em;
     }
 </style>
+<div class="mb-0 d-flex flex-column">
+    <label for="id">_id:</label>
+    <input disabled type="text" class="form-control" name='_id' placeholder="Employee ID *" id='idNo' value="<%=pass._id%>">
+    <p class="text-center text-danger id-error error"></p>
+</div>
     <div class="mb-0 d-flex flex-column">
-        <label for="id">ID:</label>
+        <label for="id">id:</label>
         <input disabled type="text" class="form-control" name='id' placeholder="Employee ID *" id='idNo' value="<%=pass.emp_code%>">
         <p class="text-center text-danger id-error error"></p>
     </div>

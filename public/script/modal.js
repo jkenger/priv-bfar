@@ -39,7 +39,7 @@ const submitModal = (id, name, inputs, html, _api, _directLink)=>{
                 inputObj[arrKeys[index]] = modalForm[arr].value
             })
             console.log(inputObj)
-            postData(inputObj, api, directLink)
+            // postData(inputObj, api, directLink)
         }
     })
 
@@ -171,4 +171,62 @@ const deleteData = async(id, url, directLink)=>{
     })
     const data = await doc.json()
     window.location.href = _target
+}
+
+
+//customs
+const addPayrollTypeModal = (id, name, inputs, html)=>{
+    let array = []
+    var checkboxes = document.querySelectorAll('input[type=checkbox]:checked')
+
+    for (var i = 0; i < checkboxes.length; i++) {
+        array.push(checkboxes[i].value)
+    }
+    const api = 
+    (path === 'holidays' || path === 'travelpass')?
+    'http://localhost:3000/admin/api/events/' + path:
+    'http://localhost:3000/admin/api/' + path
+
+    const directLink = 'http://localhost:3000/admin/' + path
+    console.log(directLink)
+
+    modalForm.dataset.formType = ''
+    modalForm.dataset.formType = 'submitForm'
+
+    modalBodyDiv.innerHTML = html
+    modalTitle.textContent = `Add Account`
+    mainButton.textContent = 'Create'
+    //split the inputs needed to be submitted
+    const arrKeys = inputs.split(' ')
+    //if modal type is edit, execute
+    
+    console.log('submit')
+    modalForm.addEventListener('submit', (e)=>{
+        if(modalForm.dataset.formType === 'submitForm'){
+            e.preventDefault()
+            let inputObj = {}
+            // get key vvalues of each inputs and assign it to a variable given values
+            arrKeys.forEach((arr, index)=>{
+                inputObj[arrKeys[index]] = modalForm[arr].value
+            })
+            console.log({inputObj, array})
+            editCustomData({inputObj, array}, api, directLink)
+        }
+    })
+}
+const editCustomData = async (obj, url, directLink) =>{
+    const payrollGroupId = obj.inputObj.payroll_types
+    const employeeId = obj.array
+    console.log(employeeId)
+    console.log(payrollGroupId)
+    const _url = '/admin/api/addtopayrolltype'
+    const _target = directLink
+    console.log(_url)
+    const doc = await fetch(_url, {
+        headers: { 'Content-Type': 'application/json' },
+        body:JSON.stringify({employeeId, payrollGroupId}),
+        method: 'PATCH'
+    })
+    const data = await doc.json()
+    console.log(data)
 }

@@ -1,0 +1,35 @@
+<style>
+    .form-control{
+        width: 100%;
+        border-radius: 0;
+    }
+    select{
+        padding: .375em .6em;
+        margin: 0;
+        border-right: 0;
+        border-left: 0;
+        border-top: 1px solid #DDDDDD;
+        border-bottom: 1px solid #DDDDDD;
+    }
+    input, select, textarea{
+        outline-color: #656488;
+    }
+    select:selection{
+        border: 1px solid #656488;
+    }
+    label{
+        padding-left: .75em;
+        padding-bottom: .25em;
+    }
+</style>
+<!-- needs to be changed -->
+
+<div class="mb-0">
+    <label for="id">Fund Cluster:</label>
+    <select class="custom-select" name="payroll_types" id="payrollTypes">
+        <% Object.values(payroll_type.result).forEach(payroll =>{%> 
+            <option value="<%=payroll._id%>"><%=payroll.fund_cluster%> - <%=payroll.project_name%> <%=(payroll.program_name)? " / " + payroll.program_name: ''%></option>
+        <%});%>
+    </select>
+    <p class="text-center text-danger payroll_types-error error"></p>
+</div>

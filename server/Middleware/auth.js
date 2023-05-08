@@ -109,4 +109,18 @@ const checkUser = (req, res, next) => {
     }
 }
 
-module.exports = { checkToken, checkUser, checkRoles, checkEmployeeRole }
+const checkApiAuth = (req, res, next) => {
+    let id = '';
+    if(req.params){
+         id = req.params.id
+    }
+    const authorization = req.query.auth
+    if(authorization !== 'admin'){
+        if(id !== authorization){
+            return res.status(403).send({message: 'You are not authorized to access this information'});
+        }
+    }
+    next()
+}
+
+module.exports = { checkToken, checkUser, checkRoles, checkEmployeeRole, checkApiAuth }
