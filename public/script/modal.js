@@ -63,10 +63,11 @@ const postData = async (obj, url, directLink) => {
 const editModal = (id, name, inputs, html)=>{
     const api = 
     (path === 'holidays' || path === 'travelpass')?
-    'http://localhost:3000/admin/api/events/' + path:
-    'http://localhost:3000/admin/api/' + path
+    '/admin/api/events/' + path:
+    '/admin/api/' + path
+   
+    const directLink = (path === 'types') ? '/admin/payroll/' + path : '/admin/' + path
 
-    const directLink = 'http://localhost:3000/admin/' + path
     // assign modalForm identification so the browser won't be confused 
     // when a submit is triggered
 
@@ -110,7 +111,7 @@ const editData = async (id, obj, url, directLink) =>{
         method: 'PATCH'
     })
     const data = await doc.json()
-    console.log(data)
+    window.location.href = _target
 }
 
 const deleteModal = (id)=>{
@@ -119,10 +120,11 @@ const deleteModal = (id)=>{
 
     const api = 
     (path === 'holidays' || path === 'travelpass')?
-    'http://localhost:3000/admin/api/events/' + path:
-    'http://localhost:3000/admin/api/' + path
+    '/admin/api/events/' + path:
+    '/admin/api/' + path
 
-    const directLink = 'http://localhost:3000/admin/' + path
+
+    const directLink = (path === 'types') ? '/admin/payroll/' + path : '/admin/' + path
     
     //clear and assign a type
     modalForm.dataset.formType = ''
@@ -184,11 +186,10 @@ const addPayrollTypeModal = (id, name, inputs, html)=>{
     }
     const api = 
     (path === 'holidays' || path === 'travelpass')?
-    'http://localhost:3000/admin/api/events/' + path:
-    'http://localhost:3000/admin/api/' + path
+    '/admin/api/events/' + path:
+    '/admin/api/' + path
 
-    const directLink = 'http://localhost:3000/admin/' + path
-    console.log(directLink)
+    const directLink = (path === 'types') ? '/admin/payroll/' + path : '/admin/' + path
 
     modalForm.dataset.formType = ''
     modalForm.dataset.formType = 'submitForm'
@@ -217,8 +218,6 @@ const addPayrollTypeModal = (id, name, inputs, html)=>{
 const editCustomData = async (obj, url, directLink) =>{
     const payrollGroupId = obj.inputObj.payroll_types
     const employeeId = obj.array
-    console.log(employeeId)
-    console.log(payrollGroupId)
     const _url = '/admin/api/addtopayrolltype'
     const _target = directLink
     console.log(_url)
@@ -228,5 +227,5 @@ const editCustomData = async (obj, url, directLink) =>{
         method: 'PATCH'
     })
     const data = await doc.json()
-    console.log(data)
+    window.location.href = _target
 }

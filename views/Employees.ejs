@@ -29,7 +29,7 @@
     
     <div class="d-flex filterContainer rounded-1 gap-3 justify-content-center">
         <a id="btnAdd" href="/admin/employees/new" class="btn btn-primary">Add New Employee</a>
-        <a id='btnAdd_payrollType' class="btn btn-primary" href="#" data-toggle="modal" data-target="#modal" onclick="addPayrollTypeModal('','','payroll_types', `<%=include('partials/bodies/passType-editbody', {payroll_type: payrollTypes, employees: data})%>`)"> Add Payroll Type </a>
+        <a id='btnAdd_payrollType' class="btn btn-primary" href="#" data-toggle="modal" data-target="#modal" onclick="addPayrollTypeModal('','','payroll_types', `<%=include('partials/bodies/payrollTypes-editbody', {payroll_type: payrollTypes, employees: data})%>`)"> Add Payroll Type </a>
     </div>
     <%-include('partials/Modal') %> 
     

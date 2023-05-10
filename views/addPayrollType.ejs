@@ -1,6 +1,6 @@
 <%-include('partials/Header')%>
 <link rel="stylesheet" href="/styles/dataTable.css">
-<main class="d-flex flex-nowrap" style=" height: 100vh; align-self: center;">
+<main class="d-flex flex-nowrap" style=" align-self: center;">
 <style>
     .form-control, .btn {font-size: 14px; border-left: 0px; border-right: 0px;}
 </style>
@@ -13,7 +13,7 @@
               </a>
               <p style="padding-right: 10px !important; margin: 0;"> > </p>
               <a href="#" class="nav-link ">
-                  <b> Project Types </b>
+                  <b> Payroll Groups </b>
               </a>
             </div>
             <div class="d-flex justify-content-around rounded-1" style="background: #F5F5F5; border: solid #dddddd 1px; width: 15%; padding: 5px;"> 
@@ -22,7 +22,7 @@
                     <p style="margin: 0 !important;"><b>11:29 AM</b></p>
                   </div>
                   <div class="d-flex flex-column justify-content-center align-items-center">
-                    <p style="margin: 0 !important;"><b>Friday</b></p>
+                    <p style="margin: 0 !important;"><b>Friday</b></p> 
                     <p><b></b></p>
                   </div>
             </div>
@@ -74,6 +74,8 @@
                             <td><%=ptype.project_name%></td>
                             <td><%=ptype.program_name%></td>
                             <td>
+                                <a id="aEdit" href="#" data-toggle="modal" data-target="#modal" onclick="editModal('<%=ptype._id%>','<%=ptype.project_name%>', 'fund_cluster project_name program_name', `<%=include('partials/bodies/payrollGroup-editbody', {ptype})%>`)"> Edit </a>
+                                <a id="aDelete" href="#" data-toggle="modal" data-target="#modal" onclick="deleteModal('<%=ptype._id%>')"> Delete </a>
                             </td>
                         </tr>
                     <%}); %>

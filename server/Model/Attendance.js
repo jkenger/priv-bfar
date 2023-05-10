@@ -147,7 +147,7 @@ Attendance.statics.timeIn = async function (emp_code, _id, time_type) {
     setTime(db_ISO_PM_END, 17, 0, 0)
     
     // isodate
-    const currentISODate = new Date()
+    const currentISODate = moment(new Date( )).local()
     // datestring
     const currentDateString = new Date().toLocaleDateString()
 

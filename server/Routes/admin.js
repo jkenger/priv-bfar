@@ -118,6 +118,8 @@ route.get('/api/payrolls/:id', checkApiAuth, admin.readPayrolls)
 
 route.get('/api/payrolltypes', admin.readPayrollTypes)
 route.post('/api/payrolltype', admin.addPayrollType)
+route.patch('/api/types/:id', admin.updatePayrollType)
+route.delete('/api/types/:id', admin.deletePayrollType)
 //update many employees
 route.patch('/api/addtopayrolltype', admin.addEmployeePayrollType)
 

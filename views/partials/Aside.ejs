@@ -1,118 +1,119 @@
 
-<div class="d-flex flex-column flex-shrink-0 p-3" style="width: 280px; padding: 0 !important;">
+<div class="d-flex flex-column justify-content-between flex-shrink-0 p-3" style="width: 280px; height: 100vh; padding: 0 !important; position: sticky;
+  top: 0;">
+  <div>
     <a href="#" class="d-flex flex-column align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none" style="padding: 30px">
-        <div class="d-flex flex-row justify-content-center">
-            <img src="/img/bfar-logo.png" class="img-fluid" alt="..." style="max-width: 40%;">
-            <img src="/img/niftc.png" class="img-fluid" alt="..." style="max-width: 40%;">
-        </div>
-            <p class="text-center fs-5" style="font-size: 18px !important; color: #67668A; ">BFAR Management System</p>
-        
-    </a>
-    
-    <ul class="nav nav-pills flex-column mb-auto" style="">
-      <li>
-        <a href="/admin/" class="nav-link <%=(url==='/')?'active':''%> ">
-          Dashboard 
-        </a>
-      </li>
+      <div class="d-flex flex-row justify-content-center">
+          <img src="/img/bfar-logo.png" class="img-fluid" alt="..." style="max-width: 40%;">
+          <img src="/img/niftc.png" class="img-fluid" alt="..." style="max-width: 40%;">
+      </div>
+          <p class="text-center fs-5" style="font-size: 18px !important; color: #67668A; ">BFAR Management System</p>
+  </a>
+  <ul class="nav nav-pills flex-column mb-auto" style="">
+    <li>
+      <a href="/admin/" class="nav-link <%=(url==='/')?'active':''%> ">
+        Dashboard 
+      </a>
+    </li>
+    <hr>
+    <li>
+      <a href="/admin/employees" class="nav-link <%=(url.toLowerCase().includes('/employees'))?'active':''%>">
+        Employees
+      </a>
+    </li>
+    <li>
+      <a href="/admin/attendance" class="nav-link <%=(url.toLowerCase().includes('/attendance'))?'active':''%>">
+        Attendance 
+      </a>
+    </li>
+    <li class="nav-item dropdown position-static">
+      <a class="nav-link dropdown-toggle <%=(url.toLowerCase().includes('/payroll'))?'active':''%>" href="/admin/payroll" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Manage Payroll</a>
+      <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+        <a class="dropdown-item" href="/admin/payroll">All Payroll</a>
+        <a class="dropdown-item" href="/admin/payroll/types">Payroll Groups</a>
+      </div>
+    </li>
+    <!-- <li class="nav-item">
+      <a href="/admin/payroll" class="nav-link <%=(url.toLowerCase().includes('/payroll'))?'active':''%>" aria-current="page">
+        Payroll
+      </a>
+    </li> -->
+    <hr>
+    <li>
+      <a href="/admin/holidays" class="nav-link <%=(url.toLowerCase().includes('/holidays'))?'active':''%>">
+        Holidays
+      </a>
+    </li>
+    <li>
+      <a href="/admin/travelpass" class="nav-link <%=(url.toLowerCase().includes('/travelpass'))?'active':''%>">
+        Travel Pass
+      </a>
+    </li>
+    <hr>
+    <li>
+      <a href="/admin/deductions" class="nav-link <%=(url.toLowerCase().includes('/deductions'))?'active':''%>">
+        Deductions
+      </a>
+    </li>
+    <li>
+      <a href="/admin/contributions" class="nav-link <%=(url.toLowerCase().includes('/contributions'))?'active':''%>">
+        Contributions
+      </a>
+    </li>
+    <li>
       <hr>
-      <li>
-        <a href="/admin/employees" class="nav-link <%=(url.toLowerCase().includes('/employees'))?'active':''%>">
-          Employees
-        </a>
-      </li>
-      <li>
-        <a href="/admin/attendance" class="nav-link <%=(url.toLowerCase().includes('/attendance'))?'active':''%>">
-          Attendance 
-        </a>
-      </li>
-      <li class="nav-item dropdown position-static">
-        <a class="nav-link dropdown-toggle <%=(url.toLowerCase().includes('/payroll'))?'active':''%>" href="/admin/payroll" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Manage Payroll</a>
-        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-          <a class="dropdown-item" href="/admin/payroll">All Payroll</a>
-          <a class="dropdown-item" href="/admin/payroll/types">Payroll Groups</a>
-        </div>
-      </li>
-      <!-- <li class="nav-item">
-        <a href="/admin/payroll" class="nav-link <%=(url.toLowerCase().includes('/payroll'))?'active':''%>" aria-current="page">
-          Payroll
-        </a>
-      </li> -->
-      <hr>
-      <li>
-        <a href="/admin/holidays" class="nav-link <%=(url.toLowerCase().includes('/holidays'))?'active':''%>">
-          Holidays
-        </a>
-      </li>
-      <li>
-        <a href="/admin/travelpass" class="nav-link <%=(url.toLowerCase().includes('/travelpass'))?'active':''%>">
-          Travel Pass
-        </a>
-      </li>
-      <hr>
-      <li>
-        <a href="/admin/deductions" class="nav-link <%=(url.toLowerCase().includes('/deductions'))?'active':''%>">
-          Deductions
-        </a>
-      </li>
-      <li>
-        <a href="/admin/contributions" class="nav-link <%=(url.toLowerCase().includes('/contributions'))?'active':''%>">
-          Contributions
-        </a>
-      </li>
-      <li>
-        <hr>
-        <a href="/admin/leavetypes" class="nav-link <%=(url.toLowerCase().includes('/leavetypes'))?'active':''%>">
-          Leave Types
-        </a>
-      </li>
-      <li class="nav-item dropdown position-static">
-        <a class="nav-link dropdown-toggle <%=(url.toLowerCase().includes('/manageleave'))?'active':''%>" href="#" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Manage Leave</a>
-        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-          <a class="dropdown-item" href="/admin/manageleave/all">All Leave</a>
-          <a class="dropdown-item" href="#">Pending</a>
-          <a class="dropdown-item" href="#">Approved</a>
-          <a class="dropdown-item" href="#">Rejected</a>
-        </div>
-        <style>
-        .nav-link{
-          color: #67668A;
-        }
-        .nav-pills, .nav{
-          --bs-nav-pills-link-active-bg: #67668A;
-          --bs-nav-link-color: #67668A;
-        }
-        .nav-link:focus, .nav-link:hover {
-          color: #67668A; 
-        }
-        .nav-pills .nav-link.active, .nav-pills .show>.nav-link {
-          color: #ffefee;
-          background-color: #67668A;
-          border: 0;
-          border-radius: 0;
-        }
-        .dropdown-menu{
-          border:0;
-          border-radius: 0;
-          padding: 0;
-          --bs-dropdown-link-active-bg: #67668A;
-        }
-        .dropdown-item {
-          padding: 0.25rem 1.5rem !important;
-          font-size: .85rem;
-          font-family: inherit;
-          font-weight: inherit;
-          border: 0;
-          color:#67668A;
-        }
+      <a href="/admin/leavetypes" class="nav-link <%=(url.toLowerCase().includes('/leavetypes'))?'active':''%>">
+        Leave Types
+      </a>
+    </li>
+    <li class="nav-item dropdown position-static">
+      <a class="nav-link dropdown-toggle <%=(url.toLowerCase().includes('/manageleave'))?'active':''%>" href="#" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Manage Leave</a>
+      <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+        <a class="dropdown-item" href="/admin/manageleave/all">All Leave</a>
+        <a class="dropdown-item" href="#">Pending</a>
+        <a class="dropdown-item" href="#">Approved</a>
+        <a class="dropdown-item" href="#">Rejected</a>
+      </div>
+      <style>
+      .nav-link{
+        color: #67668A;
+      }
+      .nav-pills, .nav{
+        --bs-nav-pills-link-active-bg: #67668A;
+        --bs-nav-link-color: #67668A;
+      }
+      .nav-link:focus, .nav-link:hover {
+        color: #67668A; 
+      }
+      .nav-pills .nav-link.active, .nav-pills .show>.nav-link {
+        color: #ffefee;
+        background-color: #67668A;
+        border: 0;
+        border-radius: 0;
+      }
+      .dropdown-menu{
+        border:0;
+        border-radius: 0;
+        padding: 0;
+        --bs-dropdown-link-active-bg: #67668A;
+      }
+      .dropdown-item {
+        padding: 0.25rem 1.5rem !important;
+        font-size: .85rem;
+        font-family: inherit;
+        font-weight: inherit;
+        border: 0;
+        color:#67668A;
+      }
 
-        .dropdown.position-static .dropdown-menu {
-          position: static !important;
-          transform: none !important;
-        }
-        </style>
-      </li>
-    </ul>
+      .dropdown.position-static .dropdown-menu {
+        position: static !important;
+        transform: none !important;
+      }
+      </style>
+    </li>
+  </ul>
+  </div>
     <div class="d-flex flex-row" style="padding: 15px 5px 15px 5px; border-top: 1px solid #dddddd;" >
         <div class="d-flex flex-row" style="margin:5px;">
             <img src="" alt="" class="img-fluid" style="background: gray; width: 80px">

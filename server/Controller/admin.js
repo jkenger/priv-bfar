@@ -122,7 +122,7 @@ module.exports = {
             if (!id) res.status(500).send({err: 'Failure to process the given id'})
             
             //update name
-            if(update.fname && update.lname && update.mname){
+            if(update.personal_information.fname && update.personal_information.lname && update.personal_information.mname){
                 update.personal_information.name = update.personal_information.fname + ' ' + update.personal_information.mname + ' ' + update.personal_information.lname
             }
             
@@ -533,6 +533,27 @@ module.exports = {
                 project_name,
                 program_name
             })
+            res.status(200).send({result: result})
+        }catch(e){
+            res.status(500).send(e)
+        }
+    },
+    updatePayrollType: async(req, res)=>{
+        try{
+            const id = req.params.id
+            const body = req.body
+            console.log(body)
+            console.log(id)
+            const result = await PayrollType.findOneAndUpdate({_id: id}, body)
+            res.status(200).send({result: result})
+        }catch(e){
+            res.status(500).send(e)
+        }
+    },
+    deletePayrollType: async(req, res)=>{
+        try{
+            const id = req.params.id
+            const result = await PayrollType.findOneAndDelete({_id: id})
             res.status(200).send({result: result})
         }catch(e){
             res.status(500).send(e)
