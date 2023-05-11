@@ -500,11 +500,12 @@ module.exports = {
             try{
                 const fromDate = new Date(req.query.from)
                 const toDate = new Date(req.query.to)
+                const payroll_group = req.query.p_group
                 const id = req.params.id
-                console.log(fromDate, toDate)
+                console.log('FROM-TO', fromDate, toDate)
                 const authorization = req.query.auth
-                console.log(id, authorization)
-                const projectedData = await Payroll.getPayrollData(fromDate, toDate, id)
+                console.log('AUTHORIZED?', id, authorization)
+                const projectedData = await Payroll.getPayrollData(fromDate, toDate, payroll_group ,id)
                 const totalData = await Payroll.getTotalData(fromDate, toDate)
                 console.log(projectedData)
                 
@@ -563,7 +564,8 @@ module.exports = {
         try{
             const ids = req.body.employeeId
             const pids = req.body.payrollGroupId
-            console.log(ids)
+                console.log(pids)
+                console.log(ids)
             if (!req.body) { throw Error('Invalid input') }
             if (!ids) res.status(500).send({err: 'Failure to process the given id'})
             const result = await Employees.updateMany({'employee_details.designation.id': {$in: ids}}, {$set:{'employee_details.employment_information.payroll_type': pids}})

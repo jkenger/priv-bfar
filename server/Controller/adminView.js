@@ -140,20 +140,21 @@ module.exports = {
             // Get the dates then retrieve all the data based from the given dates
             let fromDate = new Date().toISOString()
             let toDate = new Date().toISOString()
-            
-
+            const pgroup = req.query.p_group
             if(!req.query.from || !req.query.to) fromDate = new Date().toISOString(), toDate = new Date().toISOString()
             else fromDate = new Date(req.query.from).toISOString(), toDate = new Date(req.query.to + 'T23:59:59.999Z').toISOString()
-            const data = await fetchData(`admin/api/payrolls?from=${fromDate}&to=${toDate}`)
+            const data = await fetchData(`admin/api/payrolls?from=${fromDate}&to=${toDate}&p_group=${pgroup}`)
             const group = await fetchData(`admin/api/payrolltypes`)
             if(!req.query.from || !req.query.to) { fromDate = ''; toDate = ''} else {fromDate = req.query.from; toDate = req.query.to}
-            console.log('fromn view', data)
+            console.log('VIEW/ EMPLOYEE DATA', data)
+            console.log('VIEW/ PAYROLL GROUP', group)
+
             res.status(200).render('payroll', { 
                 data,
                 group,
                 url: req.url,
                 moment: moment,
-                query: {from: fromDate, to: toDate}
+                query: {from: fromDate, to: toDate, p_group: pgroup}
             })
 
         } catch (err) { 

@@ -3,6 +3,7 @@ const Deductions = require('./deductions')
 const Holiday = require('./../Model/holiday')
 const countWeekdays = require('./../Controller/services/calendarDays')
 const employees = require('./employeee')
+const PayrollGroup = require('./payrollType')
 const moment = require('moment')
 
 const payrollSchema = mongoose.Schema({
@@ -30,8 +31,11 @@ const payrollSchema = mongoose.Schema({
     }
 })
 
-payrollSchema.statics.getPayrollData = async function(fromDate, toDate, id){
+payrollSchema.statics.getPayrollData = async function(fromDate, toDate, group, id){
     const holidayDates = await Holiday.getHolidayDates(fromDate, toDate);
+    const p_group_id = (group)?group:''
+    const eFilter = (p_group_id)? {'employee_details.employment_information.payroll_type': new mongoose.Types.ObjectId(p_group_id)} : {}
+    console.log(p_group_id)
     console.log('model', id)
     const filter = (id)?{ $or: [{$or: [{am_time_out: { $ne: null }}, {$or: [{message: 'T.O'}, {message: 'O.B'}]}]}, { pm_time_out: { $ne: null } }], date: { $gte: fromDate, $lte: toDate}, emp_code: id}: { $or: [{$or: [{am_time_out: { $ne: null }}, {$or: [{message: 'T.O'}, {message: 'O.B'}]}]}, { pm_time_out: { $ne: null } }], date: { $gte: fromDate, $lte: toDate}}  ;
     console.log('PAYROLL DATA:', filter)
@@ -42,6 +46,8 @@ payrollSchema.statics.getPayrollData = async function(fromDate, toDate, id){
     const tax = 0.02
 
     const pipeline = [
+        {$match: eFilter},
+        
         {$lookup: {
             from: 'attendances',
             localField: 'employee_details.designation.id',
@@ -54,6 +60,7 @@ payrollSchema.statics.getPayrollData = async function(fromDate, toDate, id){
         {$addFields:{
             attendances_dup: '$attendances'
         }},
+        
         // IF ONE ATTENDANCE TIME OUT IS EMPTY, COUNT AS HALF or .5 
         {$unwind: '$attendances'},
         {$project: {
@@ -62,6 +69,7 @@ payrollSchema.statics.getPayrollData = async function(fromDate, toDate, id){
                 name: '$personal_information.name',
                 salary: '$employee_details.salary_details.monthly_salary',
                 designation: '$employee_details.designation.designation',
+                payroll_group_id: '$employee_details.employment_information.payroll_type',
                 attendances_dup: 1,
                 fromDate: fromDate,
                 toDate: toDate,
@@ -90,6 +98,7 @@ payrollSchema.statics.getPayrollData = async function(fromDate, toDate, id){
             designation: {$first: '$designation'},
             attendances_dup: {$first: '$attendances_dup'},
             holidays: {$sum: '$holidays'},
+            payroll_group_id: {$first: '$payroll_group_id'},
         }},
         {$unwind: '$attendances_dup'},
         {$project: {
@@ -111,7 +120,8 @@ payrollSchema.statics.getPayrollData = async function(fromDate, toDate, id){
             am_out: '$attendances_dup.am_time_out',
             pm_out: '$attendances_dup.pm_time_out',
             // no_of_undertime: { $dateDiff: { startDate: "$attendances.am_office_in", endDate: "$attendances.am_time_in", unit: "minute" }}
-            date: '$attendances_dup.date'
+            date: '$attendances_dup.date',
+            payroll_group_id: 1
 
         }},
         {$addFields: {
@@ -159,6 +169,7 @@ payrollSchema.statics.getPayrollData = async function(fromDate, toDate, id){
             date: {$first: '$date'}, 
             no_of_late: {$sum: '$no_of_late'},
             no_of_undertime: {$sum: '$no_of_undertime'},
+            payroll_group_id: {$first: '$payroll_group_id'},
         }},
         {$addFields:{
             holidays_deduction:{$cond:{
@@ -190,6 +201,7 @@ payrollSchema.statics.getPayrollData = async function(fromDate, toDate, id){
             no_of_late: {$first: '$no_of_late'},
             holiday: { $first: '$holidays'},
             holiday_deduction: {$first: '$holidays_deduction'},
+            payroll_group_id: {$first: '$payroll_group_id'},
             // holiday_deduction: {$first: 0}, //test
             // whalf_days: {$first: 11}, // test
             // holiday: { $first: 0}, //test
@@ -295,7 +307,8 @@ payrollSchema.statics.getPayrollData = async function(fromDate, toDate, id){
             ut_deduction: {$first: '$ut_deduction'},
             late_deduction: {$first: '$late_deduction'},
             daily_rate: {$first: '$daily_rate'},
-            holiday_rate:{$first: '$holiday_rate'}
+            holiday_rate:{$first: '$holiday_rate'},
+            payroll_group_id: {$first: '$payroll_group_id'},
         }},
 
         {$addFields: {
@@ -344,7 +357,8 @@ payrollSchema.statics.getPayrollData = async function(fromDate, toDate, id){
             total_other_deductions: {$sum: '$other_deductions.amount'},
             daily_rate: {$first: '$daily_rate'},
             days_present_rate: {$first: '$days_present_rate'},
-            holiday_rate:{$first: '$holiday_rate'}
+            holiday_rate:{$first: '$holiday_rate'},
+            payroll_group_id: {$first: '$payroll_group_id'},
         }},
         {$addFields: {
             // gross salary - tax deduction, other deductions
@@ -355,7 +369,13 @@ payrollSchema.statics.getPayrollData = async function(fromDate, toDate, id){
             }},
             net_amount_due: {$round:[{$subtract: [{$subtract: ['$gross_salary', '$tax_deduction']}, '$total_other_deductions']}, 2]}
         }},
-        
+        {$lookup:{
+            from: PayrollGroup.collection.name,
+            localField: 'payroll_group_id',
+            foreignField: '_id',
+            as: 'payroll_group'
+        }},
+        {$unwind: '$payroll_group'},
         {$group:{
             _id: '$_id',
             emp_code: { $first: '$emp_code' },
@@ -363,6 +383,7 @@ payrollSchema.statics.getPayrollData = async function(fromDate, toDate, id){
             designation: { $first: '$designation' },
             salary: { $first: '$salary' },
             semimo_salary: {$first: '$semimo_salary'},
+            payroll_group: {$first: '$payroll_group'},
             attendance:{$mergeObjects:{
                 calendar_days: calendarDays,
                 total_days: '$total_days',
@@ -404,6 +425,8 @@ payrollSchema.statics.getPayrollData = async function(fromDate, toDate, id){
                 net_salary:'$net_amount_due'
             }}
         }},
+        
+       
         // // {$unwind: '$attendance'},
         // // {$unwind: '$deuction'},
         // // {$unwind: '$salary'},
