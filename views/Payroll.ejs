@@ -92,7 +92,13 @@
               </div>
             <input type="date" name="from" value="<%=query.from%>" id="from" class="rounded-1">
             <input type="date" name="to" value="<%=query.to%>" id="to" class="rounded-1"    >
-
+            <select name="p-group" id="projectSelect" class="rounded-1 custom-select">
+              <% Object.values(group.result).forEach(group =>{%> 
+                <a class="dropdown-item" href="/admin/payroll/receipt?from=<%=query.from%>&to=<%=query.to%>&fcluster=<%=group.fund_cluster%>&pname=<%=group.project_name%>"><%=group.fund_cluster%> / <%=group.project_name%></a>
+                <option value="<%=group._id%>" selected><%=group.fund_cluster%> - <%=group.project_name%> <%=(group.program_name)? + "- " + group.program_name: ''%></option>
+              <%}); %>
+              
+            </select>
             <button type="submit" class="btn btn-primary">Submit</button>
         </form>
     </div>
@@ -110,19 +116,33 @@
                 </tr>
             </thead>
             <tbody>
-                <% Object.values(data.result).forEach(user =>{%> 
-                    <tr>
-                        <td><%=user.emp_code%></td>
-                        <td><%=user.name%></td>
-                        <td><%=user.salaries.gross_salary%></td>
-                        <td><%=user.salaries.net_salary%></td>
-                        <td>
-                            <a href="/admin/payroll/<%=user.emp_code%>/payslip?from=<%=query.from%>&to=<%=query.to%>">Payslip</a>
-                            <a href="/admin/payroll/receipt?from=<%=query.from%>&to=<%=query.to%>">Payroll</a>
-                        </td>
-                    </tr>
-                    <%}); %>
-                    
+              
+              <% Object.values(data.result).forEach(user =>{%> 
+                  <tr>
+                      <td><%=user.emp_code%></td>
+                      <td><%=user.name%></td>
+                      <td><%=user.salaries.gross_salary%></td>
+                      <td><%=user.salaries.net_salary%></td>
+                      <td class="d-flex align-items-center justify-content-center">
+                          <a href="/admin/payroll/<%=user.emp_code%>/payslip?from=<%=query.from%>&to=<%=query.to%>">Payslip</a>
+                          <div class="dropdown">
+                              <a class="dropdown-toggle" href="#" role="button" id="tagDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Payroll
+                              </a>
+                              <div class="dropdown-menu" aria-labelledby="tagDropdown">
+                                  <% Object.values(group.result).forEach(group =>{%> 
+                                      <a class="dropdown-item" href="/admin/payroll/receipt?from=<%=query.from%>&to=<%=query.to%>&fcluster=<%=group.fund_cluster%>&pname=<%=group.project_name%>"><%=group.fund_cluster%> / <%=group.project_name%></a>
+              
+                                  <%}); %>
+                              </div>
+                            </div>
+                      </td>
+                  </tr>
+                  <%}); %>
+                  <tr>
+                    <td colspan="4">asd</td>
+                    <td>print</td>
+                  </tr>
             </tbody>
             <tfoot>
             </tfoot>
