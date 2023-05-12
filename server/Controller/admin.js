@@ -5,7 +5,7 @@ const attendances = require('../Model/attendance')
 const Holiday = require('../Model/holiday')
 const Payroll = require('../Model/payroll')
 const PayrollHistory = require('../Model/payrollHistory')
-const PayrollType = require('../Model/payrollType')
+const PayrollType = require('../Model/PayrollGroup')
 const XLSX = require('xlsx')
 const TravelPass = require('../Model/travelPass')
 const Deductions = require('../Model/deductions')
@@ -518,7 +518,12 @@ module.exports = {
     },
     readPayrollTypes: async(req, res)=>{
         try{
-            const result = await PayrollType.find({})
+            let filter = {}
+            if(req.params.id){
+                const id = req.params.id
+                filter = {'_id': id}
+            }
+            const result = await PayrollType.find(filter)
             res.status(200).send({result: result})
         }catch(e){
             res.status(500).send(e)
@@ -560,6 +565,19 @@ module.exports = {
             res.status(500).send(e)
         }
     },
+
+    // payroll history
+    addPayrollHistory: async(req, res)=>{
+        try{
+            const body  = req.body
+            console.log(body)
+            // const result = await PayrollHistory.create(body)
+            // res.status(200).send({result: result})
+        }catch(e){
+            res.status(500).send(e)
+        }
+    },
+
     addEmployeePayrollType: async(req, res)=>{
         try{
             const ids = req.body.employeeId

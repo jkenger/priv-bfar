@@ -289,9 +289,9 @@ Attendance.statics.getProjectedAttendanceData = async function(fromDate, toDate,
                     }}]}
                 }}
         }},
-        {$sort: {date: -1}}
+        
     ]
-    const result = await this.aggregate(pipeline)
+    const result = await this.aggregate(pipeline).sort({date: -1})
     return result
 }
 

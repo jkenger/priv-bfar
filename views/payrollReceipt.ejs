@@ -20,8 +20,13 @@
                 <label for="">For the period <%=moment(query.from).format('MMMM')%> <%=moment(query.from).date()%>-<%=(moment(query.to).format('MMMM') === moment(query.from).format('MMMM')) ? moment(query.to).date() : moment(query.to).format('MMMM') + " " +  moment(query.to).date()%> <%=moment(query.to).year()%></label>
             </div>
             <div class="s3">
-                <label for="">CARPS FINGERLING PRODUCTION AND HATCHERY DEVELOPMENT/ADMINISTRATION AND OPERATION OF NIFTC</label> 
+                <label for=""><%=data.result[0].payroll_group.project_name%></label> 
             </div>
+            <%if(data.result[0].payroll_group.program_name){%>
+                <div class="s3">
+                    <label for=""><%=data.result[0].payroll_group.program_name%></label> 
+                </div>
+           <%}%>
             <div class="s4">
                 <div>
                     <label for="">Entity Name:</label>
@@ -34,7 +39,7 @@
             </div>
             <div class="s5">
                 <div>
-                    <label for="">Fund Cluster : NIFTC</label>
+                    <label for="">Fund Cluster : <%=data.result[0].payroll_group.fund_cluster%></label>
                 </div>
                 <div class="sub">
                     <label for="">

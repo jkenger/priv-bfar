@@ -10,14 +10,13 @@ const path = ((window.location.pathname).split('/')).at(-1)
 
 
 // submit modal
-const submitModal = (id, name, inputs, html, _api, _directLink)=>{
-    const api = "http://" + _api
-    //http://localhost:3000/employee/api/leave
-    console.log(api)
-
-    const directLink = "http://" + _directLink
-    //'http://localhost:3000/employee/leave'
-    console.log(directLink)
+const submitModal = (id, name, inputs, html)=>{
+    const api = 
+    (path === 'holidays' || path === 'travelpass')?
+    '/admin/api/events/' + path:
+    '/admin/api/' + path
+   
+    const directLink = (path === 'types') ? '/admin/payroll/' + path : '/admin/' + path
 
     modalForm.dataset.formType = ''
     modalForm.dataset.formType = 'submitForm'
@@ -39,7 +38,7 @@ const submitModal = (id, name, inputs, html, _api, _directLink)=>{
                 inputObj[arrKeys[index]] = modalForm[arr].value
             })
             console.log(inputObj)
-            // postData(inputObj, api, directLink)
+            postData(inputObj, api, directLink)
         }
     })
 
@@ -48,15 +47,16 @@ const submitModal = (id, name, inputs, html, _api, _directLink)=>{
 const postData = async (obj, url, directLink) => {
     const body = obj
     const _url = url
-    
     const _target = directLink
-    const doc = await fetch(_url, {
-        headers: { 'Content-Type': 'application/json' },
-        body:JSON.stringify(body),
-        method: 'POST'
-    })
-    const data = await doc.json()
-    console.log(data)
+
+    console.log(body)
+    // const doc = await fetch(_url, {
+    //     headers: { 'Content-Type': 'application/json' },
+    //     body:JSON.stringify(body),
+    //     method: 'POST'
+    // })
+    // const data = await doc.json()
+    // console.log(data)
 }
 
 

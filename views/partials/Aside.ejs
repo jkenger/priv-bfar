@@ -50,16 +50,13 @@
       </a>
     </li>
     <hr>
-    <li>
-      <a href="/admin/deductions" class="nav-link <%=(url.toLowerCase().includes('/deductions'))?'active':''%>">
-        Deductions
-      </a>
-    </li>
-    <li>
-      <a href="/admin/contributions" class="nav-link <%=(url.toLowerCase().includes('/contributions'))?'active':''%>">
-        Contributions
-      </a>
-    </li>
+    <li class="nav-item dropdown position-static">
+      <a class="nav-link dropdown-toggle <%=(url.toLowerCase().includes('/deductions'))?'active':''%>" href="#" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Manage Deductions</a>
+      <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+        <a class="dropdown-item" href="/admin/deductions">Contributions</a>
+        <a class="dropdown-item" href="#">Other Deductions</a>
+      </div>
+    </li> 
     <li>
       <hr>
       <a href="/admin/leavetypes" class="nav-link <%=(url.toLowerCase().includes('/leavetypes'))?'active':''%>">

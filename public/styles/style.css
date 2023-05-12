@@ -147,6 +147,7 @@ a.reject{
     gap: .75em;
     display: flex;
     align-items: center;
+    width: 100%;
 }
 
 .filterContainer .btn-primary{

@@ -115,8 +115,10 @@ route.get('/api/records/:id', checkApiAuth, admin.readAttendance)
 // payroll api
 route.get('/api/payrolls', admin.readPayrolls)
 route.get('/api/payrolls/:id', checkApiAuth, admin.readPayrolls)  
+route.post('/api/payrolls/history', admin.addPayrollHistory)
 
 route.get('/api/payrolltypes', admin.readPayrollTypes)
+route.get('/api/payrolltypes/:id', admin.readPayrollTypes)
 route.post('/api/payrolltype', admin.addPayrollType)
 route.patch('/api/types/:id', admin.updatePayrollType)
 route.delete('/api/types/:id', admin.deletePayrollType)

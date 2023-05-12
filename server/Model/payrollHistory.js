@@ -1,11 +1,58 @@
 const mongoose = require('mongoose')
+const PayrollGroup = require('./PayrollGroup')
 
 const payrollHistorySchema = mongoose.Schema({
-    emp_code: {type: String},
-    month:{type: String},
-    name: {type: String},
-    gross_amount_earned: {type: Number},
-    net_amount_due: {type:Number},
+    payroll_group:{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: PayrollGroup.collection.name,
+        required: true
+    },
+    serial_no:{
+        type: Number,
+    },
+    name:{
+        type: String,
+    },
+    designation:{
+        type: String,
+    },
+    prc:{
+        type: String,
+    },
+    monthly_salary:{
+        type: Number,
+    },
+    no_of_days:{
+        type: Number,
+    },
+    gross_amount_due:{
+        type: Number,
+    },
+    tax:{
+        tax_1:{
+            type: Number,
+        },
+        tax_2:{
+            type: Number,
+        },
+        tax_3:{
+            type: Number,
+        }
+    },
+    contributions:{
+        sss:{
+            type: Number,
+        },
+        pagibig:{
+            type: Number,
+        },
+        philhealth:{
+            type: Number,
+        },
+    },
+    net_amount_due:{
+        type: Number,
+    },
 },
 {timestamps: true}
 )

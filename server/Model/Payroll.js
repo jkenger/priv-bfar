@@ -3,7 +3,7 @@ const Deductions = require('./deductions')
 const Holiday = require('./../Model/holiday')
 const countWeekdays = require('./../Controller/services/calendarDays')
 const employees = require('./employeee')
-const PayrollGroup = require('./payrollType')
+const PayrollGroup = require('./PayrollGroup')
 const moment = require('moment')
 
 const payrollSchema = mongoose.Schema({
@@ -145,14 +145,14 @@ payrollSchema.statics.getPayrollData = async function(fromDate, toDate, group, i
                 then: 0,
                 else: {
                     $sum: [{$cond:{
-                        if: { $lt: [{ $dateDiff: { startDate: "$am_office_out", endDate: "$am_out", unit: "minute" } }, 0] },
+                        if: { $lt: [{ $dateDiff: { startDate: "$am_out", endDate: "$am_office_out", unit: "minute" } }, 0] },
                         then: 0,
-                        else: { $dateDiff: { startDate: "$am_office_out", endDate: "$am_out", unit: "minute" } }
+                        else: { $dateDiff: { startDate: "$am_out", endDate: "$am_office_out", unit: "minute" } }
                     }},
                     {$cond: {
-                        if: { $lt: [{ $dateDiff: { startDate: "$pm_office_out", endDate: "$pm_out", unit: "minute" } }, 0] },
+                        if: { $lt: [{ $dateDiff: { startDate: "$pm_out", endDate: "$pm_office_out", unit: "minute" } }, 0] },
                         then: 0,
-                        else: { $dateDiff: { startDate: "$pm_office_out", endDate: "$pm_out", unit: "minute" } }
+                        else: { $dateDiff: { startDate: "$pm_out", endDate: "$pm_office_out", unit: "minute" } }
                     }}]}
                 }}
         }},
@@ -425,7 +425,6 @@ payrollSchema.statics.getPayrollData = async function(fromDate, toDate, group, i
                 net_salary:'$net_amount_due'
             }}
         }},
-        
        
         // // {$unwind: '$attendance'},
         // // {$unwind: '$deuction'},

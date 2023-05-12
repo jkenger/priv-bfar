@@ -21,10 +21,10 @@ module.exports = {
     readEmployeesView: async (req, res) => {
         try {
             const data = await fetchData('admin/api/employees')
-            const payrollTypes = await fetchData('admin/api/payrolltypes')
+            const group = await fetchData('admin/api/payrolltypes')
             res.status(200).render('employees', { 
                 data,
-                payrollTypes,
+                group,
                 url: req.url
             })
         } catch (err) {
@@ -145,6 +145,7 @@ module.exports = {
             else fromDate = new Date(req.query.from).toISOString(), toDate = new Date(req.query.to + 'T23:59:59.999Z').toISOString()
             const data = await fetchData(`admin/api/payrolls?from=${fromDate}&to=${toDate}&p_group=${pgroup}`)
             const group = await fetchData(`admin/api/payrolltypes`)
+            console.log(group)
             if(!req.query.from || !req.query.to) { fromDate = ''; toDate = ''} else {fromDate = req.query.from; toDate = req.query.to}
             console.log('VIEW/ EMPLOYEE DATA', data)
             console.log('VIEW/ PAYROLL GROUP', group)
@@ -188,11 +189,11 @@ module.exports = {
             // Get the dates then retrieve all the data based from the given dates
             let fromDate = new Date().toISOString()
             let toDate = new Date().toISOString()
-                
+            const pgroup_id = req.query.p_group
             if(!req.query.from || !req.query.to) fromDate = new Date().toISOString(), toDate = new Date().toISOString()
             else fromDate = new Date(req.query.from).toISOString(), toDate = new Date(req.query.to + 'T23:59:59.999Z').toISOString()
-            const data = await fetchData(`admin/api/payrolls?from=${fromDate}&to=${toDate}`)
-            const savedPayroll = await PayrollHistory.create(data)
+            const data = await fetchData(`admin/api/payrolls?from=${fromDate}&to=${toDate}&p_group=${pgroup_id}`)
+            console.log(data)
             if(!req.query.from || !req.query.to) { fromDate = ''; toDate = ''} else {fromDate = req.query.from; toDate = req.query.to}
             console.log('fromn view', data)
             res.status(200).render('payrollReceipt', { 

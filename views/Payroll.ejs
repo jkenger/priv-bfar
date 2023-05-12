@@ -26,7 +26,7 @@
             </div>
     </div>
 
-    <div class="d-flex gap-4"> 
+    <div class="d-flex gap-4 "> 
       <div class="d-flex justify-content-between flex-fill rounded-1" style="background: #F5F5F5; border: solid #dddddd 1px; padding: 15px;">
            <div class="d-flex flex-column justify-content-around">
               <p>Monthly Salary</p>
@@ -78,6 +78,8 @@
            </div>
       </div>
     </div>
+    
+    <%-include('partials/Modal') %> 
     <div class="d-flex filterContainer rounded-1 gap-3">
         <form action="">
             <div class="input-group">
@@ -98,7 +100,8 @@
               <%}); %>
               
             </select>
-            <button type="submit" class="btn btn-primary">Submit</button>
+            <a id='btnAdd_payrollType' class="btn btn-primary" href="#" data-toggle="modal" data-target="#modal" onclick="submitModal('','','fund_cluster project_name program_name monthly_rate no_of_days gross_amount_due tax contributions net_amount_due', `<%=include('partials/bodies/payrollHistory-editBody', {data})%>`)"> Add Payroll Type </a>
+            <a id='btnCreate_PayrollHistory' data-toggle="modal" data-target="#modal" href="#" class="btn btn-primary">Create Payroll</a>
         </form>
     </div>
 
@@ -126,11 +129,7 @@
                       <td><%=user.salaries.net_salary%></td>
                       <td class="d-flex align-items-center justify-content-center">
                           <a href="/admin/payroll/<%=user.emp_code%>/payslip?from=<%=query.from%>&to=<%=query.to%>">Payslip</a>
-                          <div class="dropdown">
-                              <a class="dropdown-toggle" href="#" role="button" id="tagDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Payroll
-                              </a>
-                            </div>
+                          <a href="/admin/payroll/receipt?from=<%=query.from%>&to=<%=query.to%>&p_group=<%=user.payroll_group._id%>">Payroll</a>
                       </td>
                   </tr>
                   <%}); %>
