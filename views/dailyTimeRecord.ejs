@@ -91,22 +91,30 @@
                                 <td><%=x%></td>
                                 <td>
                                     <%if(attendance){%>
-                                    <label for=""><%=(!attendance.am.time_in && attendance.message === 'Office')? '': (attendance.message.includes('T.O') || attendance.message.includes('O.B')) ? attendance.message : moment(attendance.am.time_in).format('LTS')%></label> 
+                                        <%if(attendance.am){%>
+                                            <label for=""><%=(!attendance.am.time_in && attendance.message === 'Office')? '': (attendance.message.includes('T.O') || attendance.message.includes('O.B')) ? attendance.message : moment(attendance.am.time_in).format('LTS')%></label> 
+                                        <%}%>
                                     <%}%>
                                 </td>
                                 <td>
-                                    <%if(attendance){%> 
+                                    <%if(attendance){%>
+                                        <%if(attendance.am){%> 
                                         <label for=""><%=(!attendance.am.time_out)? '' : moment(attendance.am.time_out).format('LTS')%></label> 
+                                        <%}%>
                                     <%}%>
                                 </td>
                                 <td>
                                     <%if(attendance){%>
+                                        <%if(attendance.pm){%> 
                                         <label for=""><%=(!attendance.pm.time_in)? '' : moment(attendance.pm.time_in).format('LTS')%></label> 
+                                        <%}%>
                                     <%}%>
                                 </td>
                                 <td>
                                     <%if(attendance){%>
+                                        <%if(attendance.pm){%> 
                                         <label for=""><%=(!attendance.pm.time_out)? '' : moment(attendance.pm.time_out).format('LTS')%></label> 
+                                        <%}%>
                                     <%}%>
                                 </td>
                                 <td>
