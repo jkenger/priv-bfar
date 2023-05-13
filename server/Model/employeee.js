@@ -1,5 +1,6 @@
 const mongoose = require('mongoose')
 const validator = require('validator')
+const payrollGroup = require('./PayrollGroup')
 
 const employeeSchema = mongoose.Schema({
     avatar:{
@@ -123,7 +124,7 @@ const employeeSchema = mongoose.Schema({
             },
             payroll_type:{
                 type: mongoose.Types.ObjectId,
-                ref: 'PayrollTypes',
+                ref: payrollGroup.collection.name,
                 default: null,
             },
             date_hired:{
