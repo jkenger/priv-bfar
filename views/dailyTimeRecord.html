@@ -197,3 +197,220 @@
 
 </html>
 
+<div class="wrapper">
+    <div class="container">
+        <table>
+            <tr>
+                <td colspan="6"><label >CIVIL SERVICE FORM No. 48</label> </td>
+                <td></td>
+            </tr>
+            <tr>
+                <td colspan="6"><label>DAILY TIME RECORD</label></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td colspan="6"><label><%=data.result[0].name%></label> </td>
+                <td></td>
+            </tr>
+            <tr>
+                <td colspan="6"><label >(Name)</label></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td colspan="6"><label> For the month <span style="font-weight:bold;"> <%=moment(query.from).format('MMMM')%> <%=moment(query.from).date()%>-<%=(moment(query.to).format('MMMM') === moment(query.from).format('MMMM')) ? moment(query.to).date() : moment(query.to).format('MMMM') + " " +  moment(query.to).date()%> <%=moment(query.to).year()%></span></label></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td colspan="7">
+                    <label> Official hours for arrival</label>
+                    <label for=""> Regular days__________</label>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="7">
+                    <label for=""> Saturdays__________</label>
+                </td>
+            </tr>
+            <tr class="actTable">
+                <td rowspan="2">
+                    <label for=""> Date</label>
+                </td>
+                <td colspan="2">
+                    <label for="">A.M.</label>
+                </td>
+                <td colspan="2">
+                    <label for="">P.M.</label>
+                </td>
+                <td colspan="2">
+                    <label for="">UNDERTIME</label>
+                </td>
+            </tr>
+            <tr class="actTable">
+                <td>
+                    <label for="">TIME-IN</label>
+                </td>
+                <td>
+                    <label for="">TIME-OUT</label>
+                </td>
+                <td>
+                    <label for="">TIME-IN</label>
+                </td>
+                <td>
+                    <label for="">TIME-OUT</label>
+                </td>
+                <td colspan="2">
+                    <label for=""></label>
+                </td>
+            </tr>
+            <% for (var i = 1; i <= moment(query.from).daysInMonth(); i++) { %>
+                <% let attendance = data.result.find(event => moment(event.date).date() === i) %>
+                    <tr class="actTable">
+                        <td><%=i%></td>
+                        <td>
+                            <%if(attendance){%>
+                            <label for=""><%=(!attendance.am.time_in && attendance.message === 'Office')? '': (attendance.message.includes('T.O') || attendance.message.includes('O.B')) ? attendance.message : moment(attendance.am.time_in).format('LTS')%></label> 
+                            <%}%>
+                        </td>
+                        <td>
+                            <%if(attendance){%> 
+                                <label for=""><%=(!attendance.am.time_out)? '' : moment(attendance.am.time_out).format('LTS')%></label> 
+                            <%}%>
+                        </td>
+                        <td>
+                            <%if(attendance){%>
+                                <label for=""><%=(!attendance.pm.time_in)? '' : moment(attendance.pm.time_in).format('LTS')%></label> 
+                            <%}%>
+                        </td>
+                        <td>
+                            <%if(attendance){%>
+                                <label for=""><%=(!attendance.pm.time_out)? '' : moment(attendance.pm.time_out).format('LTS')%></label> 
+                            <%}%>
+                        </td>
+                        <td>
+                            <%if(attendance){%>
+                                <label for=""><%=attendance.no_of_late%></label> 
+                            <%}%> 
+                        </td>
+                        <td>
+                            <%if(attendance){%>
+                                <label for=""><%=attendance.no_of_undertime%></label> 
+                            <%}%>
+                        </td>
+                    </tr>
+              <% } %>
+            <!-- <tr class="actTable">
+                <td>
+                    <label for="">1</label> 
+                </td>
+                <td>
+                    <label for="">8:00:41 am</label> 
+                </td>
+                <td>
+                    <label for="">12:13:28 pm</label> 
+                </td>
+                <td>
+                    <label for="">12:13:28 pm</label> 
+                </td>
+                <td>
+                    <label for="">5:02:04 pm</label> 
+                </td>
+                <td>
+                    <label for=""></label> 
+                </td>
+                <td>
+                    <label for=""></label> 
+                </td>
+            </tr> -->
+            <tr class="">
+                <td>
+                    <label for="">TOTAL</label>
+                </td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>   
+            <tr>
+                <td colspan="7">
+                    <label for=""> I CERTIFY on my honor that the above is  true and correct report of the hours of work </label>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="7">
+                    <label for=""> performed, record of which was made daily at the time of and departure from Office.</label>
+                </td>
+            </tr>
+            <tr>
+                
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td colspan="2">
+                    <label style="font-weight:bold;"> PERCIVAL F. SICOSANA</label>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="4"><label for="">Verified as to the prescribed office hours.</label> </td>
+                <td></td>
+                <td colspan="2"><label for="">SKILLED WORKER</label></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td colspan="2">Chief, BFAR-NIFTC</td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+        </table>
+    </div>
+</div>

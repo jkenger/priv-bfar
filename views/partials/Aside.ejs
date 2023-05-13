@@ -21,15 +21,20 @@
         Employees
       </a>
     </li>
-    <li>
-      <a href="/admin/attendance" class="nav-link <%=(url.toLowerCase().includes('/attendance'))?'active':''%>">
-        Attendance 
+    <li class="nav-item dropdown position-static">
+      <a href="/admin/attendance" class="nav-link dropdown-toggle <%=(url.toLowerCase().includes('/attendance'))?'active':''%>" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        Manage Attendance 
       </a>
+      <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+        <a class="dropdown-item" href="/admin/attendance/history">Attendance Periods</a>
+        <a class="dropdown-item" href="/admin/attendance">Attendance Details</a>
+      </div>
     </li>
     <li class="nav-item dropdown position-static">
       <a class="nav-link dropdown-toggle <%=(url.toLowerCase().includes('/payroll'))?'active':''%>" href="/admin/payroll" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Manage Payroll</a>
       <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-        <a class="dropdown-item" href="/admin/payroll">All Payroll</a>
+        <a class="dropdown-item" href="/admin/payroll/history">Payroll Periods</a>
+        <a class="dropdown-item" href="/admin/payroll">Payroll Details</a>
         <a class="dropdown-item" href="/admin/payroll/types">Payroll Groups</a>
       </div>
     </li>

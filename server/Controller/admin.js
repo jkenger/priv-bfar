@@ -24,6 +24,7 @@ const cloudinary = require('cloudinary').v2;
 const multer = require('multer');
 const { tr } = require('date-fns/locale')
 const moment = require('moment')
+const AttendanceHistory = require('../Model/attendanceHistory')
 
 const maxAge = 3 * 24 * 60 * 60; // 3 Days
 const createToken = (id) => {
@@ -493,8 +494,45 @@ module.exports = {
 
         } catch (e) { res.status(500).send(e) }
     },
- 
-    
+    readAttendanceHistory: async (req, res) => { 
+        try{
+            const id = req.query.id
+            let filter = {}
+            if(id) filter = {'_id': id} 
+            else {filter = {}}
+            AttendanceHistory.find(filter)
+                .then(result=>{
+                    res.status(200).send({result: result})
+                })
+                .catch(error=>console.log(error));
+            
+        }catch(e){
+            res.status(500).send(e)
+        }
+    },
+
+    addAttendanceHistory: async (req, res) => {
+        try {
+            let fromDate = new Date().toISOString()
+            let toDate = new Date().toISOString()
+            const pgroup = req.body.project
+            if(!req.body.from || !req.body.to) fromDate = new Date().toISOString(), toDate = new Date().toISOString()
+            else fromDate = new Date(req.body.from).toISOString(), toDate = new Date(req.body.to + 'T23:59:59.999Z').toISOString()
+            const data = await fetchData(`admin/api/attendance?from=${fromDate}&to=${toDate}`)
+            console.log('ADD ATTENDANCE HISTORY', data.result)
+            const result = await AttendanceHistory.create({
+                attendances: data.result,
+                date_from: fromDate,
+                date_to: toDate
+            })
+            res.status(200).send({result: result})
+        }catch(e){
+            res.status(500).send(e)
+        }
+    },
+    readDTR: async (req, res) => {
+        
+    },
     // get payroll transaction
     readPayrolls: async (req, res) => {
         if (req.query) {

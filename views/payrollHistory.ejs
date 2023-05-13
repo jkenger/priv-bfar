@@ -11,7 +11,7 @@
               </a>
               <p style="padding-right: 10px !important; margin: 0;"> > </p>
               <a href="#" class="nav-link ">
-                  <b> Payroll </b>
+                  <b> Payroll Periods </b>
               </a>
             </div>
             <div class="d-flex justify-content-around rounded-1" style="background: #F5F5F5; border: solid #dddddd 1px; width: 15%; padding: 5px;"> 
@@ -100,10 +100,37 @@
               <%}); %>
               
             </select>
-            
+            <a id='btnCreate_PayrollHistory' class="btn btn-primary" href="#" ==> Create Payroll </a>
+            <script>
+              const createPayroll = document.querySelector('#btnCreate_PayrollHistory');
+              //get input date from and to
+              const projectSelect = document.querySelector('#projectSelect');
+
+              const gFrom = document.querySelector('input[type="date"]#from');
+              const gTo = document.querySelector('input[type="date"]#to');
+              //get all the values
+              
+              
+              createPayroll.addEventListener('click', async (e) => {
+                e.preventDefault();
+                const values = {
+                  from: gFrom.value,
+                  to: gTo.value,
+                  project: projectSelect.value
+                }
+                const data = await fetch('/admin/api/payrolls/history', {
+                  method: 'POST',
+                  headers: {
+                    'Content-Type': 'application/json'
+                  },
+                  body: JSON.stringify(values)
+                })
+
+                const result = await data.json()
+                console.log(result)
+              });
             </script>
-            <a id='btnAdd_payrollType' class="btn btn-primary" href="#" data-toggle="modal" data-target="#modal" onclick="submitModal('','','fund_cluster project_name program_name monthly_rate no_of_days gross_amount_due tax contributions net_amount_due', `<%=include('partials/bodies/payrollHistory-editBody', {data, selectedGroup})%>`)"> Add Payroll Type </a>
-            <a id='btnCreate_PayrollHistory' data-toggle="modal" data-target="#modal" href="#" class="btn btn-primary">Create Payroll</a>
+            
         </form>
     </div>
 
@@ -112,26 +139,25 @@
         <table id="mainTable" class="table border-top border-bottom" style="width: 100%;">
             <thead>
                 <tr>
-                    <th>Employee ID</th>
-                    <th>Employee</th>
-                    <th>Payroll Group</th>
-                    <th>Gross Amount Earned</th>
-                    <th>Net Amount Due</th>
+                    <th>Payroll Period</th>
+                    <th>No. of Employees</th>
+                    <th>Fund Cluster</th>
+                    <th>Project Name</th>
+                    <th>Program Name</th>
                     <th></th>
                 </tr>
             </thead>
             <tbody>
               <%if(data.result){%>
-                <% Object.values(data.result).forEach(user =>{%> 
+                <% Object.values(data.result).forEach(group =>{%> 
                   <tr>
-                      <td><%=user.emp_code%></td>
-                      <td><%=user.name%></td>
-                      <td><%=user.payroll_group.fund_cluster%> - <%=user.payroll_group.project_name%> <%=(user.payroll_group.program_name) ? +  '/ ' + user.payroll_group.program_name : ''%></td>
-                      <td><%=user.salaries.gross_salary%></td>
-                      <td><%=user.salaries.net_salary%></td>
+                      <td><%=moment(group.date_from).format('MMMM')%> <%=moment(new Date(group.date_from)).local().date()%>-<%=(moment(group.date_to).format('MMMM') === moment(group.date_from).format('MMMM')) ? moment(new Date(group.date_to)).local().date() : moment(group.date_to).format('MMMM') + " " +  moment(new Date(group.date_to).local()).date()%> <%=moment(group.date_to).year()%></td>
+                      <td><%=group.employees.length%></td>
+                      <td><%=group.payroll_group.fund_cluster%></td>
+                      <td><%=group.payroll_group.project_name%></td>
+                      <td><%=group.payroll_group.program_name%></td>
                       <td >
-                          <a href="/admin/payroll/<%=user.emp_code%>/payslip?from=<%=query.from%>&to=<%=query.to%>">Payslip</a>
-                          <a href="/admin/payroll/receipt?from=<%=query.from%>&to=<%=query.to%>&p_group=<%=user.payroll_group._id%>">Payroll</a>
+                          <a href="/admin/payroll/history/receipt?id=<%=group._id%>">Print</a>
                       </td>
                   </tr>
                   <%}); %>

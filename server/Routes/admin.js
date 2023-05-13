@@ -35,6 +35,8 @@ route.get('/deductions', checkToken, checkRoles, adminView.deductionView)
 
 // payroll endpoints
 route.get('/payroll', checkToken, checkRoles, adminView.payrollView)
+
+route.get('/payroll/history', checkToken, checkRoles, adminView.payrollHistoryView)
 route.get('/payroll/history/receipt', checkToken, checkRoles, adminView.payrollHistoryReceiptView)
 route.get('/payroll/report', checkToken, checkRoles, adminView.payrollReportView)
 route.get('/payroll/receipt', checkToken, checkRoles, adminView.payrollReceiptView)
@@ -43,6 +45,8 @@ route.get('/payroll/types', checkToken, checkRoles, adminView.payrollTypesView)
 
 // record endpoints 
 route.get('/attendance', checkToken, checkRoles, adminView.attendanceView)
+route.get('/attendance/history', checkToken, checkRoles, adminView.attendanceHistoryView)
+route.get('/attendance/history/dtr', checkToken, checkRoles, adminView.attendanceHistoryDTRView)
 route.get('/attendance/:id/dtr', checkToken, checkRoles, adminView.attendanceDTRView)
 
 // holidays and travel orders endpoint
@@ -110,8 +114,11 @@ route.patch('/api/events/travelpass/:id', admin.editTravelPass)
 // route.get('/api/leave', admin.readLeave)
 
 // record api
-route.get('/api/records', admin.readAttendance)
-route.get('/api/records/:id', checkApiAuth, admin.readAttendance)
+route.get('/api/attendance', admin.readAttendance)
+route.get('/api/attendance/history', admin.readAttendanceHistory)
+route.post('/api/attendance/history', admin.addAttendanceHistory)
+route.get('/api/attendance/:id', checkApiAuth, admin.readAttendance)
+
 
 
 route.get('/api/payrolls/history', admin.readPayrollHistory)
@@ -122,13 +129,16 @@ route.get('/api/payrolls', admin.readPayrolls)
 route.get('/api/payrolls/:id', checkApiAuth, admin.readPayrolls)
 
 
-
+//read
 route.get('/api/payrolltypes', admin.readPayrollTypes)
 route.get('/api/payrolltypes/:id', admin.readPayrollTypes)
+
+//cud
 route.post('/api/payrolltype', admin.addPayrollType)
 route.patch('/api/types/:id', admin.updatePayrollType)
 route.delete('/api/types/:id', admin.deletePayrollType)
-//update many employees
+
+//update employee payroll group
 route.patch('/api/addtopayrolltype', admin.addEmployeePayrollType)
 
 
