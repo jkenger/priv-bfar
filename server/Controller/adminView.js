@@ -143,16 +143,49 @@ module.exports = {
             const pgroup = req.query.p_group
             if(!req.query.from || !req.query.to) fromDate = new Date().toISOString(), toDate = new Date().toISOString()
             else fromDate = new Date(req.query.from).toISOString(), toDate = new Date(req.query.to + 'T23:59:59.999Z').toISOString()
-            const data = await fetchData(`admin/api/payrolls?from=${fromDate}&to=${toDate}&p_group=${pgroup}`)
+            const data = await fetchData(`admin/api/payrolls/history?from=${fromDate}&to=${toDate}&p_group=${pgroup}`)
             const group = await fetchData(`admin/api/payrolltypes`)
-            console.log(group)
+            // const selectedGroup = await fetchData(`admin/api/payrolltypes/${pgroup}`)
+            // console.log(group)
             if(!req.query.from || !req.query.to) { fromDate = ''; toDate = ''} else {fromDate = req.query.from; toDate = req.query.to}
             console.log('VIEW/ EMPLOYEE DATA', data)
-            console.log('VIEW/ PAYROLL GROUP', group)
+            // console.log('VIEW/ PAYROLL GROUP', group)
+            // console.log('VIEW/ SELECTED PAYROLL GROUP', selectedGroup)
 
             res.status(200).render('payroll', { 
                 data,
                 group,
+                // selectedGroup,
+                url: req.url,
+                moment: moment,
+                query: {from: fromDate, to: toDate, p_group: pgroup}
+            })
+
+        } catch (err) { 
+            res.status(500).send(err) 
+        }
+    },
+    payrollDetailView: async (req, res) => {
+        try {
+            // Get the dates then retrieve all the data based from the given dates
+            let fromDate = new Date().toISOString()
+            let toDate = new Date().toISOString()
+            const pgroup = req.query.p_group
+            if(!req.query.from || !req.query.to) fromDate = new Date().toISOString(), toDate = new Date().toISOString()
+            else fromDate = new Date(req.query.from).toISOString(), toDate = new Date(req.query.to + 'T23:59:59.999Z').toISOString()
+            const data = await fetchData(`admin/api/payrolls?from=${fromDate}&to=${toDate}&p_group=${pgroup}`)
+            const group = await fetchData(`admin/api/payrolltypes`)
+            const selectedGroup = await fetchData(`admin/api/payrolltypes/${pgroup}`)
+            console.log(group)
+            if(!req.query.from || !req.query.to) { fromDate = ''; toDate = ''} else {fromDate = req.query.from; toDate = req.query.to}
+            console.log('VIEW/ EMPLOYEE DATA', data)
+            console.log('VIEW/ PAYROLL GROUP', group)
+            console.log('VIEW/ SELECTED PAYROLL GROUP', selectedGroup)
+
+            res.status(200).render('payroll', { 
+                data,
+                group,
+                selectedGroup,
                 url: req.url,
                 moment: moment,
                 query: {from: fromDate, to: toDate, p_group: pgroup}
@@ -174,6 +207,25 @@ module.exports = {
             if(!req.query.from || !req.query.to) { fromDate = ''; toDate = ''} else {fromDate = req.query.from; toDate = req.query.to}
             console.log('fromn view', data)
             res.status(200).render('payrollReport', { 
+                data, 
+                url: req.url,
+                moment: moment,
+                query: {from: fromDate, to: toDate}
+            })
+
+        } catch (err) { 
+            res.status(500).send(err) 
+        }
+    },
+    payrollHistoryReceiptView: async (req, res)=>{
+        try {
+            // Get the dates then retrieve all the data based from the given dates
+            const id = req.query.id
+            const data = await fetchData(`admin/api/payrolls/history?id=${id}`)
+            console.log(data)
+            if(!req.query.from || !req.query.to) { fromDate = ''; toDate = ''} else {fromDate = req.query.from; toDate = req.query.to}
+            console.log('fromn view', data.result[0])
+            res.status(200).render('payrollHistoryReceipt', { 
                 data, 
                 url: req.url,
                 moment: moment,

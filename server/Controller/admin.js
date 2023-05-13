@@ -23,6 +23,7 @@ const jwt = require('jsonwebtoken')
 const cloudinary = require('cloudinary').v2;
 const multer = require('multer');
 const { tr } = require('date-fns/locale')
+const moment = require('moment')
 
 const maxAge = 3 * 24 * 60 * 60; // 3 Days
 const createToken = (id) => {
@@ -567,12 +568,44 @@ module.exports = {
     },
 
     // payroll history
+    readPayrollHistory: async(req, res)=>{
+        try{
+            const id = req.query.id
+            let filter = {}
+            if(id) filter = {'_id': id} 
+            else {filter = {}}
+            PayrollHistory.find(filter).populate("payroll_group")
+                .then(result=>{
+                    res.status(200).send({result: result})
+                })
+                .catch(error=>console.log(error));
+            
+        }catch(e){
+            res.status(500).send(e)
+        }
+        
+    },
     addPayrollHistory: async(req, res)=>{
         try{
-            const body  = req.body
-            console.log(body)
-            // const result = await PayrollHistory.create(body)
-            // res.status(200).send({result: result})
+            // const fromDate = new Date(req.query.from)
+            // const toDate = new Date(req.query.to)
+            // const payroll_group = req.query.p_group
+            // const id = req.params.id
+            
+            let fromDate = new Date().toISOString()
+            let toDate = new Date().toISOString()
+            const pgroup = req.body.project
+            if(!req.body.from || !req.body.to) fromDate = new Date().toISOString(), toDate = new Date().toISOString()
+            else fromDate = new Date(req.body.from).toISOString(), toDate = new Date(req.body.to + 'T23:59:59.999Z').toISOString()
+            const data = await fetchData(`admin/api/payrolls?from=${fromDate}&to=${toDate}&p_group=${pgroup}`)
+            console.log(data)
+            const result = await PayrollHistory.create({
+                payroll_group: pgroup,
+                employees: data.result,
+                date_from: fromDate,
+                date_to: toDate
+            })
+            res.status(200).send({result: result})
         }catch(e){
             res.status(500).send(e)
         }

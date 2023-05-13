@@ -18,6 +18,6 @@ const payrollTypeSchema = new mongoose.Schema({
     timestamps: true
 });
 
-const PayrollType = mongoose.model('PayrollTypes', payrollTypeSchema);
+const PayrollType = mongoose.model('payrollgroups', payrollTypeSchema);
 
 module.exports = PayrollType;

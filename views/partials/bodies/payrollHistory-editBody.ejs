@@ -30,82 +30,64 @@
 }
 
 </style>
-<div class="mb-0 d-flex flex-column">
-    <label for="id">_id:</label>
-    <input disabled type="text" class="form-control" name='_id' placeholder="_id" id='idNo' value="<%=(data.result) ? data.result[0].payroll_group._id : ''%>">
-    <p class="text-center text-danger id-error error"></p>
-</div>
-    <div class="mb-0 d-flex flex-column">
-        <label for="id">Fund Cluster:</label>
-        <input disabled type="text" class="form-control" name='fund_cluster' placeholder="Fund Cluster" id='idNo' value="<%=(data.result) ? data.result[0].payroll_group.fund_cluster : ''%>">
-        <p class="text-center text-danger id-error error"></p>
-    </div>
-
-    <div class="mb-0">
-        <label for="id">Project Name:</label>
-        <input disabled type="text" class="form-control" name='project_name' placeholder="Project Name" id='empName' value="<%=(data.result) ? data.result[0].payroll_group.project_name : '' %>">
-        <p class="text-center text-danger name-error error"></p>
-    </div>
-
-    <%if(data.result){%>
-        <%if(data.result[0].payroll_group.program_name){%>
-            <div class="mb-0">
-                <label for="id">Program Name:</label>
-                <input disabled type="text" class="form-control" name='program_name' placeholder="Program Name" id='empName' value="<%=(data.result) ? data.result[0].payroll_group.program_name : ''%>">
-                <p class="text-center text-danger name-error error"></p>
-            </div>
-        <%}%>
-    <%}%>
-    <label for="">Other Settings</label>
-    <div class="container">
-        <div class="row">
-          <div class="col-md-3">
-            <div class="form-check">
-              <input class="form-check-input" type="checkbox" name="monthly_rate" value="true" id="checkbox1" checked>
-              <label class="form-check-label" for="checkbox1">
-                Monthly Rate
-              </label>
-            </div>
-          </div>
-          <div class="col-md-3">
-            <div class="form-check">
-              <input class="form-check-input" type="checkbox" name="no_of_days" value="true" id="checkbox2" checked>
-              <label class="form-check-label" for="checkbox2">
-                No. Of Days
-              </label>
-            </div>
-          </div>
-          <div class="col-md-3">
-            <div class="form-check">
-              <input class="form-check-input" type="checkbox" name="gross_amount_due" value="true" id="checkbox3" checked>
-              <label class="form-check-label" for="checkbox3">
-                Gross Amount Earned
-              </label>
-            </div>
-          </div>
-          <div class="col-md-3">
-            <div class="form-check">
-              <input class="form-check-input" type="checkbox" name="tax" value="true" id="checkbox4" checked>
-              <label class="form-check-label" for="checkbox4">
-                Tax (2%, 5%, 10%)
-              </label>
-            </div>
-          </div>
-          <div class="col-md-3">
-            <div class="form-check">
-              <input class="form-check-input" type="checkbox" name="contributions" value="true" id="checkbox5"checked>
-              <label class="form-check-label" for="checkbox5">
-                Contributions (SSS, PAGIBIG, PHILHEALTH)
-              </label>
-            </div>
-          </div>
-          <div class="col-md-3">
-            <div class="form-check">
-              <input class="form-check-input" type="checkbox" name="net_amount_due" value="true" id="checkbox6" checked>
-              <label class="form-check-label" for="checkbox6">
-                Net Amount Due
-              </label>
-            </div>
-          </div>
+<input type="date" name="from" value="<%=query.from%>" id="from" class="rounded-1">
+<input type="date" name="to" value="<%=query.to%>" id="to" class="rounded-1"    >
+<select name="p_group" id="projectSelect" class="rounded-1 custom-select">
+  <% Object.values(group.result).forEach(group =>{%> 
+    <option value="<%=group._id%>" <%=(query.p_group === group._id) ? 'selected': ''%>><%=group.fund_cluster%> - <%=group.project_name%> <%=(group.program_name)? + "- " + group.program_name: ''%></option>
+  <%}); %>
+  
+</select>
+<label for="">Other Settings</label>
+<div class="container">
+    <div class="row">
+      <div class="col-md-3">
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" name="monthly_rate" value="true" id="checkbox1" checked>
+          <label class="form-check-label" for="checkbox1">
+            Monthly Rate
+          </label>
         </div>
       </div>
+      <div class="col-md-3">
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" name="no_of_days" value="true" id="checkbox2" checked>
+          <label class="form-check-label" for="checkbox2">
+            No. Of Days
+          </label>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" name="gross_amount_due" value="true" id="checkbox3" checked>
+          <label class="form-check-label" for="checkbox3">
+            Gross Amount Earned
+          </label>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" name="tax" value="true" id="checkbox4" checked>
+          <label class="form-check-label" for="checkbox4">
+            Tax (2%, 5%, 10%)
+          </label>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" name="contributions" value="true" id="checkbox5"checked>
+          <label class="form-check-label" for="checkbox5">
+            Contributions (SSS, PAGIBIG, PHILHEALTH)
+          </label>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" name="net_amount_due" value="true" id="checkbox6" checked>
+          <label class="form-check-label" for="checkbox6">
+            Net Amount Due
+          </label>
+        </div>
+      </div>
+    </div>
+  </div>

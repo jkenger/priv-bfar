@@ -7,52 +7,18 @@ const payrollHistorySchema = mongoose.Schema({
         ref: PayrollGroup.collection.name,
         required: true
     },
-    serial_no:{
-        type: Number,
+    employees:{
+        type: Array,
+        required: true
     },
-    name:{
+    date_from:{
         type: String,
+        required: true,
     },
-    designation:{
+    date_to:{
         type: String,
-    },
-    prc:{
-        type: String,
-    },
-    monthly_salary:{
-        type: Number,
-    },
-    no_of_days:{
-        type: Number,
-    },
-    gross_amount_due:{
-        type: Number,
-    },
-    tax:{
-        tax_1:{
-            type: Number,
-        },
-        tax_2:{
-            type: Number,
-        },
-        tax_3:{
-            type: Number,
-        }
-    },
-    contributions:{
-        sss:{
-            type: Number,
-        },
-        pagibig:{
-            type: Number,
-        },
-        philhealth:{
-            type: Number,
-        },
-    },
-    net_amount_due:{
-        type: Number,
-    },
+        required: true,
+    }
 },
 {timestamps: true}
 )
