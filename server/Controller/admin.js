@@ -494,6 +494,15 @@ module.exports = {
 
         } catch (e) { res.status(500).send(e) }
     },
+    readAttendancePerEmployee: async (req, res) => {   
+        const fromDate = new Date(req.query.from)
+        const toDate = new Date(req.query.to)
+        console.log(fromDate, toDate)
+        const attendancePerEmployee = await attendances.getAttendancePerEmployeeData(fromDate, toDate)
+        // const selectedRecords = await attendances.getSelectedAttendanceData()
+        // console.log(selectedRecords)
+        res.status(200).send({ result: attendancePerEmployee})
+    },
     readAttendanceHistory: async (req, res) => { 
         try{
             const id = req.query.id

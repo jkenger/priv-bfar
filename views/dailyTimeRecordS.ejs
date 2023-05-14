@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EMS</title>
-    <link rel="stylesheet" href="./../public/styles/dtr.css">
+    <link rel="stylesheet" href="/styles/dtr.css">
     <style>
        
     </style>
@@ -23,7 +23,7 @@
                     <td></td>
                 </tr>
                 <tr>
-                    <td colspan="6"><label>PERCIVAL F. SICOSANA</label> </td>
+                    <td colspan="6"><label><%=data.result[0].name%></label> </td>
                     <td></td>
                 </tr>
                 <tr>
@@ -31,7 +31,7 @@
                     <td></td>
                 </tr>
                 <tr>
-                    <td colspan="6"><label> For the month JULY 1-31, 2022</label></td>
+                    <td colspan="6"><label> For the month <span style="font-weight:bold;"> <%=moment(query.from).format('MMMM')%> <%=moment(query.from).date()%>-<%=(moment(query.to).format('MMMM') === moment(query.from).format('MMMM')) ? moment(query.to).date() : moment(query.to).format('MMMM') + " " +  moment(query.to).date()%> <%=moment(query.to).year()%></span></label></td>
                     <td></td>
                 </tr>
                 <tr>
@@ -76,7 +76,43 @@
                         <label for=""></label>
                     </td>
                 </tr>
-                <tr class="actTable">
+                <% for (var i = 1; i <= moment(query.from).daysInMonth(); i++) { %>
+                    <% let attendance = data.result.find(event => moment(event.date).date() === i) %>
+                        <tr class="actTable">
+                            <td><%=i%></td>
+                            <td>
+                                <%if(attendance){%>
+                                <label for=""><%=(!attendance.am.time_in && attendance.message === 'Office')? '': (attendance.message.includes('T.O') || attendance.message.includes('O.B')) ? attendance.message : moment(attendance.am.time_in).format('LTS')%></label> 
+                                <%}%>
+                            </td>
+                            <td>
+                                <%if(attendance){%> 
+                                    <label for=""><%=(!attendance.am.time_out)? '' : moment(attendance.am.time_out).format('LTS')%></label> 
+                                <%}%>
+                            </td>
+                            <td>
+                                <%if(attendance){%>
+                                    <label for=""><%=(!attendance.pm.time_in)? '' : moment(attendance.pm.time_in).format('LTS')%></label> 
+                                <%}%>
+                            </td>
+                            <td>
+                                <%if(attendance){%>
+                                    <label for=""><%=(!attendance.pm.time_out)? '' : moment(attendance.pm.time_out).format('LTS')%></label> 
+                                <%}%>
+                            </td>
+                            <td>
+                                <%if(attendance){%>
+                                    <label for=""><%=attendance.no_of_late%></label> 
+                                <%}%> 
+                            </td>
+                            <td>
+                                <%if(attendance){%>
+                                    <label for=""><%=attendance.no_of_undertime%></label> 
+                                <%}%>
+                            </td>
+                        </tr>
+                <% } %>
+                <!-- <tr class="actTable">
                     <td>
                         <label for="">1</label> 
                     </td>
@@ -98,7 +134,7 @@
                     <td>
                         <label for=""></label> 
                     </td>
-                </tr>
+                </tr> -->
                 <tr class="">
                     <td>
                         <label for="">TOTAL</label>
@@ -146,7 +182,7 @@
                     <td></td>
                     <td></td>
                     <td colspan="2">
-                        <label for="">PERCIVAL F. SICOSANA</label>
+                        <label style="font-weight:bold;"> PERCIVAL F. SICOSANA</label>
                     </td>
                 </tr>
                 <tr>
@@ -196,4 +232,3 @@
 </body>
 
 </html>
-

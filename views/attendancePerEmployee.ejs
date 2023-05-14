@@ -8,12 +8,12 @@
     <div class="" style="width:100%">
         <ul class="nav nav-tabs">
             
-          <li class="nav-item">
-              <a href="/admin/attendance" class="nav-link rounded-1">Attendance</a>
-          </li>
-          <li class="nav-item">
+            <li class="nav-item">
+                <a href="/admin/attendance" class="nav-link ">Attendance</a>
+            </li>
+            <li class="nav-item">
                 <a href="/admin/attendance/history" class="nav-link active">Attendance Periods</a>
-          </li>
+            </li>
         </ul>
     </div>
 </div>
@@ -77,64 +77,39 @@
             <div class="input-group">
                 <div class="input-group-prepend">
                   <div class="input-group-text  rounded-1 d-flex gap-2">
-                  <input type="radio" name="datefil" value="alltime" aria-label="Radio button for following text input" checked> <label>label</label>
+                  <input type="radio" name="datefil" value="alltime" aria-label="Radio button for following text input" checked> All time
                   <input type="radio" name="datefil" value="today" aria-label="Radio button for following text input"> Today
-                  <input type="radio" name="datefil" value="15d"data-odaria-label="Radio button for following text input"> 15D
-                  <input type="radio" name="datefil" value="30d"data-odaria-label="Radio button for following text input"> 30D
+                  <input type="radio" name="datefil" value="15d"aria-label="Radio button for following text input"> 15D
+                  <input type="radio" name="datefil" value="30d"aria-label="Radio button for following text input"> 30D
                   </div>
                 </div>
               </div>
-            <input type="date" name="from" value="<%=query.from%>" id="from" class="rounded-1">
-            <input type="date" name="to" value="<%=query.to%>" id="to" class="rounded-1"    >
-            <a id='btnCreate_AttendanceHistory' class="btn btn-primary" href="#" ==> Create DTR </a>
-            <script>
-              const createPayroll = document.querySelector('#btnCreate_AttendanceHistory');
-
-              const gFrom = document.querySelector('input[type="date"]#from');
-              const gTo = document.querySelector('input[type="date"]#to');
-              //get all the values
-              
-              
-              createPayroll.addEventListener('click', async (e) => {
-                e.preventDefault();
-                const values = {
-                  from: gFrom.value,
-                  to: gTo.value,
-                }
-                const data = await fetch('/admin/api/attendance/history', {
-                  method: 'POST',
-                  headers: {
-                    'Content-Type': 'application/json'
-                  },
-                  body: JSON.stringify(values)
-                })
-
-                const result = await data.json()
-                console.log(result)
-              });
-            </script>
+            <input type="date" name="from" id="from" value="<%=query.from%>" class="rounded-1">
+            <input type="date" name="to" id="to" value="<%=query.to%>" class="rounded-1">
             
+            <button type="submit" class="btn btn-primary">Submit</button>
         </form>
     </div>
     <div class="d-flex justify-content-between"> 
-      <div class="" style="width:100%">
-          <ul class="nav nav-tabs">
-              <li class="nav-item ">
-                  <a href="/admin/attendance" class="nav-link rounded-1 active">Daily Time Records</a>
+        <div class="" style="width:100%">
+            <ul class="nav nav-tabs">
+                <li class="nav-item ">
+                    <a href="/admin/attendance/history" class="nav-link rounded-1 ">Attendance Period</a>
+                </li>
+                <li class="nav-item ">
+                  <a href="/admin/attendance/per-employee?from=<%query.from%>&to=<%=query.to%>" class="nav-link rounded-1 active">Attendance Period Per Employee</a>
               </li>
-              <li class="nav-item ">
-                <a href="/admin/attendance/per-employee" class="nav-link rounded-1">Daily Time Records Per Employee</a>
-            </li>
-          </ul>
-      </div>
-  </div>
+            </ul>
+        </div>
+    </div>
     <div class="d-flex table-container"> 
     
         <table id="mainTable" class="table border-top border-bottom" style="width: 100%;">
             <thead>
                 <tr>
-                    <th>Attendance Period</th>
+                    <th>Name</th>
                     <th>No. of Attendances</th>
+                    <th>Attendance Period</th>
                     <th></th>
                 </tr>
             </thead>
@@ -142,11 +117,12 @@
               <%if(data.result){%>
                 <% Object.values(data.result).forEach(attendance =>{%> 
                   <tr>
-                      <td><%=moment(attendance.date_from).format('MMMM')%> <%=moment(new Date(attendance.date_from)).date()%>-<%=(moment(attendance.date_to).format('MMMM') === moment(attendance.date_from).format('MMMM')) ? moment(new Date(attendance.date_to)).date() : moment(attendance.date_to).format('MMMM') + " " +  moment(attendance.date_to).date()%> <%=moment(attendance.date_to).year()%></td>
-                      <td><%=attendance.attendances.length%></td>
-                      <td>
-                          <a href="/admin/attendance/history/dtr?id=<%=attendance._id%>">Print</a>
-                      </td>
+                    <td><%=attendance.name%></td>
+                    <td><%=attendance.attendance%></td>
+                    <td><%=moment(attendance.date.from).format('MMMM')%> <%=moment(new Date(attendance.date.to)).date()%>-<%=(moment(attendance.date.to).format('MMMM') === moment(attendance.date.from).format('MMMM')) ? moment(new Date(attendance.date.from)).date() : moment(attendance.date.to).format('MMMM') + " " +  moment(attendance.date.to).date()%> <%=moment(attendance.date.to).year()%></td>
+                    <td>
+                      <a href="/admin/attendance/<%=attendance._id%>/dtr?from=<%=query.from%>&to=<%=query.to%>">Print</a>
+                    </td>
                   </tr>
                   <%}); %>
               <%}%>

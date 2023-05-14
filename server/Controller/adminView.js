@@ -107,6 +107,26 @@ module.exports = {
             res.status(500).send(err) 
         }
     },
+    attendancePerEmployeeView: async (req, res) => {
+        try {
+            let fromDate = new Date().toISOString()
+            let toDate = new Date().toISOString()
+            let id = req.query.id
+            if(!req.query.from || !req.query.to) fromDate = new Date('01-01-1977').toISOString(), toDate = new Date().toISOString()
+            else fromDate = new Date(req.query.from).toISOString(), toDate = new Date(req.query.to + 'T23:59:59.999Z').toISOString()
+            const data = await fetchData(`admin/api/attendance/per-employee?from=${fromDate}&to=${toDate}`)
+            console.log('PER EMPLOYEE', data.result[0].date)
+            if(!req.query.from || !req.query.to) { fromDate = ''; toDate = ''} else {fromDate = req.query.from; toDate = req.query.to}
+            res.status(200).render('attendancePerEmployee', { 
+                data,
+                url: req.url,
+                moment: moment,
+                query: {from: fromDate, to: toDate  }
+            })
+        } catch (err) {
+            res.status(500).send(err) 
+        }
+    },
     attendanceHistoryView: async (req, res) => {
         try {
             let fromDate = new Date().toISOString()
@@ -162,7 +182,7 @@ module.exports = {
             if(!data.result.length){
                 return res.status(404).render('404')
             }
-            res.status(200).render('dailyTimeRecord', { 
+            res.status(200).render('dailyTimeRecordS', { 
                 data,
                 url: req.url,
                 moment: moment,

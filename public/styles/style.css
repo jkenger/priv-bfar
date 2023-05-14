@@ -23,6 +23,11 @@ a{
 .nav-link:hover{
     color:#424158;
 }
+
+.nav-item .nav-link{
+    border-top-left-radius : .25rem !important;
+    border-top-right-radius : .25rem !important;
+}
 table{
     border-collapse: collapse;
 }

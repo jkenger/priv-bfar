@@ -229,7 +229,86 @@ Attendance.statics.getAttendanceData = async function(f){
     const result = await this.find({})
     return result
 }
-
+Attendance.statics.getAttendancePerEmployeeData = async function(fromDate, toDate){
+    const filter = {date: {$gte: fromDate, $lte: toDate}} 
+    const pipeline = [
+        {$match: filter},
+        {$project: {
+            emp_code: 1,
+            name: 1,
+            date:1,
+            am: {
+                office_in: '$am_office_in',
+                office_out: '$am_office_out',
+                time_in: '$am_time_in',
+                time_out: '$am_time_out',
+            },
+            pm: {
+                office_in: '$pm_office_in',
+                office_out: '$pm_office_out',
+                time_in: '$pm_time_in',
+                time_out: '$pm_time_out',
+            },
+            status:{
+                isLate: '$isLate',
+                isUndertime: '$isUndertime',
+                isHalf: '$isHalf'
+            },
+            message: 1
+        }},
+        {$addFields: {
+            no_of_late: {$cond: {
+            if: { $eq: ['$status.isLate', false] },
+            then: 0,
+            else: {
+                $sum: [{$cond:{
+                    if: { $lt: [{ $dateDiff: { startDate: "$am.office_in", endDate: "$am.time_in", unit: "minute" } }, 0] },
+                    then: 0,
+                    else: { $dateDiff: { startDate: "$am.office_in", endDate: "$am.time_in", unit: "minute" } }
+                }},
+                {$cond: {
+                    if: { $lt: [{ $dateDiff: { startDate: "$pm.office_in", endDate: "$pm.time_in", unit: "minute" } }, 0] },
+                    then: 0,
+                    else: { $dateDiff: { startDate: "$pm.office_in", endDate: "$pm.office_in", unit: "minute" } }
+                }}]}
+            }},
+            no_of_undertime: {$cond: {
+                if: { $eq: ['$status.isUndertime', false] },
+                then: 0,
+                else: {
+                    $sum: [{$cond:{
+                        if: { $lt: [{ $dateDiff: { startDate: "$am.am_office_out", endDate: "$am.am_time_out", unit: "minute" } }, 0] },
+                        then: 0,
+                        else: { $dateDiff: { startDate: "$am.am_office_out", endDate: "$am.am_time_out", unit: "minute" } }
+                    }},
+                    {$cond: {
+                        if: { $lt: [{ $dateDiff: { startDate: "$pm.pm_office_out", endDate: "$pm.pm_time_out", unit: "minute" } }, 0] },
+                        then: 0,
+                        else: { $dateDiff: { startDate:  "$pm.pm_office_out", endDate: "$pm.pm_time_out", unit: "minute" } }
+                    }}]}
+                }}
+        }},
+        {$group:{
+            _id: '$emp_code',
+            attendance:{$sum:1},
+            name: {$first: '$name'},
+            from :{$first: fromDate},
+            to: {$first: toDate},
+        }},
+        {$project:{
+            _id: '$_id',
+            attendance: 1,
+            name: 1,
+            date: {
+                from: '$from',
+                to: '$to'
+            }
+        }}
+        
+    ]
+    const result = await this.aggregate(pipeline).sort({date: -1})
+    return result
+}
 Attendance.statics.getProjectedAttendanceData = async function(fromDate, toDate, id){
     const filter = (id)? {emp_code: id, date: {$gte: fromDate, $lte: toDate}} : {date: {$gte: fromDate, $lte: toDate}} 
     const pipeline = [

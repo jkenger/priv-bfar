@@ -45,6 +45,7 @@ route.get('/payroll/types', checkToken, checkRoles, adminView.payrollTypesView)
 
 // record endpoints 
 route.get('/attendance', checkToken, checkRoles, adminView.attendanceView)
+route.get('/attendance/per-employee', checkToken, checkRoles, adminView.attendancePerEmployeeView)
 route.get('/attendance/history', checkToken, checkRoles, adminView.attendanceHistoryView)
 route.get('/attendance/history/dtr', checkToken, checkRoles, adminView.attendanceHistoryDTRView)
 route.get('/attendance/:id/dtr', checkToken, checkRoles, adminView.attendanceDTRView)
@@ -115,6 +116,7 @@ route.patch('/api/events/travelpass/:id', admin.editTravelPass)
 
 // record api
 route.get('/api/attendance', admin.readAttendance)
+route.get('/api/attendance/per-employee', admin.readAttendancePerEmployee)
 route.get('/api/attendance/history', admin.readAttendanceHistory)
 route.post('/api/attendance/history', admin.addAttendanceHistory)
 route.get('/api/attendance/:id', checkApiAuth, admin.readAttendance)
