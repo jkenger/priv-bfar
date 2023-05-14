@@ -42,6 +42,12 @@ app.use('/employee', employeeRoute)
 app.use('/', publicRoute)
 
 // ROUTES || Not Found URLS
+app.use('/admin/attendance/history/', (req, res)=>{
+    res.redirect('/admin/attendance/history/all')
+})
+app.use('/admin/attendance/', (req, res)=>{
+    res.redirect('/admin/attendance/all')
+})
 app.use('*', (req, res)=>{
     res.render('404')
 })

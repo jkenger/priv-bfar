@@ -99,7 +99,7 @@ module.exports = {
             if(!req.query.from || !req.query.to) { fromDate = ''; toDate = ''} else {fromDate = req.query.from; toDate = req.query.to}
             res.status(200).render('attendance', { 
                 data,
-                url: req.url,
+                url: '/admin' + req.url,
                 moment: moment,
                 query: {from: fromDate, to: toDate  }
             })
@@ -119,7 +119,7 @@ module.exports = {
             if(!req.query.from || !req.query.to) { fromDate = ''; toDate = ''} else {fromDate = req.query.from; toDate = req.query.to}
             res.status(200).render('attendancePerEmployee', { 
                 data,
-                url: req.url,
+                url: '/admin' + req.url,
                 moment: moment,
                 query: {from: fromDate, to: toDate  }
             })
@@ -139,7 +139,7 @@ module.exports = {
             if(!req.query.from || !req.query.to) { fromDate = ''; toDate = ''} else {fromDate = req.query.from; toDate = req.query.to}
             res.status(200).render('attendanceHistory', { 
                 data,
-                url: req.url,
+                url: '/admin' + req.url,
                 moment: moment,
                 query: {from: fromDate, to: toDate  }
             })
@@ -239,7 +239,6 @@ module.exports = {
             console.log('VIEW/ EMPLOYEE DATA', data)
             // console.log('VIEW/ PAYROLL GROUP', group)
             // console.log('VIEW/ SELECTED PAYROLL GROUP', selectedGroup)
-
             res.status(200).render('payrollHistory', { 
                 data,
                 group,

@@ -5,18 +5,19 @@
     <%-include('partials/Aside')%> 
 <div class="d-flex flex-column flex-fill" style="border-left: 1px solid #dddddd; padding: 1.5em 2em 1.5em 2em; gap:1.5em; overflow: auto;">
   <div class="d-flex justify-content-between"> 
-    <div class="" style="width:100%">
-        <ul class="nav nav-tabs">
-            
-            <li class="nav-item">
-                <a href="/admin/attendance" class="nav-link ">Attendance</a>
-            </li>
-            <li class="nav-item">
-                <a href="/admin/attendance/history" class="nav-link active">Attendance Periods</a>
-            </li>
-        </ul>
+    <%-include('partials/navBar.ejs', {data:{
+        attendance: {
+            parentUrl:'/admin/attendance',
+            url: '/admin/attendance/all',
+            name: 'Attendance'
+        },
+        attendancePeriod:{
+            url: '/admin/attendance/history/per-employee',
+            name: 'Attendance Periods'
+            },
+        },
+    })%>
     </div>
-</div>
 
     <div class="d-flex gap-4 "> 
       <div class="d-flex justify-content-between flex-fill rounded-1" style="background: #F5F5F5; border: solid #dddddd 1px; padding: 15px;">
@@ -90,20 +91,19 @@
             <button type="submit" class="btn btn-primary">Submit</button>
         </form>
     </div>
-    <div class="d-flex justify-content-between"> 
-        <div class="" style="width:100%">
-            <ul class="nav nav-tabs">
-                <li class="nav-item ">
-                    <a href="/admin/attendance/history" class="nav-link rounded-1 ">Attendance Period</a>
-                </li>
-                <li class="nav-item ">
-                  <a href="/admin/attendance/per-employee?from=<%query.from%>&to=<%=query.to%>" class="nav-link rounded-1 active">Attendance Period Per Employee</a>
-              </li>
-            </ul>
-        </div>
-    </div>
+    <%-include('partials/navBar.ejs', {data:{
+        dailyTimeRecord: {
+            url: '/admin/attendance/history/all',
+            name: 'Daily Time Records'
+        },
+        attendancePeriod:{
+            url: '/admin/attendance/history/per-employee',
+            name: 'Daily Time Records Per Employee'
+            },
+        },
+    })%>
     <div class="d-flex table-container"> 
-    
+        
         <table id="mainTable" class="table border-top border-bottom" style="width: 100%;">
             <thead>
                 <tr>

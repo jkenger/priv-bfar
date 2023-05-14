@@ -4,18 +4,18 @@
 
     <%-include('partials/Aside')%> 
 <div class="d-flex flex-column flex-fill" style="border-left: 1px solid #dddddd; padding: 1.5em 2em 1.5em 2em; gap:1.5em; overflow: auto;">
-  <div class="d-flex justify-content-between"> 
-    <div class="" style="width:100%">
-        <ul class="nav nav-tabs">
-            
-          <li class="nav-item">
-              <a href="/admin/attendance" class="nav-link rounded-1">Attendance</a>
-          </li>
-          <li class="nav-item">
-                <a href="/admin/attendance/history" class="nav-link active">Attendance Periods</a>
-          </li>
-        </ul>
-    </div>
+  <div class="d-flex justify-con`tent-between"> 
+        <%-include('partials/navBar.ejs', {data:{
+          attendance: {
+              url: '/admin/attendance/all',
+              name: 'Attendance'
+          },
+          attendancePeriod:{
+              url: '/admin/attendance/history/all',
+              name: 'Attendance Periods'
+          },
+      },
+    })%>
 </div>
 
     <div class="d-flex gap-4 "> 
@@ -117,16 +117,17 @@
         </form>
     </div>
     <div class="d-flex justify-content-between"> 
-      <div class="" style="width:100%">
-          <ul class="nav nav-tabs">
-              <li class="nav-item ">
-                  <a href="/admin/attendance" class="nav-link rounded-1 active">Daily Time Records</a>
-              </li>
-              <li class="nav-item ">
-                <a href="/admin/attendance/per-employee" class="nav-link rounded-1">Daily Time Records Per Employee</a>
-            </li>
-          </ul>
-      </div>
+      <%-include('partials/navBar.ejs', {data:{
+        dailyTimeRecord: {
+            url: '/admin/attendance/history/all',
+            name: 'Daily Time Records'
+        },
+        attendancePeriod:{
+            url: '/admin/attendance/history/per-employee',
+            name: 'Daily Time Records Per Employee'
+            },
+        },
+    })%>
   </div>
     <div class="d-flex table-container"> 
     
