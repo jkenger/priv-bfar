@@ -115,7 +115,7 @@ route.patch('/api/events/travelpass/:id', admin.editTravelPass)
 // route.get('/api/leave', admin.readLeave)
 
 // record api
-route.get('/api/attendance', admin.readAttendance)
+route.get('/api/attendance/all', admin.readAttendance)
 route.get('/api/attendance/per-employee', admin.readAttendancePerEmployee)
 route.get('/api/attendance/history', admin.readAttendanceHistory)
 route.post('/api/attendance/history', admin.addAttendanceHistory)

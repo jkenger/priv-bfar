@@ -4,8 +4,8 @@
 
     <%-include('partials/Aside')%> 
 <div class="d-flex flex-column flex-fill" style="border-left: 1px solid #dddddd; padding: 1.5em 2em 1.5em 2em; gap:1.5em; overflow: auto;">
-  <div class="d-flex justify-con`tent-between"> 
-        <%-include('partials/navBar.ejs', {data:{
+
+      <%-include('partials/navBar.ejs', {data:{
           attendance: {
               url: '/admin/attendance/all',
               name: 'Attendance'
@@ -16,7 +16,6 @@
           },
       },
     })%>
-</div>
 
     <div class="d-flex gap-4 "> 
       <div class="d-flex justify-content-between flex-fill rounded-1" style="background: #F5F5F5; border: solid #dddddd 1px; padding: 15px;">
