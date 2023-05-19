@@ -21,7 +21,7 @@ route.get('*', checkUser)
 route.get('/', checkToken, checkRoles, adminView.dashboardView)
 
 // employee endpoints
-route.get('/employees',checkToken, checkRoles, adminView.readEmployeesView)
+route.get('/employees/all',checkToken, checkRoles, adminView.readEmployeesView)
 route.get('/employees/new',checkToken, checkRoles, adminView.addEmployeeView)
 route.get('/employees/view/:id',checkToken, checkRoles, adminView.viewEmployeeView)
 route.get('/employees/edit/:id',checkToken, checkRoles, adminView.editEmployeeView)
@@ -34,14 +34,14 @@ route.get('/leavetypes', checkToken, checkRoles, adminView.leaveTypesView)
 route.get('/deductions', checkToken, checkRoles, adminView.deductionView)
 
 // payroll endpoints
-route.get('/payroll', checkToken, checkRoles, adminView.payrollView)
+route.get('/payroll/all', checkToken, checkRoles, adminView.payrollView)
 
-route.get('/payroll/history', checkToken, checkRoles, adminView.payrollHistoryView)
+route.get('/payroll/history/all', checkToken, checkRoles, adminView.payrollHistoryView)
 route.get('/payroll/history/receipt', checkToken, checkRoles, adminView.payrollHistoryReceiptView)
+route.get('/payroll/groups/all', checkToken, checkRoles, adminView.payrollTypesView)
 route.get('/payroll/report', checkToken, checkRoles, adminView.payrollReportView)
 route.get('/payroll/receipt', checkToken, checkRoles, adminView.payrollReceiptView)
 route.get('/payroll/:id/payslip', checkToken, checkRoles, adminView.payslipView)
-route.get('/payroll/types', checkToken, checkRoles, adminView.payrollTypesView)
 
 // record endpoints 
 route.get('/attendance/all', checkToken, checkRoles, adminView.attendanceView)

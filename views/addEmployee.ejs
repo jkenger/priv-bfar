@@ -5,27 +5,13 @@
 
     <%-include('partials/Aside')%> 
 <div class="d-flex flex-column flex-fill" style="border-left: 1px solid #dddddd; padding: 1.5em 2em 1.5em 2em; gap:1.5em; overflow: auto;">
-    <div class="d-flex justify-content-between"> 
-            <div class="d-flex justify-content-center align-items-center rounded-1"> 
-              <a href="#" class="nav-link" style="padding-right: 10px !important;">
-                  Home 
-              </a>
-              <p style="padding-right: 10px !important; margin: 0;"> > </p>
-              <a href="#" class="nav-link ">
-                  <b> Employees </b>
-              </a>
-            </div>
-            <div class="d-flex justify-content-around rounded-1" style="background: #F5F5F5; border: solid #dddddd 1px; width: 15%; padding: 5px;"> 
-                  <div class="d-flex flex-column justify-content-center align-items-center">
-                    <p style="margin: 0 !important;"><b>Aug 15 2022</b></p>
-                    <p style="margin: 0 !important;"><b>11:29 AM</b></p>
-                  </div>
-                  <div class="d-flex flex-column justify-content-center align-items-center">
-                    <p style="margin: 0 !important;"><b>Friday</b></p>
-                    <p><b></b></p>
-                  </div>
-            </div>
-    </div>
+    <%-include('partials/navBar.ejs', {data:{
+            employee: {
+                url: '/admin/employees/new',
+                name: 'Add New Employee'
+            }
+        },
+    })%>
     <%-include('partials/Modal') %> 
     <a href="javascript:;" onclick="autoFill()"> autofill</a>
     <form class="empFormEl">

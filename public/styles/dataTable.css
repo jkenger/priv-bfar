@@ -4,7 +4,6 @@
         font-size: 14px;
     }
     .active{
-        border-radius: 0 !important;
         background: #67668A !important;
         color: white !important;
     }

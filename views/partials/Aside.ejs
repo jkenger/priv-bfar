@@ -10,13 +10,13 @@
   </a>
   <ul class="nav nav-pills flex-column mb-auto" style="">
     <li>
-      <a href="/admin/" class="nav-link <%=(url==='/')?'active':''%> ">
+      <a href="/admin/" class="nav-link <%=(url==='/' || url==='/admin/')?'active':''%> ">
         Dashboard 
       </a>
     </li>
     <hr>
     <li>
-      <a href="/admin/employees" class="nav-link <%=(url.toLowerCase().includes('/employees'))?'active':''%>">
+      <a href="/admin/employees/all" class="nav-link <%=(url.toLowerCase().includes('/employees'))?'active':''%>">
         Employees
       </a>
     </li>
@@ -32,9 +32,9 @@
     <li class="nav-item dropdown position-static">
       <a class="nav-link dropdown-toggle <%=(url.toLowerCase().includes('/payroll'))?'active':''%>" href="/admin/payroll" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Manage Payroll</a>
       <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-        <a class="dropdown-item" href="/admin/payroll/history">Payroll Periods</a>
-        <a class="dropdown-item" href="/admin/payroll">Payroll Details</a>
-        <a class="dropdown-item" href="/admin/payroll/types">Payroll Groups</a>
+        <a class="dropdown-item" href="/admin/payroll/all">Payroll</a>
+        <a class="dropdown-item" href="/admin/payroll/history/all">Payroll Periods</a>
+        <a class="dropdown-item" href="/admin/payroll/groups/all">Payroll Groups</a>
       </div>
     </li>
     <!-- <li class="nav-item">

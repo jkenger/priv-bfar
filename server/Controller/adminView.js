@@ -11,7 +11,7 @@ module.exports = {
             const datas = await fetchData('admin/api/employees_count')
             res.status(200).render('dashboard', { 
                 datas,
-                url: req.url
+                url: req.baseUrl + req.path
             })
         } catch (err) {
             res.status(500).send(err) 
@@ -25,7 +25,7 @@ module.exports = {
             res.status(200).render('employees', { 
                 data,
                 group,
-                url: req.url
+                url: req.baseUrl + req.path
             })
         } catch (err) {
             res.status(500).send(err) 
@@ -35,7 +35,7 @@ module.exports = {
     addEmployeeView: async (req, res)=>{
         try{
             res.status(200).render('addEmployee',{
-                url: req.url,
+                url: req.baseUrl + req.path,
                 moment: moment
             })
         }catch(err) {
@@ -49,7 +49,7 @@ module.exports = {
             const data = await fetchData(`admin/api/employees/${id}`)
             res.status(200).render('viewEmployee', { 
                 data,
-                url: req.url,
+                url: req.baseUrl + req.path,
                 moment: moment
             })
         }catch(err) {
@@ -65,7 +65,7 @@ module.exports = {
             console.log(data)
             res.status(200).render('editEmployee', {
                 data,
-                url: req.url,
+                url: req.baseUrl + req.path,
                 moment: moment
             })
         }catch(err) {
@@ -79,7 +79,7 @@ module.exports = {
         const data = await fetchData('admin/api/deductions')
         res.status(200).render('deductions', {
             data, 
-            url: req.url,
+            url: req.baseUrl + req.path,
             moment: moment
         })
       } catch(err){
@@ -99,7 +99,7 @@ module.exports = {
             if(!req.query.from || !req.query.to) { fromDate = ''; toDate = ''} else {fromDate = req.query.from; toDate = req.query.to}
             res.status(200).render('attendance', { 
                 data,
-                url: '/admin' + req.url,
+                url: req.baseUrl + req.path,
                 moment: moment,
                 query: {from: fromDate, to: toDate  }
             })
@@ -119,7 +119,7 @@ module.exports = {
             if(!req.query.from || !req.query.to) { fromDate = ''; toDate = ''} else {fromDate = req.query.from; toDate = req.query.to}
             res.status(200).render('attendancePerEmployee', { 
                 data,
-                url: '/admin' + req.url,
+                url: req.baseUrl + req.path,
                 moment: moment,
                 query: {from: fromDate, to: toDate  }
             })
@@ -139,7 +139,7 @@ module.exports = {
             if(!req.query.from || !req.query.to) { fromDate = ''; toDate = ''} else {fromDate = req.query.from; toDate = req.query.to}
             res.status(200).render('attendanceHistory', { 
                 data,
-                url: '/admin' + req.url,
+                url: req.baseUrl + req.path,
                 moment: moment,
                 query: {from: fromDate, to: toDate  }
             })
@@ -156,7 +156,7 @@ module.exports = {
             console.log('fromn view', data.result[0])
             res.status(200).render('dailyTimeRecord', { 
                 data, 
-                url: req.url,
+                url: req.baseUrl + req.path,
                 moment: moment,
                 query: {from: data.result[0].date_from, to: data.result[0].date_to}
             })
@@ -184,7 +184,7 @@ module.exports = {
             }
             res.status(200).render('dailyTimeRecordS', { 
                 data,
-                url: req.url,
+                url: req.baseUrl + req.path,
                 moment: moment,
                 query: {from: fromDate, to: toDate}
             })
@@ -214,7 +214,7 @@ module.exports = {
                 data,
                 group,
                 selectedGroup,
-                url: req.url,
+                url: req.baseUrl + req.path,
                 moment: moment,
                 query: {from: fromDate, to: toDate, p_group: pgroup}
             })
@@ -243,7 +243,7 @@ module.exports = {
                 data,
                 group,
                 // selectedGroup,
-                url: req.url,
+                url: req.baseUrl + req.path,
                 moment: moment,
                 query: {from: fromDate, to: toDate, p_group: pgroup}
             })
@@ -265,7 +265,7 @@ module.exports = {
             console.log('fromn view', data)
             res.status(200).render('payrollReport', { 
                 data, 
-                url: req.url,
+                url: req.baseUrl + req.path,
                 moment: moment,
                 query: {from: fromDate, to: toDate}
             })
@@ -284,7 +284,7 @@ module.exports = {
             console.log('fromn view', data.result[0])
             res.status(200).render('payrollHistoryReceipt', { 
                 data, 
-                url: req.url,
+                url: req.baseUrl + req.path,
                 moment: moment,
                 query: {from: fromDate, to: toDate}
             })
@@ -307,7 +307,7 @@ module.exports = {
             console.log('fromn view', data)
             res.status(200).render('payrollReceipt', { 
                 data, 
-                url: req.url,
+                url: req.baseUrl + req.path,
                 moment: moment,
                 query: {from: fromDate, to: toDate}
             })
@@ -327,9 +327,9 @@ module.exports = {
             const employees = await fetchData(`admin/api/employees`)
             if(!req.query.from || !req.query.to) { fromDate = ''; toDate = ''} else {fromDate = req.query.from; toDate = req.query.to}
             console.log('fromn view', data)
-            res.status(200).render('addPayrollType', { 
+            res.status(200).render('payrollGroups', { 
                 data, 
-                url: req.url,
+                url: req.baseUrl + req.path,
                 moment: moment,
                 query: {from: fromDate, to: toDate}
             })
@@ -356,7 +356,7 @@ module.exports = {
          console.log('fromn view', data.result[0])
             res.status(200).render('payslip', {
                 data, 
-                url: req.url, 
+                url: req.baseUrl + req.path, 
                 moment: moment,
                 query: {from: fromDate, to: toDate}
         })

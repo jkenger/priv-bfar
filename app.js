@@ -41,13 +41,36 @@ app.use('/admin', adminRoute)
 app.use('/employee', employeeRoute)
 app.use('/', publicRoute)
 
-// ROUTES || Not Found URLS
+// ROUTES || Not Found URLS || Redirects
+
+// employees
+app.use('/admin/employees/', (req, res)=>{
+    res.redirect('/admin/employees/all')
+})
+// !employees
+
+// payroll
+app.use('/admin/payroll/history/', (req, res)=>{
+    res.redirect('/admin/payroll/history/all')
+}   )
+app.use('/admin/payroll/groups/', (req, res)=>{
+    res.redirect('/admin/payroll/groups/all')
+} )
+app.use('/admin/payroll/', (req, res)=>{
+    res.redirect('/admin/payroll/all')
+} )
+
+
+// !payroll
+
+// attendance
 app.use('/admin/attendance/history/', (req, res)=>{
     res.redirect('/admin/attendance/history/all')
 })
 app.use('/admin/attendance/', (req, res)=>{
     res.redirect('/admin/attendance/all')
 })
+// !attendance
 app.use('*', (req, res)=>{
     res.render('404')
 })

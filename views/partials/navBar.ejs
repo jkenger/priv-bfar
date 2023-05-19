@@ -1,9 +1,10 @@
 <div class="d-flex justify-content-between"> 
     <div class="" style="width:100%">
         <ul class="nav nav-tabs">
+            
             <%Object.values(data).forEach((item) => {%>
                 <li class="nav-item">
-                    <a href="<%=item.url%>" class="nav-link rounded-1 <%=((item.url).toLowerCase().includes((url).toLowerCase()))? 'active' : 'asd'%>"><%=item.name%></a>
+                    <a href="<%=item.url%>" class="nav-link <%=((item.url).toLowerCase().includes((url).toLowerCase()))? 'active' : 'asd'%>"><%=item.name%></a>
                 </li>
             <%})%>
             

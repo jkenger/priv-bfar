@@ -24,9 +24,9 @@ a{
     color:#424158;
 }
 
-.nav-item .nav-link{
-    border-top-left-radius : .25rem !important;
-    border-top-right-radius : .25rem !important;
+main .nav-link{
+    border-top-left-radius: .25rem;
+    border-top-right-radius: .25rem;
 }
 table{
     border-collapse: collapse;

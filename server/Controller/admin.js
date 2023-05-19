@@ -120,14 +120,9 @@ module.exports = {
             const id = req.params.id
             const update = req.body
             console.log(id)
+            console.log(update)
             if (!req.body) { throw Error('Invalid input') }
             if (!id) res.status(500).send({err: 'Failure to process the given id'})
-            
-            //update name
-            if(update.personal_information.fname && update.personal_information.lname && update.personal_information.mname){
-                update.personal_information.name = update.personal_information.fname + ' ' + update.personal_information.mname + ' ' + update.personal_information.lname
-            }
-            
             //set update
             const result = await Employees.updateOne({
                  _id: id,
