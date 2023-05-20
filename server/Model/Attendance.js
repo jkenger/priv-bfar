@@ -389,16 +389,16 @@ Attendance.statics.getAttendanceSummary = async function(fromDate, toDate, id){
                 if: {$eq: ['$isLate', true]},
                 then: {
                     $sum: [{$cond:{
-                        if: { $lt: [{ $dateDiff: { startDate: "$am_office_in", endDate: "$am_time_in", unit: "minute" } }, 0] },
+                        if: { $lt: [{ $dateDiff: { startDate: "$am_office_out", endDate: "$am_time_out", unit: "minute" } }, 0] },
                         then: 0,
-                        else: { $dateDiff: { startDate: "$am_office_in", endDate: "$am_time_in", unit: "minute" } }
+                        else: { $dateDiff: { startDate: "$am_office_out", endDate: "$am_time_out", unit: "minute" } }
                     }},
                     {$cond: {
-                        if: { $lt: [{ $dateDiff: { startDate: "$pm_office_in", endDate: "$pm_time_in", unit: "minute" } }, 0] },
+                        if: { $lt: [{ $dateDiff: { startDate: "$pm_office_out", endDate: "$pm_time_out", unit: "minute" } }, 0] },
                         then: 0,
-                        else: { $dateDiff: { startDate:  "$pm_office_in", endDate: "$pm_time_in", unit: "minute" } }
+                        else: { $dateDiff: { startDate:  "$pm_office_out", endDate: "$pm_time_out", unit: "minute" } }
                     }}]},
-                else: 0
+                else: {$sum: 0}
             }},
             undertime: {$cond: {
                 if: {$eq: ['$isUndertime', true]},
@@ -411,12 +411,11 @@ Attendance.statics.getAttendanceSummary = async function(fromDate, toDate, id){
                     {$cond: {
                         if: { $lt: [{ $dateDiff: { startDate: "$pm_time_out", endDate: "$pm_office_out", unit: "minute" } }, 0] },
                         then: 0,
-                        else: { $dateDiff: { startDate: "$pm_time_out", endDate: "$pm_office_out", unit: "minute" } }
+                        else: { $dateDiff: { startDate: "$pm_time_out   ", endDate: "$pm_office_out", unit: "minute" } }
                     }}]},
-                else: 0
+                else: {$sum: 0}
             }},
         }},
-        
         
         {$group:{
             _id: '$emp_code',
@@ -447,6 +446,62 @@ Attendance.statics.getAttendanceSummary = async function(fromDate, toDate, id){
     return result
 }
 
+Attendance.statics.getDetailedAttendanceSummary = async function(fromDate, toDate, id){
+    const calendarDays = await countWeekdays(fromDate, toDate)
+     const filter = (id)? {emp_code: id, date: {$gte: fromDate, $lte: toDate}} : {date: {$gte: fromDate, $lte: toDate}} 
+     const pipeline = [
+         {$match: filter},
+         {$project: {
+             emp_code: 1,
+             name: 1,
+             am:{
+                time_in: '$am_time_in',
+                time_out: '$am_time_out'
+             },
+             pm:{
+                time_in: '$pm_time_in',
+                time_out: '$pm_time_out'
+             },
+             date:1,
+             message: 1,
+             lates: {$cond: {
+                 if: {$eq: ['$isLate', true]},
+                 then: {
+                     $sum: [{$cond:{
+                         if: { $lt: [{ $dateDiff: { startDate: "$am_office_in", endDate: "$am_time_in", unit: "minute" } }, 0] },
+                         then: 0,
+                         else: { $dateDiff: { startDate: "$am_office_in", endDate: "$am_time_in", unit: "minute" } }
+                     }},
+                     {$cond: {
+                         if: { $lt: [{ $dateDiff: { startDate: "$pm_office_in", endDate: "$pm_time_in", unit: "minute" } }, 0] },
+                         then: 0,
+                         else: { $dateDiff: { startDate:  "$pm_office_in", endDate: "$pm_time_in", unit: "minute" } }
+                     }}]},
+                 else: 0
+             }},
+             undertime: {$cond: {
+                 if: {$eq: ['$isUndertime', true]},
+                 then: {
+                     $sum: [{$cond:{
+                         if: { $lt: [{ $dateDiff: { startDate: "$am_time_out", endDate: "$am_office_out", unit: "minute" } }, 0] },
+                         then: 0,
+                         else: { $dateDiff: { startDate: "$am_time_out", endDate: "$am_office_out", unit: "minute" } }
+                     }},
+                     {$cond: {
+                         if: { $lt: [{ $dateDiff: { startDate: "$pm_time_out", endDate: "$pm_office_out", unit: "minute" } }, 0] },
+                         then: 0,
+                         else: { $dateDiff: { startDate: "$pm_time_out", endDate: "$pm_office_out", unit: "minute" } }
+                     }}]},
+                 else: 0
+             }},
+             
+         }},
+        
+     ]
+     const result = await this.aggregate(pipeline)
+     return result
+ }
+ 
 
 const EmpAttendance = mongoose.model('attendances', Attendance)
 

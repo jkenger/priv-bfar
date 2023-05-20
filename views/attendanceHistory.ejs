@@ -85,35 +85,8 @@
               </div>
             <input type="date" name="from" value="<%=query.from%>" id="from" class="rounded-1">
             <input type="date" name="to" value="<%=query.to%>" id="to" class="rounded-1"    >
-            <a id='btnCreate_AttendanceHistory' class="btn btn-primary" href="#" ==> Create DTR </a>
-            <script>
-              const createPayroll = document.querySelector('#btnCreate_AttendanceHistory');
-
-              const gFrom = document.querySelector('input[type="date"]#from');
-              const gTo = document.querySelector('input[type="date"]#to');
-              //get all the values
-              
-              
-              createPayroll.addEventListener('click', async (e) => {
-                e.preventDefault();
-                const values = {
-                  from: gFrom.value,
-                  to: gTo.value,
-                }
-                const data = await fetch('/admin/api/attendance/history', {
-                  method: 'POST',
-                  headers: {
-                    'Content-Type': 'application/json'
-                  },
-                  body: JSON.stringify(values)
-                })
-
-                const result = await data.json()
-                console.log(result)
-              });
-            </script>
-            
-        </form>
+            <button type="submit" class="btn btn-primary">Submit</button>
+           
     </div>
       <%-include('partials/navBar.ejs', {data:{
         dailyTimeRecord: {

@@ -132,7 +132,7 @@ TravelPassSchema.statics.addPass = async function(emp_code, name, fromDate, toDa
                                                     date: newDay,
                                                     date_string: newDay.toLocaleDateString(),
                                                     isHalf: 'false',
-                                                    message: 'T.O',
+                                                    message: project,
                                                 })
                                             }
                                             // [done] NOTE: attendance document not inserting as subdocument from the travel order

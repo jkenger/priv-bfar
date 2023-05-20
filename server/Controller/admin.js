@@ -470,10 +470,11 @@ module.exports = {
             console.log(fromDate, toDate)
             const projectedData = await attendances.getProjectedAttendanceData(fromDate, toDate, id)
             const summaryData = await attendances.getAttendanceSummary(fromDate, toDate, id)
-            console.log(summaryData)
+            const detailedSummaryData = await attendances.getDetailedAttendanceSummary(fromDate, toDate, id)
+            console.log(detailedSummaryData)
             // const selectedRecords = await attendances.getSelectedAttendanceData()
           
-            res.status(200).send({ result: projectedData, summaryData: summaryData,})
+            res.status(200).send({ result: projectedData, summaryData: summaryData, detailedSummaryData: detailedSummaryData})
 
         } catch (e) { res.status(500).send(e) }
     },
@@ -510,7 +511,7 @@ module.exports = {
             const pgroup = req.body.project
             if(!req.body.from || !req.body.to) fromDate = new Date().toISOString(), toDate = new Date().toISOString()
             else fromDate = new Date(req.body.from).toISOString(), toDate = new Date(req.body.to + 'T23:59:59.999Z').toISOString()
-            const data = await fetchData(`admin/api/attendance?from=${fromDate}&to=${toDate}`)
+            const data = await fetchData(`admin/api/attendance/all?from=${fromDate}&to=${toDate}`)
             console.log('ADD ATTENDANCE HISTORY', data.result)
             const result = await AttendanceHistory.create({
                 attendances: data.result,

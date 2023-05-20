@@ -95,7 +95,7 @@ module.exports = {
             if(!req.query.from || !req.query.to) fromDate = new Date(moment(new Date(), 'MM-DD-YYYY').subtract(15, 'days')).toISOString(), toDate = new Date().toISOString()
             else fromDate = new Date(req.query.from).toISOString(), toDate = new Date(req.query.to + 'T23:59:59.999Z').toISOString()
             const data = await fetchData(`admin/api/attendance/all?from=${fromDate}&to=${toDate}`)
-            // console.log(data)
+            
             if(!req.query.from || !req.query.to) { fromDate = ''; toDate = ''} else {fromDate = req.query.from; toDate = req.query.to}
             res.status(200).render('attendance', { 
                 data,
@@ -404,7 +404,7 @@ module.exports = {
             const data = await fetchData('admin/api/events/holidays')
             res.status(200).render('holidays', {
                 data, 
-                url: req.url, 
+                url: req.baseUrl + req.path, 
                 moment: moment
             })
         }catch(err){
@@ -416,7 +416,7 @@ module.exports = {
             const data = await fetchData('admin/api/events/travelpass')
             res.status(200).render('travelPass', {
                 data, 
-                url: req.url, 
+                url: req.baseUrl + req.path, 
                 moment: moment
             })
             console.log(data)
@@ -429,7 +429,7 @@ module.exports = {
             const data = await fetchData('admin/api/leavetypes')
             res.status(200).render('leaveTypes', {
                 data, 
-                url: req.url, 
+                url: req.baseUrl + req.path, 
                 moment: moment
             })
             console.log(data)
@@ -442,7 +442,7 @@ module.exports = {
             const data = await fetchData('admin/api/leave')
             res.status(200).render('allLeave', {
                 data, 
-                url: req.url, 
+                url: req.baseUrl + req.path, 
                 moment: moment
             })
             console.log(data)

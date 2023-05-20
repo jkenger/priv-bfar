@@ -116,11 +116,12 @@
             <thead>
                 <tr>
                     <th rowspan="2">Employee ID</th>
-                    <th rowspan="2">Employee</th>
-                    <th rowspan="2" data-sort='YYYYMMDD'>Date</th>
+                    <th rowspan="2">Name</th>
+                    <th rowspan="2">Date</th>
                     <th colspan="2">AM</th>
                     <th colspan="2">PM</th>
-                    <th rowspan="2">Status</th>
+                    <th rowspan="2">Late (minutes)</th>
+                    <th rowspan="2">Undertime (minutes)</th>
                 </tr>
                 <tr>
                     <th>Time In</th>
@@ -130,36 +131,28 @@
                 </tr>
             </thead>
             <tbody>
-                <% Object.values(data.result).forEach(attendance =>{%> 
-                    <tr>
-                        <td><%=attendance.emp_code%></td>
-                        <td><%=attendance.name%></td>
-                        <td><%=moment(attendance.date).format('LL')%></td>
-                        <td><%=(!attendance.am.time_in && attendance.message === 'Office')? '--:--:--': (attendance.message.includes('T.O') || attendance.message.includes('O.B')) ? attendance.message : moment(attendance.am.time_in).format('LTS')%></td>
-                        <td><%=(!attendance.am.time_out)? '--:--:--' : moment(attendance.am.time_out).format('LTS')%></td>
-                        <td><%=(!attendance.pm.time_in)? '--:--:--' : moment(attendance.pm.time_in).format('LTS')%></td>
-                        <td><%=(!attendance.pm.time_out)? '--:--:--' : moment(attendance.pm.time_out).format('LTS')%></td>
-                        <td>
-                            <div class="statusContainer">
-                                <%if(attendance.status.isLate){%>
-                                    <div class="status">late</div>
-                                <%}%>
-                                <%if(attendance.status.isHalf){%>
-                                    <div class="status">half</div>
-                                <%}%>
-                                <%if(attendance.status.isUndertime){%>
-                                    <div class="status">undertime</div>
-                                <%}%>
-                            </div>
-                            
-                        </td>
-                    </tr>
-                    <%}); %>
+                <%if(data.detailedSummaryData){%>
+                    <% Object.values(data.detailedSummaryData).forEach(attendance =>{%> 
+                        <tr>
+                            <td><%=attendance.emp_code%></td>
+                            <td><%=attendance.name%></td>
+                            <td><%=(attendance.date) ? moment(attendance.date).format('LL') : 0%></td>
+                            <td><%=(!attendance.am.time_in && attendance.message === 'Office')? '--:--:--': (attendance.message.includes('T.O') || attendance.message.includes('O.B')) ? attendance.message : moment(attendance.am.time_in).format('LTS') %> </td>
+                            <td><%=(!attendance.am.time_out)? '--:--:--' : moment(attendance.am.time_out).format('LTS')%></td>
+                            <td><%=(!attendance.pm.time_in)? '--:--:--' : moment(attendance.pm.time_in).format('LTS')%></td>
+                            <td><%=(!attendance.pm.time_out)? '--:--:--' : moment(attendance.pm.time_out).format('LTS')%></td>
+                            <td><%=(!attendance.lates) ? 0 : attendance.lates %></td>
+                            <td><%=(!attendance.undertime) ? 0 : attendance.undertime %></td>
+                        </tr>
+                        <%}); %>
+                <%}%>
+                
             </tbody>
             <tfoot>
             </tfoot>
         </table>
     </div>
+</div>
 </div>
 
 
