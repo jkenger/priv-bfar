@@ -170,8 +170,7 @@ employeeSchema.pre('updateOne', async function(next) {
 
 //display specific fi
 employeeSchema.statics.getProjectedEmployees = async function(){
-    let doc = []
-    this.find({})
+    const result = await this.find({})
     .populate('employee_details.employment_information.payroll_type')
     .select({
         id: '$employee_details.designation.id',
@@ -185,9 +184,30 @@ employeeSchema.statics.getProjectedEmployees = async function(){
             program_name: '$employee_details.employment_information.payroll_type.program_name'
         }
     })
-    console.log(result)
     return result
 }
+
+employeeSchema.statics.getEmployeeSummary = async function(){
+    let result = {}
+    const pipeline = [
+        {$match: {}},
+        {$project: {
+            emp_code: 1,
+        }},
+        //sum all the result by using group
+        {$group:{
+            _id: '$emp_code',
+            totalEmployees: {$sum: 1},
+        }}
+       
+
+    ]
+    result = await this.aggregate(pipeline)
+    result[0].totalPayrollGroups = await payrollGroup.find({}).countDocuments()
+
+    return result
+}
+
 // EmpSchema.statics.getTotalData = async function(){
 //     pipeline = [
 //         {$match: {}},

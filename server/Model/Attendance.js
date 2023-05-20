@@ -5,6 +5,7 @@ const moment = require('moment')
 const Employees = require('./employeee')
 const { startOfDay } = require('date-fns')
 const setTime = require('../Controller/services/setTime')
+const countWeekdays = require('./../Controller/services/calendarDays')
 
 
 const Attendance = mongoose.Schema({
@@ -310,6 +311,7 @@ Attendance.statics.getAttendancePerEmployeeData = async function(fromDate, toDat
     return result
 }
 Attendance.statics.getProjectedAttendanceData = async function(fromDate, toDate, id){
+    
     const filter = (id)? {emp_code: id, date: {$gte: fromDate, $lte: toDate}} : {date: {$gte: fromDate, $lte: toDate}} 
     const pipeline = [
         {$match: filter},
@@ -349,7 +351,7 @@ Attendance.statics.getProjectedAttendanceData = async function(fromDate, toDate,
                 {$cond: {
                     if: { $lt: [{ $dateDiff: { startDate: "$pm.office_in", endDate: "$pm.time_in", unit: "minute" } }, 0] },
                     then: 0,
-                    else: { $dateDiff: { startDate: "$pm.office_in", endDate: "$pm.office_in", unit: "minute" } }
+                    else: { $dateDiff: { startDate: "$pm.office_in", endDate: "$pm.time_in", unit: "minute" } }
                 }}]}
             }},
             no_of_undertime: {$cond: {
@@ -357,14 +359,14 @@ Attendance.statics.getProjectedAttendanceData = async function(fromDate, toDate,
                 then: 0,
                 else: {
                     $sum: [{$cond:{
-                        if: { $lt: [{ $dateDiff: { startDate: "$am.am_office_out", endDate: "$am.am_time_out", unit: "minute" } }, 0] },
+                        if: { $lt: [{ $dateDiff: { startDate: "$am.time_out", endDate: "$am.office_out", unit: "minute" } }, 0] },
                         then: 0,
-                        else: { $dateDiff: { startDate: "$am.am_office_out", endDate: "$am.am_time_out", unit: "minute" } }
+                        else: { $dateDiff: { startDate: "$am.time_out", endDate: "$am.office_out", unit: "minute" } }
                     }},
                     {$cond: {
-                        if: { $lt: [{ $dateDiff: { startDate: "$pm.pm_office_out", endDate: "$pm.pm_time_out", unit: "minute" } }, 0] },
+                        if: { $lt: [{ $dateDiff: { startDate: "$pm.time_out", endDate: "$pm.office_out", unit: "minute" } }, 0] },
                         then: 0,
-                        else: { $dateDiff: { startDate:  "$pm.pm_office_out", endDate: "$pm.pm_time_out", unit: "minute" } }
+                        else: { $dateDiff: { startDate:  "$pm.time_out", endDate: "$pm.office_out", unit: "minute" } }
                     }}]}
                 }}
         }},
@@ -375,80 +377,76 @@ Attendance.statics.getProjectedAttendanceData = async function(fromDate, toDate,
 }
 
 // GET TOTAL DATAS
-Attendance.statics.getTotalData = async function(){
+Attendance.statics.getAttendanceSummary = async function(fromDate, toDate, id){
+   const calendarDays = await countWeekdays(fromDate, toDate)
+    const filter = (id)? {emp_code: id, date: {$gte: fromDate, $lte: toDate}} : {date: {$gte: fromDate, $lte: toDate}} 
     const pipeline = [
-        {$match: {}},
+        {$match: filter},
         {$project: {
             emp_code: 1,
             name: 1,
-            am: {
-                time_in: '$am_time_in',
-                time_out: '$am_time_out',
-            },
-            pm: {
-                time_in: '$pm_time_in',
-                time_out: '$pm_time_out',
-            },
-            message: 1,
-            isLate: 1,
-            totals:{
-                present: {$cond:
-                    // IF TIME INS AND OUT IS NOT NULL PR MESSAGE IS NOT EQUAL TO 'OFFICE', 
-                    {if: {$or:[
-                        {$or: [{$and:[
-                            {$ne:['$am_time_in', null]},
-                            {$ne:['$am_time_out', null]}]},
-                            {$and:[
-                                {$ne:['$pm_time_in', null]},
-                                {$ne:['$pm_time_out', null]}
-                            ]}
-                        ]}, 
-                        {$ne:['$message', 'Office']}
-                        ]},
-                    then: {$sum: 1},
-                    else: {$sum: 0}
-                    }
-                },
-                absent:{$cond:
-                    // IF TIME INS AND OUT IS NOT NULL PR MESSAGE IS NOT EQUAL TO 'OFFICE', 
-                    {if: {$or:[
-                        {$and: [
-                            {$ne:['$am_time_in', null]},
-                            {$ne:['$am_time_out', null]},
-                            {$ne:['$pm_time_in', null]},
-                            {$ne:['$pm_time_out', null]},
-                        ]}, 
-                        {$ne:['$message', 'Office']}
-                        ]},
-                    then: {$sum: 0},
-                    else: {$sum: 1}
-                    }
-                },
-                lates: {$cond: {
-                    if: {$eq: ['$isLate', true]},
-                    then: {$sum: 1},
-                    else: {$sum: 0}
-                }},
-                undertime: {$cond: {
-                    if: {$eq: ['$isUndertime', true]},
-                    then: {$sum: 1},
-                    else: {$sum: 0}
-                }}
-            }
-            
+            lates: {$cond: {
+                if: {$eq: ['$isLate', true]},
+                then: {
+                    $sum: [{$cond:{
+                        if: { $lt: [{ $dateDiff: { startDate: "$am_office_in", endDate: "$am_time_in", unit: "minute" } }, 0] },
+                        then: 0,
+                        else: { $dateDiff: { startDate: "$am_office_in", endDate: "$am_time_in", unit: "minute" } }
+                    }},
+                    {$cond: {
+                        if: { $lt: [{ $dateDiff: { startDate: "$pm_office_in", endDate: "$pm_time_in", unit: "minute" } }, 0] },
+                        then: 0,
+                        else: { $dateDiff: { startDate:  "$pm_office_in", endDate: "$pm_time_in", unit: "minute" } }
+                    }}]},
+                else: 0
+            }},
+            undertime: {$cond: {
+                if: {$eq: ['$isUndertime', true]},
+                then: {
+                    $sum: [{$cond:{
+                        if: { $lt: [{ $dateDiff: { startDate: "$am_time_out", endDate: "$am_office_out", unit: "minute" } }, 0] },
+                        then: 0,
+                        else: { $dateDiff: { startDate: "$am_time_out", endDate: "$am_office_out", unit: "minute" } }
+                    }},
+                    {$cond: {
+                        if: { $lt: [{ $dateDiff: { startDate: "$pm_time_out", endDate: "$pm_office_out", unit: "minute" } }, 0] },
+                        then: 0,
+                        else: { $dateDiff: { startDate: "$pm_time_out", endDate: "$pm_office_out", unit: "minute" } }
+                    }}]},
+                else: 0
+            }},
         }},
         
+        
+        {$group:{
+            _id: '$emp_code',
+            total_attendance: {$sum: 1},
+            name: {$first:'$name'},
+            total_late: {$sum: '$lates'},
+            total_undertime: {$sum: '$undertime'},
+        }},
+        {$addFields:{
+            total_absent: {$subtract:[calendarDays, '$total_attendance']},
+            
+        }},
         {$group:{
             _id: null,
-            presents: {$sum: '$totals.present'},
-            absents: {$sum: '$totals.absent'},
-            lates: {$sum: '$totals.lates'},
-            undertime: {$sum: '$totals.undertime'}
+            attendances: {$push: '$$ROOT'},
+            total_attendance: {$sum: '$total_attendance'},
+            total_absent: {$sum: '$total_absent'},
+            total_late: {$sum: '$total_late'},
+            total_undertime: {$sum: '$total_undertime'},
+        }},
+        {$addFields:{
+            //count attendances content
+            total_employees: {$size: '$attendances'},
+            calendarDays: calendarDays,
         }}
     ]
     const result = await this.aggregate(pipeline)
     return result
 }
+
 
 const EmpAttendance = mongoose.model('attendances', Attendance)
 

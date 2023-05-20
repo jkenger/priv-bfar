@@ -86,16 +86,16 @@ module.exports = {
         res.status(500).send(err)
       } 
     },
-
+    
     attendanceView: async (req, res) => {
         try {
             let fromDate = new Date().toISOString()
             let toDate = new Date().toISOString()
             
-            if(!req.query.from || !req.query.to) fromDate = new Date('01-01-1977').toISOString(), toDate = new Date().toISOString()
+            if(!req.query.from || !req.query.to) fromDate = new Date(moment(new Date(), 'MM-DD-YYYY').subtract(15, 'days')).toISOString(), toDate = new Date().toISOString()
             else fromDate = new Date(req.query.from).toISOString(), toDate = new Date(req.query.to + 'T23:59:59.999Z').toISOString()
             const data = await fetchData(`admin/api/attendance/all?from=${fromDate}&to=${toDate}`)
-            console.log(data)
+            // console.log(data)
             if(!req.query.from || !req.query.to) { fromDate = ''; toDate = ''} else {fromDate = req.query.from; toDate = req.query.to}
             res.status(200).render('attendance', { 
                 data,
@@ -112,7 +112,7 @@ module.exports = {
             let fromDate = new Date().toISOString()
             let toDate = new Date().toISOString()
             let id = req.query.id
-            if(!req.query.from || !req.query.to) fromDate = new Date('01-01-1977').toISOString(), toDate = new Date().toISOString()
+            if(!req.query.from || !req.query.to) fromDate = new Date(moment(new Date(), 'MM-DD-YYYY').subtract(15, 'days')).toISOString(), toDate = new Date().toISOString()
             else fromDate = new Date(req.query.from).toISOString(), toDate = new Date(req.query.to + 'T23:59:59.999Z').toISOString()
             const data = await fetchData(`admin/api/attendance/per-employee?from=${fromDate}&to=${toDate}`)
             console.log('PER EMPLOYEE', data.result[0].date)
@@ -132,12 +132,31 @@ module.exports = {
             let fromDate = new Date().toISOString()
             let toDate = new Date().toISOString()
             
-            if(!req.query.from || !req.query.to) fromDate = new Date('01-01-1977').toISOString(), toDate = new Date().toISOString()
+            if(!req.query.from || !req.query.to) fromDate = new Date(moment(new Date(), 'MM-DD-YYYY').subtract(15, 'days')).toISOString(), toDate = new Date().toISOString()
+            else fromDate = new Date(req.query.from).toISOString(), toDate = new Date(req.query.to + 'T23:59:59.999Z').toISOString()
+            const data = await fetchData(`admin/api/attendance/all?from=${fromDate}&to=${toDate}`)
+            console.log(data)
+            if(!req.query.from || !req.query.to) { fromDate = ''; toDate = ''} else {fromDate = req.query.from; toDate = req.query.to}
+            res.status(200).render('attendanceHistory', { 
+                data,
+                url: req.baseUrl + req.path,
+                moment: moment,
+                query: {from: fromDate, to: toDate  }
+            })
+        }catch(err){
+        }
+    },
+    attendancePrintDTRView: async (req, res) => {
+        try {
+            let fromDate = new Date().toISOString()
+            let toDate = new Date().toISOString()
+            
+            if(!req.query.from || !req.query.to) fromDate = new Date(moment(new Date(), 'MM-DD-YYYY').subtract(15, 'days')).toISOString(), toDate = new Date().toISOString()
             else fromDate = new Date(req.query.from).toISOString(), toDate = new Date(req.query.to + 'T23:59:59.999Z').toISOString()
             const data = await fetchData(`admin/api/attendance/history?from=${fromDate}&to=${toDate}`)
             console.log(data)
             if(!req.query.from || !req.query.to) { fromDate = ''; toDate = ''} else {fromDate = req.query.from; toDate = req.query.to}
-            res.status(200).render('attendanceHistory', { 
+            res.status(200).render('attendanceDTR', { 
                 data,
                 url: req.baseUrl + req.path,
                 moment: moment,
@@ -173,7 +192,7 @@ module.exports = {
             let fromDate = new Date().toISOString()
             let toDate = new Date().toISOString()
             
-            if(!req.query.from || !req.query.to) fromDate = new Date('01-01-1977').toISOString(), toDate = new Date().toISOString()
+            if(!req.query.from || !req.query.to) fromDate = new Date(moment(new Date(), 'MM-DD-YYYY').subtract(15, 'days')).toISOString(), toDate = new Date().toISOString()
             else fromDate = new Date(req.query.from).toISOString(), toDate = new Date(req.query.to + 'T23:59:59.999Z').toISOString()
             const data = await fetchData(`admin/api/attendance/${id}?&from=${fromDate}&to=${toDate}&auth=${auth}`)
             console.log(data.result)
@@ -192,14 +211,33 @@ module.exports = {
             res.status(500).send(err) 
         }
     },
-
+    attendanceSummaryView: async(req, res)=>{
+        try {
+            let fromDate = new Date().toISOString()
+            let toDate = new Date().toISOString()
+            
+            if(!req.query.from || !req.query.to) fromDate = new Date(moment(new Date(), 'MM-DD-YYYY').subtract(15, 'days')).toISOString(), toDate = new Date().toISOString()
+            else fromDate = new Date(req.query.from).toISOString(), toDate = new Date(req.query.to + 'T23:59:59.999Z').toISOString()
+            const data = await fetchData(`admin/api/attendance/all?from=${fromDate}&to=${toDate}`)
+            // console.log(data)
+            if(!req.query.from || !req.query.to) { fromDate = ''; toDate = ''} else {fromDate = req.query.from; toDate = req.query.to}
+            res.status(200).render('attendanceSummary', { 
+                data,
+                url: req.baseUrl + req.path,
+                moment: moment,
+                query: {from: fromDate, to: toDate  }
+            })
+        } catch (err) {
+            res.status(500).send(err) 
+        }
+    },
     payrollView: async (req, res) => {
         try {
             // Get the dates then retrieve all the data based from the given dates
             let fromDate = new Date().toISOString()
             let toDate = new Date().toISOString()
             const pgroup = req.query.p_group
-            if(!req.query.from || !req.query.to) fromDate = new Date().toISOString(), toDate = new Date().toISOString()
+            if(!req.query.from || !req.query.to) fromDate = new Date(moment(new Date(), 'MM-DD-YYYY').subtract(15, 'days')).toISOString(), toDate = new Date().toISOString()
             else fromDate = new Date(req.query.from).toISOString(), toDate = new Date(req.query.to + 'T23:59:59.999Z').toISOString()
             const data = await fetchData(`admin/api/payrolls?from=${fromDate}&to=${toDate}&p_group=${pgroup}`)
             const group = await fetchData(`admin/api/payrolltypes`)
@@ -229,7 +267,7 @@ module.exports = {
             let fromDate = new Date().toISOString()
             let toDate = new Date().toISOString()
             const pgroup = req.query.p_group
-            if(!req.query.from || !req.query.to) fromDate = new Date().toISOString(), toDate = new Date().toISOString()
+            if(!req.query.from || !req.query.to) fromDate = new Date(moment(new Date(), 'MM-DD-YYYY').subtract(15, 'days')).toISOString(), toDate = new Date().toISOString()
             else fromDate = new Date(req.query.from).toISOString(), toDate = new Date(req.query.to + 'T23:59:59.999Z').toISOString()
             const data = await fetchData(`admin/api/payrolls/history?from=${fromDate}&to=${toDate}&p_group=${pgroup}`)
             const group = await fetchData(`admin/api/payrolltypes`)
@@ -258,7 +296,7 @@ module.exports = {
             let fromDate = new Date().toISOString()
             let toDate = new Date().toISOString()
                 
-            if(!req.query.from || !req.query.to) fromDate = new Date().toISOString(), toDate = new Date().toISOString()
+            if(!req.query.from || !req.query.to) fromDate = new Date(moment(new Date(), 'MM-DD-YYYY').subtract(15, 'days')).toISOString(), toDate = new Date().toISOString()
             else fromDate = new Date(req.query.from).toISOString(), toDate = new Date(req.query.to + 'T23:59:59.999Z').toISOString()
             const data = await fetchData(`admin/api/payrolls?from=${fromDate}&to=${toDate}`)
             if(!req.query.from || !req.query.to) { fromDate = ''; toDate = ''} else {fromDate = req.query.from; toDate = req.query.to}
@@ -299,7 +337,7 @@ module.exports = {
             let fromDate = new Date().toISOString()
             let toDate = new Date().toISOString()
             const pgroup_id = req.query.p_group
-            if(!req.query.from || !req.query.to) fromDate = new Date().toISOString(), toDate = new Date().toISOString()
+            if(!req.query.from || !req.query.to) fromDate = new Date(moment(new Date(), 'MM-DD-YYYY').subtract(15, 'days')).toISOString(), toDate = new Date().toISOString()
             else fromDate = new Date(req.query.from).toISOString(), toDate = new Date(req.query.to + 'T23:59:59.999Z').toISOString()
             const data = await fetchData(`admin/api/payrolls?from=${fromDate}&to=${toDate}&p_group=${pgroup_id}`)
             console.log(data)
@@ -321,7 +359,7 @@ module.exports = {
             let fromDate = new Date().toISOString()
             let toDate = new Date().toISOString()
                 
-            if(!req.query.from || !req.query.to) fromDate = new Date().toISOString(), toDate = new Date().toISOString()
+            if(!req.query.from || !req.query.to) fromDate = new Date(moment(new Date(), 'MM-DD-YYYY').subtract(15, 'days')).toISOString(), toDate = new Date().toISOString()
             else fromDate = new Date(req.query.from).toISOString(), toDate = new Date(req.query.to + 'T23:59:59.999Z').toISOString()
             const data = await fetchData(`admin/api/payrolltypes`)
             const employees = await fetchData(`admin/api/employees`)
@@ -346,7 +384,7 @@ module.exports = {
          let fromDate = new Date().toISOString()
          let toDate = new Date().toISOString()
              
-         if(!req.query.from || !req.query.to) fromDate = new Date().toISOString(), toDate = new Date().toISOString()
+         if(!req.query.from || !req.query.to) fromDate = new Date(moment(new Date(), 'MM-DD-YYYY').subtract(15, 'days')).toISOString(), toDate = new Date().toISOString()
          else fromDate = new Date(req.query.from).toISOString(), toDate = new Date(req.query.to + 'T23:59:59.999Z').toISOString()
          const data = await fetchData(`admin/api/payrolls/${id}?&from=${fromDate}&to=${toDate}&auth=${auth}`)
          if(!req.query.from || !req.query.to) { fromDate = ''; toDate = ''} else {fromDate = req.query.from; toDate = req.query.to}

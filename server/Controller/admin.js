@@ -66,24 +66,11 @@ module.exports = {
     // employee controllers
     readEmployees: async (req, res) => {
         try {   
-            const projected = await Employees.find({})
-            .populate('employee_details.employment_information.payroll_type')
-            .select({
-                id: '$employee_details.designation.id',
-                name: '$personal_information.name',
-                designation: '$employee_details.designation.designation',
-                employment_type: '$employee_details.employment_information.employment_type',
-                payroll_type:{
-                    _id: '$employee_details.employment_information.payroll_type._id',
-                    fund_cluster: '$employee_details.employment_information.payroll_type.fund_cluster',
-                    project_name: '$employee_details.employment_information.payroll_type.project_name',
-                    program_name: '$employee_details.employment_information.payroll_type.program_name'
-                }
-            })
-            // const employeeData = await employees.getTotalData()
-            // console.log(employeeData)
+            const projected = await Employees.getProjectedEmployees()
+            const summaryData = await Employees.getEmployeeSummary()
+            console.log('SUMMARY EMPLOYEE:', summaryData)
             console.log(projected)
-            res.status(200).send({ result: projected})
+            res.status(200).send({ result: projected, summaryData: summaryData})
 
         } catch (e) { res.status(500).send(e) }
     },
@@ -482,10 +469,11 @@ module.exports = {
             const id = req.params.id
             console.log(fromDate, toDate)
             const projectedData = await attendances.getProjectedAttendanceData(fromDate, toDate, id)
-            const totalData = await attendances.getTotalData()
+            const summaryData = await attendances.getAttendanceSummary(fromDate, toDate, id)
+            console.log(summaryData)
             // const selectedRecords = await attendances.getSelectedAttendanceData()
-            // console.log(selectedRecords)
-            res.status(200).send({ result: projectedData, data: totalData})
+          
+            res.status(200).send({ result: projectedData, summaryData: summaryData,})
 
         } catch (e) { res.status(500).send(e) }
     },

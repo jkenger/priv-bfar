@@ -45,8 +45,10 @@ route.get('/payroll/:id/payslip', checkToken, checkRoles, adminView.payslipView)
 
 // record endpoints 
 route.get('/attendance/all', checkToken, checkRoles, adminView.attendanceView)
-route.get('/attendance/history/per-employee', checkToken, checkRoles, adminView.attendancePerEmployeeView)
+route.get('/attendance/summary', checkToken, checkRoles, adminView.attendanceSummaryView)
 route.get('/attendance/history/all', checkToken, checkRoles, adminView.attendanceHistoryView)
+route.get('/attendance/history/print', checkToken, checkRoles, adminView.attendancePrintDTRView)
+route.get('/attendance/history/print/per-employee', checkToken, checkRoles, adminView.attendancePerEmployeeView)
 route.get('/attendance/history/dtr', checkToken, checkRoles, adminView.attendanceHistoryDTRView)
 route.get('/attendance/:id/dtr', checkToken, checkRoles, adminView.attendanceDTRView)
 

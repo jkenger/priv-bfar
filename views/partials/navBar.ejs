@@ -4,7 +4,7 @@
             
             <%Object.values(data).forEach((item) => {%>
                 <li class="nav-item">
-                    <a href="<%=item.url%>" class="nav-link <%=((item.url).toLowerCase().includes((url).toLowerCase()))? 'active' : 'asd'%>"><%=item.name%></a>
+                    <a href="<%=item.url%>" class="nav-link <%=((item.url).toLowerCase() === ((url).toLowerCase()))? 'active' : ''%>"><%=item.name%></a>
                 </li>
             <%})%>
             

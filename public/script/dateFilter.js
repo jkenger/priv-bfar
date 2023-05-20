@@ -18,8 +18,9 @@ document.addEventListener("DOMContentLoaded", function(event) {
     */
     var startOfMonth = moment().startOf('Month').format('YYYY-MM-DD')
     var currentDay = moment().format('YYYY-MM-DD')
+    var fromDate = moment(new Date(), 'MM-DD-YYYY').subtract(15, 'days').format('YYYY-MM-DD')
     if(!from.value && !to.value){
-        from.value = currentDay
+        from.value = fromDate
         to.value = currentDay
     }
 });
