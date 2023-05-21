@@ -532,16 +532,18 @@ module.exports = {
             try{
                 const fromDate = new Date(req.query.from)
                 const toDate = new Date(req.query.to)
+
+                console.log('CONTROLLER: ', fromDate, toDate)
                 const payroll_group = req.query.p_group
                 const id = req.params.id
                 console.log('FROM-TO', fromDate, toDate)
                 const authorization = req.query.auth
                 console.log('AUTHORIZED?', id, authorization)
                 const projectedData = await Payroll.getPayrollData(fromDate, toDate, payroll_group ,id)
-                const totalData = await Payroll.getTotalData(fromDate, toDate)
-                console.log(projectedData)
+                const totalData = await Payroll.getTotalData(fromDate, toDate,payroll_group ,id)
+                console.log(totalData)
                 
-                res.status(200).send({result: projectedData, data: totalData})
+                res.status(200).send({result: projectedData, summaryData: totalData})
             } catch (e) {
                 res.status(500).send(e)
                 console.log(e)

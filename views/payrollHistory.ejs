@@ -22,55 +22,25 @@
 
     <div class="d-flex gap-4 "> 
       <div class="d-flex justify-content-between flex-fill rounded-1" style="background: #F5F5F5; border: solid #dddddd 1px; padding: 15px;">
-           <div class="d-flex flex-column justify-content-around">
-              <p>Monthly Salary</p>
-              <p style="font-size:1.5rem;"><b>P</b></p>
-           </div>
-           <div class="d-flex">
-              <p></p>
-              <p class="mt-auto p-2 bd-highlight">Totals</p>
-           </div>
-      </div>
-      <div class="d-flex justify-content-between flex-fill rounded-1" style="background: #F5F5F5; border: solid #dddddd 1px; padding: 15px;">
-           <div class="d-flex flex-column justify-content-around">
-              <p>Semi-Monthly Salary</p>
-              <p style="font-size:1.5rem;"><b>P</b></p>
-           </div>
-           <div class="d-flex">
-              <p></p>
-              <p class="mt-auto p-2 bd-highlight">Totals</p>
-           </div>
-      </div>
-      <div class="d-flex justify-content-between flex-fill rounded-1" style="background: #F5F5F5; border: solid #dddddd 1px; padding: 15px;">
         <div class="d-flex flex-column justify-content-around">
-           <p>Deduction</p>
-           <p style="font-size:1.5rem;"><b>P</b></p>
+           <p>Payroll</p>
+           <p style="font-size:1.5rem;"><b><%=(data.result) ? data.result.length : 0 %></b></p>
         </div>
         <div class="d-flex">
            <p></p>
            <p class="mt-auto p-2 bd-highlight">Totals</p>
         </div>
    </div>
-      <div class="d-flex justify-content-between flex-fill rounded-1" style="background: #F5F5F5; border: solid #dddddd 1px; padding: 15px;">
-           <div class="d-flex flex-column justify-content-around">
-              <p>Gross Pay</p>
-              <p style="font-size:1.5rem;"><b>P</b></p>
-           </div>
-           <div class="d-flex">
-              <p></p>
-              <p class="mt-auto p-2 bd-highlight">Totals</p>
-           </div>
-      </div>
-      <div class="d-flex justify-content-between flex-fill rounded-1" style="background: #F5F5F5; border: solid #dddddd 1px; padding: 15px;">
-           <div class="d-flex flex-column justify-content-around">
-              <p>Net Pay</p>
-              <p style="font-size:1.5rem;"><b></b></p>
-           </div>
-           <div class="d-flex">
-              <p></p>
-              <p class="mt-auto p-2 bd-highlight">Totals</p>
-           </div>
-      </div>
+   <div class="d-flex justify-content-between flex-fill rounded-1" style="background: #F5F5F5; border: solid #dddddd 1px; padding: 15px;">
+        <div class="d-flex flex-column justify-content-around">
+           <p>Payroll Groups</p>
+           <p style="font-size:1.5rem;"><b><%=(group.result) ? group.result.length : 0 %></b></p>
+        </div>
+        <div class="d-flex">
+           <p></p>
+           <p class="mt-auto p-2 bd-highlight">Totals</p>
+        </div>
+   </div>
     </div>
     
     <%-include('partials/Modal') %> 
@@ -131,6 +101,10 @@
         payroll: {
             url: '/admin/payroll/history/all',
             name: 'All Payroll History'
+        },
+        payslips:{
+          url: '/admin/payroll/history/payslips',
+          name: 'Payslips'
         }
       },
     })%>

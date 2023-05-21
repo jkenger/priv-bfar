@@ -37,9 +37,9 @@ route.get('/deductions', checkToken, checkRoles, adminView.deductionView)
 route.get('/payroll/all', checkToken, checkRoles, adminView.payrollView)
 
 route.get('/payroll/history/all', checkToken, checkRoles, adminView.payrollHistoryView)
+route.get('/payroll/history/payslips', checkToken, checkRoles, adminView.payslipsView)
 route.get('/payroll/history/receipt', checkToken, checkRoles, adminView.payrollHistoryReceiptView)
 route.get('/payroll/groups/all', checkToken, checkRoles, adminView.payrollTypesView)
-route.get('/payroll/report', checkToken, checkRoles, adminView.payrollReportView)
 route.get('/payroll/receipt', checkToken, checkRoles, adminView.payrollReceiptView)
 route.get('/payroll/:id/payslip', checkToken, checkRoles, adminView.payslipView)
 

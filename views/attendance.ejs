@@ -13,7 +13,7 @@
             },
             attendancePeriod:{
                 url: '/admin/attendance/history/all',
-                name: 'Attendance Periods'
+                name: 'DTR History'
             },
         },
     })%>
@@ -141,8 +141,8 @@
                             <td><%=(!attendance.am.time_out)? '--:--:--' : moment(attendance.am.time_out).format('LTS')%></td>
                             <td><%=(!attendance.pm.time_in)? '--:--:--' : moment(attendance.pm.time_in).format('LTS')%></td>
                             <td><%=(!attendance.pm.time_out)? '--:--:--' : moment(attendance.pm.time_out).format('LTS')%></td>
-                            <td><%=(!attendance.lates) ? 0 : attendance.lates %></td>
-                            <td><%=(!attendance.undertime) ? 0 : attendance.undertime %></td>
+                            <td><%=(!attendance.lates) ? 'No Late' : attendance.lates %></td>
+                            <td><%=(!attendance.undertime) ? 'No Undertime' : attendance.undertime %></td>
                         </tr>
                         <%}); %>
                 <%}%>

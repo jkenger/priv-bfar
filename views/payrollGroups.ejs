@@ -21,29 +21,18 @@
             } 
         },
     })%>
-
-    <div class="d-flex gap-4 mr-4" style="padding-top: 25px !important;"> 
-      <div class="d-flex justify-content-between flex-fill rounded-1" style="background: #F5F5F5; border: solid #dddddd 1px; padding: 15px;">
-           <div class="d-flex flex-column justify-content-around">
-              <p>Total Holidays</p>
-              <p style="font-size:1.5rem;"><b>30</b></p>
-           </div>
-           <div class="d-flex">
-              <p></p>
-              <p class="mt-auto p-2 bd-highlight">Totals</p>
-           </div>
+    <div class="d-flex gap-4 "> 
+     <div class="d-flex justify-content-between flex-fill rounded-1" style="background: #F5F5F5; border: solid #dddddd 1px; padding: 15px;">
+          <div class="d-flex flex-column justify-content-around">
+             <p>Payroll Groups</p>
+             <p style="font-size:1.5rem;"><b><%=(data.result) ? data.result.length : 0 %></b></p>
+          </div>
+          <div class="d-flex">
+             <p></p>
+             <p class="mt-auto p-2 bd-highlight">Totals</p>
+          </div>
+     </div>
       </div>
-      <div class="d-flex justify-content-between flex-fill rounded-1" style="background: #F5F5F5; border: solid #dddddd 1px; padding: 15px;">
-           <div class="d-flex flex-column justify-content-around">
-              <p>Upcoming Holidays</p>
-              <p style="font-size:1.5rem;"><b>30</b></p>
-           </div>
-           <div class="d-flex">
-              <p></p>
-              <p class="mt-auto p-2 bd-highlight">Totals</p>
-           </div>
-      </div>
-    </div>
     <%-include('partials/navBar.ejs', {data:{
         payroll: {
             url: '/admin/payroll/groups/all',
