@@ -152,7 +152,7 @@
                             <%if(!data.result.employee_details.account_details.portal_account){%>
                                 <span class="text-danger">No Portal Account</span>
                                 <br>
-                                <a id="btnAdd" href="#" data-toggle="modal" data-target="#modal"  onclick="submitModal('63cb6da923cd4215c1ee0e5e','John Kenneth Singson Gervacio', 'id email password confirm role', `<%=include('partials/bodies/addAcount-editbody')%>`, 'localhost:3000/admin/api/account', 'localhost:3000/admin/account')" class="btn btn-primary">Add Account</a>
+                                <a id="btnAdd" href="#" data-toggle="modal" data-target="#modal"  onclick="submitModal('63cb6da923cd4215c1ee0e5e','John Kenneth Singson Gervacio', 'id email password confirm role', `<%=include('partials/bodies/addAcount-editbody')%>`, 'account')" class="btn btn-primary">Add Account</a>
                             <%}else{%>
                                 
                                 <%=data.result.employee_details.account_details.portal_account%>

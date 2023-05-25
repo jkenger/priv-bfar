@@ -14,7 +14,7 @@
           name: 'Payroll Periods'
       },
       payrollGroups:{
-        url: '/admin/payroll/groups/all',
+        url: '/admin/payroll/groups',
         name: 'Payroll Groups'
       } 
     },
@@ -58,7 +58,7 @@
               </div>
             <input type="date" name="from" value="<%=query.from%>" id="from" class="rounded-1">
             <input type="date" name="to" value="<%=query.to%>" id="to" class="rounded-1"    >
-            <select name="p_group" id="projectSelect" class="rounded-1 custom-select">
+            <select required name="p_group" id="projectSelect" class="rounded-1 custom-select">
               <% Object.values(group.result).forEach(group =>{%> 
                 <option value="<%=group._id%>" <%=(query.p_group === group._id) ? 'selected': ''%>><%=group.fund_cluster%> - <%=group.project_name%> <%=(group.program_name)? + "- " + group.program_name: ''%></option>
               <%}); %>

@@ -5,7 +5,7 @@ const attendances = require('../Model/attendance')
 const Holiday = require('../Model/holiday')
 const Payroll = require('../Model/payroll')
 const PayrollHistory = require('../Model/payrollHistory')
-const PayrollType = require('../Model/PayrollGroup')
+const PayrollGroups = require('../Model/PayrollGroup')
 const XLSX = require('xlsx')
 const TravelPass = require('../Model/travelPass')
 const Deductions = require('../Model/deductions')
@@ -557,7 +557,7 @@ module.exports = {
                 const id = req.params.id
                 filter = {'_id': id}
             }
-            const result = await PayrollType.find(filter)
+            const result = await PayrollGroups.find(filter)
             res.status(200).send({result: result})
         }catch(e){
             res.status(500).send(e)
@@ -568,7 +568,7 @@ module.exports = {
         // add payroll type to the database
         try{
             const {fund_cluster, project_name, program_name} = req.body
-            const result = await PayrollType.create({
+            const result = await PayrollGroups.create({
                 fund_cluster,
                 project_name,
                 program_name
@@ -584,7 +584,7 @@ module.exports = {
             const body = req.body
             console.log(body)
             console.log(id)
-            const result = await PayrollType.findOneAndUpdate({_id: id}, body)
+            const result = await PayrollGroups.findOneAndUpdate({_id: id}, body)
             res.status(200).send({result: result})
         }catch(e){
             res.status(500).send(e)
@@ -593,7 +593,7 @@ module.exports = {
     deletePayrollType: async(req, res)=>{
         try{
             const id = req.params.id
-            const result = await PayrollType.findOneAndDelete({_id: id})
+            const result = await PayrollGroups.findOneAndDelete({_id: id})
             res.status(200).send({result: result})
         }catch(e){
             res.status(500).send(e)
@@ -607,7 +607,7 @@ module.exports = {
             let filter = {}
             if(id) filter = {'_id': id} 
             else {filter = {}}
-            PayrollHistory.find(filter).populate("payroll_group")
+            PayrollHistory.find(filter)
                 .then(result=>{
                     res.status(200).send({result: result})
                 })
@@ -631,9 +631,14 @@ module.exports = {
             if(!req.body.from || !req.body.to) fromDate = new Date().toISOString(), toDate = new Date().toISOString()
             else fromDate = new Date(req.body.from).toISOString(), toDate = new Date(req.body.to + 'T23:59:59.999Z').toISOString()
             const data = await fetchData(`admin/api/payrolls?from=${fromDate}&to=${toDate}&p_group=${pgroup}`)
-            console.log(data)
+            const pgroupResult= await PayrollGroups.find({_id: pgroup})
+            // ADD PAYROLL HISTORY
             const result = await PayrollHistory.create({
-                payroll_group: pgroup,
+                payroll_group: {
+                    fund_cluster: pgroupResult[0].fund_cluster,
+                    project_name: pgroupResult[0].project_name,
+                    program_name: pgroupResult[0].program_name
+                } ,
                 employees: data.result,
                 date_from: fromDate,
                 date_to: toDate
@@ -722,17 +727,26 @@ module.exports = {
         try {
             console.log(req.body)
             const { id, email, password, role } = req.body
-            console.log(id, email, password, role)
-            var user = {}
+            console.log('asd', id, email, password, role)
+            let user = {}
+            if(!id){
+                console.log('no id')
+                if(role==='admin') user = await AdminAccounts.create({ email, password, role, emp_code:'000'})
+                else if(role==='employee') user = await EmployeeAccounts.create({ email, password, role, emp_code:'000'})
+                res.status(200).send({ user: user })
+            }
             if(role==='admin') user = await AdminAccounts.create({ email, password, role, emp_code: id })
             else if(role==='employee') user = await EmployeeAccounts.create({ email, password, role, emp_code: id })
             const employeeResult = await Employees.findOneAndUpdate({'employee_details.designation.id': id}, {'employee_details.account_details.portal_account': user._id})
             console.log(employeeResult)
+            res.status(200).send({ user: user })
+            
             
             res.status(200).send({ user: user })
+           
         } catch (err) {
             const error = errorHandler(err)
-            res.status(500).send({ err: error })
+            res.status(500).send(err)
         }
     },
     // deleteAccount: async (req, res) => {

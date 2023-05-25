@@ -116,7 +116,7 @@ module.exports = {
             if(!req.query.from || !req.query.to) fromDate = new Date(moment(new Date(), 'MM-DD-YYYY').subtract(15, 'days')).toISOString(), toDate = new Date().toISOString()
             else fromDate = new Date(req.query.from).toISOString(), toDate = new Date(req.query.to + 'T23:59:59.999Z').toISOString()
             const data = await fetchData(`admin/api/attendance/per-employee?from=${fromDate}&to=${toDate}`)
-            console.log('PER EMPLOYEE', data.result[0].date)
+            console.log('PER EMPLOYEE')
             if(!req.query.from || !req.query.to) { fromDate = ''; toDate = ''} else {fromDate = req.query.from; toDate = req.query.to}
             res.status(200).render('attendancePerEmployee', { 
                 data,
@@ -238,17 +238,27 @@ module.exports = {
             let fromDate = new Date().toISOString()
             let toDate = new Date().toISOString()
             let pgroup = req.query.p_group
+            
+            if(pgroup){
+                pgroup = pgroup
+            }
+            if(!pgroup){
+                pgroup = ''
+            }
+            
             console.log('VIEW/ FROM', fromDate)
             console.log('VIEW/ TO', toDate)
-            const pdb_id = await PayrollType.find({}).sort({createdAt: 1})
-            pgroup = (pgroup) ? pgroup : pgroup = pdb_id[0]._id
+            console.log('VIEW/ pgroup', pgroup)
             if(!req.query.from || !req.query.to) fromDate = new Date(moment(new Date(), 'YYYY-MM-DD').subtract(15, 'days')).toISOString(), toDate = new Date().toISOString()
             else fromDate = new Date(req.query.from).toISOString(), toDate = new Date(req.query.to + 'T23:59:59.999Z').toISOString()
-            console.log('VIEW/ pgroup', pgroup)
             
-            const data = await fetchData(`admin/api/payrolls?from=${fromDate}&to=${toDate}&p_group=${pgroup}`)
-            const group = await fetchData(`admin/api/payrolltypes`)
-            const selectedGroup = await fetchData(`admin/api/payrolltypes/${pgroup}`)
+            
+            let data = await fetchData(`admin/api/payrolls?from=${fromDate}&to=${toDate}&p_group=${pgroup}`)
+            data = (data) ? data : []
+            let group = await fetchData(`admin/api/payrolltypes`)
+            group = (group) ? group : []
+            let selectedGroup = await fetchData(`admin/api/payrolltypes/${pgroup}`)
+            selectedGroup = (selectedGroup) ? selectedGroup : []
             if(!req.query.from || !req.query.to) { fromDate = ''; toDate = ''} else {fromDate = req.query.from; toDate = req.query.to}
             console.log('VIEW/ EMPLOYEE DATA', data)
             console.log('VIEW/ PAYROLL GROUP', group)
@@ -303,10 +313,16 @@ module.exports = {
             let fromDate = new Date().toISOString()
             let toDate = new Date().toISOString()
             let pgroup = req.query.p_group
+            if(pgroup){
+                pgroup = pgroup
+            }
+            if(!pgroup){
+                pgroup = ''
+            }
+            
             console.log('VIEW/ FROM', fromDate)
             console.log('VIEW/ TO', toDate)
-            const pdb_id = await PayrollType.find({}).sort({createdAt: 1})
-            pgroup = (pgroup) ? pgroup : pgroup = pdb_id[0]._id
+            console.log('VIEW/ pgroup', pgroup)
             if(!req.query.from || !req.query.to) fromDate = new Date(moment(new Date(), 'YYYY-MM-DD').subtract(15, 'days')).toISOString(), toDate = new Date().toISOString()
             else fromDate = new Date(req.query.from).toISOString(), toDate = new Date(req.query.to + 'T23:59:59.999Z').toISOString()
             console.log('VIEW/ pgroup', pgroup)

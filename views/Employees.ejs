@@ -3,11 +3,10 @@
 <main class="d-flex flex-nowrap" style=" align-self: center;">
 
     <%-include('partials/Aside')%> 
-<main class="d-flex flex-nowrap" style=" align-self: center;">
 <div class="d-flex flex-column flex-fill" style="border-left: 1px solid #dddddd; padding: 1.5em 2em 1.5em 2em;gap:1.5em; overflow: auto; ">
     <%-include('partials/navBar.ejs', {data:{
             employees: {
-                url: '/admin/employees/all',
+                url: '/admin/employees',
                 name: 'Employees'
             }
         },
@@ -16,7 +15,7 @@
         <div class="d-flex justify-content-between flex-fill rounded-1" style="background: #F5F5F5; border: solid #dddddd 1px; padding: 15px;">
              <div class="d-flex flex-column justify-content-around">
                 <p>Employees</p>
-                <p style="font-size:1.5rem;"><b><%=data.summaryData[0].totalEmployees%></b></p>
+                <p style="font-size:1.5rem;"><b><%=(data.summaryData) ? data.summaryData[0].totalEmployees : '0'%></b></p>
              </div>
              <div class="d-flex">
                 <p></p>
@@ -26,7 +25,7 @@
         <div class="d-flex justify-content-between flex-fill rounded-1" style="background: #F5F5F5; border: solid #dddddd 1px; padding: 15px;">
              <div class="d-flex flex-column justify-content-around">
                 <p>Payroll Groups</p>
-                <p style="font-size:1.5rem;"><b><%=data.summaryData[0].totalPayrollGroups%></b></p>
+                <p style="font-size:1.5rem;"><b><%=(data.summaryData) ? data.summaryData[0].totalPayrollGroups : '0'%></b></p>
              </div>
              <div class="d-flex">
                 <p></p>
@@ -42,7 +41,7 @@
     <%-include('partials/Modal') %> 
         <%-include('partials/navBar.ejs', {data:{
                 employees: {
-                    url: '/admin/employees/all',
+                    url: '/admin/employees',
                     name: 'All Employees'
                 }
             },
@@ -71,27 +70,30 @@
                 </tr>
             </thead>
             <tbody>
-                <%Object.values(data.result).forEach(user=>{%>
-                    <tr>
-                        <td><input type="checkbox" name="id" value="<%=user.id%>"><%=user.id%></td>
-                        <td><%=user.name%></td>
-                        <td>
-                            <%if(user.employee_details.employment_information.payroll_type === null){%>
-                                <a href="#"> Add </a>
-                            <%}else{%>
-                                <%=user.employee_details.employment_information.payroll_type.fund_cluster%>
-                                - <%=user.employee_details.employment_information.payroll_type.project_name%> <%=(user.employee_details.employment_information.payroll_type.program_name) ? +  '/ ' + user.employee_details.employment_information.payroll_type.program_name : ''%> 
-                                <a href="#"> Edit </a>
-                            <%}%>    
-                        </td>
-                        <td><%=user.designation%></td>
-                        <td><%=user.employment_type%></td>
-                        <td>
-                            <a href="/admin/employees/view/<%=user._id%>" target="_blank">View Details</a>
-                            <a href="/admin/employees/edit/<%=user._id%>" target="_blank">Edit</a>
-                        </td>
-                    </tr>
-                <%}); %>
+                <%if(data.result){%>
+                    <%Object.values(data.result).forEach(user=>{%>
+                        <tr>
+                            <td><input type="checkbox" name="id" value="<%=user.id%>"><%=user.id%></td>
+                            <td><%=user.name%></td>
+                            <td>
+                                <%if(user.employee_details.employment_information.payroll_type === null){%>
+                                    <a href="#"> Add </a>
+                                <%}else{%>
+                                    <%=user.employee_details.employment_information.payroll_type.fund_cluster%>
+                                    - <%=user.employee_details.employment_information.payroll_type.project_name%> <%=(user.employee_details.employment_information.payroll_type.program_name) ? +  '/ ' + user.employee_details.employment_information.payroll_type.program_name : ''%> 
+                                    <a href="#"> Edit </a>
+                                <%}%>    
+                            </td>
+                            <td><%=user.designation%></td>
+                            <td><%=user.employment_type%></td>
+                            <td>
+                                <a href="/admin/employees/view/<%=user._id%>" target="_blank">View Details</a>
+                                <a href="/admin/employees/edit/<%=user._id%>" target="_blank">Edit</a>
+                            </td>
+                        </tr>
+                    <%}); %>
+                <%}%>
+                
                 <script>
                     const btnAddPayrollType1 = document.querySelector('#btnAdd_payrollType')
                     btnAddPayrollType1.style.visibility = 'hidden'

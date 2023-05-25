@@ -21,7 +21,7 @@ route.get('*', checkUser)
 route.get('/', checkToken, checkRoles, adminView.dashboardView)
 
 // employee endpoints
-route.get('/employees/all',checkToken, checkRoles, adminView.readEmployeesView)
+route.get('/employees',checkToken, checkRoles, adminView.readEmployeesView)
 route.get('/employees/new',checkToken, checkRoles, adminView.addEmployeeView)
 route.get('/employees/view/:id',checkToken, checkRoles, adminView.viewEmployeeView)
 route.get('/employees/edit/:id',checkToken, checkRoles, adminView.editEmployeeView)
@@ -36,10 +36,10 @@ route.get('/deductions', checkToken, checkRoles, adminView.deductionView)
 // payroll endpoints
 route.get('/payroll/all', checkToken, checkRoles, adminView.payrollView)
 
+route.get('/payroll/groups', checkToken, checkRoles, adminView.payrollTypesView)
 route.get('/payroll/history/all', checkToken, checkRoles, adminView.payrollHistoryView)
 route.get('/payroll/history/payslips', checkToken, checkRoles, adminView.payslipsView)
 route.get('/payroll/history/receipt', checkToken, checkRoles, adminView.payrollHistoryReceiptView)
-route.get('/payroll/groups/all', checkToken, checkRoles, adminView.payrollTypesView)
 route.get('/payroll/receipt', checkToken, checkRoles, adminView.payrollReceiptView)
 route.get('/payroll/:id/payslip', checkToken, checkRoles, adminView.payslipView)
 
@@ -139,8 +139,8 @@ route.get('/api/payrolltypes/:id', admin.readPayrollTypes)
 
 //cud
 route.post('/api/payrolltype', admin.addPayrollType)
-route.patch('/api/types/:id', admin.updatePayrollType)
-route.delete('/api/types/:id', admin.deletePayrollType)
+route.patch('/api/groups/:id', admin.updatePayrollType)
+route.delete('/api/groups/:id', admin.deletePayrollType)
 
 //update employee payroll group
 route.patch('/api/addtopayrolltype', admin.addEmployeePayrollType)

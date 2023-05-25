@@ -17,11 +17,11 @@
       },
     })%>
 
-    <div class="d-flex gap-4 "> 
+    <div class="d-flex gap-4"> 
       <div class="d-flex justify-content-between flex-fill rounded-1" style="background: #F5F5F5; border: solid #dddddd 1px; padding: 15px;">
            <div class="d-flex flex-column justify-content-around">
-              <p>Monthly Salary</p>
-              <p style="font-size:1.5rem;"><b>P</b></p>
+              <p>Employees</p>
+              <p style="font-size:1.5rem;"><b><%=(data.summaryData[0]) ? data.summaryData[0].total_employees : 0%></b></p>
            </div>
            <div class="d-flex">
               <p></p>
@@ -30,28 +30,19 @@
       </div>
       <div class="d-flex justify-content-between flex-fill rounded-1" style="background: #F5F5F5; border: solid #dddddd 1px; padding: 15px;">
            <div class="d-flex flex-column justify-content-around">
-              <p>Semi-Monthly Salary</p>
-              <p style="font-size:1.5rem;"><b>P</b></p>
+              <p>Attendance</p>
+              <p style="font-size:1.5rem;"><b><%=(data.summaryData[0]) ? data.summaryData[0].total_attendance : 0%>d</b></p>
            </div>
            <div class="d-flex">
               <p></p>
               <p class="mt-auto p-2 bd-highlight">Totals</p>
            </div>
       </div>
-      <div class="d-flex justify-content-between flex-fill rounded-1" style="background: #F5F5F5; border: solid #dddddd 1px; padding: 15px;">
-        <div class="d-flex flex-column justify-content-around">
-           <p>Deduction</p>
-           <p style="font-size:1.5rem;"><b>P</b></p>
-        </div>
-        <div class="d-flex">
-           <p></p>
-           <p class="mt-auto p-2 bd-highlight">Totals</p>
-        </div>
-   </div>
+      
       <div class="d-flex justify-content-between flex-fill rounded-1" style="background: #F5F5F5; border: solid #dddddd 1px; padding: 15px;">
            <div class="d-flex flex-column justify-content-around">
-              <p>Gross Pay</p>
-              <p style="font-size:1.5rem;"><b>P</b></p>
+              <p>Absent</p>
+              <p style="font-size:1.5rem;"><b><%=(data.summaryData[0]) ? data.summaryData[0].total_absent : 0%>d</b></p>
            </div>
            <div class="d-flex">
               <p></p>
@@ -59,16 +50,36 @@
            </div>
       </div>
       <div class="d-flex justify-content-between flex-fill rounded-1" style="background: #F5F5F5; border: solid #dddddd 1px; padding: 15px;">
-           <div class="d-flex flex-column justify-content-around">
-              <p>Net Pay</p>
-              <p style="font-size:1.5rem;"><b></b></p>
-           </div>
-           <div class="d-flex">
-              <p></p>
-              <p class="mt-auto p-2 bd-highlight">Totals</p>
-           </div>
+          <div class="d-flex flex-column justify-content-around">
+             <p>Late</p>
+             <p style="font-size:1.5rem;"><b><%=(data.summaryData[0]) ? data.summaryData[0].total_late : 0%>m</b></p>
+          </div>
+          <div class="d-flex">
+             <p></p>
+             <p class="mt-auto p-2 bd-highlight">Totals</p>
+          </div>
       </div>
-    </div>
+      <div class="d-flex justify-content-between flex-fill rounded-1" style="background: #F5F5F5; border: solid #dddddd 1px; padding: 15px;">
+          <div class="d-flex flex-column justify-content-around">
+             <p>Undertime</p>
+             <p style="font-size:1.5rem;"><b><%=(data.summaryData[0]) ? data.summaryData[0].total_undertime : 0%>m</b></p>
+          </div>
+          <div class="d-flex">
+             <p></p>
+             <p class="mt-auto p-2 bd-highlight">Totals</p>
+          </div>
+      </div>
+      <div class="d-flex justify-content-between flex-fill rounded-1" style="background: #F5F5F5; border: solid #dddddd 1px; padding: 15px;">
+          <div class="d-flex flex-column justify-content-around">
+             <p>Calendar Days </p>
+             <p style="font-size:1.5rem;"><b><%=(data.summaryData[0]) ? data.summaryData[0].calendarDays : 0%>d</b></p>
+          </div>
+          <div class="d-flex">
+             <p></p>
+             <p class="mt-auto p-2 bd-highlight">Totals</p>
+          </div>
+      </div>
+  </div>
     
     <%-include('partials/Modal') %> 
     <div class="d-flex filterContainer rounded-1 gap-3">

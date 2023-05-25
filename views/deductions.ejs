@@ -7,6 +7,13 @@
 
     <%-include('partials/Aside')%> 
 <div class="d-flex flex-column flex-fill" style="border-left: 1px solid #dddddd; padding: 1.5em 2em 1.5em 2em; gap:1.5em; overflow: auto;">
+    <%-include('partials/navBar.ejs', {data:{
+            deductions: {
+                url: '/admin/deductions',
+                name: 'Deductions'
+            }
+        },
+    })%>    
     <div class="d-flex justify-content-between"> 
             <div class="d-flex justify-content-center align-items-center rounded-1"> 
               <a href="#" class="nav-link" style="padding-right: 10px !important;">
@@ -52,6 +59,13 @@
    </div>
     </div>
     <%-include('partials/Modal') %> 
+    <%-include('partials/navBar.ejs', {data:{
+            deductions: {
+                url: '/admin/deductions',
+                name: 'Deductions'
+            }
+        },
+    })%> 
     <div class="d-flex overflow-auto gap-4 justify-content-between">
 
         <div class="overflow-auto  table-container" style="width:100%;  "> 

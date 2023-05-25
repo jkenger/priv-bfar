@@ -16,7 +16,7 @@
                 name: 'Payroll Periods'
             },
             payrollGroups:{
-            url: '/admin/payroll/groups/all',
+            url: '/admin/payroll/groups',
             name: 'Payroll Groups'
             } 
         },
@@ -35,7 +35,7 @@
       </div>
     <%-include('partials/navBar.ejs', {data:{
         payroll: {
-            url: '/admin/payroll/groups/all',
+            url: '/admin/payroll/groups',
             name: 'All Payroll Groups'
         }
       },
@@ -45,7 +45,7 @@
     <%-include('partials/Modal') %> 
     <div class="d-flex overflow-auto gap-4 justify-content-between">
         
-        <div class="d-flex  table-container"> 
+        <div class="d-flex  table-container" style="width:100%;" > 
             
            
             <table id="mainTable" class="table border-top border-bottom" style="width: 100%;">

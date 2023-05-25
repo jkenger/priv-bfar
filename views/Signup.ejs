@@ -47,7 +47,7 @@
         const password = form.password.value
         const role = ddl.value
         try{
-            const res = await fetch(`/admin/register`, {
+            const res = await fetch(`/admin//api/account`, {
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify({email, password, role}),
                 method: 'POST'

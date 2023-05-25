@@ -3,9 +3,17 @@ const PayrollGroup = require('./PayrollGroup')
 
 const payrollHistorySchema = mongoose.Schema({
     payroll_group:{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: PayrollGroup.collection.name,
-        required: true
+        fund_cluster:{
+            type: String,
+            required: true
+        },
+        project_name: {
+            type: String,
+            required: true
+        },
+        program_name:{
+            type: String
+        }
     },
     employees:{
         type: Array,

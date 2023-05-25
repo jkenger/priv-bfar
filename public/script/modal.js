@@ -6,18 +6,24 @@ const modalForm = document.querySelector('form#modalForm')
 
 modalBodyDiv.innerHTML = ''
 
-const path = ((window.location.pathname).split('/')).at(-1)
+let path = ((window.location.pathname).split('/')).at(-1)
 
 
 // submit modal
-const submitModal = (id, name, inputs, html)=>{
+const submitModal = (id, name, inputs, html, customPath)=>{
+  
+    if(customPath){
+        path = customPath
+    }
+    
     const api = 
     (path === 'holidays' || path === 'travelpass')?
     '/admin/api/events/' + path:
     '/admin/api/' + path
-   
-    const directLink = (path === 'types') ? '/admin/payroll/' + path : '/admin/' + path
 
+    const directLink = (path === 'groups') ? '/admin/payroll/' + path : '/admin/' + path
+    console.log(customPath,'c')
+    console.log(path,'p')
     modalForm.dataset.formType = ''
     modalForm.dataset.formType = 'submitForm'
 
@@ -38,6 +44,7 @@ const submitModal = (id, name, inputs, html)=>{
                 inputObj[arrKeys[index]] = modalForm[arr].value
             })
             console.log(inputObj)
+            console.log('submit api,', api)
             postData(inputObj, api, directLink)
         }
     })
@@ -50,13 +57,13 @@ const postData = async (obj, url, directLink) => {
     const _target = directLink
 
     console.log(body)
-    // const doc = await fetch(_url, {
-    //     headers: { 'Content-Type': 'application/json' },
-    //     body:JSON.stringify(body),
-    //     method: 'POST'
-    // })
-    // const data = await doc.json()
-    // console.log(data)
+    const doc = await fetch(_url, {
+        headers: { 'Content-Type': 'application/json' },
+        body:JSON.stringify(body),
+        method: 'POST'
+    })
+    const data = await doc.json()
+    window.location.href = _target
 }
 
 
@@ -66,8 +73,8 @@ const editModal = (id, name, inputs, html)=>{
     '/admin/api/events/' + path:
     '/admin/api/' + path
    
-    const directLink = (path === 'types') ? '/admin/payroll/' + path : '/admin/' + path
-
+    const directLink = (path === 'groups') ? '/admin/payroll/' + path : '/admin/' + path
+  
     // assign modalForm identification so the browser won't be confused 
     // when a submit is triggered
 
@@ -124,7 +131,7 @@ const deleteModal = (id)=>{
     '/admin/api/' + path
 
 
-    const directLink = (path === 'types') ? '/admin/payroll/' + path : '/admin/' + path
+    const directLink = (path === 'groups') ? '/admin/payroll/' + path : '/admin/' + path
     
     //clear and assign a type
     modalForm.dataset.formType = ''
@@ -189,7 +196,7 @@ const addPayrollTypeModal = (id, name, inputs, html)=>{
     '/admin/api/events/' + path:
     '/admin/api/' + path
 
-    const directLink = (path === 'types') ? '/admin/payroll/' + path : '/admin/' + path
+    const directLink = (path === 'groups') ? '/admin/payroll/' + path : '/admin/' + path
 
     modalForm.dataset.formType = ''
     modalForm.dataset.formType = 'submitForm'

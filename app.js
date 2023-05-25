@@ -45,7 +45,7 @@ app.use('/', publicRoute)
 
 // employees
 app.use('/admin/employees/', (req, res)=>{
-    res.redirect('/admin/employees/all')
+    res.redirect('/admin/employees')
 })
 // !employees
 
@@ -54,7 +54,7 @@ app.use('/admin/payroll/history/', (req, res)=>{
     res.redirect('/admin/payroll/history/all')
 }   )
 app.use('/admin/payroll/groups/', (req, res)=>{
-    res.redirect('/admin/payroll/groups/all')
+    res.redirect('/admin/payroll/groups')
 } )
 app.use('/admin/payroll/', (req, res)=>{
     res.redirect('/admin/payroll/all')
