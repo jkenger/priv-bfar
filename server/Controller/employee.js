@@ -24,7 +24,9 @@ module.exports = {
             status: 'pending',
             date_requested: new Date()
         }
+        console.log('leave req stat', leave)
         const result = await LeaveRequests.create(leave)
+        console.log('leave req stat', result)
         res.status(200).send({result: result})
         // const find = await LeaveRequests.findOne({emp_id: emp_id}).populate('emp_id')
         // console.log(find)

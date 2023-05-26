@@ -6,16 +6,12 @@
       <div class="d-flex flex-column flex-fill"
         style="border-left: 1px solid #dddddd; padding: 1.5em 2em 1.5em 2em; gap:1.5em; overflow: auto; ">
         <%-include('partials/navBar.ejs', {data:{ dashBoard: { url: '/admin/' , name: 'Dashboard' } }, })%>
-          <style>
-            
-            
-          </style>
           
           <div class="grey-bg container-fluid d-flex flex-column" style="gap: 1.5em; padding: 0 !important;">
             <section id="minimal-statistics">
               <div class="row">
                 <div class="col-12">
-                  <h4 class="text-uppercase">Admin Dashboard</h4>
+                  <h4 class="text-uppercase">Dashboard</h4>
                   <p>Overall Summary and Redirects</p>
                 </div>
               </div>
@@ -27,7 +23,7 @@
                         <div class="row">
                           <div class="col">
                             <h5 class="card-title text-uppercase text-muted mb-0">Total Employee</h5>
-                            <span class="h2 font-weight-bold mb-0"><%=data.total_employees%></span>
+                            <span class="h2 font-weight-bold mb-0"><%=(data) ? data.total_employees : 0%></span>
                           </div>
                           <div class="col-auto">
 

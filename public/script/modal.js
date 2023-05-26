@@ -10,19 +10,24 @@ let path = ((window.location.pathname).split('/')).at(-1)
 
 
 // submit modal
-const submitModal = (id, name, inputs, html, customPath)=>{
+const submitModal = (id, name, inputs, html, customPath, customApi)=>{
   
     if(customPath){
         path = customPath
     }
     
-    const api = 
+    let api = 
     (path === 'holidays' || path === 'travelpass')?
     '/admin/api/events/' + path:
     '/admin/api/' + path
-
-    const directLink = (path === 'groups') ? '/admin/payroll/' + path : '/admin/' + path
-    console.log(customPath,'c')
+    if(customApi){
+        api = customApi
+    }
+    let directLink = (path === 'groups') ? '/admin/payroll/' + path : '/admin/' + path
+    if(customApi){
+        directLink = customPath
+    }
+    console.log(customApi,'c')
     console.log(path,'p')
     modalForm.dataset.formType = ''
     modalForm.dataset.formType = 'submitForm'

@@ -263,9 +263,12 @@ module.exports = {
     // read deduction
     readDeductions: async(req, res)=>{
         try{
+            let summary = {}
             const projectedData = await Deductions.find()
+            let totalDeduction = projectedData.length
+            summary.total_deduction = totalDeduction
             console.log(projectedData)
-            res.status(200).send({result: projectedData})   
+            res.status(200).send({result: projectedData, summaryData: summary})   
         }catch(e){
             const error = errorHandler(e)
             res.status(500).send({ err: error })
@@ -354,8 +357,11 @@ module.exports = {
 
     readHoliday: async(req, res) =>{
         try{
+            let summary = {}
             const projectedData = await Holiday.find()
-            res.status(200).send({result: projectedData})
+            const totalHoliday = projectedData.length
+            summary.total_holiday = totalHoliday
+            res.status(200).send({result: projectedData, summaryData: summary})
             console.log(projectedData) 
         }catch(e){
             const error = errorHandler(e)
@@ -433,8 +439,11 @@ module.exports = {
     // travel pass
     readTravelPass: async(req, res) =>{
         try{
+            let summary = {}
             const projectedData = await TravelPass.find().sort({from_date: 1})
-            res.status(200).send({result: projectedData})
+            const totalTravelPass = projectedData.length
+            summary.total_travelpass = totalTravelPass
+            res.status(200).send({result: projectedData, summaryData: summary})
         }catch(e){
             const error = errorHandler(e)
             res.status(500).send({ err: error })
@@ -695,8 +704,20 @@ module.exports = {
     },
     //get all leave requests
     readLeaveRequests: async (req, res) => {
+        let summary = {}
         const result = await LeaveRequests.find({}).sort({date: -1}).populate('doc_id')
-        res.status(200).send({result: result})
+        
+        let totalLeaveRequests = await result.length
+        let pendingRequests = result.filter(request => request.status === 'Pending')
+        let approvedRequests = result.filter(request => request.status === 'Approved')
+        let declinedRequests = result.filter(request => request.status === 'Declined')
+        
+        summary.total_leaverequest = totalLeaveRequests
+        summary.total_pending_requests = pendingRequests.length
+        summary.total_approved_requests = approvedRequests.length
+        summary.total_declined_requests = declinedRequests.length
+
+        res.status(200).send({result: result, summaryData: summary})
     },
 
     //approve or decline leave request
@@ -716,8 +737,11 @@ module.exports = {
 
     //leave types
     readLeaveTypes: async(req, res)=>{
+        let summary = {}
         const result = await LeaveTypes.find({})
-        res.status(200).send({result: result})
+        const totalLeaveTypes = await result.length
+        summary.total_leavetype = totalLeaveTypes
+        res.status(200).send({result: result, summaryData: summary})
     },
     addLeaveType: async (req, res) => {
         const body = req.body
