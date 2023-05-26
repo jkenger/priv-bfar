@@ -1,0 +1,241 @@
+<%-include('partials/Header')%>
+    <link rel="stylesheet" href="/styles/payslip.css">
+    <link rel="stylesheet" href="/styles/dataTable.css">
+    <style>
+      
+
+    </style>
+    <div class="wrapper">
+        <main>
+            <div class="container receipt">
+                <div class="main">
+                    <div class="header">
+                        <div>
+                            <h4>Payslip</h4>
+                        </div>
+                        <div class="actions">
+                            <a href="#">Print</a>
+                            <a href="#">Back</a>
+                        </div>
+                    </div>
+                    <div class="content">
+                        <div class="pinfo">
+                            <div class="row">
+                                <div class="col">
+                                    <label for="">Employee</label>
+                                    <label for=""><%=data.result[0].name%></label>
+                                </div>
+                                <div class="col">
+                                    <label for="">Payroll Type</label>
+                                    <label for="">Semi-Monthly</label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <label for="">Designation</label>
+                                    <label for=""><%=data.result[0].designation%></label>
+                                </div>
+                                <div class="col">
+                                    <label for="">Payroll Month</label>
+                                    <label for=""><%=moment(query.from).format('MMMM')%> <%=moment(new Date(query.from)).local().date()%>-<%=(moment(query.to).format('MMMM') === moment(query.from).format('MMMM')) ? moment(new Date(query.to)).local().date() : moment(query.to).format('MMMM') + " " +  moment(new Date(query.to).local()).date()%> <%=moment(query.to).year()%>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <label for=""></label>
+                                    <label for=""></label>
+                                </div>
+                                <div class="col">
+                                    <label for="">Basic Salary</label>
+                                    <label for="">P<%=data.result[0].semimo_salary%></label>
+                                </div>  
+                            </div>
+                        </div>
+                        <div class="d-flex overflow-auto  table-container"> 
+    
+                            <table id="mainTable" class="table border" style="width: 100%;">
+                                
+
+                                    <tr>
+                                        <td class="b-down"  colspan="2">
+                                             <label for="" >Gross Salary</label>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="f-row">
+                                            <label for="">Calendar Days</label>
+                                        </td>
+                                        <td class="mid"><label for=""><%=data.result[0].attendance.calendar_days%> Days</label></td> 
+                                        <td class="f-col">
+                                            <label for=""></label>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="f-row">
+                                            <label for="">Daily Rate</label>
+                                        </td>
+                                        <td class="mid"></td> 
+                                        <td class="f-col">
+                                            <label for="">P<%=data.result[0].attendance.daily_rate%></label>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="f-row">
+                                            <label >Semi-Monthly Salary</label>
+                                        </td>
+                                        <td class="mid"><label ></td> 
+                                        <td class="f-col">
+                                            <label class="earnings">P<%=data.result[0].semimo_salary%></label>
+                                        </td>
+                                    </tr>
+                                    
+                                    <tr>
+                                        <td class="f-row">
+                                            <label>No. of Day/s Present</label>
+                                        </td>
+                                        <td class="mid"><label><%=data.result[0].attendance.whalf_days%> Days</label> </td> 
+                                        <td class="f-col">
+                                            <label class="earnings">P<%=data.result[0].attendance.days_present_rate%></label>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="f-row">
+                                            <label  >No. of Day/s Absent</label>
+                                        </td>
+                                        <td class="mid"><label ><%=data.result[0].attendance.no_of_absents%> Days</label> </td> 
+                                        <td class="f-col">
+                                            <label class="deduction">P<%=data.result[0].deduction.hasab_deduction%></label>
+                                        </td>
+                                    </tr>
+                                    
+                                    <tr>
+                                        <td class="f-row ">
+                                            <label >Late</label>
+                                        </td>
+                                        <td class="mid"><label ><%=data.result[0].attendance.no_of_late%> Minutes</label> </td> 
+                                        <td class="f-col">
+                                            <label class="deduction">P<%=data.result[0].deduction.late_deduction%></label>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="f-row">
+                                            <label>Undertime</label>
+                                        </td>
+                                        <td class="mid"><label><%=data.result[0].attendance.no_of_undertime%> Minutes</label> </td> 
+                                        <td class="f-col">
+                                            <label class="deduction">P<%=data.result[0].deduction.ut_deduction%></label>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="f-row">
+                                            <label>Holiday Deduction</label>
+                                        </td>
+                                        <td class="mid"><label><%=data.result[0].deduction.holiday_deduction%> Days</label></td> 
+                                        <td class="f-col">
+                                            <label class="deduction">P<%=data.result[0].deduction.holiday_rate_deduction%></label>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="f-row">
+                                            <label>Holiday</label>
+                                        </td>
+                                        <td class="mid"><label><%=data.result[0].attendance.holiday%> Days</label> </td> 
+                                        <td class="f-col">
+                                            <label class="earnings">P<%=data.result[0].attendance.holiday_rate%></label>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="f-row">
+                                            <label for="" style="">Gross Amount Earned</label>
+                                        </td>
+                                        <td class="mid"><label for=""></td> 
+                                        <td class="f-col">
+                                            <label class="earnings">P<%=data.result[0].salaries.gross_salary%></label>
+                                        </td>
+                                    </tr>
+                                    
+                                <tr >
+                                    <td class="b-down" colspan="2" style=""> 
+                                        <label for="">Net Income</label>
+                                    </td>
+                                </tr>
+                                
+                                      
+                                    <tr>
+                                        <td class="f-row">
+                                            <label for="">2%</label>
+                                        </td>
+                                        <td class="mid"></td> 
+                                        <td class="f-row">
+                                            <label for=""></label>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="f-row">
+                                            <label for="">5%</label>
+                                        </td>
+                                        <td class="mid"></td> 
+                                        <td class="f-row">
+                                            <label for=""></label>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="f-row">
+                                            <label for="">10%</label>
+                                        </td>
+                                        <td class="mid"></td> 
+                                        <td class="f-row">
+                                            <label for=""></label>
+                                        </td>
+                                    </tr>
+                                    <%if(data.result[0].other_deductions.deductions.length >= 1){%>
+                                        <% Object.values(data.result[0].other_deductions.deductions).forEach(deduction =>{%>
+                                            <tr>
+                                                <td class="f-row">
+                                                    <label for=""><%=deduction.name%></label>
+                                                </td>
+                                                <td class="mid"></td> 
+                                                <td class="f-col">
+                                                    <label class="deduction">P<%=deduction.amount%></label>
+                                                </td>
+                                            </tr>
+                                        <%}); %>
+                                    <%}%>
+                                    <tr>
+                                        <td class="f-row" style="background-color: #FFFEFE;">
+                                            <label for=""  >Total Deductions</label>
+                                        </td>
+                                        <td class="mid"></td> 
+                                        <td class="f-col" style="background-color: #FFFEFE;">
+                                            <label class="deduction">P<%=data.result[0].total_deductions%></label>
+                                        </td>
+                                    </tr>  
+                                    <tr>
+                                        <td class="f-row" style="">
+                                            <label for="" style="">Net Amount Due</label>
+                                        </td>
+                                        <td class="mid"></td> 
+                                        <td class="f-col" style="">
+                                            <label class="earnings">P<%=data.result[0].salaries.net_salary%></label>
+                                        </td>
+                                    </tr>
+                               
+                                <tbody>
+                                        
+                                </tbody>
+                                <tfoot>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+            
+        </main>
+        <script src="/assets/onscan.min.js"></script>
+        <script src="/scripts/timeAttendance.js"></script>
+        
+    </div>
+<%-include('partials/Footer')%>

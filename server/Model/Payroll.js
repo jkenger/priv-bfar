@@ -37,6 +37,7 @@ payrollSchema.statics.getPayrollData = async function(fromDate, toDate, group, i
     const eFilter = (p_group_id)? {'employee_details.employment_information.payroll_type': new mongoose.Types.ObjectId(p_group_id)} : {}
     console.log(p_group_id)
     console.log('model', id)
+    
     const filter = (id)?{ $or: [{$or: [{am_time_out: { $ne: null }}, {$or: [{message: 'T.O'}, {message: 'O.B'}]}]}, { pm_time_out: { $ne: null } }], date: { $gte: fromDate, $lte: toDate}, emp_code: id}: { $or: [{$or: [{am_time_out: { $ne: null }}, {$or: [{message: 'T.O'}, {message: 'O.B'}]}]}, { pm_time_out: { $ne: null } }], date: { $gte: fromDate, $lte: toDate}}  ;
     console.log('PAYROLL DATA:', filter)
     const deductions = await Deductions.find().sort({createdAt: 1})
@@ -431,6 +432,7 @@ payrollSchema.statics.getPayrollData = async function(fromDate, toDate, group, i
         // // {$unwind: '$salary'},
     ]
     const result = await employees.aggregate(pipeline)
+    console.log()
     return result 
 }
 

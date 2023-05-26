@@ -46,38 +46,41 @@
             }
         },
     })%>
-    <div class="d-flex overflow-auto gap-4 justify-content-between" >
-
-        <div class="overflow-auto  table-container" style="width:100%;  "> 
-        
-            <table id="mainTable" class="table border-top border-bottom" style="width: 100%;">
-                <thead>
-                    <tr>
-                        <th>Leave Type</th>
-                        <th>Description</th>
-                        <th>Created</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <% Object.values(data.result).forEach(leaveType =>{%> 
-                        <tr>
-                            <td><%=leaveType.leave_type%></td>
-                            <td><%=leaveType.description%></td>
-                            <td><%=moment(leaveType.createdAt).format('LL')%></td>
-                            <td>
-                                <a id="aEdit" href="#" data-toggle="modal" data-target="#modal"  onclick="editModal('<%=leaveType._id%>','<%=leaveType.name%>', 'leave_type description', `<%=include('partials/bodies/leaveType-editbody', {leaveType})%>`)"> Edit </a>
-                                <a id="aDelete" href="#" data-toggle="modal" data-target="#modal"  onclick="deleteModal('<%=leaveType._id%>')"> Delete </a>
-                            </td>
-                        </tr>
-                    <%}); %>
-                </tbody>
-                <tfoot>
-                </tfoot>
-            </table>
-        </div>
-        <div class="sideContainer rounded-1">
-            <div class="overflow-auto" > 
+    <div class="row" >
+        <section class="col-lg-8 connectedSortable ui-sortable" style="margin-bottom: 1.5em;">
+            <div>
+                <div class="overflow-auto  table-container table-responsive" style="width:100%;  "> 
+                
+                    <table id="mainTable" class="table border-top border-bottom" style="width: 100%;">
+                        <thead>
+                            <tr>
+                                <th>Leave Type</th>
+                                <th>Description</th>
+                                <th>Created</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% Object.values(data.result).forEach(leaveType =>{%> 
+                                <tr>
+                                    <td><%=leaveType.leave_type%></td>
+                                    <td><%=leaveType.description%></td>
+                                    <td><%=moment(leaveType.createdAt).format('LL')%></td>
+                                    <td>
+                                        <a id="aEdit" href="#" data-toggle="modal" data-target="#modal"  onclick="editModal('<%=leaveType._id%>','<%=leaveType.name%>', 'leave_type description', `<%=include('partials/bodies/leaveType-editbody', {leaveType})%>`)"> Edit </a>
+                                        <a id="aDelete" href="#" data-toggle="modal" data-target="#modal"  onclick="deleteModal('<%=leaveType._id%>')"> Delete </a>
+                                    </td>
+                                </tr>
+                            <%}); %>
+                        </tbody>
+                        <tfoot>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </section>
+        <section class="col-lg-4 connectedSortable ui-sortable">
+            <div class="overflow-auto sideContainer rounded-1" > 
                 <form action="" id="asideForm" class="d-flex flex-column gap-2">
                     <h1>Add Leave Type</h1>
                     <div class="mb-0">
@@ -92,8 +95,7 @@
                     <button type="submit" class="btn btn-primary sideContainerButton">Add New</button>
                 </form>
             </div>
-        </div>
-        
+        </section>
     </div>
     
 </div>

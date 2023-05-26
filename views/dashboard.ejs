@@ -1,339 +1,229 @@
 <%-include('partials/Header')%>
-<link rel="stylesheet" href="/styles/dataTable.css">
-<main class="d-flex flex-nowrap" style="align-self: center;">
+  <link rel="stylesheet" href="/styles/dataTable.css">
+  <main class="d-flex flex-nowrap" style="align-self: center;">
 
-    <%-include('partials/Aside')%> 
-<div class="d-flex flex-column flex-fill" style="border-left: 1px solid #dddddd; padding: 1.5em 2em 1.5em 2em; gap:1.5em; overflow: auto; ">
-    <%-include('partials/navBar.ejs', {data:{
-            dashBoard: {
-                url: '/admin/',
-                name: 'Dashboard'
-            }
-        },
-    })%>
-   <style>
-      .card{
-         background-color: #f5f5f5;
-      }
+    <%-include('partials/Aside')%>
+      <div class="d-flex flex-column flex-fill"
+        style="border-left: 1px solid #dddddd; padding: 1.5em 2em 1.5em 2em; gap:1.5em; overflow: auto; ">
+        <%-include('partials/navBar.ejs', {data:{ dashBoard: { url: '/admin/' , name: 'Dashboard' } }, })%>
+          <style>
+            
+            
+          </style>
+          
+          <div class="grey-bg container-fluid d-flex flex-column" style="gap: 1.5em; padding: 0 !important;">
+            <section id="minimal-statistics">
+              <div class="row">
+                <div class="col-12">
+                  <h4 class="text-uppercase">Admin Dashboard</h4>
+                  <p>Overall Summary and Redirects</p>
+                </div>
+              </div>
+              <div class="d-flex flex-column">
+                <div class="row">
+                  <div class="col-xl-12" style="gap: 1.5em;">
+                    <div class="card card-stats mb-xl-0">
+                      <div class="card-body">
+                        <div class="row">
+                          <div class="col">
+                            <h5 class="card-title text-uppercase text-muted mb-0">Total Employee</h5>
+                            <span class="h2 font-weight-bold mb-0"><%=data.total_employees%></span>
+                          </div>
+                          <div class="col-auto">
 
-   </style>
-    <div class="grey-bg container-fluid d-flex flex-column" style="gap: 1.5em;">
-      <section id="minimal-statistics">
-        <div class="row">
-          <div class="col-12 mt-3 mb-1">
-            <h4 class="text-uppercase">Minimal Statistics Cards</h4>
-            <p>Statistics on minimal cards.</p>
-          </div>
-        </div>
-        <div class="d-flex flex-column" style="gap: 1.5em;">
-         <div class="row">
-            <div class="col-xl-3 col-lg-6">
-              <div class="card card-stats mb-4 mb-xl-0">
-                <div class="card-body">
-                  <div class="row">
-                    <div class="col">
-                      <h5 class="card-title text-uppercase text-muted mb-0">Traffic</h5>
-                      <span class="h2 font-weight-bold mb-0">350,897</span>
-                    </div>
-                    <div class="col-auto">
-                      
+                          </div>
+                        </div>
+                        <p class="mt-3 mb-0 text-muted text-sm">
+                          <a href="/admin/employees"><span class="text-nowrap">View Details</span></a>
+                        </p>
+                      </div>
                     </div>
                   </div>
-                  <p class="mt-3 mb-0 text-muted text-sm">
-                    <a href="#"><span class="text-nowrap">View Details</span></a>
-                  </p>
                 </div>
+
               </div>
+            </section>
+            <div class="row">
+              <div class="col-md-12">
+                <div class="card">
+
+                  <div class="card-footer" style="border-top: 0;">
+                    <div class="row card-con">
+                      <div class="col-sm-3 col-6">
+                        <div class="description-block border-right">
+                          <a href="/admin/attendance/history/print"><span class="description-percentage"><i class="fa-solid fa-print"></i>
+                              print</span></a>
+                          <h5 class="description-header"><%=moment(query.from).format('MMMM')%> <%=moment(new Date(query.from)).date()%>-<%=(moment(query.to).format('MMMM') === moment(query.from).format('MMMM')) ? moment(new Date(query.to)).date() : moment(query.to).format('MMMM') + " " +  moment(query.to).date()%> <%=moment(query.to).year()%></h5>
+                          <span class="description-text">DTR Period</span>
+                        </div>
+
+                      </div>
+
+                      <div class="col-sm-3 col-6">
+                        <div class="description-block border-right">
+                          <a href="/admin/attendance/history/print/per-employee"><span class="description-percentage link"><i class="fa-solid fa-print"></i>
+                              print</span></a>
+                          <h5 class="description-header"><%=moment(query.from).format('MMMM')%> <%=moment(new Date(query.from)).date()%>-<%=(moment(query.to).format('MMMM') === moment(query.from).format('MMMM')) ? moment(new Date(query.to)).date() : moment(query.to).format('MMMM') + " " +  moment(query.to).date()%> <%=moment(query.to).year()%></h5>
+                          <span class="description-text">Individual DTR Period</span>
+                        </div>
+
+                      </div>
+
+                      <div class="col-sm-3 col-6">
+                        <div class="description-block border-right">
+                          <a href="/admin/payroll/history/all"><span class="description-percentage link"><i class="fa-solid fa-print"></i>
+                              print</span></a>
+                          <h5 class="description-header"><%=moment(query.from).format('MMMM')%> <%=moment(new Date(query.from)).date()%>-<%=(moment(query.to).format('MMMM') === moment(query.from).format('MMMM')) ? moment(new Date(query.to)).date() : moment(query.to).format('MMMM') + " " +  moment(query.to).date()%> <%=moment(query.to).year()%></h5>
+                          <span class="description-text">Payroll Period</span>
+                        </div>
+
+                      </div>
+
+                      <div class="col-sm-3 col-6">
+                        <div class="description-block">
+                          <a href=""><span class="description-percentage link"><i class="fa-solid fa-print"></i>
+                              print</span></a>
+                          <h5 class="description-header"><%=moment(query.from).format('MMMM')%> <%=moment(new Date(query.from)).date()%>-<%=(moment(query.to).format('MMMM') === moment(query.from).format('MMMM')) ? moment(new Date(query.to)).date() : moment(query.to).format('MMMM') + " " +  moment(query.to).date()%> <%=moment(query.to).year()%></h5>
+                          <span class="description-text">Payslip Period</span>
+                        </div>
+
+                      </div>
+                    </div>
+
+                  </div>
+
+                </div>
+
+              </div>
+
             </div>
-            <div class="col-xl-3 col-lg-6">
-               <div class="card card-stats mb-4 mb-xl-0">
-                 <div class="card-body">
-                   <div class="row">
-                     <div class="col">
-                       <h5 class="card-title text-uppercase text-muted mb-0">Traffic</h5>
-                       <span class="h2 font-weight-bold mb-0">350,897</span>
-                     </div>
-                     <div class="col-auto">
-                       
-                     </div>
-                   </div>
-                   <p class="mt-3 mb-0 text-muted text-sm">
-                     <a href="#"><span class="text-nowrap">View Details</span></a>
-                   </p>
-                 </div>
-               </div>
-             </div>
+
           </div>
-        
           <div class="row">
-            <div class="col-xl-3 col-sm-6 col-12">
+
+            <section class="col-lg-7 connectedSortable ui-sortable" style="margin-bottom: 1.5em;">
+
               <div class="card">
-                <div class="card-content">
-                  <div class="card-body">
-                    <div class="media d-flex">
-                      <div class="media-body text-left">
-                        <h3 class="danger">278</h3>
-                        <span>New Projects</span>
+                <div class="card-header">
+                  <h4 class="card-title">
+                    <i class="fa-solid fa-clock"></i>
+                    Recent attendance</h4>
+                    <div class="card-tools">
+
+                    </div>
+                </div>
+
+                <div class="card-body p-0">
+                  <div class="d-flex  table-container table-responsive">
+                    <style>
+                      #mainTable_wrapper {
+                        padding: 0 !important;
+                        border: 0 !important;
+                      }
+                    </style>
+                    <table id="mainTable" class="table border-top border-bottom" style="width: 100%;">
+                      <thead>
+                        <tr>
+                          <th rowspan="2">Employee ID</th>
+                          <th rowspan="2">Name</th>
+                          <th colspan="2">AM</th>
+                          <th colspan="2">PM</th>
+                        </tr>
+                        <tr>
+                          <th>Time In</th>
+                          <th>Time Out</th>
+                          <th>Time In</th>
+                          <th>Time Out</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <%if(data.attendance){%>
+                          <% Object.values(data.attendance).forEach(attendance =>{%> 
+                              <tr>
+                                <td><%=attendance.emp_code%></td>
+                                <td><%=attendance.name%></td>
+                                <td><%=(!attendance.am_time_in && attendance.message === 'Office')? '--:--:--': (attendance.message.includes('T.O') || attendance.message.includes('O.B')) ? attendance.message : moment(attendance.am_time_in).format('LTS') %> </td>
+                                <td><%=(!attendance.am_time_out)? '--:--:--' : moment(attendance.am_time_out).format('LTS')%></td>
+                                <td><%=(!attendance.pm_time_in)? '--:--:--' : moment(attendance.pm_time_in).format('LTS')%></td>
+                                <td><%=(!attendance.pm_time_out)? '--:--:--' : moment(attendance.pm_time_out).format('LTS')%></td>
+                              </tr>
+                            <%})%>
+                        <%}%>
+                      </tbody>
+                      <tfoot>
+                      </tfoot>
+                    </table>
+                  </div>
+                </div>
+
+                <div class="card-footer text-center">
+                  <a href="/admin/attendance/all" class="uppercase">View All Attendance</a>
+                </div>
+
+              </div>
+
+            </section>
+
+
+            <section class="col-lg-5 connectedSortable ui-sortable">
+              <div class="row flex-column " style="gap:1.5em;">
+                <div class="col-md-12">
+                  <div class="card">
+                    <div class="card-content">
+                      <div class="card-body">
+                        <div class="media d-flex">
+                          <div class="media-body text-left">
+                            <h3 class="danger"><%=data.on_time%></h3>
+                            <span>On time</span>
+                          </div>
+                          <div class="align-self-center">
+                            <i class="icon-rocket danger font-large-2 float-right"></i>
+                          </div>
+                        </div>
                       </div>
-                      <div class="align-self-center">
-                        <i class="icon-rocket danger font-large-2 float-right"></i>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-12">
+                  <div class="card">
+                    <div class="card-content">
+                      <div class="card-body">
+                        <div class="media d-flex">
+                          <div class="media-body text-left">
+                            <h3 class="danger"><%=data.late%></h3>
+                            <span>Late</span>
+                          </div>
+                          <div class="align-self-center">
+                            <i class="icon-rocket danger font-large-2 float-right"></i>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-12">
+                  <div class="card">
+                    <div class="card-content">
+                      <div class="card-body">
+                        <div class="media d-flex">
+                          <div class="media-body text-left">
+                            <h3 class="danger"><%=data.in_office%></h3>
+                            <span>In office</span>
+                          </div>
+                          <div class="align-self-center">
+                            <i class="icon-rocket danger font-large-2 float-right"></i>
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
-            </div>
-            <div class="col-xl-3 col-sm-6 col-12">
-              <div class="card">
-                <div class="card-content">
-                  <div class="card-body">
-                    <div class="media d-flex">
-                      <div class="media-body text-left">
-                        <h3 class="success">156</h3>
-                        <span>New Clients</span>
-                      </div>
-                      <div class="align-self-center">
-                        <i class="icon-user success font-large-2 float-right"></i>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-        
-            <div class="col-xl-3 col-sm-6 col-12">
-              <div class="card">
-                <div class="card-content">
-                  <div class="card-body">
-                    <div class="media d-flex">
-                      <div class="media-body text-left">
-                        <h3 class="warning">64.89 %</h3>
-                        <span>Conversion Rate</span>
-                      </div>
-                      <div class="align-self-center">
-                        <i class="icon-pie-chart warning font-large-2 float-right"></i>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="col-xl-3 col-sm-6 col-12">
-              <div class="card">
-                <div class="card-content">
-                  <div class="card-body">
-                    <div class="media d-flex">
-                      <div class="media-body text-left">
-                        <h3 class="primary">423</h3>
-                        <span>Support Tickets</span>
-                      </div>
-                      <div class="align-self-center">
-                        <i class="icon-support primary font-large-2 float-right"></i>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+
+            </section>
+
           </div>
-        
-          <div class="row">
-            <div class="col-xl-3 col-sm-6 col-12">
-              <div class="card">
-                <div class="card-content">
-                  <div class="card-body">
-                    <div class="media d-flex">
-                      <div class="media-body text-left">
-                        <h3 class="primary">278</h3>
-                        <span>New Posts</span>
-                      </div>
-                      <div class="align-self-center">
-                        <i class="icon-book-open primary font-large-2 float-right"></i>
-                      </div>
-                    </div>
-                    <div class="progress mt-1 mb-0" style="height: 7px;">
-                      <div class="progress-bar bg-primary" role="progressbar" style="width: 80%" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="col-xl-3 col-sm-6 col-12">
-              <div class="card">
-                <div class="card-content">
-                  <div class="card-body">
-                    <div class="media d-flex">
-                      <div class="media-body text-left">
-                        <h3 class="warning">156</h3>
-                        <span>New Comments</span>
-                      </div>
-                      <div class="align-self-center">
-                        <i class="icon-bubbles warning font-large-2 float-right"></i>
-                      </div>
-                    </div>
-                    <div class="progress mt-1 mb-0" style="height: 7px;">
-                      <div class="progress-bar bg-warning" role="progressbar" style="width: 35%" aria-valuenow="35" aria-valuemin="0" aria-valuemax="100"></div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-        
-            <div class="col-xl-3 col-sm-6 col-12">
-              <div class="card">
-                <div class="card-content">
-                  <div class="card-body">
-                    <div class="media d-flex">
-                      <div class="media-body text-left">
-                        <h3 class="success">64.89 %</h3>
-                        <span>Bounce Rate</span>
-                      </div>
-                      <div class="align-self-center">
-                        <i class="icon-cup success font-large-2 float-right"></i>
-                      </div>
-                    </div>
-                    <div class="progress mt-1 mb-0" style="height: 7px;">
-                      <div class="progress-bar bg-success" role="progressbar" style="width: 60%" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="col-xl-3 col-sm-6 col-12">
-              <div class="card">
-                <div class="card-content">
-                  <div class="card-body">
-                    <div class="media d-flex">
-                      <div class="media-body text-left">
-                        <h3 class="danger">423</h3>
-                        <span>Total Visits</span>
-                      </div>
-                      <div class="align-self-center">
-                        <i class="icon-direction danger font-large-2 float-right"></i>
-                      </div>
-                    </div>
-                    <div class="progress mt-1 mb-0" style="height: 7px;">
-                      <div class="progress-bar bg-danger" role="progressbar" style="width: 40%" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"></div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>        
-        </div>
-      </section>
-      
-      <section id="stats-subtitle" class="d-flex flex-column" style="gap: 1.5em">
-    
-         <div class="row">
-         <div class="col-xl-6 col-md-12">
-            <div class="card overflow-hidden">
-               <div class="card-content">
-               <div class="card-body cleartfix">
-                  <div class="media align-items-stretch">
-                     <div class="align-self-center">
-                     <i class="icon-pencil primary font-large-2 mr-2"></i>
-                     </div>
-                     <div class="media-body">
-                        <a href="/admin/attendance/history/print"><h4>Print DTR</h4></a>
-                     <span>Total DTR</span>
-                     </div>
-                     <div class="align-self-center">
-                     <h1>18,000</h1>
-                     </div>
-                  </div>
-               </div>
-               </div>
-            </div>
-         </div>
-      
-         <div class="col-xl-6 col-md-12">
-            <div class="card">
-               <div class="card-content">
-               <div class="card-body cleartfix">
-                  <div class="media align-items-stretch">
-                     <div class="align-self-center">
-                     <i class="icon-speech warning font-large-2 mr-2"></i>
-                     </div>
-                     <div class="media-body">
-                     <a href="/admin/attendance"><h4>Print DTR Per Employee</h4></a>
-                     <span>Total DTR Per Employee</span>
-                     </div>
-                     <div class="align-self-center"> 
-                     <h1>84,695</h1>
-                     </div>
-                  </div>
-               </div>
-               </div>
-            </div>
-         </div>
-         <div class="col-xl-6 col-md-12">
-            <div class="card">
-               <div class="card-content">
-               <div class="card-body cleartfix">
-                  <div class="media align-items-stretch">
-                     <div class="align-self-center">
-                     <i class="icon-speech warning font-large-2 mr-2"></i>
-                     </div>
-                     <div class="media-body">
-                     <a href="/admin/attendance"><h4>All Daily Time Records</h4></a>
-                     <span>Total DTR Per Employee</span>
-                     </div>
-                     <div class="align-self-center"> 
-                     <h1>84,695</h1>
-                     </div>
-                  </div>
-               </div>
-               </div>
-            </div>
-         </div>
-         </div>
-         <div class="row">
-            <div class="col-xl-6 col-md-12">
-            <div class="card overflow-hidden">
-               <div class="card-content">
-                  <div class="card-body cleartfix">
-                  <div class="media align-items-stretch">
-                     <div class="align-self-center">
-                        <i class="icon-pencil primary font-large-2 mr-2"></i>
-                     </div>
-                     <div class="media-body">
-                        <a href="/admin/employees"><h4>View Employees</h4></a>
-                        <span>Total Employees</span>
-                     </div>
-                     <div class="align-self-center">
-                        <h1>18,000</h1>
-                     </div>
-                  </div>
-                  </div>
-               </div>
-            </div>
-            </div>
-      
-            <div class="col-xl-6 col-md-12">
-            <div class="card">
-               <div class="card-content">
-                  <div class="card-body cleartfix">
-                  <div class="media align-items-stretch">
-                     <div class="align-self-center">
-                        <i class="icon-speech warning font-large-2 mr-2"></i>
-                     </div>
-                     <div class="media-body">
-                        <a href="/admin/attendance"><h4>View Attendance</h4></a>
-                        <span>Total Attendance</span>
-                     </div>
-                     <div class="align-self-center"> 
-                        <h1>84,695</h1>
-                     </div>
-                  </div>
-                  </div>
-               </div>
-            </div>
-            </div>
-         </div>
-    </section>
-    </div>
-    <!-- <div class="d-flex gap-4" > 
+          <!-- <div class="d-flex gap-4" > 
         <div class="d-flex justify-content-between flex-fill rounded-1" style="background: #F5F5F5; border: solid #dddddd 1px; padding: 15px;">
              <div class="d-flex flex-column justify-content-around">
                 <p>Employees</p>
@@ -385,23 +275,23 @@
             </div>
         </div>
     </div> -->
-    
-</div>
+
+      </div>
 
 
 
-</main>
+  </main>
 
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
-<script type="text/javascript" src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js" integrity="sha384-mQ93GR66B00ZXjt0YO5KlohRA5SY2XofN4zfuZxLkoj1gXtW8ANNCe9d5Y3eG5eD" crossorigin="anonymous"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+  <script type="text/javascript" src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
+    integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"
+    integrity="sha384-mQ93GR66B00ZXjt0YO5KlohRA5SY2XofN4zfuZxLkoj1gXtW8ANNCe9d5Y3eG5eD"
+    crossorigin="anonymous"></script>
+  <script type="text/javascript" src="/script/d-script.js"></script>
 
-<script>
-$(document).ready(function () {
-$('#payroll').DataTable();
-});
-</script>
 
-<%-include('partials/Footer')%>
+  <%-include('partials/Footer')%>

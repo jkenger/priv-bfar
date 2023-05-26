@@ -18,69 +18,7 @@
         },
     })%>
 
-    <div class="d-flex gap-4"> 
-        <div class="d-flex justify-content-between flex-fill rounded-1" style="background: #F5F5F5; border: solid #dddddd 1px; padding: 15px;">
-             <div class="d-flex flex-column justify-content-around">
-                <p>Employees</p>
-                <p style="font-size:1.5rem;"><b><%=(data.summaryData[0]) ? data.summaryData[0].total_employees : 0%></b></p>
-             </div>
-             <div class="d-flex">
-                <p></p>
-                <p class="mt-auto p-2 bd-highlight">Totals</p>
-             </div>
-        </div>
-        <div class="d-flex justify-content-between flex-fill rounded-1" style="background: #F5F5F5; border: solid #dddddd 1px; padding: 15px;">
-             <div class="d-flex flex-column justify-content-around">
-                <p>Attendance</p>
-                <p style="font-size:1.5rem;"><b><%=(data.summaryData[0]) ? data.summaryData[0].total_attendance : 0%>d</b></p>
-             </div>
-             <div class="d-flex">
-                <p></p>
-                <p class="mt-auto p-2 bd-highlight">Totals</p>
-             </div>
-        </div>
-        
-        <div class="d-flex justify-content-between flex-fill rounded-1" style="background: #F5F5F5; border: solid #dddddd 1px; padding: 15px;">
-             <div class="d-flex flex-column justify-content-around">
-                <p>Absent</p>
-                <p style="font-size:1.5rem;"><b><%=(data.summaryData[0]) ? data.summaryData[0].total_absent : 0%>d</b></p>
-             </div>
-             <div class="d-flex">
-                <p></p>
-                <p class="mt-auto p-2 bd-highlight">Totals</p>
-             </div>
-        </div>
-        <div class="d-flex justify-content-between flex-fill rounded-1" style="background: #F5F5F5; border: solid #dddddd 1px; padding: 15px;">
-            <div class="d-flex flex-column justify-content-around">
-               <p>Late</p>
-               <p style="font-size:1.5rem;"><b><%=(data.summaryData[0]) ? data.summaryData[0].total_late : 0%>m</b></p>
-            </div>
-            <div class="d-flex">
-               <p></p>
-               <p class="mt-auto p-2 bd-highlight">Totals</p>
-            </div>
-        </div>
-        <div class="d-flex justify-content-between flex-fill rounded-1" style="background: #F5F5F5; border: solid #dddddd 1px; padding: 15px;">
-            <div class="d-flex flex-column justify-content-around">
-               <p>Undertime</p>
-               <p style="font-size:1.5rem;"><b><%=(data.summaryData[0]) ? data.summaryData[0].total_undertime : 0%>m</b></p>
-            </div>
-            <div class="d-flex">
-               <p></p>
-               <p class="mt-auto p-2 bd-highlight">Totals</p>
-            </div>
-        </div>
-        <div class="d-flex justify-content-between flex-fill rounded-1" style="background: #F5F5F5; border: solid #dddddd 1px; padding: 15px;">
-            <div class="d-flex flex-column justify-content-around">
-               <p>Calendar Days </p>
-               <p style="font-size:1.5rem;"><b><%=(data.summaryData[0]) ? data.summaryData[0].calendarDays : 0%>d</b></p>
-            </div>
-            <div class="d-flex">
-               <p></p>
-               <p class="mt-auto p-2 bd-highlight">Totals</p>
-            </div>
-        </div>
-    </div>
+    <%-include('partials/infoBox.ejs', {data})%>
     <div class="d-flex filterContainer rounded-1 gap-3">
         <form action="">
             <div class="input-group">
@@ -110,39 +48,41 @@
             }
         },
     })%>
-    <div class="d-flex  table-container"> 
-        
-        <table id="mainTable" class="table border-top border-bottom" style="width: 100%;">
-            <thead>
-                <tr>
-                    <th>Employee ID</th>
-                    <th>Employee</th>
-                    <th>Calendar Days (days)</th>
-                    <th data-sort='YYYYMMDD'>Attendance (days)</th>
-                    <th data-sort='YYYYMMDD'>Absents (days)</th>
-                    <th>Late (minutes)</th>
-                    <th>Undertime (minutes)</th>
-                </tr>
-            </thead>
-            <tbody>
-                <%if(data.summaryData[0]){%>
-                    <% Object.values(data.summaryData[0].attendances).forEach(attendance =>{%> 
-                        <tr>
-                            <td><%=attendance._id%></td>
-                            <td><%=attendance.name%></td>
-                            <td><%=(data.summaryData[0]) ? data.summaryData[0].calendarDays : 0%></td>
-                            <td><%=(!attendance.total_attendance) ? 0 : attendance.total_attendance %> </td>
-                            <td><%=(!attendance.total_absent) ? 0 : attendance.total_absent %></td>
-                            <td><%=(!attendance.total_late) ? 0 : attendance.total_late %></td>
-                            <td><%=(!attendance.total_undertime) ? 0 : attendance.total_undertime %></td>
-                        </tr>
-                        <%}); %>
-                <%}%>
-                
-            </tbody>
-            <tfoot>
-            </tfoot>
-        </table>
+    <div>
+        <div class="d-flex  table-container table-responsive"> 
+            
+            <table id="mainTable" class="table border-top border-bottom" style="width: 100%;">
+                <thead>
+                    <tr>
+                        <th>Employee ID</th>
+                        <th>Employee</th>
+                        <th>Calendar Days (days)</th>
+                        <th data-sort='YYYYMMDD'>Attendance (days)</th>
+                        <th data-sort='YYYYMMDD'>Absents (days)</th>
+                        <th>Late (minutes)</th>
+                        <th>Undertime (minutes)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <%if(data.summaryData[0]){%>
+                        <% Object.values(data.summaryData[0].attendances).forEach(attendance =>{%> 
+                            <tr>
+                                <td><%=attendance._id%></td>
+                                <td><%=attendance.name%></td>
+                                <td><%=(data.summaryData[0]) ? data.summaryData[0].calendarDays : 0%></td>
+                                <td><%=(!attendance.total_attendance) ? 0 : attendance.total_attendance %> </td>
+                                <td><%=(!attendance.total_absent) ? 0 : attendance.total_absent %></td>
+                                <td><%=(!attendance.total_late) ? 0 : attendance.total_late %></td>
+                                <td><%=(!attendance.total_undertime) ? 0 : attendance.total_undertime %></td>
+                            </tr>
+                            <%}); %>
+                    <%}%>
+                    
+                </tbody>
+                <tfoot>
+                </tfoot>
+            </table>
+        </div>
     </div>
 </div>
 

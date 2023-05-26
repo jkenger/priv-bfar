@@ -6,7 +6,6 @@
     padding: 0;
     color: #67668A;
 }
-
 body{
     font-family: 'Barlow', sans-serif !important;
     background-color: #FFFEFE;
@@ -40,6 +39,9 @@ p{
 p.error{
     margin: 0;
 }
+.card {
+    background-color: #f5f5f5;
+  }
 
 /* modal */
 .modalSpan{
@@ -208,8 +210,6 @@ a.reject{
     background-color: #F8F8F8;
     border: 1px solid #DDDDDD;
     padding: 0;
-    width: 40%;
-    display: flex;
 }
 .sideContainer div{
     width: 100%;
@@ -277,5 +277,16 @@ input[type='radio']{
 }
 input[type='radio']:checked{
     color: #656488;
+}
+
+@media screen and (max-width: 1920px){
+    .card-con{
+       row-gap: 1.5em;
+    }
+ }
+@media screen and (max-width: 991px){
+    .card-con{
+        gap:1.5em;
+    }
 }
 

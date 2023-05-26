@@ -80,7 +80,7 @@ route.get('/travelpass', checkToken, checkRoles, adminView.travelPassView)
 route.post('/api/upload-image', upload.single('image'), admin.uploadImage)
 
 // dashboard
-route.get('/api/employees_count', admin.employees_count_get)
+route.get('/api/dashboard', admin.dashboard)
 
 // employee api
 route.get('/api/employees',  admin.readEmployees)

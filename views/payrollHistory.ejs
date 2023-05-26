@@ -19,28 +19,57 @@
       } 
     },
   })%>
-
-    <div class="d-flex gap-4 "> 
-      <div class="d-flex justify-content-between flex-fill rounded-1" style="background: #F5F5F5; border: solid #dddddd 1px; padding: 15px;">
-        <div class="d-flex flex-column justify-content-around">
-           <p>Payroll</p>
-           <p style="font-size:1.5rem;"><b><%=(data.result) ? data.result.length : 0 %></b></p>
+  
+    <div> 
+      <section id="minimal-statistics">
+        <div class="row">
+          <div class="col-12">
+            <h4 class="text-uppercase">Payroll Periods</h4>
+            <p>Payroll Summary and Redirects</p>
+          </div>
         </div>
-        <div class="d-flex">
-           <p></p>
-           <p class="mt-auto p-2 bd-highlight">Totals</p>
+        <div class="d-flex flex-column">
+          <div class="row card-con">
+            <div class="col-xl-6 col-lg-6">
+              <div class="card card-stats mb-xl-0">
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col">
+                      <h5 class="card-title text-uppercase mb-0">Total Payroll</h5>
+                      <span class="h2 font-weight-bold mb-0"><%=(data.result) ? data.result.length : 0 %></span>
+                    </div>
+                    <div class="col-auto">
+    
+                    </div>
+                    <p class="mt-3 mb-0 text-sm">
+                      <a href="/admin/payroll/groups"><span class="text-nowrap">View Details</span></a>
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-xl-6 col-lg-6">
+              <div class="card card-stats mb-xl-0">
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col">
+                      <h5 class="card-title text-uppercase text-muted mb-0">Payroll Groups</h5>
+                      <span class="h2 font-weight-bold mb-0"><%=(group.result) ? group.result.length : 0 %></span>
+                    </div>
+                    <div class="col-auto">
+    
+                    </div>
+                  </div>
+                  <p class="mt-3 mb-0 text-sm">
+                    <a href="/admin/payroll/groups"><span class="text-nowrap">View Details</span></a>
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+    
         </div>
-   </div>
-   <div class="d-flex justify-content-between flex-fill rounded-1" style="background: #F5F5F5; border: solid #dddddd 1px; padding: 15px;">
-        <div class="d-flex flex-column justify-content-around">
-           <p>Payroll Groups</p>
-           <p style="font-size:1.5rem;"><b><%=(group.result) ? group.result.length : 0 %></b></p>
-        </div>
-        <div class="d-flex">
-           <p></p>
-           <p class="mt-auto p-2 bd-highlight">Totals</p>
-        </div>
-   </div>
+      </section>
     </div>
     
     <%-include('partials/Modal') %> 
@@ -108,8 +137,9 @@
         }
       },
     })%>
-    <div class="d-flex table-container"> 
-    
+    <div>
+    <div class="d-flex table-container table-responsive"> 
+      
         <table id="mainTable" class="table border-top border-bottom" style="width: 100%;">
             <thead>
                 <tr>
@@ -125,7 +155,7 @@
               <%if(data.result){%>
                 <% Object.values(data.result).forEach(group =>{%> 
                   <tr>
-                      <td><%=moment(group.date_from).format('MMMM')%> <%=moment(new Date(group.date_from)).local().date()%>-<%=(moment(group.date_to).format('MMMM') === moment(group.date_from).format('MMMM')) ? moment(new Date(group.date_to)).local().date() : moment(group.date_to).format('MMMM') + " " +  moment(new Date(group.date_to).local()).date()%> <%=moment(group.date_to).year()%></td>
+                      <td><%=moment(group.date_from).format('MMMM')%> <%=moment(new Date(group.date_from)).date()%>-<%=(moment(group.date_to).format('MMMM') === moment(group.date_from).format('MMMM')) ? moment(new Date(group.date_to)).date() : moment(group.date_to).format('MMMM') + " " +  moment(new Date(group.date_to)).date()%> <%=moment(group.date_to).year()%></td>
                       <td><%=group.employees.length%></td>
                       <td><%=group.payroll_group.fund_cluster%></td>
                       <td><%=group.payroll_group.project_name%></td>
@@ -141,6 +171,7 @@
             </tfoot>
         </table>
     </div>
+  </div>
 </div>
 
 

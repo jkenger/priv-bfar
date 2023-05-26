@@ -2,13 +2,71 @@
 <style>
     .btn-primary{ background: #67668A;}
     input {text-align:center; }
-    .form-control, .btn {border-radius: 0px;font-size: 14px; border-left: 0px; border-right: 0px;}
+    .form-control, .btn {border-radius: 0px;font-size: 14px;}
     
     .btn{ padding: 15px 0px 15px 0px;  border-color: #67668A; height: 50px;}
     .btn-primary:hover{ background: #424158;}
     .btn-primary:active{ background: #424158;}
+    .container{background-color: #FFFEFE !important; border: 0;}
 </style>
 <div class="d-flex p-2 justify-content-center align-items-center" style="height: 100vh;">
+    <div class="container py-5 h-100">
+      <div class="row d-flex justify-content-center align-items-center h-100">
+        <div class="col-xl-10">
+          <div class="card rounded-3 text-black">
+            <div class="row g-0">
+              <div class="col-lg-6">
+                <div class="card-body p-md-5 mx-md-4">
+  
+                  <div class="text-center">
+                    <div class="logo">
+                        <img src="/img/bfar-logo.png"
+                          style="width: 185px;" alt="logo">
+                        <img src="/img/niftc.png"
+                            style="width: 185px;" alt="logo">
+                    </div>
+                    <h4 class="mt-4 mb-5 pb-1">BFAR-MS PORTAL</h4>
+                  </div>
+  
+                  <form>
+                    <p>Please login to your account</p>
+  
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" name='email' id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Email or Username">
+                <p class="text-center text-danger email-error error"></p>
+                        <label for="floatingInput">Email address</label>
+                    </div>
+  
+                    <div class="form-floating mb-3">
+                        <input type="password" class="form-control" name='password' id="exampleInputPassword1" placeholder="Password">
+                        <p class="text-center text-danger password-error error"></p>
+                        <label for="floatingPassword">Password</label>
+                      </div>
+  
+                    <div class="text-center pt-1 mb-5 pb-1 d-flex flex-column">
+                        <button type="submit" id="admin" class="btn btn-primary">SIGN IN</button>
+
+                      <a class="text-muted" href="#!">Forgot password?</a>
+                    </div>
+  
+  
+                  </form>
+  
+                </div>
+              </div>
+              <div class="col-lg-6 d-flex align-items-center" style="background-color:#67668A;">
+                <div class="text-white px-3 py-4 p-md-5 mx-md-4">
+                  <h4 class="mb-4">BFAR-NIFTC Tanay</h4>
+                  <p class="small mb-0 text-white">To conserve, protect, and practice sustainable development of the country's fisheries and aquatic resources; alleviate poverty by providing supplementary livelihood to the fisherfolk; improve aquaculture productivity within ecological limits; and utilize optimally the offshore and deep sea resources.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>
+<!-- 
     
     <div class="container-sm rounded 1 shadow" style="max-width: 500px; background: #F5F5F5; border: solid #efeff3 1px;padding: 60px 0px 60px 0px;">
 
@@ -46,7 +104,7 @@
 
     </div>
 
-</div>
+</div> -->
 
 <%-include('partials/Footer')%>
 <script src="/scripts/login.js"></script>

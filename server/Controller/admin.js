@@ -56,11 +56,28 @@ module.exports = {
         }
     },
     // get total employee count
-    employees_count_get: async (req, res) => {
+    dashboard: async (req, res) => {
         try {
-            const result = await Employees.find().count()
-            if (!result.length) res.status(500).send({err: 'Failure to find any data'})
-            else res.status(200).send({ result })
+            let data = {}
+            const totalEmployees = await Employees.countDocuments()
+            // get all attendance for today
+            const today = new Date().toLocaleDateString()
+            const attendance = await attendances.find({ date_string: today})
+
+            const onTime = attendance.filter((item) => (item.pm_time_in < item.pm_office_in || item.am_time_in < item.am_office_in))
+            const late = attendance.filter((item) => (item.pm_time_in > item.pm_office_in || item.am_time_in > item.am_office_in))
+            const inOffice = attendance.filter((item) => (item.pm_time_in || item.am_time_in))
+
+            console.log('onTime', onTime)
+            console.log('late', late)
+            console.log('inoffice', inOffice)
+
+            data.attendance = attendance
+            data.total_employees = totalEmployees
+            data.on_time = onTime.length
+            data.late = late.length
+            data.in_office = inOffice.length
+            res.status(200).send(data)
         } catch (e) { res.status(500).send(e) }
     },
     // employee controllers
@@ -481,11 +498,13 @@ module.exports = {
     readAttendancePerEmployee: async (req, res) => {   
         const fromDate = new Date(req.query.from)
         const toDate = new Date(req.query.to)
+        let summary = {}
         console.log(fromDate, toDate)
         const attendancePerEmployee = await attendances.getAttendancePerEmployeeData(fromDate, toDate)
+        summary.totalDTRPerEmployee = attendancePerEmployee.length
         // const selectedRecords = await attendances.getSelectedAttendanceData()
         // console.log(selectedRecords)
-        res.status(200).send({ result: attendancePerEmployee})
+        res.status(200).send({ result: attendancePerEmployee, summaryData: summary})
     },
     readAttendanceHistory: async (req, res) => { 
         try{
@@ -495,7 +514,14 @@ module.exports = {
             else {filter = {}}
             AttendanceHistory.find(filter)
                 .then(result=>{
-                    res.status(200).send({result: result})
+                    // get total DTR
+                    let summary = {}
+                    let totalDTR = 0 
+                    totalDTR = result.length
+                    summary.total_dtr = totalDTR
+                    //
+                    
+                    res.status(200).send({result: result, summaryData: summary})
                 })
                 .catch(error=>console.log(error));
             
@@ -539,9 +565,11 @@ module.exports = {
                 console.log('FROM-TO', fromDate, toDate)
                 const authorization = req.query.auth
                 console.log('AUTHORIZED?', id, authorization)
+
                 const projectedData = await Payroll.getPayrollData(fromDate, toDate, payroll_group ,id)
                 const totalData = await Payroll.getTotalData(fromDate, toDate,payroll_group ,id)
-                console.log(totalData)
+                console.log('pd', projectedData)
+                console.log('td', totalData)
                 
                 res.status(200).send({result: projectedData, summaryData: totalData})
             } catch (e) {
@@ -606,7 +634,7 @@ module.exports = {
             const id = req.query.id
             let filter = {}
             if(id) filter = {'_id': id} 
-            else {filter = {}}
+            else {filter = {}}  
             PayrollHistory.find(filter)
                 .then(result=>{
                     res.status(200).send({result: result})

@@ -103,6 +103,10 @@ Attendance.post('findOneAndUpdate', async function(){
     }
     //set undertime
     if(!(doc.am_time_in && doc.am_time_out)){
+        console.log('!am_time_in')
+        console.log(doc)
+        console.log(doc.pm_time_out, doc.pm_office_out)
+        console.log(doc.pm_time_out< doc.pm_office_out)
         if(doc.pm_time_out < doc.pm_office_out){
             await this.model.updateOne(this.getQuery(), {$set: {isUndertime: true}});
             console.log('true 23')
@@ -270,7 +274,7 @@ Attendance.statics.getAttendancePerEmployeeData = async function(fromDate, toDat
                 {$cond: {
                     if: { $lt: [{ $dateDiff: { startDate: "$pm.office_in", endDate: "$pm.time_in", unit: "minute" } }, 0] },
                     then: 0,
-                    else: { $dateDiff: { startDate: "$pm.office_in", endDate: "$pm.office_in", unit: "minute" } }
+                    else: { $dateDiff: { startDate: "$pm.office_in", endDate: "$pm.time_in", unit: "minute" } }
                 }}]}
             }},
             no_of_undertime: {$cond: {
@@ -278,14 +282,14 @@ Attendance.statics.getAttendancePerEmployeeData = async function(fromDate, toDat
                 then: 0,
                 else: {
                     $sum: [{$cond:{
-                        if: { $lt: [{ $dateDiff: { startDate: "$am.am_office_out", endDate: "$am.am_time_out", unit: "minute" } }, 0] },
+                        if: { $lt: [{ $dateDiff: { startDate: "$am_office_out", endDate: "$am.am_time_out", unit: "minute" } }, 0] },
                         then: 0,
-                        else: { $dateDiff: { startDate: "$am.am_office_out", endDate: "$am.am_time_out", unit: "minute" } }
+                        else: { $dateDiff: { startDate: "$am_office_out", endDate: "$am.am_time_out", unit: "minute" } }
                     }},
                     {$cond: {
-                        if: { $lt: [{ $dateDiff: { startDate: "$pm.pm_office_out", endDate: "$pm.pm_time_out", unit: "minute" } }, 0] },
+                        if: { $lt: [{ $dateDiff: { startDate: "$pm.office_out", endDate: "$pm.time_out", unit: "minute" } }, 0] },
                         then: 0,
-                        else: { $dateDiff: { startDate:  "$pm.pm_office_out", endDate: "$pm.pm_time_out", unit: "minute" } }
+                        else: { $dateDiff: { startDate:  "$pm.office_out", endDate: "$pm.time_out", unit: "minute" } }
                     }}]}
                 }}
         }},
@@ -389,14 +393,14 @@ Attendance.statics.getAttendanceSummary = async function(fromDate, toDate, id){
                 if: {$eq: ['$isLate', true]},
                 then: {
                     $sum: [{$cond:{
-                        if: { $lt: [{ $dateDiff: { startDate: "$am_office_out", endDate: "$am_time_out", unit: "minute" } }, 0] },
+                        if: { $lt: [{ $dateDiff: { startDate: "$am_office_in", endDate: "$am_time_in", unit: "minute" } }, 0] },
                         then: 0,
-                        else: { $dateDiff: { startDate: "$am_office_out", endDate: "$am_time_out", unit: "minute" } }
+                        else: { $dateDiff: { startDate: "$am_office_in", endDate: "$am_time_in", unit: "minute" } }
                     }},
                     {$cond: {
-                        if: { $lt: [{ $dateDiff: { startDate: "$pm_office_out", endDate: "$pm_time_out", unit: "minute" } }, 0] },
+                        if: { $lt: [{ $dateDiff: { startDate: "$pm_office_in", endDate: "$pm_time_in", unit: "minute" } }, 0] },
                         then: 0,
-                        else: { $dateDiff: { startDate:  "$pm_office_out", endDate: "$pm_time_out", unit: "minute" } }
+                        else: { $dateDiff: { startDate:  "$pm_office_in", endDate: "$pm_time_in", unit: "minute" } }
                     }}]},
                 else: {$sum: 0}
             }},
@@ -411,7 +415,7 @@ Attendance.statics.getAttendanceSummary = async function(fromDate, toDate, id){
                     {$cond: {
                         if: { $lt: [{ $dateDiff: { startDate: "$pm_time_out", endDate: "$pm_office_out", unit: "minute" } }, 0] },
                         then: 0,
-                        else: { $dateDiff: { startDate: "$pm_time_out   ", endDate: "$pm_office_out", unit: "minute" } }
+                        else: { $dateDiff: { startDate: "$pm_time_out", endDate: "$pm_office_out", unit: "minute" } }
                     }}]},
                 else: {$sum: 0}
             }},
