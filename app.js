@@ -8,6 +8,7 @@ const cors = require('cors')
 const adminRoute = require('./server/Routes/admin')
 const employeeRoute = require('./server/Routes/employee');
 const publicRoute = require('./server/Routes/public')
+const services = require('./server/Controller/services/services')
 var path = require('path')
 require('dotenv').config()
 
@@ -24,6 +25,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/assets', express.static(path.join(__dirname, '/node_modules/onscan.js/')))
 app.use('/assets', express.static(path.join(__dirname, '/node_modules/moment.min.js/')))
 app.use('/scripts', express.static(path.join(__dirname, '/public/script/')))
+app.use('/', express.static(path.join(__dirname, '/server/Controller/services/')))
 console.log('DIRNAME', __dirname)
 
 // CONNECTION

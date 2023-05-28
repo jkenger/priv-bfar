@@ -95,11 +95,15 @@ const checkUser = (req, res, next) => {
                 else if(role === 'employee'){
                     data = await EmployeeUser.findById(decordedToken.id)
                 }
-                res.locals.user = data
-                const result = await Employee.findOne({'employee_details.designation.id': res.locals.user.emp_code})
-                res.locals.employee = result
-                console.log('/auth.checkUser:', res.locals.user)
-                console.log('/auth.checkUser.employeeDate:', res.locals.employee)
+                console.log(data)
+                if(data !== null){ 
+                    res.locals.user = data
+                    const result = await Employee.findOne({'employee_details.designation.id': res.locals.user.emp_code})
+                    res.locals.employee = result
+                    console.log('/auth.checkUser:', res.locals.user)
+                    console.log('/auth.checkUser.employeeDate:', res.locals.employee)
+                } 
+                
                 next()
             }
         })

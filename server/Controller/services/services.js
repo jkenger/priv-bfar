@@ -1,6 +1,7 @@
 const fetch = require('node-fetch')
 const fetchData = async (url) => {
-    const result = await fetch(`http://localhost:3000/${url}`, {
+    console.log(url)
+    const result = await fetch(`https://bfarms.onrender.com/${url}`, {
         headers: { 'Content-Type': 'application/json' },
         method: 'GET'
     })

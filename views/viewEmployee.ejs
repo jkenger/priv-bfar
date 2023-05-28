@@ -200,9 +200,9 @@
                                 <p class="mb-0">Payroll Group</p>
                                 </div>
                                 <div class="col-sm-9">
-                                <p class=" mb-0"><%=data.result.employee_details.employment_information.payroll_type.fund_cluster%></p>
-                                <p class=" mb-0"><%=data.result.employee_details.employment_information.payroll_type.project_name%></p>
-                                <p class=" mb-0"><%=data.result.employee_details.employment_information.payroll_type.program_name%></p>
+                                <p class=" mb-0"><%=(data.result.employee_details.employment_information.payroll_type) ? data.result.employee_details.employment_information.payroll_type.fund_cluster : ''%></p>
+                                <p class=" mb-0"><%=(data.result.employee_details.employment_information.payroll_type) ? data.result.employee_details.employment_information.payroll_type.project_name : ''%></p>
+                                <p class=" mb-0"><%=(data.result.employee_details.employment_information.payroll_type) ? data.result.employee_details.employment_information.payroll_type.program_name : ''%></p>
                                 </div>
                             </div>
                             <hr>
