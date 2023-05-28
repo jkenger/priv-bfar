@@ -1,7 +1,7 @@
 const { errorHandler, fetchData } = require('./services/services')
 const { getFormattedDate } = require('./services/date')
 const Employees = require('../Model/employeee')
-const attendances = require('../Model/attendance')
+const attendances = require('../Model/Attendance')
 const Holiday = require('../Model/holiday')
 const Payroll = require('../Model/payroll')
 const PayrollHistory = require('../Model/payrollHistory')
