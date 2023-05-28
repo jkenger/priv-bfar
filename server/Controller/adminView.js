@@ -56,8 +56,10 @@ module.exports = {
             const id = req.params.id
             if(!id) throw Error('ID not found from the client')
             const data = await fetchData(`admin/api/employees/${id}`)
+    
             res.status(200).render('viewEmployee', { 
                 data,
+                
                 url: req.baseUrl + req.path,
                 moment: moment
             })
@@ -71,9 +73,11 @@ module.exports = {
             console.log(id)
             if(!id) throw Error('ID not found from the client')
             const data = await fetchData(`admin/api/employees/${id}`)
+            const group = await fetchData('admin/api/payrolltypes')
             console.log(data)
             res.status(200).render('editEmployee', {
                 data,
+                group,
                 url: req.baseUrl + req.path,
                 moment: moment
             })
@@ -268,9 +272,6 @@ module.exports = {
             let selectedGroup = await fetchData(`admin/api/payrolltypes/${pgroup}`)
             selectedGroup = (selectedGroup) ? selectedGroup : []
             if(!req.query.from || !req.query.to) { fromDate = ''; toDate = ''} else {fromDate = req.query.from; toDate = req.query.to}
-            console.log('VIEW/ EMPLOYEE DATA', data)
-            console.log('VIEW/ PAYROLL GROUP', group)
-            console.log('VIEW/ SELECTED PAYROLL GROUP', selectedGroup)
 
             res.status(200).render('payroll', { 
                 data,
@@ -328,14 +329,9 @@ module.exports = {
                 pgroup = ''
             }
             
-            console.log('VIEW/ FROM', fromDate)
-            console.log('VIEW/ TO', toDate)
-            console.log('VIEW/ pgroup', pgroup)
             if(!req.query.from || !req.query.to) fromDate = new Date(moment(new Date(), 'YYYY-MM-DD').subtract(15, 'days')).toISOString(), toDate = new Date().toISOString()
             else fromDate = new Date(req.query.from).toISOString(), toDate = new Date(req.query.to + 'T23:59:59.999Z').toISOString()
-            console.log('VIEW/ pgroup', pgroup)
-            console.log('fr', fromDate)
-            console.log('to', toDate)
+
             const data = await fetchData(`admin/api/payrolls?from=${fromDate}&to=${toDate}&p_group=${pgroup}`)
             const group = await fetchData(`admin/api/payrolltypes`)
             const selectedGroup = await fetchData(`admin/api/payrolltypes/${pgroup}`)
@@ -463,7 +459,7 @@ module.exports = {
             res.status(200).render('travelPass', {
                 data, 
                 url: req.baseUrl + req.path, 
-                moment: moment
+                moment: moment,
             })
             console.log(data)
         }catch(err){
@@ -476,7 +472,7 @@ module.exports = {
             res.status(200).render('leaveTypes', {
                 data, 
                 url: req.baseUrl + req.path, 
-                moment: moment
+                moment: moment,
             })
             console.log(data)
         }catch(err){
@@ -485,13 +481,25 @@ module.exports = {
     },
     allLeaveView: async (req, res) =>    {
         try{
-            const data = await fetchData('admin/api/leave')
+            const id = req.query.id
+            const auth = req.cookies['authorization']
+
+
+            let fromDate = new Date().toISOString()
+            let toDate = new Date().toISOString()
+                
+            if(!req.query.from || !req.query.to) fromDate = new Date(moment(new Date(), 'MM-DD-YYYY').subtract(15, 'days')).toISOString(), toDate = new Date().toISOString()
+            else fromDate = new Date(req.query.from).toISOString(), toDate = new Date(req.query.to + 'T23:59:59.999Z').toISOString()
+            
+            const data = await fetchData(`admin/api/leave/${id}?from=${fromDate}&to=${toDate}&auth=${auth}`)
+            console.log('empdata', data)
             res.status(200).render('allLeave', {
                 data, 
                 url: req.baseUrl + req.path, 
-                moment: moment
+                moment: moment,
+                query: {from: fromDate, to: toDate}
             })
-            console.log(data)
+            console.log('leaves', data)
         }catch(err){
             res.status(500).send(err)
         }

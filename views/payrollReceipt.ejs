@@ -83,9 +83,9 @@
                             <td style="text-align: center;"><%=user.salary%></td>
                             <td style="text-align: center;"><%=user.attendance.whalf_days%></td>
                             <td style="text-align: center;"><%=user.salaries.gross_salary%></td>
-                            <td style="text-align: center;"><%=user.deduction.tax_deduction%></td>
-                            <td style="text-align: center;"></td>
-                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;"><%=(user.deduction.tax_deduction.tax_1) ? user.deduction.tax_deduction.tax_1 : '' %></td>
+                            <td style="text-align: center;"><%=(user.deduction.tax_deduction.tax_2) ? user.deduction.tax_deduction.tax_2 : ''%></td>
+                            <td style="text-align: center;"><%=(user.deduction.tax_deduction.tax_3) ? user.deduction.tax_deduction.tax_3 : ''%></td>
                             <td style="text-align: center;"></td>
                             <td style="text-align: center;"></td>
                             <td style="text-align: center;"></td>

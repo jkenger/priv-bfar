@@ -4,7 +4,7 @@
 <main class="d-flex flex-nowrap" style=" height: 100vh; overflow: auto; align-self: center;">
 
     <%-include('partials/Aside')%> 
-<div class="d-flex flex-column flex-fill" style="border-left: 1px solid #dddddd; padding: 1.5em 2em 1.5em 2em">
+<div class="d-flex flex-column flex-fill" style="border-left: 1px solid #dddddd; padding: 1.5em 2em 1.5em 2em;gap:1.5em; overflow: auto;">
     <div class="d-flex justify-content-between"> 
             <div class="d-flex justify-content-center align-items-center rounded-1"> 
               <a href="#" class="nav-link" style="padding-right: 10px !important;">
@@ -27,6 +27,7 @@
             </div>
     </div>
     <%-include('partials/Modal') %> 
+    
     <form class="empFormEl">
         <div class="d-flex filterContainer rounded-1 gap-3 mt-0">
             <h1 class="mb-0">Edit Information</h1>
@@ -184,6 +185,16 @@
                             <select class="custom-select" name="employment_status" id="empStatusSelect">
                                 <option value="active" <%=(data.result.employee_details.employment_information.employment_status) === 'active' ? 'Selected' : ''%>>Active</option>
                                 <option value="archive" <%=(data.result.employee_details.employment_information.employment_status) === 'archive' ? 'Selected' : ''%>>Archive</option>
+                            </select>
+                        </div>
+                        <div class="inputDiv1__input">
+                            <label for="employmentstatus"> Payroll Group</label>
+                            <select class="custom-select" name="payroll_type" id="payrollTypeSelect">
+                                <%if(group.result){%>
+                                  <% Object.values(group.result).forEach(group =>{%> 
+                                      <option value="<%=group._id%>" <%=(data.result.employee_details.employment_information.payroll_type === group._id) ? 'selected': ''%>><%=group.fund_cluster%> - <%=group.project_name%> <%=(group.program_name)? + "- " + group.program_name: ''%></option>
+                                  <%}); %>
+                                <%}%>
                             </select>
                         </div>
                         <div class="inputDiv1__input">

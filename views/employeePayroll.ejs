@@ -1,83 +1,80 @@
+
+
+
 <%-include('partials/Header')%>
 <link rel="stylesheet" href="/styles/dataTable.css">
-<main class="d-flex flex-nowrap" style=" height: 100vh; overflow: hidden; align-self: center;">
+<main class="d-flex flex-nowrap" style="align-self: center;">
 
     <%-include('partials/employeeAside')%> 
-<div class="d-flex flex-column flex-fill" style="border-left: 1px solid #dddddd; padding: 1.5em 2em 1.5em 2em">
-    <div class="d-flex justify-content-between"> 
-            <div class="d-flex justify-content-center align-items-center rounded-1"> 
-              <a href="#" class="nav-link" style="padding-right: 10px !important;">
-                  Home 
-              </a>
-              <p style="padding-right: 10px !important; margin: 0;"> > </p>
-              <a href="#" class="nav-link ">
-                  <b> Payroll </b>
-              </a>
+<div class="d-flex flex-column flex-fill" style="border-left: 1px solid #dddddd; padding: 1.5em 2em 1.5em 2em; gap:1.5em; overflow: auto;">
+    <%-include('partials/navBar.ejs', {data:{
+            payroll: {
+                url: `/employee/payroll/${(locals.employee) ? locals.employee.employee_details.designation.id : 0}`,
+                name: 'Payroll'
+            },
+        },
+    })%>
+    <div>
+        <section id="minimal-statistics">
+            <div class="row">
+                <div class="col-12">
+                <h4 class="text-uppercase">Manage Payroll</h4>
+                <p>Attendance Summary, Monitoring, and Redirects</p>
+                </div>
             </div>
-            <div class="d-flex justify-content-around rounded-1" style="background: #F5F5F5; border: solid #dddddd 1px; width: 15%; padding: 5px;"> 
-                  <div class="d-flex flex-column justify-content-center align-items-center">
-                    <p style="margin: 0 !important;"><b>Aug 15 2022</b></p>
-                    <p style="margin: 0 !important;"><b>11:29 AM</b></p>
-                  </div>
-                  <div class="d-flex flex-column justify-content-center align-items-center">
-                    <p style="margin: 0 !important;"><b>Friday</b></p>
-                    <p><b></b></p>
-                  </div>
+            <div class="d-flex gap-4 "> 
+                
+                <div class="d-flex justify-content-between flex-fill rounded-1" style="background: #F5F5F5; border: solid #dddddd 1px; padding: 15px;">
+                    <div class="d-flex flex-column justify-content-around">
+                    <p>Your ID  </p>
+                    <p style="font-size:1.5rem;"><b><%=(locals.employee) ? locals.employee.employee_details.designation.id : 0%></b></p>
+                    </div>
+                    <div class="d-flex">
+                    <p></p>
+                    <p class="mt-auto p-2 bd-highlight">Totals</p>
+                    </div>
             </div>
+                <div class="d-flex justify-content-between flex-fill rounded-1" style="background: #F5F5F5; border: solid #dddddd 1px; padding: 15px;">
+                    <div class="d-flex flex-column justify-content-around">
+                    <p>Payslips  </p>
+                    <p style="font-size:1.5rem;"><b><%=(data.summaryData[0]) ? data.summaryData[0].total_payroll : 0%></b></p>
+                    </div>
+                    <div class="d-flex">
+                    <p></p>
+                    <p class="mt-auto p-2 bd-highlight">Totals</p>
+                    </div>
+            </div>
+            <div class="d-flex justify-content-between flex-fill rounded-1" style="background: #F5F5F5; border: solid #dddddd 1px; padding: 15px;">
+                    <div class="d-flex flex-column justify-content-around">
+                    <p>Gross Amount Earned</p>
+                    <p style="font-size:1.5rem;"><b>₱<%=(data.summaryData[0]) ? data.summaryData[0].total_grosspay : 0 %></b></p>
+                    </div>
+                    <div class="d-flex">
+                    <p></p>
+                    <p class="mt-auto p-2 bd-highlight">Totals</p>
+                    </div>
+            </div>
+            <div class="d-flex justify-content-between flex-fill rounded-1" style="background: #F5F5F5; border: solid #dddddd 1px; padding: 15px;">
+                    <div class="d-flex flex-column justify-content-around">
+                    <p>Net Amount Due</p>
+                    <p style="font-size:1.5rem;"><b>₱<%=(data.summaryData[0]) ? data.summaryData[0].total_netpay : 0 %></b></p>
+                    </div>
+                    <div class="d-flex">
+                    <p></p>
+                    <p class="mt-auto p-2 bd-highlight">Totals</p>
+                    </div>
+            </div>
+        </div> 
+        </section>
     </div>
-
-    <div class="d-flex gap-4" style="padding-top: 25px !important;"> 
-      <div class="d-flex justify-content-between flex-fill rounded-1" style="background: #F5F5F5; border: solid #dddddd 1px; padding: 15px;">
-           <div class="d-flex flex-column justify-content-around">
-              <p>Monthly Salary</p>
-              <p style="font-size:1.5rem;"><b>P</b></p>
-           </div>
-           <div class="d-flex">
-              <p></p>
-              <p class="mt-auto p-2 bd-highlight">Totals</p>
-           </div>
-      </div>
-      <div class="d-flex justify-content-between flex-fill rounded-1" style="background: #F5F5F5; border: solid #dddddd 1px; padding: 15px;">
-           <div class="d-flex flex-column justify-content-around">
-              <p>Semi-Monthly Salary</p>
-              <p style="font-size:1.5rem;"><b>P</b></p>
-           </div>
-           <div class="d-flex">
-              <p></p>
-              <p class="mt-auto p-2 bd-highlight">Totals</p>
-           </div>
-      </div>
-      <div class="d-flex justify-content-between flex-fill rounded-1" style="background: #F5F5F5; border: solid #dddddd 1px; padding: 15px;">
-        <div class="d-flex flex-column justify-content-around">
-           <p>Deduction</p>
-           <p style="font-size:1.5rem;"><b>P</b></p>
-        </div>
-        <div class="d-flex">
-           <p></p>
-           <p class="mt-auto p-2 bd-highlight">Totals</p>
-        </div>
-   </div>
-      <div class="d-flex justify-content-between flex-fill rounded-1" style="background: #F5F5F5; border: solid #dddddd 1px; padding: 15px;">
-           <div class="d-flex flex-column justify-content-around">
-              <p>Gross Pay</p>
-              <p style="font-size:1.5rem;"><b>P</b></p>
-           </div>
-           <div class="d-flex">
-              <p></p>
-              <p class="mt-auto p-2 bd-highlight">Totals</p>
-           </div>
-      </div>
-      <div class="d-flex justify-content-between flex-fill rounded-1" style="background: #F5F5F5; border: solid #dddddd 1px; padding: 15px;">
-           <div class="d-flex flex-column justify-content-around">
-              <p>Net Pay</p>
-              <p style="font-size:1.5rem;"><b></b></p>
-           </div>
-           <div class="d-flex">
-              <p></p>
-              <p class="mt-auto p-2 bd-highlight">Totals</p>
-           </div>
-      </div>
-    </div>
+    <%-include('partials/Modal') %> 
+    <%-include('partials/navBar.ejs', {data:{
+        payroll: {
+            url: `/employee/payroll/${(data.result) ? data.result[0].emp_code : 0}`,
+            name: 'Pay Slip'
+        },
+    },
+})%>
     <div class="d-flex filterContainer rounded-1 gap-3">
         <form action="">
             <div class="input-group">
@@ -92,38 +89,44 @@
               </div>
             <input type="date" name="from" value="<%=query.from%>" id="from" class="rounded-1">
             <input type="date" name="to" value="<%=query.to%>" id="to" class="rounded-1"    >
-
-            <button type="submit" class="btn btn-primary">Submit</button>
-        </form>
+            <select name="p_group" id="projectSelect" class="rounded-1 custom-select">
+              <% Object.values(group.result).forEach(group =>{%> 
+                <option value="<%=group._id%>" <%=(query.p_group === group._id) ? 'selected': ''%>><%=group.fund_cluster%> - <%=group.project_name%> <%=(group.program_name)? + "- " + group.program_name: ''%></option>
+              <%}); %>
+              
+            </select>
+            
+            </script>
+            <button type="submit" class="btn btn-primary">Submit</button>        </form>
     </div>
-
-    <div class="d-flex overflow-auto  table-container" style="margin-top: 25px !important; min-width:1200px;"> 
+    <div class="d-flex table-container"> 
     
         <table id="mainTable" class="table border-top border-bottom" style="width: 100%;">
             <thead>
                 <tr>
                     <th>Employee ID</th>
-                    <th>Month</th>
                     <th>Employee</th>
+                    <th>Payroll Group</th>
                     <th>Gross Amount Earned</th>
                     <th>Net Amount Due</th>
                     <th></th>
                 </tr>
             </thead>
             <tbody>
+              <%if(data.result){%>
                 <% Object.values(data.result).forEach(user =>{%> 
-                    <tr>
-                        <td><%=user.emp_code%></td>
-                        <td></td>
-                        <td><%=user.name%></td>
-                        <td><%=user.salaries.gross_salary%></td>
-                        <td><%=user.salaries.net_salary%></td>
-                        <td>
-                            <a href="/employee/payroll/<%=user.emp_code%>/payslip?from=<%=query.from%>&to=<%=query.to%>">Payslip</a>
-                        </td>
-                    </tr>
-                    <%}); %>
-                    
+                  <tr>
+                      <td><%=user.emp_code%></td>
+                      <td><%=user.name%></td>
+                      <td><%=user.payroll_group.fund_cluster%> - <%=user.payroll_group.project_name%> <%=(user.payroll_group.program_name) ? +  '/ ' + user.payroll_group.program_name : ''%></td>
+                      <td><%=user.salaries.gross_salary%></td>
+                      <td><%=user.salaries.net_salary%></td>
+                      <td >
+                          <a href="/admin/payroll/<%=user.emp_code%>/payslip?from=<%=query.from%>&to=<%=query.to%>">Payslip</a>
+                      </td>
+                  </tr>
+                  <%}); %>
+              <%}%>
             </tbody>
             <tfoot>
             </tfoot>

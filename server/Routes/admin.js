@@ -41,7 +41,7 @@ route.get('/payroll/history/all', checkToken, checkRoles, adminView.payrollHisto
 route.get('/payroll/history/payslips', checkToken, checkRoles, adminView.payslipsView)
 route.get('/payroll/history/receipt', checkToken, checkRoles, adminView.payrollHistoryReceiptView)
 route.get('/payroll/receipt', checkToken, checkRoles, adminView.payrollReceiptView)
-route.get('/payroll/:id/payslip', checkToken, checkRoles, adminView.payslipView)
+route.get('/payroll/:id/payslip', checkToken, adminView.payslipView)
 
 // record endpoints 
 route.get('/attendance/all', checkToken, checkRoles, adminView.attendanceView)
@@ -50,7 +50,7 @@ route.get('/attendance/history/all', checkToken, checkRoles, adminView.attendanc
 route.get('/attendance/history/print', checkToken, checkRoles, adminView.attendancePrintDTRView)
 route.get('/attendance/history/print/per-employee', checkToken, checkRoles, adminView.attendancePerEmployeeView)
 route.get('/attendance/history/dtr', checkToken, checkRoles, adminView.attendanceHistoryDTRView)
-route.get('/attendance/:id/dtr', checkToken, checkRoles, adminView.attendanceDTRView)
+route.get('/attendance/:id/dtr', checkToken, adminView.attendanceDTRView)
 
 // holidays and travel orders endpoint
 route.get('/holidays', checkToken, checkRoles, adminView.holidayView)
@@ -121,6 +121,7 @@ route.get('/api/attendance/all', admin.readAttendance)
 route.get('/api/attendance/per-employee', admin.readAttendancePerEmployee)
 route.get('/api/attendance/history', admin.readAttendanceHistory)
 route.post('/api/attendance/history', admin.addAttendanceHistory)
+route.get('/api/attendance/per-employee/:id', admin.readAttendancePerEmployee)
 route.get('/api/attendance/:id', checkApiAuth, admin.readAttendance)
 
 
@@ -149,6 +150,7 @@ route.patch('/api/addtopayrolltype', admin.addEmployeePayrollType)
 // leave api
 route.get('/api/leave', admin.readLeaveRequests)
 route.patch('/api/leave', admin.updateLeaveRequest)
+route.get('/api/leave/:id', admin.readLeaveRequests)
 
 //leave types
 route.post('/api/leavetypes', admin.addLeaveType)

@@ -163,11 +163,6 @@ employeeSchema.pre('updateOne', async function(next) {
     next();
 });
 
-// update full name, when fname, mname, lname is updated
-// employeeSchema.pre('findOneAndUpdate', async function() {
-//     this.personal_information.name = this.personal_information.fname + ' ' + this.personal_information.mname + ' ' + this.personal_information.lname
-// });
-
 //display specific fi
 employeeSchema.statics.getProjectedEmployees = async function(){
     const result = await this.find({})

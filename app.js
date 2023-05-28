@@ -43,6 +43,15 @@ app.use('/', publicRoute)
 
 // ROUTES || Not Found URLS || Redirects
 
+// admin
+app.use('/admin/', (req, res)=>{
+    res.redirect('/admin/')
+})
+
+app.use('/employee/', (req, res)=>{
+    res.redirect('/employee/')
+})
+
 // employees
 app.use('/admin/employees/', (req, res)=>{
     res.redirect('/admin/employees')

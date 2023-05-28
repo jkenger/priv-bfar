@@ -114,13 +114,12 @@
             <input type="date" name="from" value="<%=query.from%>" id="from" class="rounded-1">
             <input type="date" name="to" value="<%=query.to%>" id="to" class="rounded-1"    >
             <select name="p_group" id="projectSelect" class="rounded-1 custom-select">
+                <option value="">All Group</option>
               <%if(group.result){%>
                 <% Object.values(group.result).forEach(group =>{%> 
                     <option value="<%=group._id%>" <%=(query.p_group === group._id) ? 'selected': ''%>><%=group.fund_cluster%> - <%=group.project_name%> <%=(group.program_name)? + "- " + group.program_name: ''%></option>
                 <%}); %>
               <%}%>
-               
-              
             </select>
             
             </script>
@@ -165,9 +164,9 @@
                                 <td><%=user.salary%></td>
                                 <td><%=user.attendance.whalf_days%></td>
                                 <td><%=user.salaries.gross_salary%></td>
-                                <td><%=user.deduction.tax_deduction%></td>
-                                <td></td>
-                                <td></td>
+                                <td><%=(user.deduction.tax_deduction.tax_1) ? user.deduction.tax_deduction.tax_1 : '' %></td>
+                                <td><%=(user.deduction.tax_deduction.tax_2) ? user.deduction.tax_deduction.tax_2 : ''%></td>
+                                <td><%=(user.deduction.tax_deduction.tax_3) ? user.deduction.tax_deduction.tax_3 : ''%></td>
                                 <td></td>
                                 <td></td>
                                 <td></td>
@@ -187,6 +186,13 @@
 
 
 </main>
+<script>
+$(document).ready(function () {
+    $('#mainTable').DataTable({
+        order: [[1, 'desc']],
+    });
+});
+</script>
 
 <%-include('partials/Footer')%>
 <script type="text/javascript" src="/script/scripts.js"></script>

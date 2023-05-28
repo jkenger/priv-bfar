@@ -18,9 +18,11 @@ route.get('/', checkEmployeeRole, employeeView.homeView)
 
 // leave routes
 // route.get('/leave', employeeView.leaveStatusView)
-route.get('/leave', checkEmployeeRole, employeeView.employeeLeaveView)
+route.get('/leave/:id', checkEmployeeRole, employeeView.employeeLeaveView)
 // route.get('/leave/leavehistory', employeeView.leaveHistoryView))
 route.get('/attendance/:id', checkEmployeeRole, employeeView.attendanceView)
+route.get('/attendance/:id/summary', checkEmployeeRole, employeeView.attendanceSummaryView)
+route.get('/attendance/:id/dtr', checkEmployeeRole, employeeView.attendanceDTRView)
 route.get('/payroll/:id', checkEmployeeRole, employeeView.payrollView)
 route.get('/payroll/:id/payslip', checkEmployeeRole, employeeView.payslipView)
 

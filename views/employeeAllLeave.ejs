@@ -2,11 +2,11 @@
 <link rel="stylesheet" href="/styles/dataTable.css">
 <main class="d-flex flex-nowrap" style="align-self: center;">
 
-    <%-include('partials/Aside')%> 
+    <%-include('partials/employeeAside')%> 
 <div class="d-flex flex-column flex-fill" style="border-left: 1px solid #dddddd; padding: 1.5em 2em 1.5em 2em;  gap:1.5em; overflow: auto;">
       <%-include('partials/navBar.ejs', {data:{
           leave: {
-              url: '/admin/manageleave/all',
+              url: `/employee/leave/${(locals.employee) ? locals.employee.employee_details.designation.id : 0}`,
               name: 'Leave'
           }
         },
@@ -21,7 +21,25 @@
         </div>
         <div class="d-flex flex-column">
           <div class="row card-con">
-            <div class="col-xl-3 col-lg-6 col-md-6" style="gap: 1.5em;">
+            <div class="col-xl-4 col-lg-6 col-md-6" style="gap: 1.5em;">
+              <div class="card card-stats mb-xl-0">
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col">
+                      <h5 class="card-title text-uppercase text-muted mb-0">Your ID</h5>
+                      <span class="h2 font-weight-bold mb-0"><%=(locals.employee) ? locals.employee.employee_details.designation.id : 0%></span>
+                    </div>
+                    <div class="col-auto">
+
+                    </div>
+                  </div>
+                  <p class="mt-3 mb-0 text-muted text-sm">
+                    <a href="/employee/leave/<%=(locals.employee) ? locals.employee.employee_details.designation.id : 0%>"><span class="text-nowrap">View Details</span></a>
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="col-xl-4 col-lg-6 col-md-6" style="gap: 1.5em;">
               <div class="card card-stats mb-xl-0">
                 <div class="card-body">
                   <div class="row">
@@ -34,12 +52,12 @@
                     </div>
                   </div>
                   <p class="mt-3 mb-0 text-muted text-sm">
-                    <a href="/admin/manageleave/all"><span class="text-nowrap">View Details</span></a>
+                    <a href="/employee/leave/<%=(locals.employee) ? locals.employee.employee_details.designation.id : 0%>"><span class="text-nowrap">View Details</span></a>
                   </p>
                 </div>
               </div>
             </div>
-            <div class="col-xl-3 col-lg-6 col-md-6" style="gap: 1.5em;">
+            <div class="col-xl-4 col-lg-6 col-md-6" style="gap: 1.5em;">
               <div class="card card-stats mb-xl-0">
                 <div class="card-body">
                   <div class="row">
@@ -52,12 +70,12 @@
                     </div>
                   </div>
                   <p class="mt-3 mb-0 text-muted text-sm">
-                    <a href="/admin/manageleave/all"><span class="text-nowrap">View Details</span></a>
+                    <a href="/employee/leave/<%=(locals.employee) ? locals.employee.employee_details.designation.id : 0%>"><span class="text-nowrap">View Details</span></a>
                   </p>
                 </div>
               </div>
             </div>
-            <div class="col-xl-3 col-lg-6 col-md-6" style="gap: 1.5em;">
+            <div class="col-xl-4 col-lg-6 col-md-6" style="gap: 1.5em;">
               <div class="card card-stats mb-xl-0">
                 <div class="card-body">
                   <div class="row">
@@ -70,12 +88,12 @@
                     </div>
                   </div>
                   <p class="mt-3 mb-0 text-muted text-sm">
-                    <a href="/admin/manageleave/all"><span class="text-nowrap">View Details</span></a>
+                    <a href="/employee/leave/<%=(locals.employee) ? locals.employee.employee_details.designation.id : 0%>"><span class="text-nowrap">View Details</span></a>
                   </p>
                 </div>
               </div>
             </div>
-            <div class="col-xl-3 col-lg-6 col-md-6" style="gap: 1.5em;">
+            <div class="col-xl-4 col-lg-6 col-md-6" style="gap: 1.5em;">
               <div class="card card-stats mb-xl-0">
                 <div class="card-body">
                   <div class="row">
@@ -88,7 +106,7 @@
                     </div>
                   </div>
                   <p class="mt-3 mb-0 text-muted text-sm">
-                    <a href="/admin/manageleave/all"><span class="text-nowrap">View Details</span></a>
+                    <a href="/employee/leave/<%=(locals.employee) ? locals.employee.employee_details.designation.id : 0%>"><span class="text-nowrap">View Details</span></a>
                   </p>
                 </div>
               </div>
@@ -98,12 +116,12 @@
         </div>
     </section>
     <%-include('partials/navBar.ejs', {data:{
-      leave: {
-          url: '/admin/manageleave/all',
-          name: 'Leave'
-      }
-    },
-  })%>  
+        leave: {
+            url: `/employee/leave/${(locals.employee) ? locals.employee.employee_details.designation.id : 0}`,
+            name: 'All Leave'
+        }
+      },
+    })%>    
     <div class="d-flex filterContainer rounded-1 gap-3">
         <form action="">
             <div class="input-group">
@@ -133,7 +151,6 @@
                     <th>Leave type</th>
                     <th>Applied On</th>
                     <th>Current Status</th>
-                    <th>Action</th>
                 </tr>
             </thead>
             <tbody>
@@ -150,14 +167,6 @@
                           <span class="status approved">approved</span>
                       <%}else if(leaveRequest.status.toLowerCase() === 'declined'){%>
                         <span class="status declined">declined</span>
-                      <%}%>
-                    </td>
-                    <td>
-                      <%if(leaveRequest.status.toLowerCase() === 'pending'){%>
-                        <a onclick="updateRequest('<%=leaveRequest._id%>', 'approve')" href="#" class="table-link approve">Approve</a>
-                        <a onclick="updateRequest('<%=leaveRequest._id%>', 'decline')"href="#" class="table-link reject">Decline</a>
-                      <%}else{%>
-                        
                       <%}%>
                     </td>
                 </tr>

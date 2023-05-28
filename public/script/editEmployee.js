@@ -41,7 +41,8 @@ form.addEventListener('submit', async (e) => {
             employment_information: {
                 employment_type: form.employment_type.value,
                 employment_status: form.employment_status.value,
-                date_hired: form.date_hired.value
+                date_hired: form.date_hired.value,
+                payroll_type: form.payroll_type.value,
             },
             salary_details: {
                 monthly_salary: form.monthly_salary.value

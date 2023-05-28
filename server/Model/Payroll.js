@@ -33,18 +33,24 @@ const payrollSchema = mongoose.Schema({
 
 payrollSchema.statics.getPayrollData = async function(fromDate, toDate, group, id){
     const holidayDates = await Holiday.getHolidayDates(fromDate, toDate);
+   
+   
     const p_group_id = (group)?group:''
     const eFilter = (p_group_id)? {'employee_details.employment_information.payroll_type': new mongoose.Types.ObjectId(p_group_id)} : {}
-    console.log(p_group_id)
-    console.log('model', id)
-    
     const filter = (id)?{ $or: [{$or: [{am_time_out: { $ne: null }}, {$or: [{message: 'T.O'}, {message: 'O.B'}]}]}, { pm_time_out: { $ne: null } }], date: { $gte: fromDate, $lte: toDate}, emp_code: id}: { $or: [{$or: [{am_time_out: { $ne: null }}, {$or: [{message: 'T.O'}, {message: 'O.B'}]}]}, { pm_time_out: { $ne: null } }], date: { $gte: fromDate, $lte: toDate}}  ;
-    console.log('PAYROLL DATA:', filter)
+   
+   
     const deductions = await Deductions.find().sort({createdAt: 1})
     // if 0 make it 1, so it does not produce any miscalculation.
     const calendarDays = (await countWeekdays(fromDate, toDate) < 10) ? await countWeekdays(fromDate, new Date(moment(fromDate).add(14, 'days'))): await countWeekdays(fromDate, toDate)
 
     const tax = 0.02
+    let taxCompensationRange = {
+        tax_1: {r1: 10417, r2: 16666, prcnt: 0.02}, //2%
+        tax_2: {r1: 16667, r2: 33332, prcnt: 0.05}, //5%
+        tax_3: {r1: 33333, r2: 83332, prcnt: 0.1}, //10%
+    }
+    
 
     const pipeline = [
         {$match: eFilter},
@@ -209,7 +215,7 @@ payrollSchema.statics.getPayrollData = async function(fromDate, toDate, group, i
             // no_of_undertime: {$first: 32} // test
         }},
         {$addFields:{
-            semimo_rate: { $divide: ['$salary', 2] },
+            semimo_rate: {$ceil: { $divide: ['$salary', 2] }},
             whalf_days: {$cond:{
                 if: {$gte: ['$holiday_deduction', 1]}, then: {$cond:{
                     if:{$lte: [{$subtract: ['$whalf_days', '$holiday_deduction']}, 0]},
@@ -320,12 +326,35 @@ payrollSchema.statics.getPayrollData = async function(fromDate, toDate, group, i
             
             // initiate net salary deductions
             // (semimo salary - 10417) *.02 // 2% Tax
-            tax_deduction: {$round:[{$cond: {
-                if: {$lte:[{$multiply: [{$subtract: ['$semimo_salary', 10417]}, tax]}, 0]},
-                then: 0,
-                else: {$multiply: [{$subtract: ['$semimo_salary', 10417]}, tax]}
-                },
-            },2]},
+            // tax_1: {r1: 10417, r2: 16666, prcnt: 0.02}, //2%
+            // tax_2: {r1: 16667, r2: 33332, prcnt: 0.05}, //5%
+            // tax_3: {r1: 33333, r2: 83332, prcnt: 0.1}, //10%
+
+            tax_deduction: {
+                tax_1: {$cond:{
+                    if: {$lte: ['$semimo_salary', taxCompensationRange.tax_1.r1 ]},
+                    then: 0,
+                    else:
+                    {$cond: {
+                        // if BETWEEN 10417 and 16666
+                        if: {$and: [{$gt: ['$semimo_salary', taxCompensationRange.tax_1.r1] },{$lte: ['$semimo_salary',taxCompensationRange.tax_1.r2]}]},
+                        then: {$multiply: [{$subtract: ['$semimo_salary', 10417]}, taxCompensationRange.tax_1.prcnt]},
+                        else: 0,
+                    }},
+                }},
+                tax_2: {$cond:{
+                    // if BETWEEN 16667 and 33332
+                    if: {$and: [{$gte: ['$semimo_salary', taxCompensationRange.tax_2.r1] },{$lte: ['$semimo_salary',taxCompensationRange.tax_2.r2]}]},
+                    then: {$multiply: [{$subtract: ['$semimo_salary', 10417]}, taxCompensationRange.tax_2.prcnt]},
+                    else: 0
+                }},
+                tax_3: {$cond:{
+                    // if BETWEEN 33333 and 83332
+                    if: {$and: [{$gte: ['$semimo_salary', taxCompensationRange.tax_3.r1] },{$lte: ['$semimo_salary',taxCompensationRange.tax_3.r2]}]},
+                    then: {$multiply: [{$subtract: ['$semimo_salary', 10417]}, taxCompensationRange.tax_3.prcnt]},
+                    else: 0,
+                }}
+            },
             other_deductions: {$cond: {
                 if: {$lte: [deductions.length, 0]},
                 then: 0,
@@ -368,7 +397,7 @@ payrollSchema.statics.getPayrollData = async function(fromDate, toDate, group, i
                 then: 0,
                 else: deductions
             }},
-            net_amount_due: {$round:[{$subtract: [{$subtract: ['$gross_salary', '$tax_deduction']}, '$total_other_deductions']}, 2]}
+            net_amount_due: {$round:[{$subtract: [{$subtract: ['$gross_salary', {$sum:['$tax_deduction.tax_1', '$tax_deduction.tax_2', '$tax_deduction.tax_3']}]}, '$total_other_deductions']}, 2]}
         }},
         {$lookup:{
             from: PayrollGroup.collection.name,
@@ -414,7 +443,7 @@ payrollSchema.statics.getPayrollData = async function(fromDate, toDate, group, i
                 deductions_total: '$total_other_deductions'
             }},
             total_deductions: {$first:{$add: [
-                '$tax_deduction',
+                {$sum:['$tax_deduction.tax_1', '$tax_deduction.tax_2', '$tax_deduction.tax_3']},
                 '$total_other_deductions'
             ]}},
             total_earnings: {$first: {$add:[
@@ -438,20 +467,30 @@ payrollSchema.statics.getPayrollData = async function(fromDate, toDate, group, i
 
 payrollSchema.statics.getTotalData = async function(fromDate, toDate, group, id){
     const holidayDates = await Holiday.getHolidayDates(fromDate, toDate);
+   
+   
     const p_group_id = (group)?group:''
     const eFilter = (p_group_id)? {'employee_details.employment_information.payroll_type': new mongoose.Types.ObjectId(p_group_id)} : {}
-    console.log(p_group_id)
-    console.log('model', id)
     const filter = (id)?{ $or: [{$or: [{am_time_out: { $ne: null }}, {$or: [{message: 'T.O'}, {message: 'O.B'}]}]}, { pm_time_out: { $ne: null } }], date: { $gte: fromDate, $lte: toDate}, emp_code: id}: { $or: [{$or: [{am_time_out: { $ne: null }}, {$or: [{message: 'T.O'}, {message: 'O.B'}]}]}, { pm_time_out: { $ne: null } }], date: { $gte: fromDate, $lte: toDate}}  ;
-    console.log('PAYROLL DATA:', filter)
+   
+   
     const deductions = await Deductions.find().sort({createdAt: 1})
     // if 0 make it 1, so it does not produce any miscalculation.
     const calendarDays = (await countWeekdays(fromDate, toDate) < 10) ? await countWeekdays(fromDate, new Date(moment(fromDate).add(14, 'days'))): await countWeekdays(fromDate, toDate)
 
     const tax = 0.02
+    let taxCompensationRange = {
+        tax_1: {r1: 10417, r2: 16666, prcnt: 0.02}, //2%
+        tax_2: {r1: 16667, r2: 33332, prcnt: 0.05}, //5%
+        tax_3: {r1: 33333, r2: 83332, prcnt: 0.1}, //10%
+    }
+
+    
+    
 
     const pipeline = [
         {$match: eFilter},
+        
         {$lookup: {
             from: 'attendances',
             localField: 'employee_details.designation.id',
@@ -612,7 +651,7 @@ payrollSchema.statics.getTotalData = async function(fromDate, toDate, group, id)
             // no_of_undertime: {$first: 32} // test
         }},
         {$addFields:{
-            semimo_rate: { $divide: ['$salary', 2] },
+            semimo_rate: {$ceil: { $divide: ['$salary', 2] }},
             whalf_days: {$cond:{
                 if: {$gte: ['$holiday_deduction', 1]}, then: {$cond:{
                     if:{$lte: [{$subtract: ['$whalf_days', '$holiday_deduction']}, 0]},
@@ -723,12 +762,35 @@ payrollSchema.statics.getTotalData = async function(fromDate, toDate, group, id)
             
             // initiate net salary deductions
             // (semimo salary - 10417) *.02 // 2% Tax
-            tax_deduction: {$round:[{$cond: {
-                if: {$lte:[{$multiply: [{$subtract: ['$semimo_salary', 10417]}, tax]}, 0]},
-                then: 0,
-                else: {$multiply: [{$subtract: ['$semimo_salary', 10417]}, tax]}
-                },
-            },2]},
+            // tax_1: {r1: 10417, r2: 16666, prcnt: 0.02}, //2%
+            // tax_2: {r1: 16667, r2: 33332, prcnt: 0.05}, //5%
+            // tax_3: {r1: 33333, r2: 83332, prcnt: 0.1}, //10%
+
+            tax_deduction: {
+                tax_1: {$cond:{
+                    if: {$lte: ['$semimo_salary', taxCompensationRange.tax_1.r1 ]},
+                    then: 0,
+                    else:
+                    {$cond: {
+                        // if BETWEEN 10417 and 16666
+                        if: {$and: [{$gt: ['$semimo_salary', taxCompensationRange.tax_1.r1] },{$lte: ['$semimo_salary',taxCompensationRange.tax_1.r2]}]},
+                        then: {$multiply: [{$subtract: ['$semimo_salary', 10417]}, taxCompensationRange.tax_1.prcnt]},
+                        else: 0,
+                    }},
+                }},
+                tax_2: {$cond:{
+                    // if BETWEEN 16667 and 33332
+                    if: {$and: [{$gte: ['$semimo_salary', taxCompensationRange.tax_2.r1] },{$lte: ['$semimo_salary',taxCompensationRange.tax_2.r2]}]},
+                    then: {$multiply: [{$subtract: ['$semimo_salary', 10417]}, taxCompensationRange.tax_2.prcnt]},
+                    else: 0
+                }},
+                tax_3: {$cond:{
+                    // if BETWEEN 33333 and 83332
+                    if: {$and: [{$gte: ['$semimo_salary', taxCompensationRange.tax_3.r1] },{$lte: ['$semimo_salary',taxCompensationRange.tax_3.r2]}]},
+                    then: {$multiply: [{$subtract: ['$semimo_salary', 10417]}, taxCompensationRange.tax_3.prcnt]},
+                    else: 0,
+                }}
+            },
             other_deductions: {$cond: {
                 if: {$lte: [deductions.length, 0]},
                 then: 0,
@@ -771,7 +833,7 @@ payrollSchema.statics.getTotalData = async function(fromDate, toDate, group, id)
                 then: 0,
                 else: deductions
             }},
-            net_amount_due: {$round:[{$subtract: [{$subtract: ['$gross_salary', '$tax_deduction']}, '$total_other_deductions']}, 2]}
+            net_amount_due: {$round:[{$subtract: [{$subtract: ['$gross_salary', {$sum:['$tax_deduction.tax_1', '$tax_deduction.tax_2', '$tax_deduction.tax_3']}]}, '$total_other_deductions']}, 2]}
         }},
         {$lookup:{
             from: PayrollGroup.collection.name,
@@ -817,7 +879,7 @@ payrollSchema.statics.getTotalData = async function(fromDate, toDate, group, id)
                 deductions_total: '$total_other_deductions'
             }},
             total_deductions: {$first:{$add: [
-                '$tax_deduction',
+                {$sum:['$tax_deduction.tax_1', '$tax_deduction.tax_2', '$tax_deduction.tax_3']},
                 '$total_other_deductions'
             ]}},
             total_earnings: {$first: {$add:[

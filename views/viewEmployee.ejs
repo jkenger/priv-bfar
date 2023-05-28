@@ -5,163 +5,260 @@
 <main class="d-flex flex-nowrap" style=" height: 100vh; overflow: auto; align-self: center;">
 
 <%-include('partials/Aside')%> 
-<div class="d-flex flex-column flex-fill" style="border-left: 1px solid #dddddd; padding: 1.5em 2em 1.5em 2em">
-    <div class="d-flex justify-content-between"> 
-            <div class="d-flex justify-content-center align-items-center rounded-1"> 
-              <a href="#" class="nav-link" style="padding-right: 10px !important;">
-                  Home 
-              </a>
-              <p style="padding-right: 10px !important; margin: 0;"> > </p>
-              <a href="#" class="nav-link ">
-                  <b> Employee Information</b>
-              </a>
-            </div>
-            <div class="d-flex justify-content-around rounded-1" style="background: #F5F5F5; border: solid #dddddd 1px; width: 15%; padding: 5px;"> 
-                  <div class="d-flex flex-column justify-content-center align-items-center">
-                    <p style="margin: 0 !important;"><b>Aug 15 2022</b></p>
-                    <p style="margin: 0 !important;"><b>11:29 AM</b></p>
-                  </div>
-                  <div class="d-flex flex-column justify-content-center align-items-center">
-                    <p style="margin: 0 !important;"><b>Friday</b></p>
-                    <p><b></b></p>
-                  </div>
-            </div>
-    </div>
+<div class="d-flex flex-column flex-fill" style="border-left: 1px solid #dddddd; padding: 1.5em 2em 1.5em 2em;gap:1.5em; overflow: auto;">
+    <%-include('partials/navBar.ejs', {data:{
+            employeeInformation: {
+                url: `/admin/employees/view/${data.result._id}`,
+                name: 'View Employee'
+            },
+        },
+    })%>
     <%-include('partials/Modal') %> 
+    
     <div class="info-wrapper">
-        <div class="info-left">
-            <div class="info-left__sub">
-                <div class="info__head">
-                    <img src="<%=(data.result.avatar.url)?(data.result.avatar.url): '/img/no-image.png'%>" id='viewImage'alt="#">
+            <div class="row" style="width:100%;">
+                <div class="col-lg-4 col-xl-4">
+                <div class="card mb-4">
+                  <div class="card-body text-center">
+                    <img class="rounded-1" src="<%=(data.result.avatar.url)?(data.result.avatar.url): '/img/no-image.png'%>" id='viewImage'alt="#" style="
+                        width: 50%;
+                        height: 200px;
+                        border: 1px solid #dddddd;
+                        object-fit: cover;"
+                    >
                     <form id="formUploadImage"> 
                         <input id='uploadImage' type="file" name="image" placeholder="Upload Image" onchange="PreviewImage();">
                         <button type="submit" class="btn btn-primary">Upload</button>
                     </form>
-                    <label for="" id="upload-status"></label>
-                    <h1><%=data.result.personal_information.name%></h1>
-                </div>
-                <div class="info__main">
-                    <div class="main__subdiv">
-                        <div>Email</div>
-                        <div><%=data.result.personal_information.email_personal%></div>
-                    </div>
-                    <div class="main__subdiv">
-                        <div>Mobile No.</div>
-                        <div><%=data.result.personal_information.contact_personal%></div>
-                    </div>
-                    <div class="main__subdiv">
-                        <div>Employee ID</div>
-                        <div><%=data.result.employee_details.designation.id%></div>
-                    </div>
-                    <div class="main__subdiv">
-                        <div>RFID</div>
-                        <div><%=data.result.employee_details.designation.rfid%></div>
-                    </div>
-                    <div class="main__subdiv">
-                        <div>_id</div>
-                        <div id="_id"><%=data.result._id%></div>
-                    </div>
-                </div>
-            </div>
-        </div>
+                    <h5 class="my-3"><%=data.result.personal_information.name%></h5>
+                    <p class="'' mb-1"><%=data.result.employee_details.designation.designation%></p>
+                    <p class=" mb-4"><%=data.result.personal_information.place_of_birth%></p>
 
-        <div class="info-right">
-            <div class="info-right__sub">
-                <div class="info__head">
-                    <h1>Employee Information</h1>
+                  </div>
                 </div>
-                <div class="info__main">
-                    <div class="main__subdiv">
-                        <div>Civil Status</div>
-                        <div for="content"><%=data.result.personal_information.civstatus%></div>
-                    </div>
-                    <div class="main__subdiv">
-                        <div for="age">Age</div>
-                        <div for="content"><%=data.result.personal_information.age%></div>
-                    </div>
-                    <div class="main__subdiv">
-                        <div for="height">Height</div>
-                        <div for="content"><%=data.result.personal_information.height%></div>
-                    </div>
-                    <div class="main__subdiv">
-                        <div for="weight">Weight</div>
-                        <div for="content"><%=data.result.personal_information.weight%></div>
-                    </div>
-                    <div class="main__subdiv">
-                        <div for="gender"> Gender</div>
-                        <div for="content"><%=data.result.personal_information.gender%></div>
-                    </div>
-                    <div class="main__subdiv">
-                        <div for="dateofbirth">Date of Birth</div>
-                        <div for="content"><%=moment(data.result.personal_information.date_of_birth).format('LL')%></div>
-                    </div>
-                    <div class="main__subdiv">
-                        <div for="placeofbirth">Place of Birth</div>
-                        <div for="content"><%=data.result.personal_information.place_of_birth%></div>
-                    </div>
-                    <div class="main__subdiv">
-                        <div for="homeadd">Home Address</div>
-                        <div for="content"></div>
-                    </div>
-                    <div class="main__subdiv">
-                        <div for="natlid">National ID</div>
-                        <div for="content"><%=data.result.personal_information.natl_id%></div>
-                    </div>
-                    <div class="main__subheader">
-                        <div class="subheader__container">
-                            <label for="" class="">Designation</label>
+                <div class="card mb-4 mb-lg-0">
+                  <div class="card-body p-0">
+                    <ul class="list-group list-group-flush rounded-3">
+                      <li class="list-group-item d-flex justify-content-between align-items-center p-3">
+                        Personal Email
+                        <p class="mb-0"><%=data.result.personal_information.email_personal%></p>
+                      </li>
+                      <li class="list-group-item d-flex justify-content-between align-items-center p-3">
+                        Phone Number
+                        <p class="mb-0"><%=data.result.personal_information.contact_personal%></p>
+                      </li>
+                      <li class="list-group-item d-flex justify-content-between align-items-center p-3">
+                        Employee ID
+                        <p class="mb-0"><%=data.result.employee_details.designation.id%></p>
+                      </li>
+                      <li class="list-group-item d-flex justify-content-between align-items-center p-3">
+                        Employee RFID
+                        <p class="mb-0"><%=data.result.employee_details.designation.rfid%></p>
+                      </li>
+                      <li class="list-group-item d-flex justify-content-between align-items-center p-3">
+                        Employee _id
+                        <p class="mb-0"><%=data.result._id%></p>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+                </div>
+                <div class="col-lg-8 col-xl-8" >
+                    <div class="card mb-4">
+                        <div class="card-body">
+                        <div class="row">
+                            <p class="mb-4"><span class="font-italic me-1">Employee Information</span>
+                            </p>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-3">
+                            <p class="mb-0">Full Name</p>
+                            </div>
+                            <div class="col-sm-9">
+                            <p class="mb-0"><%=data.result.personal_information.name%></p>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-3">
+                            <p class="mb-0">Age</p>
+                            </div>
+                            <div class="col-sm-9">
+                            <p class=" mb-0"><%=data.result.personal_information.age%></p>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-3">
+                            <p class="mb-0">Height</p>
+                            </div>
+                            <div class="col-sm-9">
+                            <p class=" mb-0"><%=data.result.personal_information.height%></p>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-3">
+                            <p class="mb-0">Weight</p>
+                            </div>
+                            <div class="col-sm-9">
+                            <p class=" mb-0"><%=data.result.personal_information.weight%></p>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-3">
+                            <p class="mb-0">Gender</p>
+                            </div>
+                            <div class="col-sm-9">
+                            <p class=" mb-0"><%=data.result.personal_information.gender%></p>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <p class="mb-0">Date of Birth</p>
+                            </div>
+                            <div class="col-sm-9">
+                                <p class=" mb-0"><%=moment(data.result.personal_information.date_of_birth).format('LL')%></p>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <p class="mb-0">Place of Birth</p>
+                            </div>
+                            <div class="col-sm-9">
+                                <p class=" mb-0"><%=data.result.personal_information.place_of_birth%></p>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <p class="mb-0">Home Address</p>
+                            </div>
+                            <div class="col-sm-9">
+                                <p class=" mb-0">January 1, 1990</p>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <p class="mb-0">National ID
+                            </p>
+                            </div>
+                            <div class="col-sm-9">
+                                <p class=" mb-0"><%=data.result.personal_information.natl_id%></p>
+                            </div>
                         </div>
                     </div>
-                    <div class="main__subdiv">
-                        <div for="company">Company</div>
-                        <div for="content"><%=data.result.employee_details.designation.company%>, <%=data.result.employee_details.designation.company_location%></div>
                     </div>
-                    <div class="main__subdiv">
-                        <div for="designation">Designation</div>
-                        <div for="content"><%=data.result.employee_details.designation.designation%></div>
-                    </div>
-                    <div class="main__subdiv">
-                        <div for="employment_type">Employment Type</div>
-                        <div for="content"><%=data.result.employee_details.employment_information.employment_type%></div>
-                    </div>
-                    <div class="main__subdiv">
-                        <div for="employment_status">Employment Status</div>
-                        <div for="content"><%=data.result.employee_details.employment_information.employment_status%></div>
-                    </div>
-                    <div class="main__subdiv">
-                        <div for="date_started">Date Started</div>
-                        <div for="content"><%=moment(data.result.employee_details.employment_information.date_hired).format('LL')%></div>
-                    </div>
-                    <div class="main__subheader">
-                        <div class="subheader__container">
-                            <label for="" class="">Salary</label>
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <div class="row">
+                                <p class="mb-4"><span class="font-italic me-1">Employee Details</span>
+                                </p>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-3">
+                                <p class="mb-0">Company</p>
+                                </div>
+                                <div class="col-sm-9">
+                                <p class=" mb-0"><%=data.result.employee_details.designation.company%>, <%=data.result.employee_details.designation.company_location%></p>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-sm-3">
+                                <p class="mb-0">Designation</p>
+                                </div>
+                                <div class="col-sm-9">
+                                <p class=" mb-0"><%=data.result.employee_details.designation.designation%></p>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-sm-3">
+                                <p class="mb-0">Employment Type</p>
+                                </div>
+                                <div class="col-sm-9">
+                                <p class=" mb-0"><%=data.result.employee_details.employment_information.employment_type%></p>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-sm-3">
+                                <p class="mb-0">Employment Status</p>
+                                </div>
+                                <div class="col-sm-9">
+                                <p class=" mb-0"><%=data.result.employee_details.employment_information.employment_status%></p>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-sm-3">
+                                <p class="mb-0">Payroll Group</p>
+                                </div>
+                                <div class="col-sm-9">
+                                <p class=" mb-0"><%=data.result.employee_details.employment_information.payroll_type.fund_cluster%></p>
+                                <p class=" mb-0"><%=data.result.employee_details.employment_information.payroll_type.project_name%></p>
+                                <p class=" mb-0"><%=data.result.employee_details.employment_information.payroll_type.program_name%></p>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-sm-3">
+                                <p class="mb-0">Date Started</p>
+                                </div>
+                                <div class="col-sm-9">
+                                <p class=" mb-0"><%=moment(data.result.employee_details.employment_information.date_hired).format('LL')%></p>
+                                </div>
+                            </div>
+                            
                         </div>
                     </div>
-                    <div class="main__subdiv">
-                        <div for="salary">Monthly Salary</div>
-                        <div for="content">PHP <%=data.result.employee_details.salary_details.monthly_salary%></div>
-                    </div>
-                    <div class="main__subheader">
-                        <div class="subheader__container">
-                            <label for="" class="">Accounts</label>
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <div class="row">
+                                <p class="mb-4"><span class="font-italic me-1">Salary Details</span>
+                                </p>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-3">
+                                <p class="mb-0">Monthly Salary</p>
+                                </div>
+                                <div class="col-sm-9">
+                                <p class="mb-0">₱<%=data.result.employee_details.salary_details.monthly_salary%></p>
+                                </div>
+                            </div>
+                            <hr>
                         </div>
                     </div>
-                    <div class="main__subdiv">
-                        <div for="account">Account</div>
-                        <div for="content">
-                            <%if(!data.result.employee_details.account_details.portal_account){%>
-                                <span class="text-danger">No Portal Account</span>
-                                <br>
-                                <a id="btnAdd" href="#" data-toggle="modal" data-target="#modal"  onclick="submitModal('63cb6da923cd4215c1ee0e5e','John Kenneth Singson Gervacio', 'id email password confirm role', `<%=include('partials/bodies/addAcount-editbody')%>`, 'account')" class="btn btn-primary">Add Account</a>
-                            <%}else{%>
-                                
-                                <%=data.result.employee_details.account_details.portal_account%>
-                            <%}%>
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <div class="row">
+                                <p class="mb-4"><span class="font-italic me-1">Account Details</span>
+                                </p>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-3">
+                                <p class="mb-0">Account</p>
+                                </div>
+                                <div class="col-sm-9">
+                                    <%if(!data.result.employee_details.account_details.portal_account){%>
+                                        <span class="text-danger">No Portal Account</span>
+                                        <br>
+                                        <a id="btnAdd" href="#" data-toggle="modal" data-target="#modal"  onclick="submitModal('63cb6da923cd4215c1ee0e5e','John Kenneth Singson Gervacio', 'id email password confirm role', `<%=include('partials/bodies/addAcount-editbody')%>`, 'account')" class="btn btn-primary">Add Account</a>
+                                    <%}else{%>
+                                        <p class=" mb-0"><%=data.result.employee_details.account_details.portal_account.email%></p>
+                                        <p class=" mb-0"><%=data.result.employee_details.account_details.portal_account.role%></p>
+                                    <%}%>
+                                </div>
+                            </div>
+                            <hr>
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
     </div>
 </div>
 

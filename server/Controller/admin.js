@@ -98,7 +98,11 @@ module.exports = {
             if(id == 'undefined') res.status(500).send({err: 'Failutre to process the given id'})
             var filter = {}
             if(id.length < 24){filter = {"employee_details.designation.id": id}} else {filter = {_id:id}}
-            const projected = await Employees.findOne(filter)
+            //populate payroll group and account
+            const projected = await Employees.findOne(filter).populate('employee_details.employment_information.payroll_type').populate('employee_details.account_details.portal_account')
+            // console.log(projected.employee_details.employment_information.payroll_type)
+            // console.log(projected.employee_details.account_details.portal_account)
+
             if(projected) res.status(200).send({result: projected})
             if (!projected) res.status(500).send({err: 'Failure to find any document by the id'})
            
@@ -128,6 +132,11 @@ module.exports = {
             if (!req.body) { throw Error('Invalid input') }
             if (!id) res.status(500).send({err: 'Failure to process the given id'})
             //set update
+
+            if(update.personal_information){
+                update.personal_information.name = update.personal_information.fname + ' ' + update.personal_information.mname + ' ' + update.personal_information.lname
+            }
+           
             const result = await Employees.updateOne({
                  _id: id,
                 }, 
@@ -497,7 +506,10 @@ module.exports = {
             const projectedData = await attendances.getProjectedAttendanceData(fromDate, toDate, id)
             const summaryData = await attendances.getAttendanceSummary(fromDate, toDate, id)
             const detailedSummaryData = await attendances.getDetailedAttendanceSummary(fromDate, toDate, id)
-            console.log(detailedSummaryData)
+            
+            console.log('projectedData', projectedData)
+            console.log('summaryData', summaryData)
+            console.log('detailedSummaryData', detailedSummaryData)
             // const selectedRecords = await attendances.getSelectedAttendanceData()
           
             res.status(200).send({ result: projectedData, summaryData: summaryData, detailedSummaryData: detailedSummaryData})
@@ -507,14 +519,17 @@ module.exports = {
     readAttendancePerEmployee: async (req, res) => {   
         const fromDate = new Date(req.query.from)
         const toDate = new Date(req.query.to)
+        const id = req.params.id
         let summary = {}
-        console.log(fromDate, toDate)
-        const attendancePerEmployee = await attendances.getAttendancePerEmployeeData(fromDate, toDate)
+        
+        const attendancePerEmployee = await attendances.getAttendancePerEmployeeData(fromDate, toDate, id)
+        const detailedSummaryData = await attendances.getDetailedAttendanceSummary(fromDate, toDate, id)
         summary.totalDTRPerEmployee = attendancePerEmployee.length
         // const selectedRecords = await attendances.getSelectedAttendanceData()
         // console.log(selectedRecords)
-        res.status(200).send({ result: attendancePerEmployee, summaryData: summary})
+        res.status(200).send({ result: attendancePerEmployee, detailedSummaryData: detailedSummaryData, summaryData: summary})
     },
+
     readAttendanceHistory: async (req, res) => { 
         try{
             const id = req.query.id
@@ -557,9 +572,6 @@ module.exports = {
         }catch(e){
             res.status(500).send(e)
         }
-    },
-    readDTR: async (req, res) => {
-        
     },
     // get payroll transaction
     readPayrolls: async (req, res) => {
@@ -646,7 +658,7 @@ module.exports = {
             else {filter = {}}  
             PayrollHistory.find(filter)
                 .then(result=>{
-                    res.status(200).send({result: result})
+                    res.status(200).send({result: result}).sort({createdAt: -1})
                 })
                 .catch(error=>console.log(error));
             
@@ -704,8 +716,18 @@ module.exports = {
     },
     //get all leave requests
     readLeaveRequests: async (req, res) => {
+        const id = req.params.id
+
+        let fromDate = new Date(req.query.from)
+        let toDate = new Date(req.query.to)
+
+        let filter = {}
+        if(id !== 'undefined') filter = {'emp_id': id, 'createdAt': {$gte: fromDate, $lte: toDate}} 
+        else {filter = {'createdAt': {$gte: fromDate, $lte: toDate}}} 
+
+        console.log(filter)
         let summary = {}
-        const result = await LeaveRequests.find({}).sort({date: -1}).populate('doc_id')
+        const result = await LeaveRequests.find(filter).sort({date: -1}).populate('doc_id')
         
         let totalLeaveRequests = await result.length
         let pendingRequests = result.filter(request => request.status === 'Pending')
