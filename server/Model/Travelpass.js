@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 const validator = require('validator')
 const Attendance = require('./attendance')
-const Employees = require('./employeee')
+const Employees = require('./employee')
 const moment = require('moment')
 const { errorHandler, fetchData } = require('../Controller/services/services')
 const { getFormattedDate } = require('../Controller/services/date')

@@ -1,5 +1,5 @@
 const users = require('../Model/user')
-const Employee = require('../Model/employeee')
+const Employee = require('../Model/employee')
 const { errorHandler, fetchData } = require('./services/services')
 const cookie = require('cookie-parser')
 const jwt = require('jsonwebtoken')

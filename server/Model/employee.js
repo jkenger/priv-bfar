@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 const validator = require('validator')
-const payrollGroup = require('./PayrollGroup')
+const payrollGroup = require('./payrollGroup')
 
 const employeeSchema = mongoose.Schema({
     avatar:{

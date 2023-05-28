@@ -1,9 +1,9 @@
 const mongoose = require('mongoose')
 const Deductions = require('./deductions')
-const Holiday = require('./../Model/holiday')
-const countWeekdays = require('./../Controller/services/calendarDays')
-const employees = require('./employeee')
-const PayrollGroup = require('./PayrollGroup')
+const Holiday = require('./holiday')
+const countWeekdays = require('../Controller/services/calendarDays')
+const employees = require('./employee')
+const PayrollGroup = require('./payrollGroup')
 const moment = require('moment')
 
 const payrollSchema = mongoose.Schema({

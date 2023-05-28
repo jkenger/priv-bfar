@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken')
 const User = require('../Model/user')
 const EmployeeUser = require('../Model/employeeUser')
-const Employee = require('../Model/employeee')
+const Employee = require('../Model/employee')
 
 // VERIFY TOKEN to access the home page
 const checkToken = (req, res, next) => {

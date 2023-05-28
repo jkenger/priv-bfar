@@ -1,5 +1,5 @@
 const mongoose = require('mongoose')
-const PayrollGroup = require('./PayrollGroup')
+const PayrollGroup = require('./payrollGroup')
 
 const attendanceHistorySchema = mongoose.Schema({
     attendances:{

@@ -1,4 +1,4 @@
-const employees = require('../Model/employeee')
+const employees = require('../Model/employee')
 const attendances = require('../Model/attendance')
 const { errorHandler, fetchData } = require('./services/services')
 const fetch = require('node-fetch')

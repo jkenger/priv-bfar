@@ -3,7 +3,7 @@ const PayrollHistory = require('../Model/payrollHistory')
 
 const { format } = require('date-fns')
 const moment = require('moment')
-const PayrollType = require('../Model/PayrollGroup')
+const PayrollType = require('../Model/payrollGroup')
 
 module.exports = {
     // RENDERER
